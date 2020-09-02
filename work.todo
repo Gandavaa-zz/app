@@ -1,0 +1,53 @@
+☐ Layout-г засварлах
+    ✔ Blade template edit @done(20-08-26 15:50)
+    ✔ Logo and other realted front-end @done(20-08-26 15:50)
+       
+✔ Цэсүүдийг засварлах @done(20-08-26 15:49)
+✔ Bread Crumb fix @done(20-08-27 13:47)
+
+☐ Settings
+    ☐ User - Crud
+        ✔ Жагсаалт хийх @done(20-08-28 09:55)
+        ✔ Create @done(20-08-28 09:55)
+        ✔ Edit @done(20-08-28 10:26)
+        ✔ Destroy @done(20-08-28 10:29)
+        // Хэрэв устгах бол
+        ✔ View @done(20-08-28 10:29)
+        ☐ Assign roles
+
+    ☐ Role - CRUD - Datatable
+        ✔ Alert message @done(20-08-27 15:08)
+        ✔ create @done(20-08-27 13:48)
+        ✔ edit @done(20-08-27 13:48)
+        ✔ destroy @done(20-08-27 13:48)
+        ✔ View @done(20-08-28 11:19)
+        ✔ add permission @done(20-08-28 12:32)
+        ☐ Multiple permissions
+        
+    ✔ Permission - CRUD - Datatable @done(20-08-28 11:20)
+        ✔ Alert message @done(20-08-28 11:20)
+        ✔ create @done(20-08-28 11:57)
+        ✔ edit @done(20-08-28 11:57)
+        ✔ destroy @done(20-08-28 11:57)        
+
+☐ Participand management
+    ☐ List - Assesments | Edit | Add to a group | Archive | Delete
+    ☐ Archive
+    ☐ Notification-s 
+
+☐ Assesments - Тест
+    ☐ Assesments Management    
+    ☐ Export Result
+
+☐ Result Matching 
+    ☐ Management
+    ☐ Result texts
+        
+☐ Тохиргоо
+    ☐ Системийн хэрэглэгчид
+    ☐ Роль
+    ☐ Зөвшөөрөл
+    ☐ Notifications
+    ☐ Other 
+
+    

@@ -14,6 +14,7 @@ const mix = require('laravel-mix');
 mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css');
 
+mix.copy('node_modules/vue-multiselect/dist/vue-multiselect.min.css', 'public/css');
 
 mix.copy('node_modules/@coreui/chartjs/dist/css/coreui-chartjs.css', 'public/css');
 mix.copy('node_modules/cropperjs/dist/cropper.css', 'public/css');
@@ -29,6 +30,7 @@ mix.copy('node_modules/@coreui/coreui/dist/js/coreui.bundle.min.js', 'public/js'
 mix.copy('node_modules/chart.js/dist/Chart.min.js', 'public/js'); 
 mix.copy('node_modules/@coreui/chartjs/dist/js/coreui-chartjs.bundle.js', 'public/js');
 mix.copy('node_modules/cropperjs/dist/cropper.js', 'public/js');
+
 
 mix.copy('resources/js/coreui/main.js', 'public/js');
 mix.copy('resources/js/coreui/colors.js', 'public/js');

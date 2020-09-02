@@ -74,9 +74,14 @@
                             </div>
                         </div>
 
-                        <div>
-                        <label class="typo__label">Single select</label>
-                        <multiselect v-model="value" :options="options" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a value"></multiselect>
+                        <div class="form-group row">
+                        
+                            <label class="col-md-4 col-form-label text-md-right">Зөшөөрөл</label>
+
+                            <div class="col-md-6">
+                                <v-select multiple v-model="selected" :options="options" />
+                                <!-- <vue-multiselect></vue-multiselect> -->                                                                
+                            </div>
                         
                         </div>
 

@@ -18,7 +18,8 @@
         "chart.js": "^2.9.3",
         "cropperjs": "^1.5.7",
         "perfect-scrollbar": "1.5.0",
-        "vue-multiselect": "^2.1.6"
+        "vue-multiselect": "^2.1.6",
+        "vue-select": "^3.10.8"
     },
     "devDependencies": {
         "@babel/cli": "^7.10.5",

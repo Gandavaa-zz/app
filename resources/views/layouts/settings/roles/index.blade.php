@@ -39,7 +39,7 @@
                                 <td>{{ $role->permissions->pluck('name') }}
                                 </td>                            
                                 <td>       
-                                    <ul class="list-group list-group-horizontal list-unstyled"">
+                                    <ul class="list-group list-group-horizontal list-unstyled">
 
                                         <li class="pr-1" title="Харах">
                                             <a href="{{ route('role.show', $role->id) }}" class="btn btn-secondary btn-sm">

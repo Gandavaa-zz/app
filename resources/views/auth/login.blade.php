@@ -1,4 +1,4 @@
-@extends('dashboard.authBase')
+@extends('layouts.authBase')
 
 @section('content')
 
@@ -9,7 +9,7 @@
             <div class="card p-4">
               <div class="card-body">
                 <h2>Нэвтрэх</h2>
-                <p class="text-muted">Sign In to your account</p>
+                <p class="text-muted"></p>
                  <form method="POST" action="{{ route('login') }}">
                     @csrf
                     <div class="input-group mb-3">
