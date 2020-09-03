@@ -8,8 +8,8 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-
 import vSelect from 'vue-select'
+import Axios from 'axios';
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -33,17 +33,17 @@ Vue.component('v-select', vSelect);
  */
 
 const app = new Vue({
-    el: '#app',
-    data: {
-        selected: 'foo',
-        options: [
-          'foo',
-          'bar',
-          'baz'
-        ]             
-      },
-
+    el: '#app',        
+      data: {     
+        selected: [],   
+        options: []             
+      },      
+      // get_permissions
       mounted() {
-        console.log('hello');
+         axios.get('/settings/getPermissions').then(response => {
+             response.data.forEach(element => {
+               this.options.push(element.name)               
+             });
+          });
       }   
 });

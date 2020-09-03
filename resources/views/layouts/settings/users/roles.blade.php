@@ -65,7 +65,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Хадгалах') }}                                    
                                 </button>
-                                <a href="{{ route('role.index') }}" class="btn btn-danger">
+                                <a href="{{ route('users.index') }}" class="btn btn-danger">
                                     {{ __('Цуцлах') }}                                    
                                 </a>
                             </div>

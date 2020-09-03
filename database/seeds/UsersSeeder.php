@@ -7,6 +7,7 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Str;
 use App\User;
+use App\Group;
 
 class UsersSeeder extends Seeder
 {
@@ -92,6 +93,12 @@ class UsersSeeder extends Seeder
         ]);
 
          $user->assignRole($superAdminRole);
+
+         $group = Group::create([ 
+            'name' => $faker->name(),          
+            'created_at' =>now(),
+            'updated_at' =>now()            
+        ]);
 
          for($i = 0; $i<$numbersOfUser; $i++){
             $client = User::create([ 
