@@ -14,7 +14,7 @@
             </svg> Хянах самбар
             <!-- <span class="badge badge-info">NEW</span> -->
         </a>
-    </li>    
+    </li>
     <li class="c-sidebar-nav-title">Үндсэн</li>
 
     @role('super-admin|admin')
@@ -22,7 +22,7 @@
             <svg class="c-sidebar-nav-icon">
                 <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-settings"></use>
             </svg> Тохиргоо</a>
-        <ul class="c-sidebar-nav-dropdown-items">          
+        <ul class="c-sidebar-nav-dropdown-items">
             <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('users.index') }} ">
                 <svg class="c-sidebar-nav-icon">
                     <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-user"></use>
@@ -31,7 +31,7 @@
             <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('role.index') }}">
                 <svg class="c-sidebar-nav-icon">
                     <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-people"></use>
-                </svg> Роль</a>
+                </svg> Роль </a>
             </li>
             <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('permission.index') }}">
                 <svg class="c-sidebar-nav-icon">
@@ -48,9 +48,29 @@
                     <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-applications"></use>
                 </svg> Бусад</a>
             </li>
-            
+
         </ul>
     </li>
+
+    <li class="c-sidebar-nav-item c-sidebar-nav-dropdown"><a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
+            <svg class="c-sidebar-nav-icon">
+                <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-user"></use>
+            </svg>Харилцагчид</a>
+        <ul class="c-sidebar-nav-dropdown-items">
+            <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('participants.index') }} ">
+                <svg class="c-sidebar-nav-icon">
+                    <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-list"></use>
+                </svg>Жагсаалт</a>
+            </li>
+
+            <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('participants.index') }} ">
+                <svg class="c-sidebar-nav-icon">
+                    <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-list"></use>
+                </svg>Архив</a>
+            </li>
+        </ul>
+    </li>
+
 
     <li class="c-sidebar-nav-item c-sidebar-nav-dropdown"><a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
         <svg class="c-sidebar-nav-icon">
@@ -142,7 +162,7 @@
             </li>
         </ul>
     </li>
-  
+
     <li class="c-sidebar-nav-title">Нэмэлт</li>
     <li class="c-sidebar-nav-item c-sidebar-nav-dropdown"><a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle"
             href="#">

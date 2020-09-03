@@ -8,7 +8,7 @@
               <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                 <div class="card">
                     <div class="card-header">
-                      
+
                     <span class="float-left"><h5><i class="fa fa-align-justify"></i>{{ __('Системийн хэрэглэгч') }}</h5></span> <span class="float-right">
                     <a class="btn btn-primary" href="{{ route('users.create') }}">Шинэ</a></span>
                     </div>
@@ -21,22 +21,22 @@
                         <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Нэр.Овог</th>                                                
+                            <th scope="col">Нэр.Овог</th>
                             <th scope="col">Имэйл</th>
                             <th scope="col">Роль</th>
                             <th scope="col">Үйлдэл</th>
                         </tr>
                         </thead>
                         <tbody>
-                            
-                            @php ($i = 1)               
-                            @foreach ($users as $user) 
+
+                            @php ($i = 1)
+                            @foreach ($users as $user)
                             <tr>
                                 <th scope="row">{{ $i++ }} </th>
-                                <td>{{ $user->firstname }}. {{ Str::limit($user->lastname, 1) }}</td>                                                        
-                                <td>{{ $user->email }}</td>                                                        
-                                <td>{{ $user->getRoleNames()->implode('name', ', ')}}</td>                                
-                                <td>       
+                                <td>{{ $user->firstname }}. {{ Str::limit($user->lastname, 1) }}</td>
+                                <td>{{ $user->email }}</td>
+                                <td>{{ $user->getRoleNames()->implode('name', ', ')}}</td>
+                                <td>
                                     <ul class="list-group list-group-horizontal list-unstyled">
                                         <li class="pr-1">
                                             <a href="{{ route('users.show', $user->id) }}" class="btn btn-secondary btn-sm">
@@ -57,11 +57,11 @@
                                         <li class="pr-1">
                                             <a href="{{ route('user.roles', $user->id) }}"  class="btn btn-info btn-sm" title="Зөвшөөрөл"><i class="cil-people"></i></a>
                                         </li>
-                                    </ul>             
+                                    </ul>
                                     <!-- <a href="#" class="btn btn-primary btn-sm" title="Add"><i class="fas fa-plus"></i></a>                     -->
-                                    
+
                                     <!-- form post here  -->
-                                </td>                                
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>

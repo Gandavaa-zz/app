@@ -4,4 +4,5 @@
         <div class="alert alert-success" role="alert">{{ Session::get('message') }}</div>
     </div>
 </div>
-@endif  
+@endif
+

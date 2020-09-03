@@ -11,7 +11,7 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Str;
 
 /*
-     Users has roles with admin | super-admin | writer | its system users 
+     Users has roles with admin | super-admin | writer | its system users
 */
 
 
@@ -38,10 +38,10 @@ class UsersController extends Controller
 
     /**
      * Create user view here
-     *     
+     *
      */
     public function create()
-    {   
+    {
         $roles = Role::all();
 
         return view('layouts.settings.users.create', ['roles' => $roles]);
@@ -57,16 +57,16 @@ class UsersController extends Controller
 
         $data['password'] = Hash::make($this->keyGenerator());
 
-        $user = User::create( $data );    
-        
+        $user = User::create( $data );
+
         if($role = request('role'))
         {
-            $user->assignRole($role);            
+            $user->assignRole($role);
         }
-        
+
         // $user->tests()->attach(request('tests'));
 
-        $request->session()->flash('message', 'Хэрэглэгчийг амжилттай бүртгэлээ!');      
+        $request->session()->flash('message', 'Хэрэглэгчийг амжилттай бүртгэлээ!');
 
         // Хэрэглэгч үүссэний дараа тухайн хэрэглэгчрүү имэйл явуулна.
         return redirect('admin/users');
@@ -77,7 +77,7 @@ class UsersController extends Controller
      *
      */
     public function edit(User $user)
-    {        
+    {
         $tests = Test::all();
 
         return view('layouts.settings.users.edit', ['user' =>$user, 'tests' => $tests]);
@@ -92,13 +92,13 @@ class UsersController extends Controller
         $user->update(request()->validate([
             'firstname' => ['required', ['string']],
             'lastname' => ['required', ['string']],
-            'email' => ['required', 'string', 'email', 'max:255'],            
+            'email' => ['required', 'string', 'email', 'max:255'],
             'tests' => 'exists:tests,id'
         ]));
-        
+
         // $user->tests()->attach(request('tests'));
 
-        request()->session()->flash('message', 'Хэрэглэгчийг амжилттай засварлалаа!');      
+        request()->session()->flash('message', 'Хэрэглэгчийг амжилттай засварлалаа!');
 
         return redirect()->route('users.index');
     }
@@ -111,13 +111,13 @@ class UsersController extends Controller
     {
         $user->delete();
 
-        request()->session()->flash('message', 'Хэрэглэгчийг амжилттай устгалаа!');      
+        request()->session()->flash('message', 'Хэрэглэгчийг амжилттай устгалаа!');
 
-        return back();        
+        return back();
     }
-    
-    /* 
-    * Validation user function        
+
+    /*
+    * Validation user function
     */
     public function validateUser()
     {
@@ -126,7 +126,7 @@ class UsersController extends Controller
             'lastname' => ['required', ['string']],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'role' => ['sometimes', 'required']
-            // 'password' => ['required', 'string', 'min:8', 'confirmed'],   
+            // 'password' => ['required', 'string', 'min:8', 'confirmed'],
             // 'tests' => 'exists:tests,id'
         ]);
     }
@@ -138,17 +138,17 @@ class UsersController extends Controller
 
     public function roles(User $user)
     {
-                
+
         return view('layouts.settings.users.roles', ['user' =>$user]);
-        
+
     }
 
     public function giveRoles(User $user)
     {
         $user->assignRole(request('role'));
-        
-        request()->session()->flash('message', 'Хэрэглэгчид амжилтай Роль өглөө!');      
-        
+
+        request()->session()->flash('message', 'Хэрэглэгчид амжилтай Роль өглөө!');
+
         return redirect()->route('users.index');
     }
 

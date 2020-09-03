@@ -1,17 +1,16 @@
-<?php 
+<?php
 
-if (! function_exists('getBreadcrumb')) 
+if (! function_exists('getBreadcrumb'))
 {
-    function getBreadcrumb($key) 
+    function getBreadcrumb($key)
     {
         if(is_numeric($key))
         {
             return $key;
-            
+
         }else
         {
             $breadcrumbs = config('app.breadcrumbs');
-
             return $breadcrumbs[$key];
         }
 

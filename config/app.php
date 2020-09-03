@@ -29,19 +29,30 @@ return [
 
       /*
     |--------------------------------------------------------------------------
-    | Menu 
+    | Menu
     |--------------------------------------------------------------------------
     |
     */
+    'providers' => [
 
-    'breadcrumbs' => [ 
-        'settings'=>'Тохиргоо', 
-        'user'=>'Систем хэрэглэгч', 
-        'users'=>'Систем хэрэглэгчид', 
-        'roles'=>'Роль', 
-        'role'=>'Роль', 
-        'create'=>'Шинэ', 
-        'edit'=>'Засах', 
+        Yajra\DataTables\DataTablesServiceProvider::class,
+    ],
+
+    'aliases' => [
+
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+    ],
+
+    'breadcrumbs' => [
+        'settings'=>'Тохиргоо',
+        'user'=>'Систем хэрэглэгч',
+        'users'=>'Систем хэрэглэгчид',
+        'participant'=>'Харилцагч',
+        'participants'=>'Харилцагчид',
+        'roles'=>'Роль',
+        'role'=>'Роль',
+        'create'=>'Шинэ',
+        'edit'=>'Засах',
         'permission'=>'Зөвшөөрөл'
     ],
 
@@ -247,7 +258,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        
+
 
     ],
 

@@ -1,6 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,10 +21,10 @@ Route::get('/',  'HomeController@index')->name('dashboard');
 
 Route::group(['middleware' => ['role:super-admin']], function () {
     // Route::get('/admin', 'Admin\UsersController@index')->name('admin');
-    Route::resource('settings/users', 'Settings\UsersController')->middleware('auth');    
+    Route::resource('settings/users', 'Settings\UsersController')->middleware('auth');
     Route::get('settings/users/{user}/roles', 'Settings\UsersController@roles')->name('user.roles')->middleware('auth');
     Route::post('settings/users/{user}/giveRoles', 'Settings\UsersController@giveRole')->name('user.giveRoles')->middleware('auth');
-}); 
+});
 
 Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::resource('role', 'Settings\RolesController')->middleware('auth');
@@ -39,13 +41,6 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::put('/settings/tests/{user}', 'Settings\TestsController@update');
     Route::delete('/settings/tests/{user}', 'Settings\TestsController@destroy')->name('destroy.user');
 
-    Route::get('/admin/participants', 'Admin\ParticipantsController@index')->name('participants')->middleware('auth');
-    Route::get('/admin/participants/create', 'Admin\ParticipantsController@index')->name('create.participants');
-    Route::post('/admin/participants/create', 'Admin\ParticipantsController@index')->name('save.participants');
-    Route::get('/admin/participants/{user}', 'Admin\ParticipantsController@index');
-    Route::get('/admin/participants/{user}/edit', 'Admin\ParticipantsController@index');
-    Route::put('/admin/participants/{user}', 'Admin\ParticipantsController@index');
-    Route::delete('/admin/participants/{user}', 'Admin\ParticipantsController@index')->name('destroy.participants');
-
+    Route::resource('/participants', 'ParticipantsController')->middleware('auth');
 });
 

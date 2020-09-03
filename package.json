@@ -17,6 +17,8 @@
         "@popperjs/core": "^2.4.4",
         "chart.js": "^2.9.3",
         "cropperjs": "^1.5.7",
+        "datatables-bootstrap": "0.0.1",
+        "datatables.net-bs4": "^1.10.21",
         "perfect-scrollbar": "1.5.0",
         "vue-multiselect": "^2.1.6",
         "vue-select": "^3.10.8"

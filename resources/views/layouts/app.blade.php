@@ -28,6 +28,9 @@
     <meta name="theme-color" content="#ffffff">
     <!-- Icons-->
     <link href="{{ asset('css/free.min.css') }}" rel="stylesheet"> <!-- icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
+    {{-- <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet"> --}}
+    <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
 
     <!-- Main styles for this application-->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
@@ -50,12 +53,12 @@
 
         <main class="c-main">
 
-          @yield('content') 
+          @yield('content')
 
         </main>
-        
+
         @include('layouts.shared.footer')
-        
+
       </div>
     </div>
 
@@ -65,11 +68,32 @@
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/coreui.bundle.min.js') }}"></script>
     <script src="{{ asset('js/coreui-utils.js') }}"></script>
-    
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+
+          var table = $('.yajra-datatable').DataTable({
+              processing: true,
+              serverSide: true,
+              ajax: "{{ route('participants.index') }}",
+              columns: [
+                  {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                  {data: 'firstname', name: 'firstname'},
+                  {data: 'email', name: 'email'},
+                  {
+                      data: 'action',
+                      name: 'action',
+                      orderable: true,
+                      searchable: true
+
+                  },
+              ]
+          });
+
+        });
+      </script>
     @yield('javascript')
-
-
-
 
   </body>
 </html>
