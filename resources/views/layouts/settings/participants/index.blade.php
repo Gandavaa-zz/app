@@ -78,14 +78,14 @@
 
                             <div class="form-group">
                                 <label>{{ __('Төрсөн огноо') }}</label>
-                                <input class="form-control" id="dob" id="dob" type="date" name="date-input" placeholder="age">
+                                <input class="form-control" id="dob" id="dob" type="date" name="dob" placeholder="age">
                             </div>
 
                             <div class="form-group row">
                                 {{-- <label class="col-md-3 col-form-label">Inline Radios</label> --}}
                                 <div class="col-md-9 col-form-label">
                                 <div class="form-check form-check-inline mr-1">
-                                <input class="form-check-input" id="gender" type="radio" value="male" name="gender">
+                                <input class="form-check-input" id="gender" checked type="radio" value="male" name="gender">
                                 <label class="form-check-label" for="gender">Male</label>
                                 </div>
                                 <div class="form-check form-check-inline mr-1">
@@ -180,6 +180,9 @@ var table = $('.yajra-datatable').DataTable({
         $('#firstname').val(data.firstname);
         $('#lastname').val(data.lastname);
         $('#phone').val(data.phone);
+        $('#gender[value="'+ data.gender +'"]').attr('checked', true);
+        $('#address').val(data.address);
+        $('#dob').val(data.dob);
         $('#register').val(data.register);
         $('#email').val(data.email);
       })
@@ -194,7 +197,6 @@ var table = $('.yajra-datatable').DataTable({
 
     $('#saveBtn').click(function (e) {
         e.preventDefault();
-        $(this).html('Илгээж байна..');
         $.ajax({
           data: $('#PartipicantForm').serialize(),
           url: "{{ route('participants.store') }}",

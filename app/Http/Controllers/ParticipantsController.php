@@ -174,6 +174,9 @@ class ParticipantsController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'phone' => ['required', 'string', 'max:10'],
             'register' => ['required', 'string', 'max:10'],
+            'dob' => ['required', 'date', 'max:10'],
+            'address' => ['required', 'string', 'max:100'],
+            'gender' => ['required'],
             'role' => ['sometimes', 'required']
             // 'password' => ['required', 'string', 'min:8', 'confirmed'],
             // 'tests' => 'exists:tests,id'
