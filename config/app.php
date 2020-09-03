@@ -33,16 +33,6 @@ return [
     |--------------------------------------------------------------------------
     |
     */
-    'providers' => [
-
-        Yajra\DataTables\DataTablesServiceProvider::class,
-    ],
-
-    'aliases' => [
-
-        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
-    ],
-
     'breadcrumbs' => [
         'settings'=>'Тохиргоо',
         'user'=>'Систем хэрэглэгч',
@@ -173,6 +163,7 @@ return [
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
         Illuminate\Bus\BusServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
         Illuminate\Cache\CacheServiceProvider::class,
         Illuminate\Foundation\Providers\ConsoleSupportServiceProvider::class,
         Illuminate\Cookie\CookieServiceProvider::class,
@@ -223,6 +214,7 @@ return [
     'aliases' => [
 
         'App' => Illuminate\Support\Facades\App::class,
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'Arr' => Illuminate\Support\Arr::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Test;
 use App\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
@@ -12,6 +13,7 @@ use Illuminate\Support\Str;
 use DataTables;
 use Yajra\DataTables\Contracts\DataTable;
 use Yajra\DataTables\DataTables as DataTablesDataTables;
+use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
 
 class ParticipantsController extends Controller
 {
@@ -25,21 +27,35 @@ class ParticipantsController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = User::latest()->get();
-            return datatables()::of($data)
+            $data = DB::select('select tb1.id, date(tb1.created_at) as created_at, tb1.firstname, tb1.email, tb1.phone, tb3.name from users as tb1 left join group_user as tb2 on tb1.id = tb2.user_id left join groups as tb3 on tb2.id = tb3.id order by tb1.created_at desc');
+            return FacadesDataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
-                    $btn = '<ul class="list-group list-group-horizontal list-unstyled"><li class="pr-1"><a href="" class="btn btn-secondary btn-sm">
+                    $btn = '
+                    <ul class="list-group list-group-horizontal list-unstyled"><li class="pr-1">
+                    <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$row->id.'" class="btn btn-success view btn-md">
                         <i class="cil-magnifying-glass"></i>
                         </a>
                     </li>
                     <li class="pr-1">
-                        <a href="javascript:void(0)" class="btn btn-primary btn-sm" title="Edit"><i class="cil-pencil"></i></a>
+                        <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$row->id.'" data-original-title="Edit" class="btn btn-primary btn-md" title="test"><i class="cil-user"></i></a>
                     </li>
                     <li class="pr-1">
-                        <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm"><i class="cil-trash"></i></a>
-                    </li>
-                </ul> ';
+                    <div class="btn-group">
+                    <a href="" type="button" title="Бусад" class="btn btn-secondary  dropdown-toggle  btn-sm" data-toggle="dropdown">
+                    <i class="cil-cog"></i>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item edit" href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit">Edit</a>
+                        <a class="dropdown-item" href="javascript:void(0)">Assessment</a>
+                        <a class="dropdown-item" href="javascript:void(0)">Add to the group</a>
+                        <a class="dropdown-item delete" style="color:red;" href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete">Delete</a>
+                    </div>
+                  </div>
+                </li>
+
+
+                </ul><input type="checkbox" id="'.$row->id.'"';
                     return $btn;
                 })
                 ->rawColumns(['action'])
@@ -49,9 +65,12 @@ class ParticipantsController extends Controller
         return view('layouts.settings.participants.index');
     }
 
-    public function show(User $user)
+    public function show($id)
     {
-        return view('layouts.settings.participants.show', compact('user'));
+        $where = array('id' => $id);
+        $user = User::where($where)->first();
+        return view('layouts.settings.participants.show',compact('user'));
+        // return response()->json($user);
     }
 
     /**
@@ -110,11 +129,10 @@ class ParticipantsController extends Controller
      * Show the form for editing the specified resource.
      *
      */
-    public function edit(User $user)
+    public function edit($id)
     {
-        $tests = Test::all();
-
-        return view('admin.users.edit', ['user' =>$user, 'tests' => $tests]);
+        $user = User::find($id);
+        return response()->json($user);
     }
 
     /**
@@ -139,11 +157,11 @@ class ParticipantsController extends Controller
      * Remove the specified resource from storage.
     */
 
-    public function destroy(User $user)
+    public function destroy($id)
     {
-        $user->delete();
+        User::find($id)->delete();
 
-        return back();
+        return response()->json(['success'=>'Participant deleted successfully.']);
     }
 
     /*
@@ -156,6 +174,8 @@ class ParticipantsController extends Controller
             'firstname' => ['required', ['string']],
             'lastname' => ['required', ['string']],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'phone' => ['required', 'string', 'max:10'],
+            'register' => ['required', 'string', 'max:10'],
             'role' => ['sometimes', 'required']
             // 'password' => ['required', 'string', 'min:8', 'confirmed'],
             // 'tests' => 'exists:tests,id'

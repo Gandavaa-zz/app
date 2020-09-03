@@ -42,5 +42,6 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::delete('/settings/tests/{user}', 'Settings\TestsController@destroy')->name('destroy.user');
 
     Route::resource('/participants', 'ParticipantsController')->middleware('auth');
+    Route::get('participants/destroy/{id}', 'ParticipantsController@destroy');
 });
 

@@ -70,29 +70,6 @@
     <script src="{{ asset('js/coreui-utils.js') }}"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
-    <script type="text/javascript">
-        $(function () {
-
-          var table = $('.yajra-datatable').DataTable({
-              processing: true,
-              serverSide: true,
-              ajax: "{{ route('participants.index') }}",
-              columns: [
-                  {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                  {data: 'firstname', name: 'firstname'},
-                  {data: 'email', name: 'email'},
-                  {
-                      data: 'action',
-                      name: 'action',
-                      orderable: true,
-                      searchable: true
-
-                  },
-              ]
-          });
-
-        });
-      </script>
     @yield('javascript')
 
   </body>
