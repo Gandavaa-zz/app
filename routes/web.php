@@ -31,7 +31,10 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::get('role/{role}/permission', 'Settings\RolesController@permission')->middleware('auth');
     Route::post('role/{role}/permission', 'Settings\RolesController@givePermission')->name('give.permission')->middleware('auth');
     Route::resource('settings/permission', 'Settings\PermissionsController')->middleware('auth');
+    Route::get('settings/getPermissions', 'Settings\PermissionsController@getPermissions')->middleware('auth');
 
+    Route::resource('settings/group', 'Settings\GroupsController');
+    
     Route::get('/settings/tests', 'Settings\TestsController@index')->name('test')->middleware('auth');
     Route::get('/settings/tests/create', 'Settings\TestsController@create')->name('create.test');
     Route::post('/settings/tests/create', 'Settings\TestsController@store')->name('save.test');
@@ -45,3 +48,8 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::get('participants/destroy/{id}', 'ParticipantsController@destroy');
 });
 
+Route::get('skills',  function(){
+
+    return [ 'label'=> ['laravel', 'vue', 'php']];
+
+});

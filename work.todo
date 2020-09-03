@@ -13,6 +13,7 @@
         ✔ Destroy @done(20-08-28 10:29)
         // Хэрэв устгах бол
         ✔ View @done(20-08-28 10:29)
+        ☐ >System-n hereglegchiig filterdeh        
         ☐ Assign roles
 
     ☐ Role - CRUD - Datatable
@@ -22,8 +23,10 @@
         ✔ destroy @done(20-08-27 13:48)
         ✔ View @done(20-08-28 11:19)
         ✔ add permission @done(20-08-28 12:32)
-        ☐ Multiple permissions
-        
+        ✔ Multiple permissions @done(20-09-03 11:50)
+        ☐ Set all roles can update function 
+        ☐ Change by add vue js
+                
     ✔ Permission - CRUD - Datatable @done(20-08-28 11:20)
         ✔ Alert message @done(20-08-28 11:20)
         ✔ create @done(20-08-28 11:57)

@@ -1,19 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Test;
 use App\User;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Str;
-use DataTables;
-use Yajra\DataTables\Contracts\DataTable;
-use Yajra\DataTables\DataTables as DataTablesDataTables;
-use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
 
 class ParticipantsController extends Controller
 {
@@ -24,61 +19,24 @@ class ParticipantsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        if ($request->ajax()) {
-            $data = DB::select('select tb1.id, date(tb1.created_at) as created_at, tb1.firstname, tb1.email, tb1.phone, tb3.name from users as tb1 left join group_user as tb2 on tb1.id = tb2.user_id left join groups as tb3 on tb2.id = tb3.id order by tb1.created_at desc');
-            return FacadesDataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $btn = '
-                    <ul class="list-group list-group-horizontal list-unstyled"><li class="pr-1">
-                    <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$row->id.'" class="btn btn-success view btn-md">
-                        <i class="cil-magnifying-glass"></i>
-                        </a>
-                    </li>
-                    <li class="pr-1">
-                        <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$row->id.'" data-original-title="Edit" class="btn btn-primary btn-md" title="test"><i class="cil-user"></i></a>
-                    </li>
-                    <li class="pr-1">
-                    <div class="btn-group">
-                    <a href="" type="button" title="Бусад" class="btn btn-secondary  dropdown-toggle  btn-sm" data-toggle="dropdown">
-                    <i class="cil-cog"></i>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item edit" href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit">Edit</a>
-                        <a class="dropdown-item" href="javascript:void(0)">Assessment</a>
-                        <a class="dropdown-item" href="javascript:void(0)">Add to the group</a>
-                        <a class="dropdown-item delete" style="color:red;" href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete">Delete</a>
-                    </div>
-                  </div>
-                </li>
+        $users = User::paginate(15);
 
-
-                </ul><input type="checkbox" id="'.$row->id.'"';
-                    return $btn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        }
-
-        return view('layouts.settings.participants.index');
+        return view('admin.users.index', compact('users'));
     }
 
-    public function show($id)
+    public function show(User $user)
     {
-        $where = array('id' => $id);
-        $user = User::where($where)->first();
-        return view('layouts.settings.participants.show',compact('user'));
-        // return response()->json($user);
+        return view('admin.users.show', compact('user'));
     }
 
     /**
      * Create user view here
-     *
+     *     
      */
     public function create()
-    {
+    {   
         $roles = Role::all();
 
         return view('admin.users.create', ['roles' => $roles]);
@@ -88,51 +46,35 @@ class ParticipantsController extends Controller
      * Store a newly created resource in storage.
      */
 
-    // public function store()
-    // {
-    //     $data = $this->validateUser();
-
-    //     $data['password'] = Hash::make($this->keyGenerator());
-
-    //     $user = User::create( $data );
-
-    //     if($role = request('role'))
-    //     {
-    //         $user->assignRole($role);
-    //     }
-
-    //     // $user->tests()->attach(request('tests'));
-
-    //     // Хэрэглэгч үүссэний дараа тухайн хэрэглэгчрүү имэйл явуулна.
-
-    //     return redirect('');
-    // }
-
-    public function store(Request $request)
+    public function store()
     {
-            $data = $this->validateUser();
+        $data = $this->validateUser();
 
-            $data['password'] = Hash::make($this->keyGenerator());
+        $data['password'] = Hash::make($this->keyGenerator());
 
-            $user = User::create( $data );
+        $user = User::create( $data );    
+        
+        if($role = request('role'))
+        {
+            $user->assignRole($role);            
+        }
+        
+        // $user->tests()->attach(request('tests'));
 
-            if($role = request('role'))
-            {
-                $user->assignRole($role);
-            }
-                $request->session()->flash('message', 'Хэрэглэгчийг амжилттай бүртгэлээ!');
-                return response()->json(['success'=>'Participant saved successfully.']);
+        // Хэрэглэгч үүссэний дараа тухайн хэрэглэгчрүү имэйл явуулна.
+
+        return redirect('admin/users');
     }
-
 
     /**
      * Show the form for editing the specified resource.
      *
      */
-    public function edit($id)
-    {
-        $user = User::find($id);
-        return response()->json($user);
+    public function edit(User $user)
+    {        
+        $tests = Test::all();
+
+        return view('admin.users.edit', ['user' =>$user, 'tests' => $tests]);
     }
 
     /**
@@ -144,10 +86,10 @@ class ParticipantsController extends Controller
         $user->update(request()->validate([
             'firstname' => ['required', ['string']],
             'lastname' => ['required', ['string']],
-            'email' => ['required', 'string', 'email', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255'],            
             'tests' => 'exists:tests,id'
         ]));
-
+        
         $user->tests()->attach(request('tests'));
 
         return redirect('/admin/users');
@@ -157,15 +99,15 @@ class ParticipantsController extends Controller
      * Remove the specified resource from storage.
     */
 
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        User::find($id)->delete();
+        $user->delete();
 
-        return response()->json(['success'=>'Participant deleted successfully.']);
+        return back();        
     }
-
-    /*
-    * Validation user function
+    
+    /* 
+    * Validation user function        
     */
 
     public function validateUser()
@@ -174,10 +116,8 @@ class ParticipantsController extends Controller
             'firstname' => ['required', ['string']],
             'lastname' => ['required', ['string']],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'phone' => ['required', 'string', 'max:10'],
-            'register' => ['required', 'string', 'max:10'],
             'role' => ['sometimes', 'required']
-            // 'password' => ['required', 'string', 'min:8', 'confirmed'],
+            // 'password' => ['required', 'string', 'min:8', 'confirmed'],   
             // 'tests' => 'exists:tests,id'
         ]);
     }

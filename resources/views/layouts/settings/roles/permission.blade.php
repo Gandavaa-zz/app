@@ -51,8 +51,12 @@
 
                             <div class="col-md-6">
 
+                                @foreach($role->permissions as $perm)
+                                    <input type="hidden" name="permission[]" value="{{ $perm->id }}" :value="selected">
+                                @endforeach
+
                                 @if(isset($permissions))
-                                    <select name="permission" id="permission" class="form-control @error('permission') is-invalid @enderror">
+                                    <select name="permission[]" multiple id="permission" class="form-control @error('permission') is-invalid @enderror">
                                         <option value="0">Нэг зөвшөөрлийг сонгоно уу!</option>
                                         @foreach($permissions as $permission)                                        
                                         <option value="{{ $permission->id }}" 
@@ -79,8 +83,7 @@
                             <label class="col-md-4 col-form-label text-md-right">Зөшөөрөл</label>
 
                             <div class="col-md-6">
-                                <v-select multiple v-model="selected" :options="options" />
-                                <!-- <vue-multiselect></vue-multiselect> -->                                                                
+                                <v-select multiple :options="options" v-model="selected" />                                
                             </div>
                         
                         </div>

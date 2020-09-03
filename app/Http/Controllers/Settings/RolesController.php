@@ -77,10 +77,10 @@ class RolesController extends Controller
 
     public function givePermission(Role $role)
     {
-        $permission = request()->input('permission');
+        $permissions = request()->input('permission');
         
-        $role->givePermissionTo($permission);
-        
+        $role->syncPermissions($permissions);
+        // $role->givePermissionTo($permission);        
         request()->session()->flash('message', 'Зөвшөөрлийг амжилттай хадгаллаа!');      
         
         return redirect()->route('role.index');

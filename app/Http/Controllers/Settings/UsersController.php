@@ -26,7 +26,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::paginate(15);
+        $users = User::role(['admin', 'super-admin'])->paginate(10);
 
         return view('layouts.settings.users.index', compact('users'));
     }
