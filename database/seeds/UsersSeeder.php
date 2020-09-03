@@ -94,10 +94,10 @@ class UsersSeeder extends Seeder
 
          $user->assignRole($superAdminRole);
 
-         $group = Group::create([ 
-            'name' => $faker->name(),          
+         $group = Group::create([
+            'name' => $faker->name(),
             'created_at' =>now(),
-            'updated_at' =>now()            
+            'updated_at' =>now()
         ]);
 
          for($i = 0; $i<$numbersOfUser; $i++){
