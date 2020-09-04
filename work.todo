@@ -6,6 +6,7 @@
 ✔ Bread Crumb fix @done(20-08-27 13:47)
 
 ☐ Settings
+    
     ☐ User - Crud
         ✔ Жагсаалт хийх @done(20-08-28 09:55)
         ✔ Create @done(20-08-28 09:55)
@@ -13,7 +14,7 @@
         ✔ Destroy @done(20-08-28 10:29)
         // Хэрэв устгах бол
         ✔ View @done(20-08-28 10:29)
-        ☐ >System-n hereglegchiig filterdeh        
+        ☐ >System-n hereglegchiig filterdeh
         ☐ Assign roles
 
     ☐ Role - CRUD - Datatable
@@ -31,16 +32,19 @@
         ✔ Alert message @done(20-08-28 11:20)
         ✔ create @done(20-08-28 11:57)
         ✔ edit @done(20-08-28 11:57)
-        ✔ destroy @done(20-08-28 11:57)        
+        ✔ destroy @done(20-08-28 11:57)  
+    ✔ Group -crud @done(20-09-04 16:25)   
+    
+    
+☐ Assesments - Тест
+    ☐ Assesments Management    
+    ☐ Export Result
 
-☐ Participand management
+☐ Participand management - Идэрээ
     ☐ List - Assesments | Edit | Add to a group | Archive | Delete
     ☐ Archive
     ☐ Notification-s 
 
-☐ Assesments - Тест
-    ☐ Assesments Management    
-    ☐ Export Result
 
 ☐ Result Matching 
     ☐ Management

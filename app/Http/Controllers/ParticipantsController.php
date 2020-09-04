@@ -118,8 +118,10 @@ class ParticipantsController extends Controller
             {
                 $user->assignRole($role);
             }
-                $request->session()->flash('message', 'Хэрэглэгчийг амжилттай бүртгэлээ!');
-                return response()->json(['success'=>'Participant saved successfully.']);
+            
+            $request->session()->flash('message', 'Хэрэглэгчийг амжилттай бүртгэлээ!');
+            
+            return response()->json(['success'=>'Participant saved successfully.']);
     }
 
 
@@ -130,6 +132,7 @@ class ParticipantsController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
+        
         return response()->json($user);
     }
 
