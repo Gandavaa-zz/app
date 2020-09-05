@@ -7,6 +7,7 @@ use App\Test;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Http\POST;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Str;
@@ -118,8 +119,8 @@ class ParticipantsController extends Controller
             {
                 $user->assignRole($role);
             }
-                $request->session()->flash('message', 'Хэрэглэгчийг амжилттай бүртгэлээ!');
-                return response()->json(['success'=>'Participant saved successfully.']);
+                $request->session()->flash('msg', 'Хэрэглэгчийг амжилттай бүртгэлээ!');
+                return response()->json(['msg'=>'Хэрэглэгчийг амжилттай бүртгэлээ!']);
     }
 
 
@@ -137,18 +138,30 @@ class ParticipantsController extends Controller
      * Update the specified resource in storage.
      */
 
-    public function update(User $user)
+    public function update(User $user, $id)
     {
-        $user->update(request()->validate([
-            'firstname' => ['required', ['string']],
-            'lastname' => ['required', ['string']],
-            'email' => ['required', 'string', 'email', 'max:255'],
-            'tests' => 'exists:tests,id'
-        ]));
+        // $user->validateUser();
 
-        $user->tests()->attach(request('tests'));
+        $user = DB::table('users')
+        ->where('id', $id)
+        ->update([
+                 'firstname' => request('firstname'),
+                 'lastname' => request('lastname'),
+                 'email' => request('email'),
+                 'register' => request('register'),
+                 'dob' => request('dob'),
+                 'phone' => request('phone'),
+                 'address' => request('address'),
+                 'gender' => request('gender'),
+                ]);
 
-        return redirect('/admin/users');
+        if ($user < 0 ) {
+            return response()->json(['msg'=>'Participant cannot be updated.']);
+        } else {
+            return response()->json(['msg'=>"Participant updated successfully."]);
+        }
+
+
     }
 
     /**
@@ -159,7 +172,7 @@ class ParticipantsController extends Controller
     {
         User::find($id)->delete();
 
-        return response()->json(['success'=>'Participant deleted successfully.']);
+        return response()->json(['msg'=>'Participant deleted successfully.']);
     }
 
     /*
@@ -171,7 +184,7 @@ class ParticipantsController extends Controller
         return request()->validate([
             'firstname' => ['required', ['string']],
             'lastname' => ['required', ['string']],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255'],
             'phone' => ['required', 'string', 'max:10'],
             'register' => ['required', 'string', 'max:10'],
             'dob' => ['required', 'date', 'max:10'],

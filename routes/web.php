@@ -34,7 +34,7 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::get('settings/getPermissions', 'Settings\PermissionsController@getPermissions')->middleware('auth');
 
     Route::resource('settings/group', 'Settings\GroupsController');
-    
+
     Route::get('/settings/tests', 'Settings\TestsController@index')->name('test')->middleware('auth');
     Route::get('/settings/tests/create', 'Settings\TestsController@create')->name('create.test');
     Route::post('/settings/tests/create', 'Settings\TestsController@store')->name('save.test');
@@ -46,6 +46,7 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
 
     Route::resource('/participants', 'ParticipantsController')->middleware('auth');
     Route::get('participants/destroy/{id}', 'ParticipantsController@destroy');
+    Route::post('participants/update/{id}', 'ParticipantsController@update');
 });
 
 Route::get('skills',  function(){

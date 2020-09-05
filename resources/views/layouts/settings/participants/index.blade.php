@@ -59,6 +59,7 @@
                                         <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-user"></use>
                                     </svg></span></div>
                                 <input type="text" name="lastname" id="lastname" class="form-control" placeholder="Эцэг/эх-н нэр оруулна уу..." autocomplete="lastname" autofocus>
+                                <div class="alert-message" id="lastname_error"></div>
                             </div>
 
                             <div class="form-group">
@@ -159,18 +160,25 @@ var table = $('.yajra-datatable').DataTable({
     ]
 });
 
+
 });
+
+   var modalType = false;
+   var url = '';
    $('#createNewItem').click(function () {
+       document.getElementById('PartipicantForm').reset();
         $('#saveBtn').val("create-Item");
         $('#id').val('');
+        modalType = true;
         $('#PartipicantForm').trigger("PartipicantForm");
         $('#modelHeading').html("Харилцагч бүртгэх");
         $('#ajaxModel').modal('show');
     });
 
      /* Edit customer */
+     var participant_id = '';
      $('body').on('click', '.edit', function () {
-      var participant_id  = $(this).data('id');
+        participant_id  = $(this).data('id');
       $.get("{{ route('participants.index') }}" +'/' + participant_id +'/edit', function (data) {
         $('#saveBtn').val("edit-Item");
         $('#saveBtn').html('Хадгалах');
@@ -197,16 +205,34 @@ var table = $('.yajra-datatable').DataTable({
 
     $('#saveBtn').click(function (e) {
         e.preventDefault();
+        // alert(participant_id);
+        if (modalType) {
+            url = "{{ route('participants.store') }}";
+        } else {
+            url = "participants/update/"+participant_id
+
+        }
+        // alert(url);
         $.ajax({
           data: $('#PartipicantForm').serialize(),
-          url: "{{ route('participants.store') }}",
+          url: url,
           type: "POST",
           dataType: 'json',
           success: function (data) {
-            console.log('Success :', data);
+            // console.log('Success :', data);
               $('#PartipicantForm').trigger("reset");
               $('#ajaxModel').modal('hide');
-              table.draw();
+            //   alert("Data saved");
+              Swal.fire({
+                position: 'middle',
+                icon: 'success',
+                title: "Мэдэгдэл",
+                text: JSON.stringify(data.msg),
+                showConfirmButton: true,
+                timerProgressBar : true
+          })
+
+            $('#user_table').DataTable().ajax.reload();
 
           },
           error: function (data) {
@@ -218,35 +244,67 @@ var table = $('.yajra-datatable').DataTable({
     });
 
     function printErrorMsg (msg) {
-            $(".print-error-msg").find("ul").html('');
-            $(".print-error-msg").css('display','block');
-            $.each( msg, function( key, value ) {
-                $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
-            });
+    var values = '<ul style="list-style-type: none;">';
+    jQuery.each(msg, function (key, value) {
+         values += "<li style = 'color:red;'>" + value + "</li>"
+    });
+    values += '</ul>';
+
+            Swal.fire({
+                position: 'top-end',
+                icon : "info",
+                toast: true,
+                timerProgressBar: true,
+                showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+                },
+                hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+                },
+                html:values,
+                showConfirmButton: false,
+                timer: 3000
+            })
         }
 
 $('body').on('click', '.delete', function () {
  var id = $(this).data("id");
 //  var firstname = $(this).data("firstname");
- console.log("participant id - " + id);
- if(confirm("Are You sure want to delete - " + id))
- {
-   $.ajax({
+//  console.log("participant id - " + id);
+ Swal.fire({
+  title: 'Are you sure?',
+  text: "You won't be able to revert this!",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, delete it!'
+}).then((result) => {
+  if (result.value) {
+    $.ajax({
        type: "get",
        url:"participants/destroy/"+id,
        success: function (data) {
         setTimeout(function(){
      $('#confirmModal').modal('hide');
      $('#user_table').DataTable().ajax.reload();
-     alert('Data Deleted');
-    }, 1000);
+    });
        },
        error: function (data) {
            console.log('Error:', data);
        }
    });
-}
+    Swal.fire(
+      'Deleted!',
+      'Your file has been deleted.',
+      'success'
+    )
+  }
+})
+
+
 });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 @endsection
 
