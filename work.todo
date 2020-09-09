@@ -6,7 +6,6 @@
 ✔ Bread Crumb fix @done(20-08-27 13:47)
 
 ☐ Settings
-    
     ☐ User - Crud
         ✔ Жагсаалт хийх @done(20-08-28 09:55)
         ✔ Create @done(20-08-28 09:55)
@@ -34,8 +33,7 @@
         ✔ edit @done(20-08-28 11:57)
         ✔ destroy @done(20-08-28 11:57)  
     ✔ Group -crud @done(20-09-04 16:25)   
-    
-    
+
 ☐ Assesments - Тест
     ☐ Assesments Management    
     ☐ Export Result
@@ -44,7 +42,6 @@
     ☐ List - Assesments | Edit | Add to a group | Archive | Delete
     ☐ Archive
     ☐ Notification-s 
-
 
 ☐ Result Matching 
     ☐ Management

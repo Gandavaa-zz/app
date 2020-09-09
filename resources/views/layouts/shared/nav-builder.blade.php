@@ -28,6 +28,11 @@
                     <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-user"></use>
                 </svg> Систем хэрэглэгчид</a>
             </li>
+            <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('settings.test') }}">
+                <svg class="c-sidebar-nav-icon">
+                    <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-description"></use>
+                </svg> Тестүүд</a>
+            </li>
             <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('role.index') }}">
                 <svg class="c-sidebar-nav-icon">
                     <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-people"></use>
@@ -40,7 +45,7 @@
             </li>
             <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('group.index') }}">
                 <svg class="c-sidebar-nav-icon">
-                    <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-group"></use>
+                    <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-people"></use>
                 </svg> Хэрэглэгчийн групп</a>
             </li>
             <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="#">
@@ -53,6 +58,7 @@
                     <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-applications"></use>
                 </svg> Бусад</a>
             </li>
+            
 
         </ul>
     </li>
@@ -83,14 +89,14 @@
         </svg> Тест</a>
         <ul class="c-sidebar-nav-dropdown-items">
             <li class="c-sidebar-nav-item">
-                <a class="c-sidebar-nav-link" href="{{ route('test') }} ">
+                <a class="c-sidebar-nav-link" href="{{ route('test.index') }} ">
                     <svg class="c-sidebar-nav-icon">
                         <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-list"></use>
                     </svg> Жагсаалт
                 </a>
             </li>
             <li class="c-sidebar-nav-item">
-                <a class="c-sidebar-nav-link" href="{{ route('test') }} ">
+                <a class="c-sidebar-nav-link" href="{{ route('test.index') }} ">
                     <svg class="c-sidebar-nav-icon">
                         <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-spreadsheet"></use>
                     </svg> Үр дүн

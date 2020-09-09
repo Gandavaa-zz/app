@@ -9,9 +9,13 @@
                 <div class="card">
                     <div class="card-header">                      
                         <span class="float-left"><h5><i class="fa fa-align-justify"></i>{{ __('Тест') }}</h5></span> <span class="float-right">
-                    <a class="btn btn-primary" href="{{ route('test.create') }}">Шинэ</a></span>
+                    <a class="btn btn-primary" href="{{ route('settings.test.create') }}">Шинэ</a></span>
                     </div>
+
                     <div class="card-body">
+
+                        @include('layouts.shared.alert')
+
                         <table class="table table-responsive-sm table-striped test-table">
                         <thead>
                         <tr>
@@ -19,27 +23,10 @@
                             <th scope="col">Test</th>                                                
                             <th scope="col">Дэлгэрэнгүй</th>
                             <th scope="col">Төрөл</th>
-                            <th scope="col">Цаг</th>
+                            <th scope="col">Үргэлж.хуг</th>
                             <th scope="col">Үйлдэл</th>
                         </tr>
-                        </thead>
-                        <tbody>                            
-                            @php ($i = 1)               
-                            @foreach ($tests as $test) 
-                            <tr>
-                                <th scope="row">{{ $i++ }} </th>
-                                <td>{{ Str::limit($test->title, 20) }}</td>                                                        
-                                <td>{{ Str::limit($test->info, 20) }}</td>
-                                <td>{{ $test->type }}</td>
-                                <td>{{ $test->duration }}</td>                          
-                                <td>                    
-                                    <!-- <a href="#" class="btn btn-primary btn-sm" title="Add"><i class="fas fa-plus"></i></a>                     -->
-                                    <a href="/admin/tests/{{$test->id}}/edit" class="btn btn-primary btn-sm" title="Edit"><i class="fas fa-pencil-alt"></i></a>                    
-                                    <a href="#" class="btn btn-danger btn-sm" title="Edit"><i class="fas fa-trash-alt"></i></a>                    
-                                </td>                                
-                            </tr>
-                            @endforeach
-                        </tbody>
+                        </thead>                     
                     </table>
                     </div>
                 </div>
@@ -64,20 +51,20 @@ var table = $('.test-table').DataTable({
             name: 'DT_RowIndex'
         },
         {
-            data: 'firstname',
-            name: 'firstname'
+            data: 'title',
+            name: 'title'
         },
         {
-            data: 'email',
-            name: 'email'
+            data: 'info',
+            name: 'info'
         },
         {
-            data: 'created_at',
-            name: 'created_at'
+            data: 'type',
+            name: 'type'
         },
         {
-            data: 'name',
-            name: 'name'
+            data: 'duration',
+            name: 'duration'
         },
         {
             data: 'action',
