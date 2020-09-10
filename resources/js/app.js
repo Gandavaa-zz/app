@@ -20,7 +20,11 @@ import Axios from 'axios';
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-
+$.ajaxSetup({
+  headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  }
+});
 
 Vue.component('example', require('./components/ExampleComponent.vue').default);
 // Vue.component('vue-multiselect', require('./components/Multiselect.vue').default);

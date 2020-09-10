@@ -128,38 +128,48 @@
     display: inline-block;
 }
 </style>
-<script type="text/javascript">
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-    </script>
 
 <script>
 
 $(function () {
 
-var table = $('.yajra-datatable').DataTable({
-    processing: true,
-    serverSide: true,
-    ajax: "{{ route('participants.index') }}",
-    columns: [
-        {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-        {data: 'firstname', name: 'firstname'},
-        {data: 'email', name: 'email'},
-        {data: 'created_at', name: 'created_at'},
-        {data: 'name', name: 'name'},
-        {
-            data: 'action',
-            name: 'action',
-            orderable: true,
-            searchable: true
+    var table = $('.yajra-datatable').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{{ route('participants.index') }}",
+        columns: [{
+                data: 'DT_RowIndex',
+                name: 'DT_RowIndex'
+            },
+            {
+                data: 'firstname',
+                name: 'firstname'
+            },
+            {
+                data: 'email',
+                name: 'email'
+            },
+            {
+                data: 'created_at',
+                name: 'created_at'
+            },
+            {
+                data: 'name',
+                name: 'name'
+            },
+            {
+                data: 'action',
+                name: 'action',
+                orderable: true,
+                searchable: true
 
-        },
-    ]
+            },
+        ]
+    });
+
 });
 
+<<<<<<< HEAD
 
 });
 
@@ -180,6 +190,20 @@ var table = $('.yajra-datatable').DataTable({
      $('body').on('click', '.edit', function () {
         participant_id  = $(this).data('id');
       $.get("{{ route('participants.index') }}" +'/' + participant_id +'/edit', function (data) {
+=======
+$('#createNewItem').click(function () {
+    $('#saveBtn').val("create-Item");
+    $('#id').val('');
+    $('#PartipicantForm').trigger("PartipicantForm");
+    $('#modelHeading').html("Харилцагч бүртгэх");
+    $('#ajaxModel').modal('show');
+});
+
+/* Edit customer */
+$('body').on('click', '.edit', function () {
+    var participant_id = $(this).data('id');
+    $.get("{{ route('participants.index') }}" + '/' + participant_id + '/edit', function (data) {
+>>>>>>> origin/ganaa
         $('#saveBtn').val("edit-Item");
         $('#saveBtn').html('Хадгалах');
         $('#modelHeading').html("Харилцагч засах");
@@ -193,16 +217,17 @@ var table = $('.yajra-datatable').DataTable({
         $('#dob').val(data.dob);
         $('#register').val(data.register);
         $('#email').val(data.email);
-      })
-   });
-
-   $('body').on('click', '.view', function () {
-    var participant_id  = $(this).data('id');
-    var url = "{{ route('participants.show', ':id')}}";
-    url = url.replace(':id', participant_id);
-    document.location.href=url;
+    })
 });
 
+$('body').on('click', '.view', function () {
+    var participant_id = $(this).data('id');
+    var url = "{{ route('participants.show', ':id')}}";
+    url = url.replace(':id', participant_id);
+    document.location.href = url;
+});
+
+<<<<<<< HEAD
     $('#saveBtn').click(function (e) {
         e.preventDefault();
         // alert(participant_id);
@@ -266,10 +291,43 @@ var table = $('.yajra-datatable').DataTable({
                 timer: 3000
             })
         }
+=======
+$('#saveBtn').click(function (e) {
+e.preventDefault();
+$(this).html('Илгээж байна..');
+$.ajax({
+    data: $('#PartipicantForm').serialize(),
+    url: "{{ route('participants.store') }}",
+    type: "POST",
+    dataType: 'json',
+    success: function (data) {
+        console.log('Success :', data);
+        $('#PartipicantForm').trigger("reset");
+        $('#ajaxModel').modal('hide');
+        table.draw();
+
+    },
+    error: function (data) {
+        // $('#saveBtn').html('Save Changes');
+        console.log('Алдаа гарсан :', data.responseJSON.errors);
+        printErrorMsg(data.responseJSON.errors);
+    }
+});
+});
+
+function printErrorMsg(msg) {
+$(".print-error-msg").find("ul").html('');
+$(".print-error-msg").css('display', 'block');
+$.each(msg, function (key, value) {
+    $(".print-error-msg").find("ul").append('<li>' + value + '</li>');
+});
+}
+>>>>>>> origin/ganaa
 
 $('body').on('click', '.delete', function () {
- var id = $(this).data("id");
+var id = $(this).data("id");
 //  var firstname = $(this).data("firstname");
+<<<<<<< HEAD
 //  console.log("participant id - " + id);
  Swal.fire({
   title: 'Are you sure?',
@@ -304,6 +362,26 @@ $('body').on('click', '.delete', function () {
 
 
 });
+=======
+console.log("participant id - " + id);
+if (confirm("Are You sure want to delete - " + id)) {
+    $.ajax({
+        type: "get",
+        url: "participants/destroy/" + id,
+        success: function (data) {
+            setTimeout(function () {
+                $('#confirmModal').modal('hide');
+                $('#user_table').DataTable().ajax.reload();
+                alert('Data Deleted');
+            }, 1000);
+        },
+        error: function (data) {
+            console.log('Error:', data);
+        }
+    });
+}
+}); 
+>>>>>>> origin/ganaa
 </script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 @endsection

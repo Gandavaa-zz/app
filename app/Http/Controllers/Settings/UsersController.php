@@ -127,8 +127,6 @@ class UsersController extends Controller
             'phone' => ['required', ['string']],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'role' => ['sometimes', 'required']
-            // 'password' => ['required', 'string', 'min:8', 'confirmed'],
-            // 'tests' => 'exists:tests,id'
         ]);
     }
 

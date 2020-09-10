@@ -31,6 +31,7 @@ class ParticipantsController extends Controller
     {
         if ($request->ajax()) {
             $data = DB::select('select tb1.id, date(tb1.created_at) as created_at, tb1.firstname, tb1.email, tb1.phone, tb3.name from users as tb1 left join group_user as tb2 on tb1.id = tb2.user_id left join groups as tb3 on tb2.id = tb3.id order by tb1.created_at desc');
+
             return FacadesDataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
@@ -133,6 +134,7 @@ class ParticipantsController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
+
         return response()->json($user);
     }
 

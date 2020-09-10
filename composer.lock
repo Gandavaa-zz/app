@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "d7f749a76ae67aca49b5fcf9ab29ad5e",
+=======
+    "content-hash": "53590d69d3e0dfa8be9bd00df6814507",
+>>>>>>> origin/ganaa
     "packages": [
         {
             "name": "asm89/stack-cors",
