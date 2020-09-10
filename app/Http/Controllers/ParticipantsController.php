@@ -9,9 +9,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Http\POST;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Str;
 use DataTables;
+// use App\Http\Controllers\Excel;
 use Yajra\DataTables\Contracts\DataTable;
 use Yajra\DataTables\DataTables as DataTablesDataTables;
 use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
@@ -140,8 +142,7 @@ class ParticipantsController extends Controller
 
     public function update(User $user, $id)
     {
-        // $user->validateUser();
-
+        $user = $this->validateUser();
         $user = DB::table('users')
         ->where('id', $id)
         ->update([
@@ -200,4 +201,49 @@ class ParticipantsController extends Controller
     {
         return Str::upper(Str::random(1)). Str::random(4) . rand(5, 10000);
     }
+
+    public function import()
+    {
+        $where = array('id' => 1);
+        $user = User::where($where)->first();
+        return view('layouts.settings.participants.import', compact('user'));
+    }
+
+
+
+
+    public function import_excel(Request $request)
+    {
+     $this->validate($request, [
+      'select_file'  => 'required|mimes:xls,xlsx'
+     ]);
+
+     $path = $request->file('select_file')->getRealPath();
+     $data = Excel::load($path)->get();
+     if($data->count() > 0)
+     {
+      foreach($data->toArray() as $key => $value)
+      {
+       foreach($value as $row)
+       {
+        $insert_data[] = array(
+         'firstname'  => $row['firstname'],
+         'email'   => $row['email'],
+         'lastname'   => $row['lastname'],
+         'phone'    => $row['phone'],
+         'gender'  => $row['gender'],
+         'address'   => $row['address']
+        );
+       }
+      }
+
+      if(!empty($insert_data))
+      {
+       DB::table('user ')->insert($insert_data);
+      }
+     }
+     return back()->with('success', 'Excel Data Imported successfully.');
+    //  return response()->json(['msg'=>"Participant updated successfully."]);
+    }
+
 }

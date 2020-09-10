@@ -35,6 +35,8 @@ return [
     */
     'breadcrumbs' => [
         'settings'=>'Тохиргоо',
+        'show'=>'Харилцагч',
+        'import' =>'import',
         'user'=>'Систем хэрэглэгч',
         'users'=>'Систем хэрэглэгчид',
         'participant'=>'Харилцагч',
@@ -169,6 +171,7 @@ return [
         Illuminate\Cookie\CookieServiceProvider::class,
         Illuminate\Database\DatabaseServiceProvider::class,
         Illuminate\Encryption\EncryptionServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
         Illuminate\Filesystem\FilesystemServiceProvider::class,
         Illuminate\Foundation\Providers\FoundationServiceProvider::class,
         Illuminate\Hashing\HashServiceProvider::class,
@@ -219,6 +222,7 @@ return [
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,
         'Blade' => Illuminate\Support\Facades\Blade::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Broadcast' => Illuminate\Support\Facades\Broadcast::class,
         'Bus' => Illuminate\Support\Facades\Bus::class,
         'Cache' => Illuminate\Support\Facades\Cache::class,

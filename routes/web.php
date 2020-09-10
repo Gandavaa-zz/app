@@ -38,15 +38,16 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::get('/settings/tests', 'Settings\TestsController@index')->name('test')->middleware('auth');
     Route::get('/settings/tests/create', 'Settings\TestsController@create')->name('create.test');
     Route::post('/settings/tests/create', 'Settings\TestsController@store')->name('save.test');
-
+    Route::post('participants/import_excel', 'ParticipantsController@import_excel');
     Route::get('/settings/tests/{user}', 'Settings\TestsController@show');
     Route::get('/settings/tests/{user}/edit', 'Settings\TestsController@edit');
     Route::put('/settings/tests/{user}', 'Settings\TestsController@update');
     Route::delete('/settings/tests/{user}', 'Settings\TestsController@destroy')->name('destroy.user');
-
+    Route::get('/participants/import', 'ParticipantsController@import')->name("participants.import");
     Route::resource('/participants', 'ParticipantsController')->middleware('auth');
     Route::get('participants/destroy/{id}', 'ParticipantsController@destroy');
     Route::post('participants/update/{id}', 'ParticipantsController@update');
+    Route::get('/participants/show/{id}', 'ParticipantsController@show');
 });
 
 Route::get('skills',  function(){
