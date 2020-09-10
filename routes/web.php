@@ -34,35 +34,29 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::get('settings/getPermissions', 'Settings\PermissionsController@getPermissions')->middleware('auth');
 
     Route::resource('settings/group', 'Settings\GroupsController');
-
-<<<<<<< HEAD
-    Route::get('/settings/tests', 'Settings\TestsController@index')->name('test')->middleware('auth');
-    Route::get('/settings/tests/create', 'Settings\TestsController@create')->name('create.test');
-    Route::post('/settings/tests/create', 'Settings\TestsController@store')->name('save.test');
-    Route::post('participants/import_excel', 'ParticipantsController@import_excel');
-    Route::get('/settings/tests/{user}', 'Settings\TestsController@show');
-    Route::get('/settings/tests/{user}/edit', 'Settings\TestsController@edit');
-    Route::put('/settings/tests/{user}', 'Settings\TestsController@update');
-    Route::delete('/settings/tests/{user}', 'Settings\TestsController@destroy')->name('destroy.user');
-    Route::get('/participants/import', 'ParticipantsController@import')->name("participants.import");
-=======
-    Route::get('settings/test', 'Settings\TestsController@index')->name('settings.test');    
-    Route::get('settings/test/create', 'Settings\TestsController@create')->name('settings.test.create');    
+    Route::get('settings/test', 'Settings\TestsController@index')->name('settings.test');
+    Route::get('settings/test/create', 'Settings\TestsController@create')->name('settings.test.create');
 
     Route::post('settings/test/store', 'Settings\TestsController@store')->name('settings.test.store');
 
     Route::get('settings/test/{test}/edit', 'Settings\TestsController@edit')->name('settings.test.edit');
     Route::put('/settings/test/{test}', 'Settings\TestsController@update')->name('settings.test.update');
-    Route::get('settings/test/{test}/show', 'Settings\TestsController@show')->name('settings.test.show');    
+    Route::get('settings/test/{test}/show', 'Settings\TestsController@show')->name('settings.test.show');
     Route::delete('/settings/test/{test}', 'Settings\TestsController@destroy')->name('settings.test.destroy');
-    
+
+
+    Route::get('groups/list', 'ParticipantsController@fetch_groups')->name('groups.list');
 
     Route::resource('test', 'TestsController');
-    
->>>>>>> origin/ganaa
+    Route::get('participants/deleteMultiple', 'ParticipantsController@deleteMultiple')->name('participants.deleteMultiple');
     Route::resource('/participants', 'ParticipantsController')->middleware('auth');
     Route::get('participants/destroy/{id}', 'ParticipantsController@destroy');
-    Route::post('participants/update/{id}', 'ParticipantsController@update');
+    Route::get('/participants/import', 'ParticipantsController@import')->name("participants.import");
+    Route::resource('/participants', 'ParticipantsController')->middleware('auth');
+    Route::get('participants/destroy/{id}', 'ParticipantsController@destroy');
+    Route::get('participants/create', 'ParticipantsController@create')->name('participants.create');
+    Route::post('participants/store', 'ParticipantsController@store')->name('participant.store');
+    Route::get('/participants/{id}edit', 'ParticipantsController@edit')->name('participant.edit');
     Route::get('/participants/show/{id}', 'ParticipantsController@show');
 });
 

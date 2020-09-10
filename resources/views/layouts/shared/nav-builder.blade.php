@@ -58,7 +58,7 @@
                     <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-applications"></use>
                 </svg> Бусад</a>
             </li>
-            
+
 
         </ul>
     </li>

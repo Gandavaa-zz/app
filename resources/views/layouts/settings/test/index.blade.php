@@ -7,7 +7,7 @@
             <div class="row">
               <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                 <div class="card">
-                    <div class="card-header">                      
+                    <div class="card-header">
                         <span class="float-left"><h5><i class="fa fa-align-justify"></i>{{ __('Тест') }}</h5></span> <span class="float-right">
                     <a class="btn btn-primary" href="{{ route('settings.test.create') }}">Шинэ</a></span>
                     </div>
@@ -20,13 +20,13 @@
                         <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Test</th>                                                
+                            <th scope="col">Test</th>
                             <th scope="col">Дэлгэрэнгүй</th>
                             <th scope="col">Төрөл</th>
                             <th scope="col">Үргэлж.хуг</th>
                             <th scope="col">Үйлдэл</th>
                         </tr>
-                        </thead>                     
+                        </thead>
                     </table>
                     </div>
                 </div>

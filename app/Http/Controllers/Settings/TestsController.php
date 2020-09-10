@@ -12,12 +12,12 @@ class TestsController extends Controller
     protected $durations;
 
     public function __construct()
-    {        
+    {
         $this->middleware('auth');
-        
-        $this->test_type = config('app.test_type');    
+
+        $this->test_type = config('app.test_type');
         $this->durations = config('app.durations');
-    }   
+    }
     /**
      * Display a listing of the resource.
      *
@@ -27,7 +27,7 @@ class TestsController extends Controller
         $tests = Test::paginate(15);
 
         if (request()->ajax()) {
-            
+
             $data = Test::all();
 
             return FacadesDataTables::of($data)
@@ -44,13 +44,13 @@ class TestsController extends Controller
                         <i class="cil-pencil"></i></a>
                     </li>
                     <li class="pr-1">
-                        <form class="form-inline" action="'.route('settings.test.destroy', $row->id).'" method="POST">                        
-                            <input type="hidden" name="_method" value="DELETE">       
-                            <input type="hidden" name="_token" value="'.csrf_token().'">                 
-                            <button type="submit" class="btn btn-danger" onclick="return confirm(\'Та энэ бичлэгийг үнэхээр устгах уу?\')"><i class="cil-trash"></i></button>                        
+                        <form class="form-inline" action="'.route('settings.test.destroy', $row->id).'" method="POST">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="'.csrf_token().'">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm(\'Та энэ бичлэгийг үнэхээр устгах уу?\')"><i class="cil-trash"></i></button>
                         </form>
                     </li>
-                    
+
                 </ul><input type="checkbox" id="'.$row->id.'"';
                     return $btn;
                 })
@@ -65,13 +65,13 @@ class TestsController extends Controller
      */
     public function create()
     {
-        return view('layouts.settings.test.create', 
+        return view('layouts.settings.test.create',
             ['test_type' => $this->test_type,
              'durations' => $this->durations]);
     }
 
     /**
-     * Store a newly created resource in storage.     
+     * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
@@ -79,9 +79,9 @@ class TestsController extends Controller
         $data = $this->validateTest();
 
         Test::create($data);
-        
+
         $request->session()->flash('message', 'Тестийг амжилттай бүртгэлээ!');
-       
+
         return redirect()->route('settings.test');
     }
 
@@ -89,10 +89,10 @@ class TestsController extends Controller
      * Display the specified resource.
      */
     public function show(Test $test)
-    {           
-        return view('layouts.settings.test.show', 
-                    [ 
-                        'test'=> $test, 
+    {
+        return view('layouts.settings.test.show',
+                    [
+                        'test'=> $test,
                         'test_type' => $this->test_type,
                         'durations' => $this->durations
                     ]);
@@ -103,8 +103,8 @@ class TestsController extends Controller
      */
     public function edit(Test $test)
     {
-        return view('layouts.settings.test.edit', 
-                    ['test'=> $test, 
+        return view('layouts.settings.test.edit',
+                    ['test'=> $test,
                      'test_type'=> $this->test_type,
                      'durations' => $this->durations]);
     }
@@ -123,16 +123,16 @@ class TestsController extends Controller
         $test->type = request('type');
         $test->duration = request('duration');
         $test->save();
-        
+
         request()->session()->flash('message', 'Тестийг амжилттай шинэчлэлээ!');
 
         return redirect()->route('settings.test');
-        
+
     }
 
     /**
      * Remove the specified resource from storage.
-     *    
+     *
      */
     public function destroy(Test $test)
     {
@@ -149,7 +149,7 @@ class TestsController extends Controller
             'title' => ['required', ['string']],
             'info' => ['required', ['string']],
             'type' => ['required', ['string']],
-            'duration' => ['required', ['string']]           
+            'duration' => ['required', ['string']]
         ]);
     }
 }
