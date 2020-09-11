@@ -35,6 +35,28 @@
                             <tbody>
                             </tbody>
                         </table>
+                        <div class="modal fade" id="groupModal" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h4 class="modal-title">Групп-д нэмэх</h4>
+                                  </div>
+                                  <div class="modal-body">
+                                    <div class="form-group">
+                                        <form method="POST" action="{{ route('participants.addToGroup') }}">
+                                            @csrf
+                                            <input type="hidden" name="user_id" id="user_id">
+                                            <label for="groups">Group</label>
+                                            <select id="groups" required = "required" required class="js-example-basic-multiple groups" name="groups[]" multiple="multiple">
+                                            </select>
+                                            <button type="submit" class="btn btn-success" >Хадгалах</button>
+                                      </form>
+                                    </div>
+                                  </div>
+                              </div>
+                            </div>
+                          </div>
+
                       {{-- {{ $users->links() }}  --}}
                     </div>
                 </div>
@@ -104,6 +126,15 @@ $(function () {
 
 
 $(document).ready(function () {
+  $('body').on('click', '.addToGroup', function () {
+    var id  = $(this).data('id');
+    $('#user_id').val(id);
+    $('#groupModal').modal('show');
+    // alert(id);
+  })
+});
+
+$(document).ready(function () {
   $('body').on('click', '#selectAll', function () {
     if ($(this).hasClass('allChecked')) {
         $('input[type="checkbox"]', '#user_table').prop('checked', false);
@@ -114,17 +145,17 @@ $(document).ready(function () {
   })
 });
 
-
 $(document).on('click', '#deleteMultiple', function(){
     var id = [];
     Swal.fire({
     title: 'Are you sure?',
-    text: "You won't be able to revert this!",
+    // text: "You won't be able to revert this!",
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
     cancelButtonColor: '#d33',
-    confirmButtonText: 'Yes, delete it!'
+    confirmButtonText: 'Тийм',
+    cancelButtonText: 'Үгүй'
     }).then((result) => {
     if (result.value) {
         $('.participant_checkbox:checked').each(function(){
@@ -152,7 +183,7 @@ $(document).on('click', '#deleteMultiple', function(){
                         Swal.fire({
                         icon: 'error',
                         title: 'Алдаа...',
-                        text: 'Оролцогч сонгоно уу!'
+                        text: 'Харилцагч сонгоно уу!'
                         })
 
             };
@@ -166,13 +197,13 @@ var id = $(this).data("id");
 //  var firstname = $(this).data("firstname");
 //  console.log("participant id - " + id);
  Swal.fire({
-  title: 'Are you sure?',
-  text: "You won't be able to revert this!",
-  icon: 'warning',
-  showCancelButton: true,
-  confirmButtonColor: '#3085d6',
-  cancelButtonColor: '#d33',
-  confirmButtonText: 'Yes, delete it!'
+    title: 'Are you sure?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Тийм',
+    cancelButtonText: 'Үгүй'
 }).then((result) => {
   if (result.value) {
     $.ajax({
@@ -201,6 +232,12 @@ $('#select_all').click(function(event) {
             this.checked = $that.is(':checked');
         });
     });
+
+
+  function addPost() {
+    $('#add-group-modal').modal('show');
+  }
+
 
 });
 </script>

@@ -77,6 +77,7 @@ $('.js-example-basic-multiple').select2();
 window.Laravel = { csrfToken: '{{ csrf_token() }}' };
 $('#groups').select2({
     placeholder: 'Групп сонгоно уу',
+    class : 'form-control',
   ajax: {
     url: "{{route('groups.list')}}",
     dataType: 'json',

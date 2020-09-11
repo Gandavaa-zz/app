@@ -46,7 +46,7 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
 
 
     Route::get('groups/list', 'ParticipantsController@fetch_groups')->name('groups.list');
-
+    Route::post('participants/addToGroup', 'ParticipantsController@addToGroup')->name('participants.addToGroup');
     Route::resource('test', 'TestsController');
     Route::get('participants/deleteMultiple', 'ParticipantsController@deleteMultiple')->name('participants.deleteMultiple');
     Route::resource('/participants', 'ParticipantsController')->middleware('auth');

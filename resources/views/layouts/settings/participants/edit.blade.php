@@ -16,6 +16,11 @@
                         <div class="container py-5">
                             <div class="row">
                                 <div class="col-md-10 mx-auto">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                   </ul>
                                     <form>
                                         <div class="form-group row">
                                             <div class="col-sm-6">
@@ -104,6 +109,17 @@
                                                     <strong>{{ $message }}</strong>
                                                 </span>
                                                 @enderror
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <label for="groups">Group</label>
+                                                <select id="groups" class="js-example-basic-multiple form-control groups" name="groups[]" multiple="multiple">
+                                                    @if ($group_names ?? '')
+                                                    @foreach($group_names ?? '' as $group)
+                                                    <option value='{{$group->id}}' selected>{{$group->name}}</option>
+                                                    @endforeach
+                                                    @endif
+                                                </select>
                                             </div>
                                         </div>
                                 </div>

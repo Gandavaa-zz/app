@@ -101,8 +101,7 @@
                                                 <label for="groups">Group</label>
                                                 <select id="groups" class="js-example-basic-multiple form-control groups" name="groups[]" multiple="multiple">
                                                   </select>
-                                             </div>
-
+                                            </div>
                                         </div>
                                 </div>
                             </div>
