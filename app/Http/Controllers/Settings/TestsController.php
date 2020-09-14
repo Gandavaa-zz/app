@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Settings;
 use App\Http\Controllers\Controller;
+use App\Part;
 use Illuminate\Http\Request;
 use App\Test;
+use App\PartTest;
 use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
 
 class TestsController extends Controller
@@ -74,12 +76,18 @@ class TestsController extends Controller
      * Store a newly created resource in storage.     
      */
     public function store(Request $request)
-    {
-
+    {  
         $data = $this->validateTest();
 
-        Test::create($data);
-        
+        $test = Test::create($data);
+
+        $part_titles =  $request->part_title;        
+
+        for ($i = 0; $i < count($part_titles); $i++) {
+            $request->part_title[$i];
+            $part = PartTest::create(['num'=>$i, 'test_id'=>$test->id, 'title'=>$request->part_title[$i], 'info'=> $request->part_info[$i]]);                                 
+        }
+
         $request->session()->flash('message', 'Тестийг амжилттай бүртгэлээ!');
        
         return redirect()->route('settings.test');
@@ -147,7 +155,7 @@ class TestsController extends Controller
     {
         return request()->validate([
             'title' => ['required', ['string']],
-            'info' => ['required', ['string']],
+            'info'=> ['required', ['string']],
             'type' => ['required', ['string']],
             'duration' => ['required', ['string']]           
         ]);

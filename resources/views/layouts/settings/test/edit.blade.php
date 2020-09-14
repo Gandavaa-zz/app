@@ -67,6 +67,7 @@
                         </div>
 
                         <div class="form-group row">
+
                             <label for="type" class="col-md-4 col-form-label text-md-right">{{ __('Үргэлж.хугацаа') }}</label>
 
                             <div class="col-md-4">     
@@ -90,6 +91,34 @@
                                 <label class="col-form-label">минут.</label>
                             </div>
                         </div>
+
+                        <div class="form-group row">
+
+                            <label for="section" class="col-md-4 col-form-label text-md-right">{{ __('Үргэлж.хугацаа') }}</label>
+
+                            <div class="col-md-4">     
+                                
+                                <select name="section" id="section" class="form-control @error('section') is-invalid @enderror">
+
+                                    @foreach($durations as $minute)
+                                        <option value="{{ $minute }}" 
+                                            @if($minute == $test->duration) 
+                                            selected @endif >{{ $minute }}</option>
+                                    @endforeach
+                                </select>  
+
+                                @error('duration')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="col-md-2">
+                                <label class="col-form-label">минут.</label>
+                            </div>
+                            </div>
+
+                        
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">

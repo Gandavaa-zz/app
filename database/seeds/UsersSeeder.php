@@ -117,7 +117,7 @@ class UsersSeeder extends Seeder
 
             $client->assignRole($clientRole);
 
-            $client->groups()->assign($group->id);
+            $client->groups()->attach($group->id);
 
             array_push($usersIds, $client->id);
         }

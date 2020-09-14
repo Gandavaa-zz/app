@@ -17,4 +17,10 @@ class Test extends Model
     {
         return $this->hasMany(Quiz::class);
     }
+
+    public function parts()
+    {
+        return $this->hasMany(Part::class);
+    }
+
 }
