@@ -10,22 +10,24 @@
                     <div class="card-header">
 
                     <span class="float-left"><h5><i class="fa fa-align-justify"></i>{{ __('Харилцагчид') }}</h5></span> <span class="float-right">
-                    {{-- <a class="btn btn-primary" href="{{ route('users.create') }}">Шинэ</a></span> --}}
-                    <a class="btn btn-primary" href="javascript:void(0)" id="createNewItem"><i class="cil-plus"></i>Шинэ</a>
+                    <button type="button" id="deleteMultiple" class="btn btn-danger deleteMultiple"  href="javascript:void(0)" data-original-title="Delete">Олноор устгах</button>
+                    <a class="btn btn-primary" href="{{ route('participants.create') }}"><i class="cil-plus"></i>Шинэ</a></span>
+
+                    {{-- <a class="btn btn-primary" href="javascript:void(0)" id="createNewItem"><i class="cil-plus"></i>Шинэ</a>1 --}}
                     </div>
 
                     <div class="card-body">
-
                     @include('layouts.shared.alert')
 
-                        <table class="table table-bordered yajra-datatable user_table" id="user_table">
+                        <table class="table table-bordered yajra-datatable user_table " id="user_table">
                             <thead>
                                 <tr>
+                                    <th width="3px"><input type="checkbox" id="selectAll"/></th>
                                     <th width="5px">#</th>
                                     <th>Овог нэр</th>
                                     <th>Цахим хаяг</th>
                                     <th>Бүртгэсэн огноо</th>
-                                    {{-- <th>Үүсгэсэн</th> --}}
+                                    <th>Үүсгэсэн</th>
                                     <th>Групп</th>
                                     <th width="100px">Action</th>
                                 </tr>
@@ -38,85 +40,6 @@
                 </div>
               </div>
             </div>
-
-            <div class="modal fade" id="ajaxModel" aria-hidden="true">
-                <div class="modal-dialog modal-md">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="modelHeading"></h4>
-                        </div>
-                        <div class="modal-body" >
-                            <form id="PartipicantForm" name="PartipicantForm" class="form-horizontal">
-                               <input type="hidden" name="id" id="id">
-                               <div class="alert alert-danger print-error-msg" style="display:none">
-                                <ul></ul>
-                            </div>
-                            <div class="form-group">
-                                <label>{{ __('Овог') }}</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text">
-                                    <svg class="c-icon">
-                                        <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-user"></use>
-                                    </svg></span></div>
-                                <input type="text" name="lastname" id="lastname" class="form-control" placeholder="Эцэг/эх-н нэр оруулна уу..." autocomplete="lastname" autofocus>
-                            </div>
-
-                            <div class="form-group">
-                                <label>{{ __('Нэр') }}</label>
-                                <input type="text" name="firstname" id="firstname" class="form-control" placeholder="Last Name">
-                            </div>
-
-                            <div class="form-group">
-                                <label>{{ __('Цахим хаяг') }}</label>
-                                <input type="text" name="email" id="email" class="form-control" placeholder="Email">
-                            </div>
-
-                            <div class="form-group">
-                                <label>{{ __('Регистерийн дугаар') }}</label>
-                                <input type="text" name="register" id="register" class="form-control" placeholder="register">
-                            </div>
-
-                            <div class="form-group">
-                                <label>{{ __('Төрсөн огноо') }}</label>
-                                <input class="form-control" id="dob" id="dob" type="date" name="date-input" placeholder="age">
-                            </div>
-
-                            <div class="form-group row">
-                                {{-- <label class="col-md-3 col-form-label">Inline Radios</label> --}}
-                                <div class="col-md-9 col-form-label">
-                                <div class="form-check form-check-inline mr-1">
-                                <input class="form-check-input" id="gender" type="radio" value="male" name="gender">
-                                <label class="form-check-label" for="gender">Male</label>
-                                </div>
-                                <div class="form-check form-check-inline mr-1">
-                                <input class="form-check-input" id="gender" type="radio" value="female" name="gender">
-                                <label class="form-check-label" for="gender">Female</label>
-                                </div>
-                                </div>
-                                </div>
-
-                            <div class="form-group">
-                                <label>{{ __('Утасны дугаар') }}</label>
-                                <input type="text" name="phone" id="phone" class="form-control" placeholder="phone">
-                            </div>
-
-                            <div class="form-group">
-                                <label>{{ __('Гэрийн хаяг') }}</label>
-                                <textarea  name="address" class="form-control" id="address" placeholder="address"></textarea>
-                            </div>
-                            <div class="modal-footer">
-                                 <button type="submit" class="btn btn-primary" id="saveBtn" value="create"> {{ __('Бүртгэх') }}
-                                 </button>
-                                 <button type="button" data-dismiss="modal" class="btn btn-danger" id="" value=""> {{ __('Цуцлах') }}
-                                </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-             </div>
-
-          </div>
         </div>
 
 @endsection
@@ -136,13 +59,20 @@ $(function () {
         processing: true,
         serverSide: true,
         ajax: "{{ route('participants.index') }}",
-        columns: [{
+        columns: [
+            {
+                data: 'checkbox',
+                name: 'checkbox',
+                orderable: false,
+                searchable: false
+            },
+            {
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex'
             },
             {
-                data: 'firstname',
-                name: 'firstname'
+                data: 'fullname',
+                name: 'fullname'
             },
             {
                 data: 'email',
@@ -153,8 +83,12 @@ $(function () {
                 name: 'created_at'
             },
             {
-                data: 'name',
-                name: 'name'
+                data: 'created_by',
+                name: 'created_by'
+            },
+            {
+                data: "name",
+                name: "name"
             },
             {
                 data: 'action',
@@ -168,90 +102,108 @@ $(function () {
 
 });
 
-$('#createNewItem').click(function () {
-    $('#saveBtn').val("create-Item");
-    $('#id').val('');
-    $('#PartipicantForm').trigger("PartipicantForm");
-    $('#modelHeading').html("Харилцагч бүртгэх");
-    $('#ajaxModel').modal('show');
-});
 
-/* Edit customer */
-$('body').on('click', '.edit', function () {
-    var participant_id = $(this).data('id');
-    $.get("{{ route('participants.index') }}" + '/' + participant_id + '/edit', function (data) {
-        $('#saveBtn').val("edit-Item");
-        $('#saveBtn').html('Хадгалах');
-        $('#modelHeading').html("Харилцагч засах");
-        $('#ajaxModel').modal('show');
-        $('#id').val(data.id);
-        $('#firstname').val(data.firstname);
-        $('#lastname').val(data.lastname);
-        $('#phone').val(data.phone);
-        $('#register').val(data.register);
-        $('#email').val(data.email);
-    })
-});
-
-$('body').on('click', '.view', function () {
-    var participant_id = $(this).data('id');
-    var url = "{{ route('participants.show', ':id')}}";
-    url = url.replace(':id', participant_id);
-    document.location.href = url;
-});
-
-$('#saveBtn').click(function (e) {
-e.preventDefault();
-$(this).html('Илгээж байна..');
-$.ajax({
-    data: $('#PartipicantForm').serialize(),
-    url: "{{ route('participants.store') }}",
-    type: "POST",
-    dataType: 'json',
-    success: function (data) {
-        console.log('Success :', data);
-        $('#PartipicantForm').trigger("reset");
-        $('#ajaxModel').modal('hide');
-        table.draw();
-
-    },
-    error: function (data) {
-        // $('#saveBtn').html('Save Changes');
-        console.log('Алдаа гарсан :', data.responseJSON.errors);
-        printErrorMsg(data.responseJSON.errors);
+$(document).ready(function () {
+  $('body').on('click', '#selectAll', function () {
+    if ($(this).hasClass('allChecked')) {
+        $('input[type="checkbox"]', '#user_table').prop('checked', false);
+    } else {
+        $('input[type="checkbox"]', '#user_table').prop('checked', true);
     }
-});
+    $(this).toggleClass('allChecked');
+  })
 });
 
-function printErrorMsg(msg) {
-$(".print-error-msg").find("ul").html('');
-$(".print-error-msg").css('display', 'block');
-$.each(msg, function (key, value) {
-    $(".print-error-msg").find("ul").append('<li>' + value + '</li>');
-});
-}
+
+$(document).on('click', '#deleteMultiple', function(){
+    var id = [];
+    Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+    if (result.value) {
+        $('.participant_checkbox:checked').each(function(){
+                id.push($(this).val());
+            });
+            if(id.length > 0)
+            {
+                $.ajax({
+                    url:"{{ route('participants.deleteMultiple')}}",
+                    method:"get",
+                    data:{id:id},
+                    success:function(data)
+                    {
+                        Swal.fire(
+                        'Deleted!',
+                        'Амжилттай устгагдлаа',
+                        'success'
+                        )
+                        $('#user_table').DataTable().ajax.reload();
+                    }
+                });
+            }
+            else
+            {
+                        Swal.fire({
+                        icon: 'error',
+                        title: 'Алдаа...',
+                        text: 'Оролцогч сонгоно уу!'
+                        })
+
+            };
+    }
+    })
+    });
+
 
 $('body').on('click', '.delete', function () {
 var id = $(this).data("id");
 //  var firstname = $(this).data("firstname");
-console.log("participant id - " + id);
-if (confirm("Are You sure want to delete - " + id)) {
+//  console.log("participant id - " + id);
+ Swal.fire({
+  title: 'Are you sure?',
+  text: "You won't be able to revert this!",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, delete it!'
+}).then((result) => {
+  if (result.value) {
     $.ajax({
-        type: "get",
-        url: "participants/destroy/" + id,
-        success: function (data) {
-            setTimeout(function () {
-                $('#confirmModal').modal('hide');
-                $('#user_table').DataTable().ajax.reload();
-                alert('Data Deleted');
-            }, 1000);
-        },
-        error: function (data) {
-            console.log('Error:', data);
-        }
+       type: "get",
+       url:"participants/destroy/"+id,
+       success: function (data) {
+        setTimeout(function(){
+     $('#confirmModal').modal('hide');
+     $('#user_table').DataTable().ajax.reload();
     });
-}
-}); 
+       },
+       error: function (data) {
+           console.log('Error:', data);
+       }
+   });
+    Swal.fire(
+      'Deleted!',
+      'Амжилттай устгагдлаа',
+      'success'
+    )
+  }
+})
+$('#select_all').click(function(event) {
+        var $that = $(this);
+        $(':checkbox').each(function() {
+            this.checked = $that.is(':checked');
+        });
+    });
+
+});
 </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 @endsection
 

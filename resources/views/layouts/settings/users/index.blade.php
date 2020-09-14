@@ -17,7 +17,7 @@
 
                     @include('layouts.shared.alert')
 
-                    <table class="table table-responsive-sm table-striped">
+                    <table class="table table-responsive-sm table-bordered">
                         <thead>
                         <tr>
                             <th scope="col">#</th>

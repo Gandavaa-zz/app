@@ -15,14 +15,14 @@ class CreateGroupsTable extends Migration
     {
         Schema::create('groups', function (Blueprint $table) {
             $table->id();
-            $table->string('name');            
+            $table->string('name');
             $table->timestamps();
         });
 
         Schema::create('group_user', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('group_id');
-            $table->unsignedBigInteger('user_id');            
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
 
             $table->foreign('user_id')

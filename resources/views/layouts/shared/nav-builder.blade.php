@@ -58,7 +58,7 @@
                     <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-applications"></use>
                 </svg> Бусад</a>
             </li>
-            
+
 
         </ul>
     </li>
@@ -74,10 +74,10 @@
                 </svg>Жагсаалт</a>
             </li>
 
-            <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('participants.index') }} ">
+            <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('participants.import') }} ">
                 <svg class="c-sidebar-nav-icon">
                     <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-list"></use>
-                </svg>Архив</a>
+                </svg>Import </a>
             </li>
         </ul>
     </li>

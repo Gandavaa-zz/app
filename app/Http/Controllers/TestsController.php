@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Test;
+use PhpOffice\PhpSpreadsheet\Calculation\Database;
 use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
 
 class TestsController extends Controller
@@ -11,7 +12,7 @@ class TestsController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-    }   
+    }
     /**
      * Display a listing of the resource.
      *
@@ -21,7 +22,7 @@ class TestsController extends Controller
         $tests = Test::paginate(15);
 
         if (request()->ajax()) {
-            
+
             $data = DB::select('select tb1.id, date(tb1.created_at) as created_at, tb1.firstname, tb1.email, tb1.phone, tb3.name from users as tb1 left join group_user as tb2 on tb1.id = tb2.user_id left join groups as tb3 on tb2.id = tb3.id order by tb1.created_at desc');
 
             return FacadesDataTables::of($data)
@@ -65,12 +66,12 @@ class TestsController extends Controller
      */
     public function create()
     {
-        $test_type = config('app.test_type');        
+        $test_type = config('app.test_type');
         return view('layouts.settings.test.create', compact('test_type'));
     }
 
     /**
-     * Store a newly created resource in storage.     
+     * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
@@ -87,7 +88,7 @@ class TestsController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *   
+     *
      */
     public function edit($id)
     {
@@ -106,7 +107,7 @@ class TestsController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *    
+     *
      */
     public function destroy($id)
     {

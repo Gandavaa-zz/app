@@ -53,7 +53,7 @@
                                     @foreach($test_type as $type)
                                         <option value="{{ $type }}">{{ $type }}</option>
                                     @endforeach
-                                </select>   
+                                </select>
 
                                 @error('type')
                                     <span class="invalid-feedback" role="alert">
@@ -63,16 +63,16 @@
                             </div>
 
                         </div>
-                        
+
                         <div class="form-group row">
                             <label for="type" class="col-md-4 col-form-label text-md-right">{{ __('Үргэлж.хугацаа') }}</label>
 
-                            <div class="col-md-4">     
+                            <div class="col-md-4">
                                 <select name="duration" id="duration" class="form-control @error('type') is-invalid @enderror">
                                     @foreach($durations as $minute)
                                         <option value="{{ $minute }}">{{ $minute }}</option>
                                     @endforeach
-                                </select>  
+                                </select>
 
                                 @error('duration')
                                     <span class="invalid-feedback" role="alert">
