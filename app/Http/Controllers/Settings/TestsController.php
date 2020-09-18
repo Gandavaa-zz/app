@@ -52,6 +52,10 @@ class TestsController extends Controller
                             <button type="submit" class="btn btn-danger" onclick="return confirm(\'Та энэ бичлэгийг үнэхээр устгах уу?\')"><i class="cil-trash"></i></button>
                         </form>
                     </li>
+                    <li class="pr-1">
+                        <a href="'.route("quiz.index", $row->id).'" class="btn btn-danger btn-md">
+                        <i class="cil-list"></i></a>                        
+                    </li>
 
                 </ul><input type="checkbox" id="'.$row->id.'"';
                     return $btn;
@@ -77,16 +81,19 @@ class TestsController extends Controller
      */
     public function store(Request $request)
     {  
+
         $data = $this->validateTest();
 
         $test = Test::create($data);
 
-        $part_titles =  $request->part_title;        
-
-        for ($i = 0; $i < count($part_titles); $i++) {
-            $request->part_title[$i];
-            $part = PartTest::create(['num'=>$i, 'test_id'=>$test->id, 'title'=>$request->part_title[$i], 'info'=> $request->part_info[$i]]);                                 
+        $part_titles =  $request->part_title;   
+        
+        for ($i = 1; $i < count($part_titles); $i++) {
+            $request->part_title[$i];            
+            $parts[]= array('num'=>$i, 'test_id'=>$test->id, 'title'=>$request->part_title[$i], 'info'=> $request->part_info[$i]);                                             
         }
+
+        $test->parts()->createMany($parts);        
 
         $request->session()->flash('message', 'Тестийг амжилттай бүртгэлээ!');
 
@@ -98,6 +105,7 @@ class TestsController extends Controller
      */
     public function show(Test $test)
     {
+        // return $test->parts;
         return view('layouts.settings.test.show',
                     [
                         'test'=> $test,
@@ -131,7 +139,13 @@ class TestsController extends Controller
         $test->type = request('type');
         $test->duration = request('duration');
         $test->save();
-
+        
+        for ($i = 0; $i < count(request('part_id')); $i++) {             
+            $test->parts[$i]->title=request('part_title')[$i];
+            $test->parts[$i]->info=request('part_info')[$i];
+            $test->push();
+        }
+        
         request()->session()->flash('message', 'Тестийг амжилттай шинэчлэлээ!');
 
         return redirect()->route('settings.test');
@@ -144,11 +158,15 @@ class TestsController extends Controller
      */
     public function destroy(Test $test)
     {
-        $test->delete();
-
-        request()->session()->flash('message', $test->title. "-г амжилттай устгалаа!");
-
+        // check there is test has been registered user
+        if($test->users())
+             request()->session()->flash('message', $test->title. "-энэ тест дээр хэрэглэгч бүртгэгдсэн тул устгах боломжгүй!");    
+         else{
+             $test->delete();
+             request()->session()->flash('error', $test->title. "-г амжилттай устгалаа!");
+         }
         return back();
+
     }
 
     public function validateTest()
@@ -157,7 +175,10 @@ class TestsController extends Controller
             'title' => ['required', ['string']],
             'info'=> ['required', ['string']],
             'type' => ['required', ['string']],
-            'duration' => ['required', ['string']]
+            'duration' => ['required', ['string']],
+            'part_title' => ['required'],
+            'part_info' => ['required']            
         ]);
-    }
+    }    
+    
 }

@@ -23,4 +23,12 @@ class Test extends Model
         return $this->hasMany(Part::class);
     }
 
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+
+
+
 }

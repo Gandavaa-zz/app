@@ -27,6 +27,7 @@ $.ajaxSetup({
 });
 
 Vue.component('example', require('./components/ExampleComponent.vue').default);
+Vue.component('part-test', require('./components/PartTest.vue').default);
 // Vue.component('vue-multiselect', require('./components/Multiselect.vue').default);
 Vue.component('v-select', vSelect);
 

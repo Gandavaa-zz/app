@@ -18,8 +18,7 @@ class CreateQuizzesTable extends Migration
             $table->UnsignedBigInteger('test_id');
             $table->integer('number');
             $table->string('quiz');          
-            $table->string('image');
-            $table->string('info');
+            $table->string('image')->nullable();
             $table->timestamps();
 
             $table->foreign('test_id')

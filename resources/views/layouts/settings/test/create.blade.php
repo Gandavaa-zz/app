@@ -10,6 +10,7 @@
                 <div class="card-header">{{ __('Шинэ тест') }}</div>
 
                 <div class="card-body">
+           
                     <form method="POST" action="{{ route('settings.test.store') }}">
                         @csrf
 
@@ -85,32 +86,10 @@
                             </div>
                         </div>
 
-
                         <div class="card">
                             <div class="card-header"> {{ __('Хэсгийн мэдээлэл') }}</div>
                             <div class="card-body">
-                                <div class="form-group row">
-                                    <div class="col-sm-1">
-                                        <label for="num">#</label>
-                                        <div>1</div>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <label for="company">Гарчиг</label>
-                                        <input class="form-control" name="part_title[]" id="company" type="text" placeholder="Гарчиг">
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <label for="company">Дэлгэрэнгүй</label>
-                                        <textarea id="info" type="text" name="part_info[]" class="form-control @error('info') is-invalid @enderror" name="info" placeholder="Дэлгэрэнгүй">{{ old('info') }}</textarea>
-                                    </div>
-                                    
-                                    <div class="col-sm-3">
-                                        <label for="">Үйлдэл</label>
-                                        <div>
-                                            <a href='' class="btn btn-primary" onclick="alert('hi');
-                                            ">Нэмэх</a>
-                                        </div>
-                                    </div>
-                                </div>
+                                <part-test></part-test>
                             </div>
                         </div>
                                 

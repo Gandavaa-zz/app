@@ -16,6 +16,7 @@
                         @method('PUT')
 
                         <div class="form-group row">
+                            
                             <label for="title" class="col-md-4 col-form-label text-md-right">{{ __('Гарчиг') }}</label>
 
                             <div class="col-md-6">
@@ -99,7 +100,6 @@
                             <div class="col-md-4">     
                                 
                                 <select name="section" id="section" class="form-control @error('section') is-invalid @enderror">
-
                                     @foreach($durations as $minute)
                                         <option value="{{ $minute }}" 
                                             @if($minute == $test->duration) 
@@ -116,7 +116,25 @@
                             <div class="col-md-2">
                                 <label class="col-form-label">минут.</label>
                             </div>
+                        </div>
+
+                        @foreach($test->parts as $part)
+                        <hr>
+                        <input type="hidden" name="part_id[]" value="{{ $part->id }}">
+                        <div class="form-group row">                                                                                       
+                            <label class="col-md-4 col-form-label text-md-right">{{ $part->num }} -р хэсгийн гарчиг</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="part_title[]" value="{{ $part->title }}">
                             </div>
+                        </div>
+                        <div class="form-group row">                                                                                       
+                                                        
+                            <label class="col-md-4 col-form-label text-md-right">{{ $part->num }} -р хэсгийн дэлгэрэнгүй</label>
+                            <div class="col-md-6">
+                                <textarea class="form-control" name="part_info[]" >{{ $part->info }}</textarea>
+                            </div>                                                       
+                        </div>
+                        @endforeach
 
                         
 

@@ -13,8 +13,6 @@ use Illuminate\Support\Str;
 /*
      Users has roles with admin | super-admin | writer | its system users
 */
-
-
 class UsersController extends Controller
 {
     public function __construct()
@@ -26,7 +24,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::role(['admin', 'super-admin'])->paginate(10);
+        $users = User::role(['admin', 'super-admin', 'writer'])->paginate(10);
 
         return view('layouts.settings.users.index', compact('users'));
     }

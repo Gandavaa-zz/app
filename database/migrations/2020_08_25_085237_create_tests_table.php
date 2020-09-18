@@ -35,7 +35,7 @@ class CreateTestsTable extends Migration
                 ->references('id')->on('tests')->onDelete('cascade')->onDelete('cascade');
         });
 
-        Schema::create('part_test', function (Blueprint $table) {
+        Schema::create('parts', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->UnsignedBigInteger('test_id');
             $table->integer('num');
@@ -56,7 +56,7 @@ class CreateTestsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('part_test');
+        Schema::dropIfExists('parts');
         Schema::dropIfExists('test_user');
         Schema::dropIfExists('tests');
     }
