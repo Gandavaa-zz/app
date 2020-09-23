@@ -36,12 +36,11 @@
                         <span class="float-left"><h5><i class="fa fa-align-justify"></i>{{ __('Асуулт') }}</h5></span>
 
                         <span class="float-right px-1">                        
+                            <a class="btn btn-success" href="{{ route('quiz.index', $quiz->test->id) }}">Асуулт жагсаалт</a>                  
                             <a class="btn btn-primary" href="{{ route('answer.create', $quiz->id) }}">Шинэ асуулт</a>
-                        </span>
-
-                        <span class="float-right">
                             <a class="btn btn-danger" href="#">Импорт Асуулт</a>
-                        </span>                        
+                            
+                        </span>      
                     </div>
 
                     <div class="card-body">

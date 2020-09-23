@@ -11,7 +11,12 @@ if (! function_exists('getBreadcrumb'))
         }else
         {
             $breadcrumbs = config('app.breadcrumbs');
-            return $breadcrumbs[$key];
+
+            if (array_key_exists($key, $breadcrumbs))
+                
+                return $breadcrumbs[$key];
+
+            else return null;
         }
 
     }

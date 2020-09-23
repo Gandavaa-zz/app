@@ -29,13 +29,12 @@
 
                  <div class="card">
                     <div class="card-header">
-                        <span class="float-left"><h5><i class="fa fa-align-justify"></i>{{ __('Асуулт') }}</h5></span>
-                        <span class="float-right px-1">
+                        <span class="float-left"><h5><i class="fa fa-align-justify"></i>{{ __('Асуулт') }}</h5></span>                        
+                        <span class="float-right ">
+                            <a class="btn btn-success" href="{{ route('settings.test') }}">Тест жагсаалт</a>
+                            <a class="btn btn-danger px-1" href="#">Импорт Асуулт</a>
                             <a class="btn btn-primary" href="{{ route('quiz.create', $test->id) }}">Шинэ асуулт</a>
                         </span>
-                        <span class="float-right">
-                            <a class="btn btn-danger" href="#">Импорт Асуулт</a>
-                        </span>                        
                     </div>
 
                     <div class="card-body">

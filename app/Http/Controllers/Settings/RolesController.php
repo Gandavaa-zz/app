@@ -26,12 +26,9 @@ class RolesController extends Controller
 
     public function store(Request $request)
     {
-        $role= Role::create( $this->validateRole() );
+        Role::create( $this->validateRole() );
 
-        $request->session()->flash('message', 'Роль амжилттай хадгаллаа!');
-        // $permission = Permission::find(request('permission'));
-        // $role->save();
-        return redirect()->route('role.index');
+        return redirect()->route('role.index')->with('success', 'Роль амжилттай хадгаллаа!');
     }
 
     public function show(Role $role)
@@ -48,9 +45,7 @@ class RolesController extends Controller
     {
         $role->update($this->validateRole());
 
-        request()->session()->flash('message', 'Роль амжилттай засагдлаа!');
-
-        return redirect()->route('role.index');
+        return redirect()->route('role.index')-with('success', 'Роль амжилттай засагдлаа!');
     }
 
     public function validateRole()
@@ -64,8 +59,8 @@ class RolesController extends Controller
     function destroy(Role $role){
 
         $role->delete();
-        request()->session()->flash('message', 'Роль амжилттай устгагдлаа!');
-        return redirect()->route('role.index');
+        
+        return redirect()->route('role.index')->with('success', 'Роль амжилттай устгагдлаа!');
     }
 
     public function permission(Role $role)
@@ -80,10 +75,15 @@ class RolesController extends Controller
         $permissions = request()->input('permission');
 
         $role->syncPermissions($permissions);
-        // $role->givePermissionTo($permission);
-        request()->session()->flash('message', 'Зөвшөөрлийг амжилттай хадгаллаа!');
 
-        return redirect()->route('role.index');
+        return redirect()->route('role.index')->with('success', 'Зөвшөөрлийг амжилттай хадгаллаа!');
+    }
+
+    public function getRoles()
+    {
+        //get roles excerpt 
+        return Role::all();
+        // return Role::where('name', '!=', 'client')->get();        
     }
 
 }

@@ -38,9 +38,7 @@ class GroupsController extends Controller
 
         $group = Group::create( $data );
 
-        $request->session()->flash('message', 'Хэрэглэгчийг амжилттай бүртгэлээ!');
-
-        return redirect()->route('group.index');
+        return redirect()->route('group.index')->with('sucess', 'Хэрэглэгчийг амжилттай бүртгэлээ!');
 
     }
 
@@ -70,9 +68,7 @@ class GroupsController extends Controller
     {
         $group->update($this->validateGroup());
         
-        request()->session()->flash('message', 'Группын мэдээллийг амжилттай засварлалаа!');
-
-        return redirect()->route('group.index');
+        return redirect()->route('group.index')->with('success', 'Группын мэдээллийг амжилттай засварлалаа!');
     }
 
     /**
@@ -83,9 +79,7 @@ class GroupsController extends Controller
     {
         $group->delete();
 
-        request()->session()->flash('message', 'Группын мэдээллийг амжилттай устгалаа!');
-
-        return redirect()->route('group.index');
+        return redirect()->route('group.index')->with('success', 'Группын мэдээллийг амжилттай устгалаа!');
 
     }
 

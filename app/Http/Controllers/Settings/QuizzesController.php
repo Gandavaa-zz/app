@@ -92,9 +92,7 @@ class QuizzesController extends Controller
 
         Quiz::create($data);
 
-        $request->session()->flash('message', 'Асуултыг амжилттай бүртгэлээ!');
-
-        return redirect()->route('quiz.index', $data['test_id']);
+        return redirect()->route('quiz.index', $data['test_id'])->with('flash', 'Асуултыг амжилттай бүртгэлээ!');
     }
 
     /**
@@ -138,9 +136,7 @@ class QuizzesController extends Controller
         if(request('image')) $quiz->image = request('image');                
         $quiz->save();
         
-        request()->session()->flash('message', 'Асуултыг амжилттай шинэчлэлээ!');
-
-        return redirect()->route('quiz.index', request('test_id'));
+        return redirect()->route('quiz.index', request('test_id'))->with('success', 'Асуултыг амжилттай шинэчлэлээ!');
 
     }
 
@@ -152,13 +148,11 @@ class QuizzesController extends Controller
     {
         // return $test->users;
         if($quiz->test->users)
-             request()->session()->flash('message', " '". $quiz->test->title. "' -энэ тест дээр хэрэглэгч бүртгэгдсэн байгаа тул устгах боломжгүй!");    
+             return back()->with('error', " '". $quiz->test->title. "' -энэ тест дээр хэрэглэгч бүртгэгдсэн байгаа тул устгах боломжгүй!");    
          else{
              $quiz->delete();
-             request()->session()->flash('error', $quiz->title. "-г амжилттай устгалаа!");
+             return back()->with('success', $quiz->title. "-г амжилттай устгалаа!");
          }
-        
-        return back();
 
     }
 

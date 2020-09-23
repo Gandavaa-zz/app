@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Settings;
 
+use App\Group;
 use App\Http\Controllers\Controller;
 use App\Test;
 use App\User;
@@ -36,7 +37,6 @@ class UsersController extends Controller
 
     /**
      * Create user view here
-     *
      */
     public function create()
     {
@@ -56,18 +56,13 @@ class UsersController extends Controller
         $data['password'] = Hash::make($this->keyGenerator());
 
         $user = User::create( $data );
-
-        if($role = request('role'))
-        {
-            $user->assignRole($role);
-        }
-
-        // $user->tests()->attach(request('tests'));
-
-        $request->session()->flash('message', 'Хэрэглэгчийг амжилттай бүртгэлээ!');
-
-        // Хэрэглэгч үүссэний дараа тухайн хэрэглэгчрүү имэйл явуулна.
-        return redirect('admin/users');
+        
+        $user->assignRole($this->rolesToArray(request('roles')));
+        
+        $user->groups()->attach($this->groupToArray(request('groups')));
+        
+        // TODO: Хэрэглэгч үүссэний дараа тухайн хэрэглэгчрүү имэйл явуулна.
+        return redirect()->route('users.index')->with('success', 'Хэрэглэгчийг амжилттай бүртгэлээ!');
     }
 
     /**
@@ -76,9 +71,10 @@ class UsersController extends Controller
      */
     public function edit(User $user)
     {
-        $tests = Test::all();
-
-        return view('layouts.settings.users.edit', ['user' =>$user, 'tests' => $tests]);
+        return view('layouts.settings.users.edit' , 
+                    [ 
+                        'user' =>$user 
+                    ]);
     }
 
     /**
@@ -91,14 +87,18 @@ class UsersController extends Controller
             'firstname' => ['required', ['string']],
             'lastname' => ['required', ['string']],
             'email' => ['required', 'string', 'email', 'max:255'],
-            'tests' => 'exists:tests,id'
+            'roles' => ['required', ['string']],            
+            'groups' => ['required', ['string']]            
         ]));
 
+        $user->syncRoles($this->rolesToArray(request('roles')));
+
+        $user->groups()->detach();
+
+        $user->groups()->attach($this->groupToArray(request('groups')));
+
         // $user->tests()->attach(request('tests'));
-
-        request()->session()->flash('message', 'Хэрэглэгчийг амжилттай засварлалаа!');
-
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('success', 'Хэрэглэгчийг амжилттай засварлалаа!');
     }
 
     /**
@@ -109,9 +109,7 @@ class UsersController extends Controller
     {
         $user->delete();
 
-        request()->session()->flash('message', 'Хэрэглэгчийг амжилттай устгалаа!');
-
-        return back();
+        return back()->with('success', 'Хэрэглэгчийг амжилттай устгалаа!');
     }
 
     /*
@@ -121,10 +119,10 @@ class UsersController extends Controller
     {
         return request()->validate([
             'firstname' => ['required', ['string']],
-            'lastname' => ['required', ['string']],
-            'phone' => ['required', ['string']],
+            'lastname' => ['required', ['string']],            
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'role' => ['sometimes', 'required']
+            'roles' => ['sometimes', 'required'],
+            'groups' => ['required', ['string']],
         ]);
     }
 
@@ -135,18 +133,63 @@ class UsersController extends Controller
 
     public function roles(User $user)
     {
-
         return view('layouts.settings.users.roles', ['user' =>$user]);
-
     }
 
     public function giveRoles(User $user)
     {
         $user->assignRole(request('role'));
 
-        request()->session()->flash('message', 'Хэрэглэгчид амжилтай Роль өглөө!');
+        return redirect()->route('users.index')->with('success', 'Хэрэглэгчид амжилтай Роль өглөө!');
+    }
 
-        return redirect()->route('users.index');
+    protected function rolesToArray($roles){
+        
+        foreach(explode(",", $roles) as $role)
+        {
+            $role_array[] =  $role; 
+        }
+
+        return $role_array;
+    }
+
+    protected function groupToArray($groups){
+        
+        if(Str::contains($groups, ',')){
+            foreach(explode(",", $groups) as $name)
+            {
+                $group = Group::where('name', $name)->get();
+                $group_ids[] = $group->id;
+            }
+        }else{
+            $group = Group::where('name', $groups)->first();
+
+            $group_ids[] = $group->id;
+            
+        } 
+        
+        return $group_ids;
+    }
+
+    function profile(User $user){
+        
+        return view('layouts.settings.users.profile', compact('user'));
+        
+    }
+
+    function getGroups(){
+
+        // TODO хэрвээ user-ng role: admin|super-admin байвал            
+        $group_id = config('app.admin_group');
+
+        $groups =  Group::find($group_id);   
+        
+        if (response()->json()){
+            return response()->json([
+                $groups
+            ]);
+        }
+
     }
 
 

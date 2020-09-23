@@ -8,8 +8,14 @@
               <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                 <div class="card">
                     <div class="card-header">
-                        <span class="float-left"><h5><i class="fa fa-align-justify"></i>{{ __('Тест') }}</h5></span> <span class="float-right">
-                    <a class="btn btn-primary" href="{{ route('settings.test.create') }}">Шинэ</a></span>
+                        <span class="float-left"><h5><i class="fa fa-align-justify"></i>{{ __('Тест') }}</h5></span> 
+                        
+                        <span class="float-right">
+                        
+                            <a class="btn btn-primary mr-1" href="{{ route('settings.test.create') }}">Шинэ</a>
+                            <a class="btn btn-danger " href="{{ route('settings.test.import') }}">XSL файлаас импортлох</a>
+                    
+                        </span>
                     </div>
 
                     <div class="card-body">

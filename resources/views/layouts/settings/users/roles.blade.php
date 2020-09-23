@@ -55,8 +55,7 @@
                             <label for="tests" class="col-md-4 col-form-label text-md-right">{{ __('Роль') }}</label>
 
                             <div class="col-md-6">
-
-                                
+                                    <my-select></my-select>
                             </div>
                         </div>
 

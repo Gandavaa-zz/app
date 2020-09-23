@@ -82,9 +82,7 @@ class AnswersController extends Controller
 
         Answer::create($data);
 
-        $request->session()->flash('message', 'Асуултыг амжилттай бүртгэлээ!');
-
-        return redirect()->route('answer.index', $data['quiz_id']);
+        return redirect()->route('answer.index', $data['quiz_id'])->with('success', 'Асуултыг амжилттай бүртгэлээ!');
     }
 
     /**
@@ -116,10 +114,8 @@ class AnswersController extends Controller
         $answer->answer = request('answer');
         if(request('image')) $answer->image = request('image');                
         $answer->save();
-        
-        request()->session()->flash('message', 'Асуултыг амжилттай шинэчлэлээ!');
 
-        return redirect()->route('answer.index', request('quiz_id'));
+        return redirect()->route('answer.index', request('quiz_id'))->with('success', 'Асуултыг амжилттай шинэчлэлээ!');
 
     }
 
@@ -130,10 +126,10 @@ class AnswersController extends Controller
     public function destroy(Answer $answer)
     {
         if($answer->quiz->test->users)
-             request()->session()->flash('message', " '". $answer->quiz->test->title. "' -энэ тест дээр хэрэглэгч бүртгэгдсэн байгаа тул устгах боломжгүй!");    
+             request()->session()->flash('error', " '". $answer->quiz->test->title. "' -энэ тест дээр хэрэглэгч бүртгэгдсэн байгаа тул устгах боломжгүй!");    
          else{
              $answer->delete();
-             request()->session()->flash('error', $answer->answer. "-г амжилттай устгалаа!");
+             request()->session()->flash('success', $answer->answer. "-г амжилттай устгалаа!");
          }
         
         return back();

@@ -13,8 +13,8 @@
         ✔ Destroy @done(20-08-28 10:29)
         // Хэрэв устгах бол
         ✔ View @done(20-08-28 10:29)
-        ☐ >System-n hereglegchiig filterdeh
-        ☐ Assign roles
+        ✔ >System-n hereglegchiig filterdeh @done(20-09-23 16:11)
+        ✔ Assign roles @done(20-09-23 16:11)
 
     ☐ Role - CRUD - Datatable
         ✔ Alert message @done(20-08-27 15:08)
@@ -24,7 +24,7 @@
         ✔ View @done(20-08-28 11:19)
         ✔ add permission @done(20-08-28 12:32)
         ✔ Multiple permissions @done(20-09-03 11:50)
-        ☐ Set all roles can update function 
+        ✔ Set all roles can update function @done(20-09-23 16:11)
         ☐ Change by add vue js
                 
     ✔ Permission - CRUD - Datatable @done(20-08-28 11:20)
@@ -34,7 +34,7 @@
         ✔ destroy @done(20-08-28 11:57)  
     ✔ Group -crud @done(20-09-04 16:25)   
 
-☐ Assesments - Тест
+    ☐ Assesments - Тест
     ☐ Assesments Management    
     ☐ Export Result
 
@@ -49,7 +49,7 @@
         
 ☐ Тохиргоо
     ☐ Системийн хэрэглэгчид
-    ☐ Роль
+    ✔ Profile @done(20-09-23 16:12)
     ☐ Зөвшөөрөл
     ☐ Notifications
     ☐ Other 

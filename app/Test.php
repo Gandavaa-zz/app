@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Test extends Model
 {
+    use RecordsActivity;
+    
     protected $fillable = ['title','info', 'type', 'duration'];
 
     public function sections()

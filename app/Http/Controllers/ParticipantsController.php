@@ -13,10 +13,8 @@ use Illuminate\Http\POST;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Str;
-use DataTables;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
-// use App\Http\Controllers\Excel;
 use Yajra\DataTables\Contracts\DataTable;
 use Yajra\DataTables\DataTables as DataTablesDataTables;
 use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
@@ -123,21 +121,20 @@ class ParticipantsController extends Controller
 
     public function store(Request $request)
     {
-        // $data = $this->validateUser(null);
-        $data['password'] = Hash::make($this->keyGenerator());
-        $data['group_id'] = $request->group_id;
-        $data['group'] = implode(',', $request->groups);
-        $id = Auth::user()->id;
-        $data['created_by'] = $id;
-        $array = array();
-        for ($i=0; $i <count($request->groups) ; $i++){
-        $array[] = array(
-        'group_id' => $request->groups[$i],
-        'user_id' => 1
-        );
-        }
+        $data = $this->validateUser();
 
-        $group = Group_User::create( $array );
+        $data['password'] = Hash::make($this->keyGenerator());
+        $data['group_id'] = $request->group_id;        
+        // $data['group'] = implode(',', $request->groups);        
+        $data['created_by'] = auth()->id();
+
+        // for ($i=0; $i <count($request->groups) ; $i++){
+        //     $array[] = array(
+        //     'group_id' => $request->groups[$i],
+        //     'user_id' => 1
+        //     );
+        // }
+        // $group = Group_User::create( $array );
 
         $user = User::create( $data );
 
@@ -185,8 +182,8 @@ class ParticipantsController extends Controller
         $data->address = $request->get('address');
 
         $data->update();
-        request()->session()->flash('message', 'Харилцагч амжилттай засварлалаа!');
-        return redirect()->route('participants.index');
+        
+        return redirect()->route('participants.index')->with('success', 'Харилцагч амжилттай засварлалаа!');
     }
 
     /**
@@ -215,7 +212,7 @@ class ParticipantsController extends Controller
     * Validation user function
     */
 
-    public function validateUser($id)
+    public function validateUser($id=null)
     {
         // return $id;
         return request()->validate([
@@ -247,40 +244,38 @@ class ParticipantsController extends Controller
     }
 
 
-
-
     public function import_excel(Request $request)
     {
-     $this->validate($request, [
-      'select_file'  => 'required|mimes:xls,xlsx'
-     ]);
+        $this->validate($request, [
+            'select_file'  => 'required|mimes:xls,xlsx'
+        ]);
 
-     $path = $request->file('select_file')->getRealPath();
-     $data = Excel::load($path)->get();
-     if($data->count() > 0)
-     {
-      foreach($data->toArray() as $key => $value)
-      {
-       foreach($value as $row)
-       {
-        $insert_data[] = array(
-         'firstname'  => $row['firstname'],
-         'email'   => $row['email'],
-         'lastname'   => $row['lastname'],
-         'phone'    => $row['phone'],
-         'gender'  => $row['gender'],
-         'address'   => $row['address']
-        );
-       }
-      }
+        $path = $request->file('select_file')->getRealPath();
+        $data = Excel::load($path)->get();
+        if($data->count() > 0)
+        {
+            foreach($data->toArray() as $key => $value)
+            { 
+                foreach($value as $row)
+                {
+                    $insert_data[] = array(
+                        'firstname'  => $row['firstname'],
+                        'email'   => $row['email'],
+                        'lastname'   => $row['lastname'],
+                        'phone'    => $row['phone'],
+                        'gender'  => $row['gender'],
+                        'address'   => $row['address']
+                    );
+                }
+            }
 
-      if(!empty($insert_data))
-      {
-       DB::table('user ')->insert($insert_data);
-      }
-     }
-     return back()->with('success', 'Excel Data Imported successfully.');
-    //  return response()->json(['msg'=>"Participant updated successfully."]);
-    }
+            if(!empty($insert_data))
+            {
+                DB::table('user ')->insert($insert_data);
+            }
+        }
+            return back()->with('success', 'Excel Data Imported successfully.');        
+        
+        }
 
 }

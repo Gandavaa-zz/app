@@ -41,9 +41,7 @@ class PermissionsController extends Controller
     {
         Permission::create( $this->validatePermission() );      
         
-        request()->session()->flash('message', 'Зөвшөөрөл амжилттай хадгалагдлаа!');
-        
-        return redirect()->route('permission.index');
+        return redirect()->route('permission.index')->with('success', 'Зөвшөөрөл амжилттай хадгалагдлаа!');
     }
 
     /**
@@ -80,9 +78,7 @@ class PermissionsController extends Controller
     {
         $permission->update($this->validatePermission());
 
-        request()->session()->flash('message', 'Зөвшөөрөл амжилттай шинэчлэгдлээ!');
-        
-        return redirect()->route('permission.index');
+        return redirect()->route('permission.index')->with('success', 'Зөвшөөрөл амжилттай шинэчлэгдлээ!');
     }
 
     /**
@@ -92,9 +88,7 @@ class PermissionsController extends Controller
     {
         $permission->delete();
         
-        request()->session()->flash('message', 'Зөвшөөрөл амжилттай устгагдлаа!');
-
-        return redirect()->route('permission.index');
+        return redirect()->route('permission.index')->with('success', 'Зөвшөөрөл амжилттай устгагдлаа!');
     }
 
     public function getPermissions()

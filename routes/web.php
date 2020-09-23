@@ -24,25 +24,34 @@ Route::group(['middleware' => ['role:super-admin']], function () {
     Route::resource('settings/users', 'Settings\UsersController')->middleware('auth');
     Route::get('settings/users/{user}/roles', 'Settings\UsersController@roles')->name('user.roles')->middleware('auth');
     Route::post('settings/users/{user}/giveRoles', 'Settings\UsersController@giveRole')->name('user.giveRoles')->middleware('auth');
+    
+    Route::get('settings/userGroups', 'Settings\UsersController@getGroups');
+
+    Route::get('settings/profile/{user}', 'Settings\ProfilesController@show')->name('user.profile');
+   
 });
 
 Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::resource('role', 'Settings\RolesController')->middleware('auth');
     Route::get('role/{role}/permission', 'Settings\RolesController@permission')->middleware('auth');
     Route::post('role/{role}/permission', 'Settings\RolesController@givePermission')->name('give.permission')->middleware('auth');
+    
+    Route::get('settings/getRoles', 'Settings\RolesController@getRoles');
+
     Route::resource('settings/permission', 'Settings\PermissionsController')->middleware('auth');
-    Route::get('settings/getPermissions', 'Settings\PermissionsController@getPermissions')->middleware('auth');
+    Route::get('settings/getPermissions', 'Settings\PermissionsController@getPermissions');
 
     Route::resource('settings/group', 'Settings\GroupsController');
+
+    // Test routes begin
     Route::get('settings/test', 'Settings\TestsController@index')->name('settings.test');
     Route::get('settings/test/create', 'Settings\TestsController@create')->name('settings.test.create');
-
     Route::post('settings/test/store', 'Settings\TestsController@store')->name('settings.test.store');
-
     Route::get('settings/test/{test}/edit', 'Settings\TestsController@edit')->name('settings.test.edit');
     Route::put('settings/test/{test}', 'Settings\TestsController@update')->name('settings.test.update');
     Route::get('settings/test/{test}/show', 'Settings\TestsController@show')->name('settings.test.show');
     Route::delete('settings/test/{test}', 'Settings\TestsController@destroy')->name('settings.test.destroy');
+    Route::delete('settings/test/import', 'Settings\TestsController@import')->name('settings.test.import');
     
     /* Quizes here */
     Route::get('settings/quiz/{test}', 'Settings\QuizzesController@index')->name('quiz.index');

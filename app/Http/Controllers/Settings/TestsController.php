@@ -37,23 +37,23 @@ class TestsController extends Controller
                 ->addColumn('action', function($row){
                     $btn = '
                     <ul class="list-group list-group-horizontal list-unstyled"><li class="pr-1">
-                    <a href="'.route("settings.test.show", $row->id).'" data-toggle="tooltip" data-id="'.$row->id.'" class="btn btn-secondary view btn-md">
+                    <a href="'.route("settings.test.show", $row->id).'" data-toggle="tooltip" data-id="'.$row->id.'" title="Харах" class="btn btn-secondary view btn-md">
                         <i class="cil-magnifying-glass"></i>
                         </a>
                     </li>
                     <li class="pr-1">
-                        <a href="'.route("settings.test.edit", $row->id).'" data-toggle="tooltip" data-id="'.$row->id.'" data-original-title="Edit" class="btn btn-primary btn-md" title="Edit">
+                        <a href="'.route("settings.test.edit", $row->id).'" data-toggle="tooltip" data-id="'.$row->id.'" title="Засах" data-original-title="Edit" class="btn btn-primary btn-md" title="Edit">
                         <i class="cil-pencil"></i></a>
                     </li>
                     <li class="pr-1">
                         <form class="form-inline" action="'.route('settings.test.destroy', $row->id).'" method="POST">
                             <input type="hidden" name="_method" value="DELETE">
                             <input type="hidden" name="_token" value="'.csrf_token().'">
-                            <button type="submit" class="btn btn-danger" onclick="return confirm(\'Та энэ бичлэгийг үнэхээр устгах уу?\')"><i class="cil-trash"></i></button>
+                            <button type="submit" title="Устгах" class="btn btn-danger" onclick="return confirm(\'Та энэ бичлэгийг үнэхээр устгах уу?\')"><i class="cil-trash"></i></button>
                         </form>
                     </li>
                     <li class="pr-1">
-                        <a href="'.route("quiz.index", $row->id).'" class="btn btn-danger btn-md">
+                        <a href="'.route("quiz.index", $row->id).'" class="btn btn-success btn-md">
                         <i class="cil-list"></i></a>                        
                     </li>
 
@@ -88,16 +88,14 @@ class TestsController extends Controller
 
         $part_titles =  $request->part_title;   
         
-        for ($i = 1; $i < count($part_titles); $i++) {
+        for ($i = 0; $i < count($part_titles); $i++) {
             $request->part_title[$i];            
             $parts[]= array('num'=>$i, 'test_id'=>$test->id, 'title'=>$request->part_title[$i], 'info'=> $request->part_info[$i]);                                             
         }
 
         $test->parts()->createMany($parts);        
-
-        $request->session()->flash('message', 'Тестийг амжилттай бүртгэлээ!');
-
-        return redirect()->route('settings.test');
+        
+        return redirect()->route('settings.test')->with('success', 'Тестийг амжилттай бүртгэлээ!');
     }
 
     /**
@@ -146,10 +144,7 @@ class TestsController extends Controller
             $test->push();
         }
         
-        request()->session()->flash('message', 'Тестийг амжилттай шинэчлэлээ!');
-
-        return redirect()->route('settings.test');
-
+        return redirect()->route('settings.test')->with('success', 'Тестийг засварлалаа!');
     }
 
     /**
@@ -160,12 +155,14 @@ class TestsController extends Controller
     {
         // check there is test has been registered user
         if($test->users())
-             request()->session()->flash('message', $test->title. "-энэ тест дээр хэрэглэгч бүртгэгдсэн тул устгах боломжгүй!");    
-         else{
-             $test->delete();
-             request()->session()->flash('error', $test->title. "-г амжилттай устгалаа!");
-         }
-        return back();
+            
+            return back()->with('error', $test->title. "-энэ тест дээр хэрэглэгч бүртгэгдсэн тул устгах боломжгүй!");    
+
+        else{
+            $test->delete();
+
+            return back()->with('success', $test->title. "-г амжилттай устгалаа!");
+        }        
 
     }
 

@@ -10,6 +10,7 @@
                 <div class="card-header">{{ __('Шинэ хэрэглэгч') }}</div>
 
                 <div class="card-body">
+                   
                     <form method="POST" action="{{ route('users.store') }}">
                         @csrf
 
@@ -40,7 +41,6 @@
                                     </span>
                                 @enderror
                             </div>
-
                         </div>
 
                         <div class="form-group row">
@@ -56,20 +56,23 @@
                                 @enderror
                             </div>
                         </div>
-<!--
-                        <div class="form-group row">
 
-                            <label for="user_type" class="col-md-4 col-form-label text-md-right">{{ __('Системийн хэрэглэгч үү?') }}</label>
+                        <div class="form-group row">
+                            <label for="tests" class="col-md-4 col-form-label text-md-right">{{ __('Роль') }}</label>
 
                             <div class="col-md-6">
+                                <my-select class="@error('roles') is-invalid @enderror"></my-select>
 
-                               <input type="checkbox" v-model="user_type" name="user_type" id="user_type" class="ml-2 form-check-input @error('is_normal_user') is-invalid @enderror" autocomplete="user_type">
-                                <a href="#" class="ml-4">Системийн хэрэглэгч гэж хэн бэ?</a>
+                                @error('roles')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
+                        </div>
 
-                        </div> -->
 
-                        <div class="form-group row" v-if="user_type">
+                        <!-- <div class="form-group row" >
 
                             <label for="user_type" class="col-md-4 col-form-label text-md-right">{{ __('Роль') }}</label>
 
@@ -93,21 +96,20 @@
                                 @enderror
                             </div>
 
-                        </div>
+                        </div> -->
 
-                        <!-- <div class="form-group row">
-                            <label for="tests" class="col-md-4 col-form-label text-md-right">{{ __('Тест') }}</label>
-
+                        <div class="form-group row">
+                            <label for="tests" class="col-md-4 col-form-label text-md-right">{{ __('Групп') }}</label>                            
                             <div class="col-md-6">
+                                <group  class="@error('groups') is-invalid @enderror"></group>
 
-
-                                @error('tests')
+                                @error('groups')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
                             </div>
-                        </div> -->
+                        </div>
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
