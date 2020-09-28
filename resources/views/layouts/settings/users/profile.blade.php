@@ -5,7 +5,7 @@
 <div class="container">
 
     <div class="row justify-content-center">
-        <div class="col-md-5">
+        <div class="col-md-4">
             <div class="card">
                
                 <div class="card-body">
@@ -14,45 +14,86 @@
                         <img class="rounded-circle"
                             src="{{ env('APP_URL', '') }}/assets/img/avatars/8.jpg" width="150" alt="{{ $user->email }}">
                             <h4 class="card-title mt-2">{{ $user->firstname}}, {{ $user->lastname}}</h4>
-                            <h6 class="card-subtitle">Accoubts Manager Amix corp</h6>
-                            <div class="row text-center justify-content-md-center">
-                                <div class="col-4"><a href="javascript:void(0)" class="link"><i class="icon-people"></i> <font class="font-medium">254</font></a></div>
-                                <div class="col-4"><a href="javascript:void(0)" class="link"><i class="icon-picture"></i> <font class="font-medium">54</font></a></div>
+                            @foreach( $user->groups as $group)                            
+                            <h6 class="card-subtitle">{{ $group->name }}</h6>
+                            @endforeach
+                            <div class="row text-center justify-content-md-center pt-2">
+                                <button class="btn btn-sm btn-primary">Засах</button>                                
                             </div>
                         </center>
 
                         <div class="card-body"> 
-                            <small class="text-muted">Email address </small>
-                                <h6>hannagover@gmail.com</h6> <small class="text-muted pt-4 db">Phone</small>
-                                <h6>+91 654 784 547</h6> <small class="text-muted pt-4 db">Address</small>
-                                <h6>71 Pilgrim Avenue Chevy Chase, MD 20815</h6>
+                            <small class="text-muted">Имэйл хаяг: </small>
+                                <h6>{{ $user->email }}</h6> 
+                                <small class="text-muted pt-4 db">Хүйс:</small>
+                                @if($user->gender =='male') 
+                                <h6> Эрэгтэй </h6> 
+                                @else <h6> Эмэгтэй </h6> 
+                                @endif
+                                <small class="text-muted pt-4 db">Регистр:</small>
+                                <h6> {{ $user->register }} </h6> 
+                                <small class="text-muted pt-4 db">Утас:</small>
+                                <h6> {{ $user->phone }} </h6> 
+                                <small class="text-muted pt-4 db">Төрсөн он сар өдөр:</small>
+                                <h6> {{ $user->dob }} </h6> 
+                                <small class="text-muted pt-4 db">Хаяг:</small>
+                                <h6>{{ $user->address }}</h6>
                                 <div class="map-box">
                                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d470029.1604841957!2d72.29955005258641!3d23.019996818380896!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e848aba5bd449%3A0x4fcedd11614f6516!2sAhmedabad%2C+Gujarat!5e0!3m2!1sen!2sin!4v1493204785508" width="100%" height="150" frameborder="0" style="border: 0px; --darkreader-inline-border-top: initial; --darkreader-inline-border-right: initial; --darkreader-inline-border-bottom: initial; --darkreader-inline-border-left: initial;" allowfullscreen="" data-darkreader-inline-border-top="" data-darkreader-inline-border-right="" data-darkreader-inline-border-bottom="" data-darkreader-inline-border-left=""></iframe>
-                                </div> <small class="text-muted pt-4 db">Social Profile</small>
-                                <br>
-                                <button class="btn btn-circle btn-secondary"><i class="fab fa-facebook-f"></i></button>
-                                <button class="btn btn-circle btn-secondary"><i class="fab fa-twitter"></i></button>
-                                <button class="btn btn-circle btn-secondary"><i class="fab fa-youtube"></i></button>
+                                </div>                                 
                             </div>
 
                 </div>
             </div>
         </div>
 
-        <div class="col-md-7">
+        <div class="col-md-8">
             <div class="card">
+                <div class="card-header"> <strong>Үйл явдал</strong> </div>
                 <div class="card-body">
+                    <ul class="list-unstyled">
+                        @foreach ($activities as $date => $activity)
+                            <h3 class="page-header">{{ $date }} </h3>
+                            @foreach($activity as $record)
+                        <li class="media media-border">                            
+                            @if ($record->type =='created_test')                                 
+                            <div class="media-body pt-3">
+                                <small class="float-right text-navy">{{ $record->subject->created_at->diffForHumans() }}</small>                                  
+                                <p><b>{{ $user->firstname }}</b> {{ $record->subject->title }} тест үүсгэсэн.</p>
+                            </div>              
+                            @endif
+                        
+                            @if ($record->type =='updated_test')                               
+                            <div class="media-body pt-3">
+                                <small class="float-right text-navy">{{ $record->subject->created_at->diffForHumans() }}</small>                                  
+                                <p class="pt-3">
+                                <b>{{ $user->firstname }}</b> {{ $record->subject->title }} тест засварласан.                             
+                                </p>                                                                  
+                            </div>                                                                                                 
+                            @endif
 
-                <div class="nav-tabs-boxed">
-                    <ul class="nav nav-tabs" role="tablist">
-                      <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#home" role="tab" aria-controls="home">Аctivity</a></li>
-                      <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#profile" role="tab" aria-controls="profile">Profile</a></li>                      
+                            @if ($record->type =='created_quiz')                                                        
+                            <div class="media-body pt-3">
+                                <small class="float-right text-navy">{{ $record->subject->created_at->diffForHumans() }}</small>                                  
+                                <p>
+                                <b>{{ $user->firstname }}</b> {{ $record->subject->title }} асуулт үүсгэсэн.                                 
+                                </p>                                    
+                            </div>                              
+                            @endif                      
+
+                            @if ($record->type =='updated_quiz')
+                            <div class="media-body pt-3">
+                                <small class="float-right text-navy">{{ $record->subject->created_at->diffForHumans() }}</small>                                  
+                                <p >
+                                <b>{{ $user->firstname }}</b> {{ $record->subject->title }} асуулт засварлав.                                 
+                                </p>                                    
+                            </div>  
+                            @endif                                
+                        </li>
+                        @endforeach
+                    @endforeach
+
                     </ul>
-                    <div class="tab-content">
-                      <div class="tab-pane active" id="home" role="tabpanel">1. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
-                      <div class="tab-pane" id="profile" role="tabpanel">2. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>                    
-                    </div>
-                  </div>
                 </div>
             </div>                  
 

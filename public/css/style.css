@@ -19991,3 +19991,7 @@ body {
   opacity: 1;
 }
 
+.media-border {
+  border-bottom: 1px solid #e7eaec;
+}
+

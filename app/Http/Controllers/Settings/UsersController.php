@@ -32,6 +32,8 @@ class UsersController extends Controller
 
     public function show(User $user)
     {
+        return $user->activity->fresh('subject');
+
         return view('layouts.settings.users.show', compact('user'));
     }
 

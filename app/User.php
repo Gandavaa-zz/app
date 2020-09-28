@@ -60,5 +60,10 @@ class User extends Authenticatable
         return $this->belongsToMany(Group::class);
     }
 
+    function activity()
+    {
+        return $this->hasMany(Activity::class);
+    }
+
     
 }

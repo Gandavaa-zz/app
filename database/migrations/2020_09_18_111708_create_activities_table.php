@@ -20,7 +20,11 @@ class CreateActivitiesTable extends Migration
             $table->string('subject_type');
             $table->string('type');
             $table->timestamps();
+
+            $table->foreign('user_id')
+                ->references('id')->on('users')->onDelete('cascade')->onDelete('cascade');
         });
+        
     }
 
     /**

@@ -5,7 +5,9 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 class Quiz extends Model
-{
+{   
+    use RecordsActivity;
+    
     protected $fillable = [
         'test_id', 'number', 'quiz'
     ];
