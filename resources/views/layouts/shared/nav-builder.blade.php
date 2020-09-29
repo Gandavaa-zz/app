@@ -69,7 +69,7 @@
             </svg>Харилцагчид</a>
         <ul class="c-sidebar-nav-dropdown-items">
             <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('participants.index') }} ">
-                <svg class="c-sidebar-nav-icon">
+                <svg class="c-si debar-nav-icon">
                     <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-list"></use>
                 </svg>Жагсаалт</a>
             </li>
