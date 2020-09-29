@@ -8,7 +8,8 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-import vSelect from 'vue-select'
+import vSelect, { VueSelect } from 'vue-select'
+
 import Axios from 'axios';
 /**
  * The following block of code may be used to automatically register your
@@ -26,9 +27,13 @@ $.ajaxSetup({
   }
 });
 
-Vue.component('example', require('./components/ExampleComponent.vue').default);
+Vue.component('flash', require('./components/Flash.vue').default);
+
+Vue.component('part-test', require('./components/PartTest.vue').default);
 // Vue.component('vue-multiselect', require('./components/Multiselect.vue').default);
-Vue.component('v-select', vSelect);
+Vue.component('my-select', require('./components/Select.vue').default);
+
+Vue.component('group', require('./components/Group.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -37,17 +42,5 @@ Vue.component('v-select', vSelect);
  */
 
 const app = new Vue({
-    el: '#app',        
-      data: {     
-        selected: [],   
-        options: []             
-      },      
-      // get_permissions
-      mounted() {
-         axios.get('/settings/getPermissions').then(response => {
-             response.data.forEach(element => {
-               this.options.push(element.name)               
-             });
-          });
-      }   
+    el: '#app'    
 });

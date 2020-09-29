@@ -93,6 +93,7 @@ class TestsController extends Controller
     public function edit($id)
     {
         $test_type = config('app.test_type');
+        
         return view('admin.tests.edit', compact('test', 'test_type'));
     }
 

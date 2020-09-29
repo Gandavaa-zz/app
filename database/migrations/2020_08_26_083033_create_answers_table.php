@@ -17,9 +17,9 @@ class CreateAnswersTable extends Migration
             $table->bigIncrements('id');
             $table->UnsignedBigInteger('quiz_id');
             $table->integer('number');
-            $table->string('type');
             $table->string('answer');
-            $table->string('image');
+            $table->string('type')->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
 
             $table->foreign('quiz_id')

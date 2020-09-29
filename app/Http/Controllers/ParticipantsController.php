@@ -10,14 +10,15 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Http\POST;
 use Illuminate\Support\Facades\Hash;
-use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Str;
+<<<<<<< HEAD
 use DataTables;
 use Illuminate\Support\Facades\App;
+=======
+>>>>>>> origin/ganaa
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
-// use App\Http\Controllers\Excel;
 use Yajra\DataTables\Contracts\DataTable;
 use Yajra\DataTables\DataTables as DataTablesDataTables;
 use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
@@ -132,6 +133,7 @@ class ParticipantsController extends Controller
 
     public function store(Request $request)
     {
+<<<<<<< HEAD
         $data = $this->validateUser(null);
         $data['password'] = Hash::make($this->keyGenerator());
         $data['group_id'] = $request->group_id;
@@ -147,6 +149,22 @@ class ParticipantsController extends Controller
 
         $user = User::create($data);
         $lastInsertedId = $user->id;
+=======
+        $data = $this->validateUser();
+
+        $data['password'] = Hash::make($this->keyGenerator());
+        $data['group_id'] = $request->group_id;        
+        // $data['group'] = implode(',', $request->groups);        
+        $data['created_by'] = auth()->id();
+
+        // for ($i=0; $i <count($request->groups) ; $i++){
+        //     $array[] = array(
+        //     'group_id' => $request->groups[$i],
+        //     'user_id' => 1
+        //     );
+        // }
+        // $group = Group_User::create( $array );
+>>>>>>> origin/ganaa
 
         for ($i = 0;$i < count($request->groups);$i++)
         {
@@ -247,6 +265,7 @@ class ParticipantsController extends Controller
         $data->address = $request->get('address');
         $group_ids = $request->groups;
         $data->update();
+<<<<<<< HEAD
         // $parameters = [];
         if ($group_ids != null)
         {
@@ -278,6 +297,10 @@ class ParticipantsController extends Controller
             ->flash('message', 'Харилцагч амжилттай засварлалаа!');
         return redirect()
             ->route('participants.index');
+=======
+        
+        return redirect()->route('participants.index')->with('success', 'Харилцагч амжилттай засварлалаа!');
+>>>>>>> origin/ganaa
     }
 
     /**
@@ -307,7 +330,7 @@ class ParticipantsController extends Controller
      * Validation user function
     */
 
-    public function validateUser($id)
+    public function validateUser($id=null)
     {
         // return $id;
         return request()->validate(['firstname' => ['required', ['string']], 'lastname' => ['required', ['string']], 'email' => 'required|email|unique:users,email,' . $id . ',id', 'phone' => ['required', 'string', 'max:10'], 'register' => ['required', 'string', 'max:10'], 'dob' => ['required', 'date', 'max:10'], 'address' => ['required', 'string', 'max:100'], 'gender' => ['required'], 'role' => ['sometimes', 'required']
@@ -331,6 +354,7 @@ class ParticipantsController extends Controller
         return view('layouts.settings.participants.import', compact('user'));
     }
 
+<<<<<<< HEAD
     public function import_excel(Request $request)
     {
         $this->validate($request, ['select_file' => 'required|mimes:xls,xlsx']);
@@ -351,19 +375,53 @@ class ParticipantsController extends Controller
                         'phone' => $row['phone'],
                         'gender' => $row['gender'],
                         'address' => $row['address']
+=======
+
+    public function import_excel(Request $request)
+    {
+        $this->validate($request, [
+            'select_file'  => 'required|mimes:xls,xlsx'
+        ]);
+
+        $path = $request->file('select_file')->getRealPath();
+        $data = Excel::load($path)->get();
+        if($data->count() > 0)
+        {
+            foreach($data->toArray() as $key => $value)
+            { 
+                foreach($value as $row)
+                {
+                    $insert_data[] = array(
+                        'firstname'  => $row['firstname'],
+                        'email'   => $row['email'],
+                        'lastname'   => $row['lastname'],
+                        'phone'    => $row['phone'],
+                        'gender'  => $row['gender'],
+                        'address'   => $row['address']
+>>>>>>> origin/ganaa
                     );
                 }
             }
 
+<<<<<<< HEAD
             if (!empty($insert_data))
+=======
+            if(!empty($insert_data))
+>>>>>>> origin/ganaa
             {
                 DB::table('user ')->insert($insert_data);
             }
         }
+<<<<<<< HEAD
         return back()->with('success', 'Excel Data Imported successfully.');
         //  return response()->json(['msg'=>"Participant updated successfully."]);
 
     }
+=======
+            return back()->with('success', 'Excel Data Imported successfully.');        
+        
+        }
+>>>>>>> origin/ganaa
 
 }
 

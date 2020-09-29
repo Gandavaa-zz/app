@@ -9,7 +9,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasRoles;
+    use Notifiable, HasRoles, RecordsActivity;
 
     /**
      * The attributes that are mass assignable.
@@ -40,6 +40,11 @@ class User extends Authenticatable
 
     protected $guard_name = 'web';
 
+    protected static function boot()
+    {
+        parent::boot();
+    }
+
     public function tests()
     {
         return $this->belongsToMany(Test::class)->withTimestamps();
@@ -54,4 +59,11 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Group::class);
     }
+
+    function activity()
+    {
+        return $this->hasMany(Activity::class);
+    }
+
+    
 }

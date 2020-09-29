@@ -5,13 +5,19 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 class Quiz extends Model
-{
-    public function Test()
+{   
+    use RecordsActivity;
+    
+    protected $fillable = [
+        'test_id', 'number', 'quiz'
+    ];
+
+    public function test()
     {
         return $this->belongsTo(Test::class);
     }
     
-    public function Answer()
+    public function answers()
     {
         return $this->hasMany(Answer::class);
     }

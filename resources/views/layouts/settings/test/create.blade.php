@@ -10,6 +10,7 @@
                 <div class="card-header">{{ __('Шинэ тест') }}</div>
 
                 <div class="card-body">
+           
                     <form method="POST" action="{{ route('settings.test.store') }}">
                         @csrf
 
@@ -85,6 +86,13 @@
                             </div>
                         </div>
 
+                        <div class="card">
+                            <div class="card-header"> {{ __('Хэсгийн мэдээлэл') }}</div>
+                            <div class="card-body">
+                                <part-test></part-test>
+                            </div>
+                        </div>
+                                
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">

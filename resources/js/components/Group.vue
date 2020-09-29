@@ -2,7 +2,7 @@
 <template>
   <div>
     <v-select v-model="selected" multiple :options="options" @input="setSelected" />
-    <input type="hidden" v-model="selected" name="roles" />
+    <input type="hidden" v-model="selected" name="groups" />
   </div>
 </template>
 
@@ -12,9 +12,7 @@ import vSelect, { VueSelect } from 'vue-select'
 
 Vue.component('v-select', vSelect);
 
-export default {
-    inheritAttrs: false,
-    props: ['values'],
+export default {        
     data() {
         return {
             options:[],
@@ -25,13 +23,13 @@ export default {
         }
     },
      mounted() {
-        if(this.$attrs.selected){
+        if (this.$attrs.selected){
           this.$attrs.selected.forEach(element =>{
               this.selected.push(element);
           })
         }
-         
-         axios.get('/settings/getRoles').then(response => {
+                 
+         axios.get('/settings/userGroups/').then(response => {            
              response.data.forEach(element => {
                this.options.push(element.name)               
              });

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Settings;
 use App\Http\Controllers\Controller;
+use App\Part;
 use Illuminate\Http\Request;
 use App\Test;
+use App\PartTest;
 use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
 
 class TestsController extends Controller
@@ -35,20 +37,24 @@ class TestsController extends Controller
                 ->addColumn('action', function($row){
                     $btn = '
                     <ul class="list-group list-group-horizontal list-unstyled"><li class="pr-1">
-                    <a href="'.route("settings.test.show", $row->id).'" data-toggle="tooltip" data-id="'.$row->id.'" class="btn btn-secondary view btn-md">
+                    <a href="'.route("settings.test.show", $row->id).'" data-toggle="tooltip" data-id="'.$row->id.'" title="Харах" class="btn btn-secondary view btn-md">
                         <i class="cil-magnifying-glass"></i>
                         </a>
                     </li>
                     <li class="pr-1">
-                        <a href="'.route("settings.test.edit", $row->id).'" data-toggle="tooltip" data-id="'.$row->id.'" data-original-title="Edit" class="btn btn-primary btn-md" title="Edit">
+                        <a href="'.route("settings.test.edit", $row->id).'" data-toggle="tooltip" data-id="'.$row->id.'" title="Засах" data-original-title="Edit" class="btn btn-primary btn-md" title="Edit">
                         <i class="cil-pencil"></i></a>
                     </li>
                     <li class="pr-1">
                         <form class="form-inline" action="'.route('settings.test.destroy', $row->id).'" method="POST">
                             <input type="hidden" name="_method" value="DELETE">
                             <input type="hidden" name="_token" value="'.csrf_token().'">
-                            <button type="submit" class="btn btn-danger" onclick="return confirm(\'Та энэ бичлэгийг үнэхээр устгах уу?\')"><i class="cil-trash"></i></button>
+                            <button type="submit" title="Устгах" class="btn btn-danger" onclick="return confirm(\'Та энэ бичлэгийг үнэхээр устгах уу?\')"><i class="cil-trash"></i></button>
                         </form>
+                    </li>
+                    <li class="pr-1">
+                        <a href="'.route("quiz.index", $row->id).'" class="btn btn-success btn-md">
+                        <i class="cil-list"></i></a>                        
                     </li>
 
                 </ul><input type="checkbox" id="'.$row->id.'"';
@@ -74,15 +80,22 @@ class TestsController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
+    {  
 
         $data = $this->validateTest();
 
-        Test::create($data);
+        $test = Test::create($data);
 
-        $request->session()->flash('message', 'Тестийг амжилттай бүртгэлээ!');
+        $part_titles =  $request->part_title;   
+        
+        for ($i = 0; $i < count($part_titles); $i++) {
+            $request->part_title[$i];            
+            $parts[]= array('num'=>$i, 'test_id'=>$test->id, 'title'=>$request->part_title[$i], 'info'=> $request->part_info[$i]);                                             
+        }
 
-        return redirect()->route('settings.test');
+        $test->parts()->createMany($parts);        
+        
+        return redirect()->route('settings.test')->with('success', 'Тестийг амжилттай бүртгэлээ!');
     }
 
     /**
@@ -90,6 +103,7 @@ class TestsController extends Controller
      */
     public function show(Test $test)
     {
+        // return $test->parts;
         return view('layouts.settings.test.show',
                     [
                         'test'=> $test,
@@ -123,11 +137,14 @@ class TestsController extends Controller
         $test->type = request('type');
         $test->duration = request('duration');
         $test->save();
-
-        request()->session()->flash('message', 'Тестийг амжилттай шинэчлэлээ!');
-
-        return redirect()->route('settings.test');
-
+        
+        for ($i = 0; $i < count(request('part_id')); $i++) {             
+            $test->parts[$i]->title=request('part_title')[$i];
+            $test->parts[$i]->info=request('part_info')[$i];
+            $test->push();
+        }
+        
+        return redirect()->route('settings.test')->with('success', 'Тестийг засварлалаа!');
     }
 
     /**
@@ -136,20 +153,29 @@ class TestsController extends Controller
      */
     public function destroy(Test $test)
     {
-        $test->delete();
+        // check there is test has been registered user
+        if($test->users())
+            
+            return back()->with('error', $test->title. "-энэ тест дээр хэрэглэгч бүртгэгдсэн тул устгах боломжгүй!");    
 
-        request()->session()->flash('message', $test->title. "-г амжилттай устгалаа!");
+        else{
+            $test->delete();
 
-        return back();
+            return back()->with('success', $test->title. "-г амжилттай устгалаа!");
+        }        
+
     }
 
     public function validateTest()
     {
         return request()->validate([
             'title' => ['required', ['string']],
-            'info' => ['required', ['string']],
+            'info'=> ['required', ['string']],
             'type' => ['required', ['string']],
-            'duration' => ['required', ['string']]
+            'duration' => ['required', ['string']],
+            'part_title' => ['required'],
+            'part_info' => ['required']            
         ]);
-    }
+    }    
+    
 }

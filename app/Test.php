@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Test extends Model
 {
+    use RecordsActivity;
+    
     protected $fillable = ['title','info', 'type', 'duration'];
 
     public function sections()
@@ -17,4 +19,18 @@ class Test extends Model
     {
         return $this->hasMany(Quiz::class);
     }
+
+    public function parts()
+    {
+        return $this->hasMany(Part::class);
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+
+
+
 }

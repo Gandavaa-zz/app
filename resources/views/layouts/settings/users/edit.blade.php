@@ -59,37 +59,13 @@
                             </div>
                         </div>
 
-                        <?php /*
-                        <div class="form-group row">
-                            <label for="tests" class="col-md-4 col-form-label text-md-right">{{ __('Тестүүд') }}</label>
+                       <div class="form-group row">
+                            <label for="tests" class="col-md-4 col-form-label text-md-right">{{ __('Роль') }}</label>
 
                             <div class="col-md-6">
+                                <my-select :selected="{{$user->getRoleNames()->toJson()}}" class="@error('roles') is-invalid @enderror"></my-select>
 
-                                <select name="tests" multiple id="tests" class="form-control @error('tests') is-invalid @enderror">
-                                    @foreach($tests as $test)
-                                        <option value="{{ $test->id }}"
-                                            @if( in_array( $test->id, $user->tests->pluck('id')->toArray()))
-                                            selected @endif >{{ $test->title }}</option>
-                                    @endforeach
-                                </select>
-
-                                @error('tests')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-                        */
-                        ?>
-
-                        <!-- <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Нууц үг') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" value="{{ $user->password }}">
-
-                                @error('password')
+                                @error('roles')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -97,13 +73,18 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Нууц үг давтах') }}</label>
-
+                       <div class="form-group row">
+                            <label for="tests" class="col-md-4 col-form-label text-md-right">{{ __('Групп') }}</label>                            
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" value="{{ $user->password }}">
+                                <group :selected="{{ $user->groups->pluck('name') }}" class="@error('groups') is-invalid @enderror"></group>
+
+                                @error('groups')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
-                        </div> -->
+                        </div>
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">

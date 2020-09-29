@@ -48,11 +48,16 @@ return [
         'permission'=>'Зөвшөөрөл',
         'group' =>'Хэрэглэгчийн групп',
         'test'=> 'Тест',
-        'show'=> 'Харах'
+        'show'=> 'Харах', 
+        'quiz'=> 'Асуулт',
+        'answer'=> 'Хариулт',
+        'profile'=> 'Профайл'
     ],
 
     'durations' => [
         120, 115, 110, 105, 100, 95, 90, 85, 80, 75, 70, 65, 60, 55, 50, 45, 40, 35, 30, 25, 20, 15, 10 ],
+    
+    'admin_group' =>1,
 
     'env' => env('APP_ENV', 'production'),
 
@@ -176,7 +181,7 @@ return [
         Illuminate\Cookie\CookieServiceProvider::class,
         Illuminate\Database\DatabaseServiceProvider::class,
         Illuminate\Encryption\EncryptionServiceProvider::class,
-        Maatwebsite\Excel\ExcelServiceProvider::class,
+        // Maatwebsite\Excel\ExcelServiceProvider::class,
         Illuminate\Filesystem\FilesystemServiceProvider::class,
         Illuminate\Foundation\Providers\FoundationServiceProvider::class,
         Illuminate\Hashing\HashServiceProvider::class,

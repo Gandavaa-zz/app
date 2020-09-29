@@ -31,7 +31,7 @@
             <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('settings.test') }}">
                 <svg class="c-sidebar-nav-icon">
                     <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-description"></use>
-                </svg> Тестүүд</a>
+                </svg> Тест ба асуултууд</a>
             </li>
             <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('role.index') }}">
                 <svg class="c-sidebar-nav-icon">
@@ -93,6 +93,13 @@
                     <svg class="c-sidebar-nav-icon">
                         <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-list"></use>
                     </svg> Жагсаалт
+                </a>
+            </li>
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link" href="{{ route('test.index') }} ">
+                    <svg class="c-sidebar-nav-icon">
+                        <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-spreadsheet"></use>
+                    </svg> Урилга
                 </a>
             </li>
             <li class="c-sidebar-nav-item">

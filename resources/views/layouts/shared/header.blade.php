@@ -73,18 +73,21 @@
             <li class="c-header-nav-item dropdown"><a class="c-header-nav-link" data-toggle="dropdown" href="#"
                     role="button" aria-haspopup="true" aria-expanded="false">
                     <div class="c-avatar"><img class="c-avatar-img"
-                            src="{{ env('APP_URL', '') }}/assets/img/avatars/1.jpg" alt="user@email.com"></div>
+                            src="{{ env('APP_URL', '') }}/assets/img/avatars/8.jpg" alt="user@email.com"></div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right pt-0">
-                    <div class="dropdown-header bg-light py-2"><strong>Settings</strong></div><a class="dropdown-item"
-                        href="#">
+                    <div class="dropdown-header bg-light py-2"><strong>Settings</strong>
+                    </div>
+                    <a class="dropdown-item"  href="{{ route('user.profile', auth()->id()) }}">
                         <svg class="c-icon mr-2">
                             <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-user"></use>
-                        </svg> Profile</a><a class="dropdown-item" href="#">
+                        </svg> Хувийн профайл</a>
+                    <a class="dropdown-item" href="#">
                         <svg class="c-icon mr-2">
                             <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-settings"></use>
                         </svg> Settings</a>
-                    <div class="dropdown-divider"></div><a class="dropdown-item" href="#">                       
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">                       
                         <svg class="c-icon mr-2">
                             <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-account-logout"></use>
                         </svg>

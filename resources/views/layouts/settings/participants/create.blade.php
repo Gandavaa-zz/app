@@ -24,7 +24,7 @@
                                                 @enderror
                                             </div>
                                             <div class="col-sm-6">
-                                                <label for="inputLastname">Нэр</label>
+                                                <label for="firstname">Нэр</label>
                                                 <input id="firstname" placeholder="Нэр оруулна уу..." type="firstname" class="form-control @error('firstname') is-invalid @enderror" name="firstname" value="{{ old('firstname') }}" autocomplete="firstname" autofocus>
                                                 @error('firstname')
                                                 <span class="invalid-feedback" role="alert">

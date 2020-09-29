@@ -23,7 +23,7 @@
                             <th scope="col">#</th>
                             <th scope="col">Нэр.Овог</th>
                             <th scope="col">Имэйл</th>
-                            <th scope="col">Роль</th>
+                            <th scope="col">Үүрэг /role/</th>
                             <th scope="col">Үйлдэл</th>
                         </tr>
                         </thead>
@@ -35,7 +35,7 @@
                                 <th scope="row">{{ $i++ }} </th>
                                 <td>{{ $user->firstname }}. {{ Str::limit($user->lastname, 1) }}</td>
                                 <td>{{ $user->email }}</td>
-                                <td>{{ $user->getRoleNames()->implode('name', ', ')}}</td>
+                                <td>{{ $user->getRoleNames()->implode(',')}}</td>
                                 <td>
                                     <ul class="list-group list-group-horizontal list-unstyled">
                                         <li class="pr-1">

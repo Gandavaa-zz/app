@@ -34,6 +34,19 @@ class CreateTestsTable extends Migration
             $table->foreign('test_id')
                 ->references('id')->on('tests')->onDelete('cascade')->onDelete('cascade');
         });
+
+        Schema::create('parts', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->UnsignedBigInteger('test_id');
+            $table->integer('num');
+            $table->string('title');
+            $table->string('info');           
+            $table->timestamps();
+
+            $table->foreign('test_id')
+                  ->references('id')->on('tests')->onDelete('cascade')->onUpdate('cascade');
+             
+        });
     }
 
     /**
@@ -43,6 +56,7 @@ class CreateTestsTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('parts');
         Schema::dropIfExists('test_user');
         Schema::dropIfExists('tests');
     }

@@ -2,10 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\TestSection;
+use App\Part;
 use Faker\Generator as Faker;
 
-$factory->define(TestSection::class, function (Faker $faker) {
+$factory->define(Part::class, function (Faker $faker) {
     return [
         'test_id'=>factory(App\Test::class),
         'num' => $faker->numberBetween(1, 100), 
