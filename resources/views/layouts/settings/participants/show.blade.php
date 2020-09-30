@@ -1,292 +1,512 @@
 @extends('layouts.app')
-
-
 @section('content')
 <div class="container-fluid">
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-3">
 
-    <div class="cover">
-        <div class="cover-layer">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="profil-det-img d-flex">
-                           <div class="">
-                                <img src="http://lofrev.net/wp-content/photos/2017/05/user_black_logo.jpg" alt="" width="40%">
-                           </div>
-                           <div class="pd">
-                               <h2>Joney Smith</h2>
-                                <p>Web Designer</p>
-                           </div>
+              <!-- Profile Image -->
+              <div class="card card-primary card-outline">
+                <div class="card-body box-profile">
+                  <div class="text-center">
+                    <img class="profile-user-img img-fluid img-circle"
+                         src="/assets/img/avatars/1.jpg"
+                         alt="User profile picture">
+                  </div>
+
+                  <h3 class="profile-username text-center">{{ $user->firstname }} {{ $user->lastname }}</h3>
+
+                  <p class="text-muted text-center">Software Engineer</p>
+
+                  <ul class="list-group list-group-unbordered mb-3">
+                    <li class="list-group-item">
+                      <b>Followers</b> <a class="float-right">1,322</a>
+                    </li>
+                    <li class="list-group-item">
+                      <b>Following</b> <a class="float-right">543</a>
+                    </li>
+                    <li class="list-group-item">
+                      <b>Friends</b> <a class="float-right">13,287</a>
+                    </li>
+                  </ul>
+
+                  <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+
+              <!-- About Me Box -->
+              <div class="card card-primary">
+                <div class="card-header">
+                  <h3 class="card-title">About Me</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                  <strong><i class="fas fa-book mr-1"></i> Education</strong>
+
+                  <p class="text-muted">
+                    B.S. in Computer Science from the University of Tennessee at Knoxville
+                  </p>
+
+                  <hr>
+
+                  <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
+
+                  <p class="text-muted">Malibu, California</p>
+
+                  <hr>
+
+                  <strong><i class="fas fa-pencil-alt mr-1"></i> Skills</strong>
+
+                  <p class="text-muted">
+                    <span class="tag tag-danger">UI Design</span>
+                    <span class="tag tag-success">Coding</span>
+                    <span class="tag tag-info">Javascript</span>
+                    <span class="tag tag-warning">PHP</span>
+                    <span class="tag tag-primary">Node.js</span>
+                  </p>
+                  <hr>
+                  <strong><i class="far fa-file-alt mr-1"></i> Notes</strong>
+                  <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-9">
+              <div class="card">
+                <div class="card-header">
+                  <ul class="nav nav-tabs" style="font-size: 20px;">
+                    <li class="nav-item" ><a class="nav-link active" href="#overview" data-toggle="tab"><i class="cil-clipboard"></i> Overview</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab"><i class="cil-cursor"></i> Invite</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#assessment" data-toggle="tab"><i class="cil-graph"></i> Assessment</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab"><i class="cil-vertical-align-bottom1"></i> Talent map</a></li>
+                  </ul>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                  <div class="tab-content">
+                    <div class="active tab-pane" id="overview">
+                        <div class="row">
+                        <div class="col-sm-8 col-md-8">
+                        <div class="card">
+                        <div class="card-header"><h4>Talent map</h4></div>
+                        <div class="card-body row">
+                            <div class="wrapper col-md-6">
+                                    <h2 class="how-title">Skills</h2>
+                                    <div class="progress-group">
+                                       <div class="progress-group-header align-items-end">
+                                          <div>Risk Management</div>
+                                        </div>
+                                        <div class="progress-group-bars">
+                                            <div class="progress mb-3">
+                                                <div class="progress-bar progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="progress-group">
+                                        <div class="progress-group-header align-items-end">
+                                           <div>Strategic Planning</div>
+                                         </div>
+                                         <div class="progress-group-bars">
+                                             <div class="progress mb-3">
+                                                 <div class="progress-bar progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="56" aria-valuemin="0" aria-valuemax="100">56%</div>
+                                             </div>
+                                         </div>
+                                     </div>
+                                     <div class="progress-group">
+                                        <div class="progress-group-header align-items-end">
+                                           <div>Analytical Thinking</div>
+                                         </div>
+                                         <div class="progress-group-bars">
+                                             <div class="progress mb-3">
+                                                 <div class="progress-bar progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="87" aria-valuemin="0" aria-valuemax="100">87%</div>
+                                             </div>
+                                         </div>
+                                     </div>
+
+
+                            </div>
+                            <!-- end of /.coloumn -->
+                        <div class="wrapper col-md-6">
+                                <h2 class="how-title">Occupations</h2>
+                                <div class="progress-group">
+                                   <div class="progress-group-header align-items-end">
+                                      <div>Horticulturalist</div>
+                                    </div>
+                                    <div class="progress-group-bars">
+                                        <div class="progress mb-3">
+                                            <div class="progress-bar progress-bar bg-warning" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="progress-group">
+                                    <div class="progress-group-header align-items-end">
+                                       <div>Travel Agent</div>
+                                     </div>
+                                     <div class="progress-group-bars">
+                                         <div class="progress mb-3">
+                                             <div class="progress-bar progress-bar bg-warning" role="progressbar" style="width: 25%" aria-valuenow="56" aria-valuemin="0" aria-valuemax="100">56%</div>
+                                         </div>
+                                     </div>
+                                 </div>
+                                 <div class="progress-group">
+                                    <div class="progress-group-header align-items-end">
+                                       <div>Network Administration</div>
+                                     </div>
+                                     <div class="progress-group-bars">
+                                         <div class="progress mb-3">
+                                             <div class="progress-bar progress-bar bg-warning" role="progressbar" style="width: 25%" aria-valuenow="87" aria-valuemin="0" aria-valuemax="100">87%</div>
+                                         </div>
+                                     </div>
+                                 </div>
+                        </div>
+                        <!-- end of /.coloumn -->
 
                         </div>
-                    </div>
-                    <div class="col-md-4 eml-mob">
-                        <ul class="">
-                            <li><i class="cil-shield-alt"></i> joneysmith@gmail.com</li>
-                            <li><i class="fa fa-phone-square"></i> +123 234 234</li>
-                        </ul>
-                    </div>
-                    <div class="col-md-4 d-flex map-mark">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <p>First Floor,Vincent Plaza, Kuzhithurai, Marthandam </p>
-                    </div>
-                </div>
-                <div class="nav-detail">
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                       <li class="nav-item">
+                        </div>
+                        </div>
+                        <div class="col-sm-8 col-md-4">
+                        <div class="card">
+                        <div class="card-header">Card title</div>
+                        <div class="card-body">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</div>
+                        </div>
+                        </div>
 
-                         <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
-                       </li>
-                       <li class="nav-item">
-                         <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a>
-                       </li>
-                       <li class="nav-item">
-                         <a class="nav-link" id="education-tab" data-toggle="tab" href="#education" role="tab" aria-controls="contact" aria-selected="false">Resume</a>
-                       </li>
-                       <li class="nav-item">
-                         <a class="nav-link" id="portfolio-tab" data-toggle="tab" href="#portfolio" role="tab" aria-controls="contact" aria-selected="false">Portfolio</a>
-                       </li>
-                       <li class="nav-item">
-                         <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact Us</a>
-                       </li>
-                     </ul>
-                     <div class="tab-content" id="myTabContent">
-                       <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                           <div class="row no-margin home-det">
-                               <div class="col-md-4 big-img">
-                                  <img src="assets/images/profile-big.jpg" alt="">
-                               </div>
-                               <div class="col-md-8 home-dat">
-                                   <div class="detal-jumbo">
-                                       <h3>Hellow I'm Web Designer / Developer</h3>
-                                       <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,</p>
-                                   </div>
-                                   <div class="links">
-                                   <div class="row ">
-                                       <div class="col-xl-6 col-md-12">
-                                           <ul class="btn-link">
-                                               <li>
-                                                   <a href=""><i class="fas fa-paper-plane"></i> Hire Me</a>
-                                               </li>
-                                               <li>
-                                                   <a href=""><i class="fas fa-cloud-download-alt"></i> Download Resume</a>
-                                               </li>
-                                           </ul>
-                                       </div>
-                                       <div class="col-xl-6 col-md-12">
-                                           <ul class="social-link">
-                                               <li><i class="fab fa-facebook-f"></i></li>
-                                               <li><i class="fab fa-twitter"></i></li>
-                                               <li><i class="fab fa-pinterest-p"></i></li>
-                                               <li><i class="fab fa-linkedin-in"></i></li>
-                                               <li><i class="fab fa-linkedin-in"></i></li>
-                                               <li><i class="fab fa-youtube"></i></li>
-                                           </ul>
-                                       </div>
-                                   </div>
-                               </div>
-                               <div class="jumbo-address">
-                                  <div class="row no-margin">
-                                           <div class="col-lg-6 no-padding">
-
-                                           <table class="addrss-list">
-                                               <tbody><tr>
-                                                   <th>Position</th>
-                                                   <td>Freelance</td>
-                                               </tr>
-                                               <tr>
-                                                   <th>Nationality</th>
-                                                   <td>American</td>
-                                               </tr>
-                                               <tr>
-                                                   <th>Date of birth</th>
-                                                   <td>09-06-1989</td>
-                                               </tr>
-                                           </tbody></table>
-
-                                   </div>
-                                   <div class="col-lg-6 no-padding">
-                                        <table class="addrss-list">
-                                               <tbody><tr>
-                                                   <th>Experiance</th>
-                                                   <td>5+ Years</td>
-                                               </tr>
-                                               <tr>
-                                                   <th>Website</th>
-                                                   <td>www.yourdomain.com</td>
-                                               </tr>
-                                               <tr>
-                                                   <th>Languages</th>
-                                                   <td>English,French,Germany</td>
-                                               </tr>
-                                           </tbody></table>
-                                   </div>
-                                  </div>
-
-                               </div>
-                               </div>
-                           </div>
-
-                       </div>
-                       <div class="tab-pane fade profile-tab" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                           <div class="profile-desic">
-                               <br>
-                                   <p>Hello, I’m UI/UX Developer / Wordpress Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa.</p>
-                               </div>
-                               <div class="sec-title">
-                                   <h2>Services</h2> 
-                               </div>
-                               <div class="row service-ro no-margin">
-                                   <div class="col-lg-4 col-md-6 singe-servic">
-                                          <i class="fab fa-delicious"></i>
-                                           <h4>Graphic Design</h4>
-                                           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                   </div>
-                                   <div class="col-lg-4 col-md-6 singe-servic">
-                                          <i class="fas fa-code"></i>
-                                           <h4>Website Design</h4>
-                                           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                   </div>
-                                   <div class="col-lg-4 col-md-6 singe-servic">
-                                          <i class="fab fa-chrome"></i>
-                                           <h4>Web Development</h4>
-                                           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                   </div>
-                                   <div class="col-lg-4 col-md-6 singe-servic">
-                                          <i class="fab fa-android"></i>
-                                           <h4>Android Development</h4>
-                                           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                   </div>
-                                   <div class="col-lg-4 col-md-6 singe-servic">
-                                          <i class="fab fa-app-store-ios"></i>
-                                           <h4>IOS Design</h4>
-                                           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                   </div>
-                                   <div class="col-lg-4 col-md-6 singe-servic">
-                                          <i class="fas fa-mobile-alt"></i>
-                                           <h4>Ionic Development</h4>
-                                           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                   </div>
-                               </div>
-
-                       </div>
-                       <div class="tab-pane education-detail fade" id="education" role="tabpanel" aria-labelledby="contact-tab">
-                           <div class="sec-title">
-                                 <h2>Education Details</h2>
-                           </div>
-                            <div class="service no-margin row">
-                                   <div class="col-sm-3 resume-dat serv-logo">
-                                       <h6>2013-2015</h6>
-                                     <p>Master Degree</p>
-                                   </div>
-                                   <div class="col-sm-9 rgbf">
-                                       <h5>Cambridg University</h5>
-                                       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                   </div>
-                               </div>
-                               <div class="service no-margin row">
-                                   <div class="col-sm-3 resume-dat serv-logo">
-                                       <h6>2013-2015</h6>
-                                     <p>Bacholers Degree</p>
-                                   </div>
-                                   <div class="col-sm-9 rgbf">
-                                       <h5>Anna University</h5>
-                                       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                   </div>
-                               </div>
-                               <div class="service no-margin row">
-                                   <div class="col-sm-3 resume-dat serv-logo">
-                                       <h6>2013-2015</h6>
-                                     <p>High School</p>
-                                   </div>
-                                   <div class="col-sm-9 rgbf">
-                                       <h5>A.M.H.S.S</h5>
-                                       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                   </div>
-                               </div>
-                               <div class="service no-margin row">
-                                   <div class="col-sm-3 resume-dat serv-logo">
-                                       <h6>2013-2015</h6>
-                                     <p>School</p>
-                                   </div>
-                                   <div class="col-sm-9 rgbf">
-                                       <h5>Anna University</h5>
-                                       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                   </div>
-                               </div>
-                           </div>
-                            <div class="tab-pane portfolio-detail fade" id="portfolio" role="tabpanel" aria-labelledby="contact-tab">
-                                <div class="row no-margin gallery">
-                                   <div class="col-sm-4">
-                                       <img src="assets/images/gallery/gallery_01.jpg" alt="">
-                                   </div>
-                                   <div class="col-sm-4">
-                                       <img src="assets/images/gallery/gallery_02.jpg" alt="">
-                                   </div>
-                                   <div class="col-sm-4">
-                                       <img src="assets/images/gallery/gallery_03.jpg" alt="">
-                                   </div>
-                                   <div class="col-sm-4">
-                                       <img src="assets/images/gallery/gallery_04.jpg" alt="">
-                                   </div>
-                                   <div class="col-sm-4">
-                                       <img src="assets/images/gallery/gallery_05.jpg" alt="">
-                                   </div>
-                                   <div class="col-sm-4">
-                                       <img src="assets/images/gallery/gallery_06.jpg" alt="">
-                                   </div>
-                                    <div class="col-sm-4">
-                                       <img src="assets/images/gallery/gallery_10.jpg" alt="">
-                                   </div>
-                                    <div class="col-sm-4">
-                                       <img src="assets/images/gallery/gallery_08.jpg" alt="">
-                                   </div>
-                                    <div class="col-sm-4">
-                                       <img src="assets/images/gallery/gallery_09.jpg" alt="">
-                                   </div>
-
-                               </div>
+                        <div class="col-sm-8 col-md-8">
+                            <div class="card">
+                            <div class="card-header"><h4>Profile</h4></div>
+                            <div class="card-body">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</div>
                             </div>
-                            <div class="tab-pane portfolio-detail contact-tab fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                               <div class="row no-margin">
-                                   <div class="col-md-6 no-padding">
-                                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3176144.0450019627!2d-107.79423426090409!3d38.97644533805396!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x874014749b1856b7%3A0xc75483314990a7ff!2sColorado%2C+USA!5e0!3m2!1sen!2sin!4v1547222354537"  frameborder="0" style="border:0" allowfullscreen></iframe>
-                                   </div>
-                                   <div class="col-md-6">
-                                       <div class="row cont-row no-margin">
-                                           <div class="col-sm-6">
-                                               <input placeholder="Enter Full Name" type="text" class="form-control form-control-sm">
-                                           </div>
-                                            <div class="col-sm-6">
-                                               <input placeholder="Enter Email Address" type="text" class="form-control form-control-sm">
-                                           </div>
-                                       </div>
-                                       <div class="row cont-row no-margin">
-                                           <div class="col-sm-6">
-                                               <input placeholder="Enter Mobile Number" type="text" class="form-control form-control-sm">
-                                           </div>
+                            </div>
 
-                                       </div>
-                                       <div class="row cont-row no-margin">
-                                           <div class="col-sm-12">
-                                              <textarea placeholder="Enter your Message" class="form-control form-control-sm" rows="10"></textarea>
-                                           </div>
 
-                                       </div>
-                                       <div class="row cont-row no-margin">
-                                           <div class="col-sm-6">
-                                               <button class="btn btn-sm btn-success">Send Message</button>
-                                           </div>
 
-                                       </div>
-                                   </div>
-                               </div>
+                    </div>
+                    </div>
+                    <!-- /.tab-pane -->
+                    <div class="tab-pane" id="timeline">
+                      <!-- The timeline -->
+                      <div class="timeline timeline-inverse">
+                        <!-- timeline time label -->
+                        <div class="time-label">
+                          <span class="bg-danger">
+                            10 Feb. 2014
+                          </span>
+                        </div>
+                        <!-- /.timeline-label -->
+                        <!-- timeline item -->
+                        <div>
+                          <i class="fas fa-envelope bg-primary"></i>
 
-                           </div>
-                       </div>
-                     </div>
-                </div>
+                          <div class="timeline-item">
+                            <span class="time"><i class="far fa-clock"></i> 12:05</span>
+
+                            <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
+
+                            <div class="timeline-body">
+                              Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
+                              weebly ning heekya handango imeem plugg dopplr jibjab, movity
+                              jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
+                              quora plaxo ideeli hulu weebly balihoo...
+                            </div>
+                            <div class="timeline-footer">
+                              <a href="#" class="btn btn-primary btn-sm">Read more</a>
+                              <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- END timeline item -->
+                        <!-- timeline item -->
+                        <div>
+                          <i class="fas fa-user bg-info"></i>
+
+                          <div class="timeline-item">
+                            <span class="time"><i class="far fa-clock"></i> 5 mins ago</span>
+
+                            <h3 class="timeline-header border-0"><a href="#">Sarah Young</a> accepted your friend request
+                            </h3>
+                          </div>
+                        </div>
+                        <!-- END timeline item -->
+                        <!-- timeline item -->
+                        <div>
+                          <i class="fas fa-comments bg-warning"></i>
+
+                          <div class="timeline-item">
+                            <span class="time"><i class="far fa-clock"></i> 27 mins ago</span>
+
+                            <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
+
+                            <div class="timeline-body">
+                              Take me to your leader!
+                              Switzerland is small and neutral!
+                              We are more like Germany, ambitious and misunderstood!
+                            </div>
+                            <div class="timeline-footer">
+                              <a href="#" class="btn btn-warning btn-flat btn-sm">View comment</a>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- END timeline item -->
+                        <!-- timeline time label -->
+                        <div class="time-label">
+                          <span class="bg-success">
+                            3 Jan. 2014
+                          </span>
+                        </div>
+                        <!-- /.timeline-label -->
+                        <!-- timeline item -->
+                        <div>
+                          <i class="fas fa-camera bg-purple"></i>
+
+                          <div class="timeline-item">
+                            <span class="time"><i class="far fa-clock"></i> 2 days ago</span>
+
+                            <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
+
+                            <div class="timeline-body">
+                              <img src="http://placehold.it/150x100" alt="...">
+                              <img src="http://placehold.it/150x100" alt="...">
+                              <img src="http://placehold.it/150x100" alt="...">
+                              <img src="http://placehold.it/150x100" alt="...">
+                            </div>
+                          </div>
+                        </div>
+                        <!-- END timeline item -->
+                        <div>
+                          <i class="far fa-clock bg-gray"></i>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- /.tab-pane -->
+
+                    <div class="tab-pane" id="assessment">
+                        <fieldset class="responsive" style="border:none; ">
+                            <div class="col-sm-4">
+                                  <div class="box">
+                                    <div class="lead">
+                                           <i class="fa fa-sign-in ec-title-text-color"></i> Authentication</div>
+                                    <small class="text-muted">
+                                                    </small>
+                                </div>
+                            </div>
+                                <div class="col-sm-7 col-sm-offset-1">
+
+                                <p class="responsive">
+                                <i title="Authentication url" class="fa fa-link"></i>  https://app.centraltest.com/united-management-consulting/auth-participant					<br>
+                                Username: <strong>tdanzansod4970440.daba</strong>
+                                <br>
+                                Password: <strong>***********</strong>
+                                <br>
+                                                                        </p>
+                                </div>
+                        </fieldset>
+
+                        <div class="form-group">
+                        <select id='status' class="form-control" style="width: 200px">
+                            <option value="">--Select Status--</option>
+                            <option value="1">Active</option>
+                            <option value="0">Deactive</option>
+                        </select>
+                    </div>
+                        <table class="table table-bordered yajra-datatable user_table " id="user_table">
+                            <thead>
+                                <tr>
+                                    <th width="3px"><input type="checkbox" id="selectAll"/></th>
+                                    <th width="5px">#</th>
+                                    <th>Овог нэр</th>
+                                    <th>Evaluator</th>
+                                    <th>Бүртгэсэн огноо</th>
+                                    <th>Гүйцэтгэсэн хугацаа</th>
+                                    <th width="100px">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.tab-pane -->
+                  </div>
+                  <!-- /.tab-content -->
+                </div><!-- /.card-body -->
+              </div>
+              <!-- /.nav-tabs-custom -->
             </div>
-        </div>
-    </div>
-
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </section>
+      <!-- /.content -->
+</div>
 @endsection
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+            var table = $('.yajra-datatable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('participants.assessment') }}",
+                columns: [
+                    {
+                        data: 'checkbox',
+                        name: 'checkbox',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex'
+                    },
+                    {
+                        data: 'fullname',
+                        name: 'fullname'
+                    },
+                    {
+                        data: 'created_at',
+                        name: 'created_at'
+                    },
+                    {
+                        data: 'created_by',
+                        name: 'created_by'
+                    },
+                    {
+                        data: "name",
+                        name: "name"
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: true,
+                        searchable: true
+
+                    },
+                ]
+            });
+
+        });
+
+
+        $(document).ready(function () {
+          $('body').on('click', '.addToGroup', function () {
+            var id  = $(this).data('id');
+            $('#user_id').val(id);
+            $('#groupModal').modal('show');
+            // alert(id);
+          })
+        });
+
+        $(document).ready(function () {
+          $('body').on('click', '#selectAll', function () {
+            if ($(this).hasClass('allChecked')) {
+                $('input[type="checkbox"]', '#user_table').prop('checked', false);
+            } else {
+                $('input[type="checkbox"]', '#user_table').prop('checked', true);
+            }
+            $(this).toggleClass('allChecked');
+          })
+        });
+
+        $(document).on('click', '#deleteMultiple', function(){
+            var id = [];
+            Swal.fire({
+            title: 'Are you sure?',
+            // text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Тийм',
+            cancelButtonText: 'Үгүй'
+            }).then((result) => {
+            if (result.value) {
+                $('.participant_checkbox:checked').each(function(){
+                        id.push($(this).val());
+                    });
+                    if(id.length > 0)
+                    {
+                        $.ajax({
+                            url:"{{ route('participants.deleteMultiple')}}",
+                            method:"get",
+                            data:{id:id},
+                            success:function(data)
+                            {
+                                Swal.fire(
+                                'Deleted!',
+                                'Амжилттай устгагдлаа',
+                                'success'
+                                )
+                                $('#user_table').DataTable().ajax.reload();
+                            }
+                        });
+                    }
+                    else
+                    {
+                                Swal.fire({
+                                icon: 'error',
+                                title: 'Алдаа...',
+                                text: 'Харилцагч сонгоно уу!'
+                                })
+
+                    };
+            }
+            })
+            });
+
+
+        $('body').on('click', '.delete', function () {
+        var id = $(this).data("id");
+        //  var firstname = $(this).data("firstname");
+        //  console.log("participant id - " + id);
+         Swal.fire({
+            title: 'Are you sure?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Тийм',
+            cancelButtonText: 'Үгүй'
+        }).then((result) => {
+          if (result.value) {
+            $.ajax({
+               type: "get",
+               url:"participants/destroy/"+id,
+               success: function (data) {
+                setTimeout(function(){
+             $('#confirmModal').modal('hide');
+             $('#user_table').DataTable().ajax.reload();
+            });
+               },
+               error: function (data) {
+                   console.log('Error:', data);
+               }
+           });
+            Swal.fire(
+              'Deleted!',
+              'Амжилттай устгагдлаа',
+              'success'
+            )
+          }
+        })
+        $('#select_all').click(function(event) {
+                var $that = $(this);
+                $(':checkbox').each(function() {
+                    this.checked = $that.is(':checked');
+                });
+            });
+
+
+          function addPost() {
+            $('#add-group-modal').modal('show');
+          }
+
+
+        });
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+

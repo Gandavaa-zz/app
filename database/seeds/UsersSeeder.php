@@ -117,11 +117,7 @@ class UsersSeeder extends Seeder
 
             $client->assignRole($clientRole);
 
-<<<<<<< HEAD
-            // $client->groups()->assign($group->id);
-=======
             $client->groups()->attach($group->id);
->>>>>>> origin/ganaa
 
             array_push($usersIds, $client->id);
         }

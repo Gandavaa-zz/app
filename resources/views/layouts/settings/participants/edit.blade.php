@@ -110,16 +110,15 @@
                                                 </span>
                                                 @enderror
                                             </div>
-
                                             <div class="col-sm-6">
                                                 <label for="groups">Group</label>
-                                                <select id="groups" class="js-example-basic-multiple form-control groups" name="groups[]" multiple="multiple">
-                                                    @if ($group_names ?? '')
-                                                    @foreach($group_names ?? '' as $group)
-                                                    <option value='{{$group->id}}' selected>{{$group->name}}</option>
-                                                    @endforeach
-                                                    @endif
-                                                </select>
+                                                <group :selected="{{ $group_names->pluck('name') }}" class="@error('groups') is-invalid @enderror"></group>
+
+                                                @error('groups')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
                                             </div>
                                         </div>
                                 </div>

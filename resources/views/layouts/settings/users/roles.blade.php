@@ -10,7 +10,7 @@
                 <div class="card-header"><strong>"{{ $user->firstname }}" {{ __('рольд өгөх') }}</strong></div>
 
                 <div class="card-body">
-                    
+
                     @include('layouts.shared.alert')
 
                     <form method="POST" action="{{ route('user.giveRoles', $user->id) }}">
@@ -21,7 +21,7 @@
 
                             <div class="col-md-6">
                                 <label  class="form-control">{{ $user->lastname }}</label>
-                                                                 
+
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -36,21 +36,21 @@
 
                             <div class="col-md-6">
                             <label id="firstname"  class="form-control">{{ $user->firstname }}</label>
-                              
+
                             </div>
 
                         </div>
-                        
+
                         <div class="form-group row">
                             <label for="firstname" class="col-md-4 col-form-label text-md-right">{{ __('Имэйл') }}</label>
 
                             <div class="col-md-6">
                             <label id="firstname"  class="form-control">{{ $user->email }}</label>
-                              
+
                             </div>
 
                         </div>
-                        
+
                         <div class="form-group row">
                             <label for="tests" class="col-md-4 col-form-label text-md-right">{{ __('Роль') }}</label>
 
@@ -62,10 +62,10 @@
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Хадгалах') }}                                    
+                                    {{ __('Хадгалах') }}
                                 </button>
                                 <a href="{{ route('users.index') }}" class="btn btn-danger">
-                                    {{ __('Цуцлах') }}                                    
+                                    {{ __('Цуцлах') }}
                                 </a>
                             </div>
                         </div>

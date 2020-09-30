@@ -13,7 +13,7 @@ class ProfilesController extends Controller
 
         // return  Activity::feed($user, 50);
 
-         $activities = $user->activity->fresh('subject');        
+         $activities = $user->activity->fresh('subject');
 
         return view('layouts.settings.users.profile', [
                 'user' => $user,

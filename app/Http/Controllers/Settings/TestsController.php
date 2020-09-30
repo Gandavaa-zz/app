@@ -54,7 +54,7 @@ class TestsController extends Controller
                     </li>
                     <li class="pr-1">
                         <a href="'.route("quiz.index", $row->id).'" class="btn btn-success btn-md">
-                        <i class="cil-list"></i></a>                        
+                        <i class="cil-list"></i></a>
                     </li>
 
                 </ul><input type="checkbox" id="'.$row->id.'"';
@@ -80,21 +80,21 @@ class TestsController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {  
+    {
 
         $data = $this->validateTest();
 
         $test = Test::create($data);
 
-        $part_titles =  $request->part_title;   
-        
+        $part_titles =  $request->part_title;
+
         for ($i = 0; $i < count($part_titles); $i++) {
-            $request->part_title[$i];            
-            $parts[]= array('num'=>$i, 'test_id'=>$test->id, 'title'=>$request->part_title[$i], 'info'=> $request->part_info[$i]);                                             
+            $request->part_title[$i];
+            $parts[]= array('num'=>$i, 'test_id'=>$test->id, 'title'=>$request->part_title[$i], 'info'=> $request->part_info[$i]);
         }
 
-        $test->parts()->createMany($parts);        
-        
+        $test->parts()->createMany($parts);
+
         return redirect()->route('settings.test')->with('success', 'Тестийг амжилттай бүртгэлээ!');
     }
 
@@ -137,13 +137,13 @@ class TestsController extends Controller
         $test->type = request('type');
         $test->duration = request('duration');
         $test->save();
-        
-        for ($i = 0; $i < count(request('part_id')); $i++) {             
+
+        for ($i = 0; $i < count(request('part_id')); $i++) {
             $test->parts[$i]->title=request('part_title')[$i];
             $test->parts[$i]->info=request('part_info')[$i];
             $test->push();
         }
-        
+
         return redirect()->route('settings.test')->with('success', 'Тестийг засварлалаа!');
     }
 
@@ -155,14 +155,14 @@ class TestsController extends Controller
     {
         // check there is test has been registered user
         if($test->users())
-            
-            return back()->with('error', $test->title. "-энэ тест дээр хэрэглэгч бүртгэгдсэн тул устгах боломжгүй!");    
+
+            return back()->with('error', $test->title. "-энэ тест дээр хэрэглэгч бүртгэгдсэн тул устгах боломжгүй!");
 
         else{
             $test->delete();
 
             return back()->with('success', $test->title. "-г амжилттай устгалаа!");
-        }        
+        }
 
     }
 
@@ -174,8 +174,8 @@ class TestsController extends Controller
             'type' => ['required', ['string']],
             'duration' => ['required', ['string']],
             'part_title' => ['required'],
-            'part_info' => ['required']            
+            'part_info' => ['required']
         ]);
-    }    
-    
+    }
+
 }

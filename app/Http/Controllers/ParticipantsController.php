@@ -9,16 +9,13 @@ use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Http\POST;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Str;
-<<<<<<< HEAD
-use DataTables;
-use Illuminate\Support\Facades\App;
-=======
->>>>>>> origin/ganaa
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Contracts\DataTable;
 use Yajra\DataTables\DataTables as DataTablesDataTables;
 use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
@@ -75,6 +72,46 @@ class ParticipantsController extends Controller
         return view('layouts.settings.participants.index');
     }
 
+    public function assessment_table(Request $request)
+    {
+
+        if ($request->ajax())
+        {
+            $data = DB::table('users')->select("users.id", DB::raw("(GROUP_CONCAT(groups.name)) as `name`") , DB::raw("CONCAT(tb2.lastname, ' ', tb2.firstname) as created_by") , DB::raw("CONCAT(users.lastname, ' ', users.firstname) as fullname") , "users.email", "users.phone", "users.created_at")
+                ->leftJoin("group_user", "group_user.user_id", "=", "users.id")
+                ->leftJoin("groups", "groups.id", "=", "group_user.group_id")
+                ->leftJoin("users as tb2", "users.created_by", "=", "tb2.id")
+                ->groupBy('users.id', 'users.created_at', 'users.phone', 'users.email', 'users.firstname', 'users.lastname', 'tb2.firstname', 'tb2.lastname')
+                ->orderByDesc('id')
+                ->get();
+
+            return FacadesDataTables::of($data)->addIndexColumn()->addColumn('action', function ($row)
+            {
+                $btn = '
+                <div class="btn-group">
+                <button type="button" class="btn btn-success"><i class="cil-media-play"></i> Activate</button>
+                <button type="button" class="btn btn-primary"><i class="cil-send"></i> Invite</button>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+                     Other
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#"><i class="cil-newspaper"></i> Participant Report</a>
+                    <a class="dropdown-item" href="#"><i class="cil-folder"></i>  History</a>
+                    <a class="dropdown-item" href="#" style="color:red"><i class="cil-trash"></i> Delete</a>
+                  </div>
+                </div>
+              </div><input type="checkbox" id="' . $row->id . '"';
+                return $btn;
+            })->addColumn('checkbox', '<input type="checkbox" id="chkboxes" name="participant_checkbox[]" class="participant_checkbox" value="{{$id}}" />')
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        // return view('layouts.settings.participants.index');
+    }
+
+
     public function show($id)
     {
         $where = array(
@@ -84,36 +121,6 @@ class ParticipantsController extends Controller
         return view('layouts.settings.participants.show', compact('user'));
         // return response()->json($user);
 
-    }
-
-    // used for populate data for group dropdown
-    public function fetch_groups(Request $request)
-    {
-
-        // return $request;
-        $search = $request->search;
-        if ($search == '')
-        {
-            $groups = Group::orderby('name', 'asc')->select('id', 'name')
-                ->get();
-        }
-        else
-        {
-            $groups = Group::orderby('name', 'asc')->select('id', 'name')
-                ->where('name', 'like', '%' . $search . '%')->get();
-        }
-
-        $response = array();
-        foreach ($groups as $group)
-        {
-            $response[] = array(
-                "id" => $group->id,
-                "name" => $group->name
-            );
-        }
-
-        echo json_encode($response);
-        exit;
     }
 
     /**
@@ -133,7 +140,6 @@ class ParticipantsController extends Controller
 
     public function store(Request $request)
     {
-<<<<<<< HEAD
         $data = $this->validateUser(null);
         $data['password'] = Hash::make($this->keyGenerator());
         $data['group_id'] = $request->group_id;
@@ -142,34 +148,20 @@ class ParticipantsController extends Controller
         $data['email'] = $request->email;
         $data['gender'] = $request->gender;
         $data['phone'] = $request->phone;
-        $data['group'] = implode(',', $request->groups);
+        var_dump($data);
+
+        $user = User::create( $data );
         $id = Auth::user()->id;
         $data['created_by'] = $id;
+        $data['groups'] = $this->groupToArray(request('groups'));
         $array = array();
-
-        $user = User::create($data);
         $lastInsertedId = $user->id;
-=======
-        $data = $this->validateUser();
 
-        $data['password'] = Hash::make($this->keyGenerator());
-        $data['group_id'] = $request->group_id;        
-        // $data['group'] = implode(',', $request->groups);        
-        $data['created_by'] = auth()->id();
 
-        // for ($i=0; $i <count($request->groups) ; $i++){
-        //     $array[] = array(
-        //     'group_id' => $request->groups[$i],
-        //     'user_id' => 1
-        //     );
-        // }
-        // $group = Group_User::create( $array );
->>>>>>> origin/ganaa
-
-        for ($i = 0;$i < count($request->groups);$i++)
+        for ($i = 0;$i < count( $data['groups']);$i++)
         {
             $array[] = array(
-                'group_id' => $request->groups[$i],
+                'group_id' => $data['groups'][$i],
                 'user_id' => $lastInsertedId
             );
         }
@@ -187,21 +179,36 @@ class ParticipantsController extends Controller
             $user->assignRole($role);
         }
 
-        // $user->tests()->attach(request('tests'));
-        $request->session()
-            ->flash('message', 'Харилцагч амжилттай бүртгэлээ!');
+        return redirect()->route('participants.index')->with('success', 'Харилцагч амжилттай бүртгэлээ!');
+    }
 
-        return redirect()
-            ->route('participants.index');
+
+    protected function groupToArray($groups){
+
+        if(Str::contains($groups, ',')){
+            foreach(explode(",", $groups) as $name)
+            {
+                $group = Group::where('name', $name)->get();
+                $group_ids[] = $group->id;
+            }
+        }else{
+            $group = Group::where('name', $groups)->first();
+
+            $group_ids[] = $group->id;
+
+        }
+
+        return $group_ids;
     }
 
     public function addToGroup(Request $request)
     {
         // return $request;
         // $data = $this->validateUser(null);
-        for ($i = 0;$i < count($request->groups);$i++)
+        $groups = $this->groupToArray($request->groups);
+        for ($i = 0;$i < count($groups); $i++)
         {
-            $user = Group_User::updateOrCreate(['user_id' => $request->user_id, ], ['group_id' => $request->groups[$i]]);
+            $user = Group_User::updateOrCreate(['user_id' => $request->user_id, ], ['group_id' => $groups[$i]]);
         }
 
         // return $user;
@@ -265,42 +272,7 @@ class ParticipantsController extends Controller
         $data->address = $request->get('address');
         $group_ids = $request->groups;
         $data->update();
-<<<<<<< HEAD
-        // $parameters = [];
-        if ($group_ids != null)
-        {
-            for ($i=0; $i<count($group_ids); $i++)
-            { 
-                if (!Group_User::where('user_id', $id)->exists() && !Group_User::where('group_id', $group_ids[$i])->exists()) {
-                    // new
-                    $flight = new Group_User();
-                    // return 'new';
-                    $flight->user_id = $id;
-                    $flight->group_id = $group_ids[$i];
-                    $flight->save();
-
-                }
-                else{
-                    // exist
-                    // return 'update  ';
-                    $flight = Group_User::where('user_id', $id)->update(['group_id' => $group_ids[$i]]);
-                }
-
-            }
-        }
-        else
-        {
-            $user = Group_User::where('user_id', $id)->delete();
-        }
-        request()
-            ->session()
-            ->flash('message', 'Харилцагч амжилттай засварлалаа!');
-        return redirect()
-            ->route('participants.index');
-=======
-        
         return redirect()->route('participants.index')->with('success', 'Харилцагч амжилттай засварлалаа!');
->>>>>>> origin/ganaa
     }
 
     /**
@@ -337,8 +309,38 @@ class ParticipantsController extends Controller
         // 'password' => ['required', 'string', 'min:8', 'confirmed'],
         // 'tests' => 'exists:tests,id'
         ]);
-
     }
+
+     // used for populate data for group dropdown
+     public function fetch_groups(Request $request)
+     {
+
+         // return $request;
+         $search = $request->search;
+         if ($search == '')
+         {
+             $groups = Group::orderby('name', 'asc')->select('id', 'name')
+                 ->get();
+         }
+         else
+         {
+             $groups = Group::orderby('name', 'asc')->select('id', 'name')
+                 ->where('name', 'like', '%' . $search . '%')->get();
+         }
+
+         $response = array();
+         foreach ($groups as $group)
+         {
+             $response[] = array(
+                 "id" => $group->id,
+                 "name" => $group->name
+             );
+         }
+
+         echo json_encode($response);
+         exit;
+     }
+
 
     public function keyGenerator()
     {
@@ -354,28 +356,6 @@ class ParticipantsController extends Controller
         return view('layouts.settings.participants.import', compact('user'));
     }
 
-<<<<<<< HEAD
-    public function import_excel(Request $request)
-    {
-        $this->validate($request, ['select_file' => 'required|mimes:xls,xlsx']);
-
-        $path = $request->file('select_file')
-            ->getRealPath();
-        $data = Excel::load($path)->get();
-        if ($data->count() > 0)
-        {
-            foreach ($data->toArray() as $key => $value)
-            {
-                foreach ($value as $row)
-                {
-                    $insert_data[] = array(
-                        'firstname' => $row['firstname'],
-                        'email' => $row['email'],
-                        'lastname' => $row['lastname'],
-                        'phone' => $row['phone'],
-                        'gender' => $row['gender'],
-                        'address' => $row['address']
-=======
 
     public function import_excel(Request $request)
     {
@@ -388,7 +368,7 @@ class ParticipantsController extends Controller
         if($data->count() > 0)
         {
             foreach($data->toArray() as $key => $value)
-            { 
+            {
                 foreach($value as $row)
                 {
                     $insert_data[] = array(
@@ -398,30 +378,19 @@ class ParticipantsController extends Controller
                         'phone'    => $row['phone'],
                         'gender'  => $row['gender'],
                         'address'   => $row['address']
->>>>>>> origin/ganaa
                     );
                 }
             }
 
-<<<<<<< HEAD
             if (!empty($insert_data))
-=======
-            if(!empty($insert_data))
->>>>>>> origin/ganaa
             {
                 DB::table('user ')->insert($insert_data);
             }
         }
-<<<<<<< HEAD
         return back()->with('success', 'Excel Data Imported successfully.');
         //  return response()->json(['msg'=>"Participant updated successfully."]);
 
     }
-=======
-            return back()->with('success', 'Excel Data Imported successfully.');        
-        
-        }
->>>>>>> origin/ganaa
 
 }
 

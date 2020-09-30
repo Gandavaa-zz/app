@@ -10,14 +10,14 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     use Notifiable, HasRoles, RecordsActivity;
-
+    protected $table = 'users';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'firstname','lastname', 'email', 'password', 'register', 'phone', 'address', 'dob', 'gender', 'created_by'
+        'firstname','lastname', 'email', 'password', 'register', 'phone', 'address', 'dob', 'gender', 'created_by', 'groups'
     ];
 
     /**
@@ -60,10 +60,5 @@ class User extends Authenticatable
         return $this->belongsToMany(Group::class);
     }
 
-    function activity()
-    {
-        return $this->hasMany(Activity::class);
-    }
 
-    
 }

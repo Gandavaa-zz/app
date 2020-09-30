@@ -58,11 +58,11 @@ class UsersController extends Controller
         $data['password'] = Hash::make($this->keyGenerator());
 
         $user = User::create( $data );
-        
+
         $user->assignRole($this->rolesToArray(request('roles')));
-        
+
         $user->groups()->attach($this->groupToArray(request('groups')));
-        
+
         // TODO: Хэрэглэгч үүссэний дараа тухайн хэрэглэгчрүү имэйл явуулна.
         return redirect()->route('users.index')->with('success', 'Хэрэглэгчийг амжилттай бүртгэлээ!');
     }
@@ -73,9 +73,9 @@ class UsersController extends Controller
      */
     public function edit(User $user)
     {
-        return view('layouts.settings.users.edit' , 
-                    [ 
-                        'user' =>$user 
+        return view('layouts.settings.users.edit' ,
+                    [
+                        'user' =>$user
                     ]);
     }
 
@@ -89,8 +89,8 @@ class UsersController extends Controller
             'firstname' => ['required', ['string']],
             'lastname' => ['required', ['string']],
             'email' => ['required', 'string', 'email', 'max:255'],
-            'roles' => ['required', ['string']],            
-            'groups' => ['required', ['string']]            
+            'roles' => ['required', ['string']],
+            'groups' => ['required', ['string']]
         ]));
 
         $user->syncRoles($this->rolesToArray(request('roles')));
@@ -121,7 +121,7 @@ class UsersController extends Controller
     {
         return request()->validate([
             'firstname' => ['required', ['string']],
-            'lastname' => ['required', ['string']],            
+            'lastname' => ['required', ['string']],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'roles' => ['sometimes', 'required'],
             'groups' => ['required', ['string']],
@@ -146,17 +146,17 @@ class UsersController extends Controller
     }
 
     protected function rolesToArray($roles){
-        
+
         foreach(explode(",", $roles) as $role)
         {
-            $role_array[] =  $role; 
+            $role_array[] =  $role;
         }
 
         return $role_array;
     }
 
     protected function groupToArray($groups){
-        
+
         if(Str::contains($groups, ',')){
             foreach(explode(",", $groups) as $name)
             {
@@ -167,29 +167,27 @@ class UsersController extends Controller
             $group = Group::where('name', $groups)->first();
 
             $group_ids[] = $group->id;
-            
-        } 
-        
+
+        }
+
         return $group_ids;
     }
 
     function profile(User $user){
-        
+
         return view('layouts.settings.users.profile', compact('user'));
-        
+
     }
 
     function getGroups(){
 
-        // TODO хэрвээ user-ng role: admin|super-admin байвал            
+        // TODO хэрвээ user-ng role: admin|super-admin байвал
         $group_id = config('app.admin_group');
 
-        $groups =  Group::find($group_id);   
-        
+        $groups =  Group::all();
+
         if (response()->json()){
-            return response()->json([
-                $groups
-            ]);
+            return $groups;
         }
 
     }

@@ -12,13 +12,13 @@ import vSelect, { VueSelect } from 'vue-select'
 
 Vue.component('v-select', vSelect);
 
-export default {        
+export default {
     data() {
         return {
             options:[],
             selected:[],
-            value: {            
-            },   
+            value: {
+            },
             selectedValue: '',
         }
     },
@@ -28,10 +28,11 @@ export default {
               this.selected.push(element);
           })
         }
-                 
-         axios.get('/settings/userGroups/').then(response => {            
+
+         axios.get('/settings/userGroups/').then(response => {
              response.data.forEach(element => {
-               this.options.push(element.name)               
+                 console.log("element [] - " + element.name);
+               this.options.push(element.name)
              });
           });
       },
@@ -39,6 +40,6 @@ export default {
         setSelected() {
            console.log(this.selected)
         }
-      }   
+      }
 }
 </script>

@@ -45,10 +45,20 @@
                                         <form method="POST" action="{{ route('participants.addToGroup') }}">
                                             @csrf
                                             <input type="hidden" name="user_id" id="user_id">
-                                            <label for="groups">Group</label>
-                                            <select id="groups" required = "required" required class="js-example-basic-multiple groups" name="groups[]" multiple="multiple">
-                                            </select>
+                                            <div class="form-group row">
+                                                <label for="groups" class="col-md-2 col-form-label text-md-right">{{ __('Групп') }}</label>
+                                                <div class="col-md-8">
+                                                    <group-select  class="@error('groups') is-invalid @enderror"></group-select>
+                                                    @error('groups')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
                                             <button type="submit" class="btn btn-success" >Хадгалах</button>
+                                            </div>
                                       </form>
                                     </div>
                                   </div>
