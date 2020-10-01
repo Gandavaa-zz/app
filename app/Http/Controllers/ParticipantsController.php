@@ -77,13 +77,7 @@ class ParticipantsController extends Controller
 
         if ($request->ajax())
         {
-            $data = DB::table('users')->select("users.id", DB::raw("(GROUP_CONCAT(groups.name)) as `name`") , DB::raw("CONCAT(tb2.lastname, ' ', tb2.firstname) as created_by") , DB::raw("CONCAT(users.lastname, ' ', users.firstname) as fullname") , "users.email", "users.phone", "users.created_at")
-                ->leftJoin("group_user", "group_user.user_id", "=", "users.id")
-                ->leftJoin("groups", "groups.id", "=", "group_user.group_id")
-                ->leftJoin("users as tb2", "users.created_by", "=", "tb2.id")
-                ->groupBy('users.id', 'users.created_at', 'users.phone', 'users.email', 'users.firstname', 'users.lastname', 'tb2.firstname', 'tb2.lastname')
-                ->orderByDesc('id')
-                ->get();
+            $data = Test::all();
 
             return FacadesDataTables::of($data)->addIndexColumn()->addColumn('action', function ($row)
             {
@@ -114,10 +108,16 @@ class ParticipantsController extends Controller
 
     public function show($id)
     {
-        $where = array(
-            'id' => $id
-        );
-        $user = User::where($where)->first();
+
+        $user = DB::table('users')->select("users.id", DB::raw("(GROUP_CONCAT(groups.name)) as `name`") , DB::raw("CONCAT(tb2.lastname, ' ', tb2.firstname) as created_by") , DB::raw("CONCAT(users.lastname, ' ', users.firstname) as fullname") , "users.email", "users.phone", "users.created_at")
+        ->leftJoin("group_user", "group_user.user_id", "=", "users.id")
+        ->leftJoin("groups", "groups.id", "=", "group_user.group_id")
+        ->leftJoin("users as tb2", "users.created_by", "=", "tb2.id")
+        ->groupBy('users.id', 'users.created_at', 'users.phone', 'users.email', 'users.firstname', 'users.lastname', 'tb2.firstname', 'tb2.lastname')
+        ->where('users.id', '=', $id)
+        ->orderByDesc('id')
+        ->get();
+        // dd($user);
         return view('layouts.settings.participants.show', compact('user'));
         // return response()->json($user);
 
@@ -205,10 +205,13 @@ class ParticipantsController extends Controller
     {
         // return $request;
         // $data = $this->validateUser(null);
-        $groups = $this->groupToArray($request->groups);
-        for ($i = 0;$i < count($groups); $i++)
+        // $groups = $this->groupToArray($request->groups);
+        // var_dump(request('groups'));
+        $data = $this->groupToArray(request('groups'));
+
+        for ($i = 0;$i < count($data); $i++)
         {
-            $user = Group_User::updateOrCreate(['user_id' => $request->user_id, ], ['group_id' => $groups[$i]]);
+            $user = Group_User::updateOrCreate(['user_id' => $request->user_id, ], ['group_id' => $data[$i]]);
         }
 
         // return $user;

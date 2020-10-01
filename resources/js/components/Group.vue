@@ -32,6 +32,7 @@ export default {
          axios.get('/settings/userGroups/').then(response => {
              response.data.forEach(element => {
                  console.log("element [] - " + element.name);
+               this.options.push(element.id)
                this.options.push(element.name)
              });
           });
