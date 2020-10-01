@@ -188,7 +188,7 @@ class ParticipantsController extends Controller
         if(Str::contains($groups, ',')){
             foreach(explode(",", $groups) as $name)
             {
-                $group = Group::where('name', $name)->get();
+                $group = Group::where('name', $name)->first();
                 $group_ids[] = $group->id;
             }
         }else{
