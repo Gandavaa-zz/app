@@ -56,8 +56,9 @@
                                 </div>
                                 {{-- <?php dd($user[0]->fullname); ?> --}}
                                 <h3 class="profile-username text-center">{{ $user[0]->fullname }}</h3>
-
-                                <p class="badge badge-danger  " style="margin-left: 135px;">{{ $user[0]->name }}</p>
+                                    <span class="badge badge-primary">html5</span>
+                                    <span class="badge badge-primary">css3</span>
+                                    <span class="badge badge-primary">jquery</span>
                                 <ul class="list-group list-group-unbordered mb-3">
                                     <li class="list-group-item">
                                         <b>Followers</b> <a class="float-right">1,322</a>
@@ -70,6 +71,7 @@
                             </div>
                             <!-- /.card-body -->
                         </div>
+
                         <!-- /.card -->
 
                         <!-- About Me Box -->

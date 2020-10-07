@@ -273,7 +273,7 @@ class ParticipantsController extends Controller
         $data->phone = $request->get('phone');
         $data->gender = $request->get('gender');
         $data->address = $request->get('address');
-        $group_ids = $request->groups;
+        $data->groups()->attach($this->groupToArray(request('groups')));
         $data->update();
         return redirect()->route('participants.index')->with('success', 'Харилцагч амжилттай засварлалаа!');
     }
