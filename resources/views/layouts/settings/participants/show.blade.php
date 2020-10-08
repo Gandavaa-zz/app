@@ -46,7 +46,6 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-3">
-
                         <!-- Profile Image -->
                         <div class="card card-primary card-outline">
                             <div class="card-body box-profile">
@@ -56,9 +55,10 @@
                                 </div>
                                 {{-- <?php dd($user[0]->fullname); ?> --}}
                                 <h3 class="profile-username text-center">{{ $user[0]->fullname }}</h3>
-                                    <span class="badge badge-primary">html5</span>
-                                    <span class="badge badge-primary">css3</span>
-                                    <span class="badge badge-primary">jquery</span>
+                                    @foreach(explode(",", $user[0]->name) as $group_name)
+                                        <span class="badge badge-primary">{{ $group_name }}</span>
+                                    @endforeach
+                                <hr>
                                 <ul class="list-group list-group-unbordered mb-3">
                                     <li class="list-group-item">
                                         <b>Followers</b> <a class="float-right">1,322</a>
