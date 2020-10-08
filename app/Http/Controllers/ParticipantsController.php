@@ -90,9 +90,9 @@ class ParticipantsController extends Controller
                      Other
                   </button>
                   <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#"><i class="cil-newspaper"></i> Participant Report</a>
-                    <a class="dropdown-item" href="#"><i class="cil-folder"></i>  History</a>
-                    <a class="dropdown-item" href="#" style="color:red"><i class="cil-trash"></i> Delete</a>
+                    <a class="dropdown-item" href="#"><i class="cil-newspaper"> </i>&nbspParticipant Report</a>
+                    <a class="dropdown-item" href="#"><i class="cil-folder"> </i>&nbspHistory</a>
+                    <a class="dropdown-item" href="#" style="color:red"><i class="cil-trash">&nbsp</i> Delete</a>
                   </div>
                 </div>
               </div><input type="checkbox" id="' . $row->id . '"';
