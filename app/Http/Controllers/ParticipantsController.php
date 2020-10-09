@@ -79,18 +79,19 @@ class ParticipantsController extends Controller
             return FacadesDataTables::of($data)->addIndexColumn()->addColumn('action', function ($row)
             {
                 $btn = '
-
-                <button type="button" class="btn btn-pill btn-light"><i class="cil-media-play"></i> Activate</button>
-                <button type="button" class="btn btn-pill btn-light"><i class="cil-send"></i> Invite</button>
-                <div class="">
-                  <button type="button" class="btn btn-pill  btn-light dropdown-toggle" data-toggle="dropdown">
+                <div class="btn-group">
+                <button type="button" class="btn btn-success"><i class="cil-media-play"></i> Activate</button>
+                <button type="button" class="btn btn-primary"><i class="cil-send"></i> Invite</button>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
                      Other
                   </button>
                   <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#"><i class="cil-newspaper"> </i>&nbspParticipant Report</a>
-                    <a class="dropdown-item" href="#"><i class="cil-folder"> </i>&nbspHistory</a>
-                    <a class="dropdown-item" href="#" style="color:red"><i class="cil-trash">&nbsp</i> Delete</a>
+                    <a class="dropdown-item" href="#"><i class="cil-newspaper"></i> Participant Report</a>
+                    <a class="dropdown-item" href="#"><i class="cil-folder"></i>  History</a>
+                    <a class="dropdown-item" href="#" style="color:red"><i class="cil-trash"></i> Delete</a>
                   </div>
+                </div>
               </div><input type="checkbox" id="' . $row->id . '"';
                 return $btn;
             })->addColumn('checkbox', '<input type="checkbox" id="chkboxes" name="participant_checkbox[]" class="participant_checkbox" value="{{$id}}" />')
