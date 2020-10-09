@@ -112,8 +112,11 @@
                                             </div>
                                             <div class="col-sm-6">
                                                 <label for="groups">Group</label>
+                                                @if ($group_names)
                                                 <group :selected="{{ $group_names->pluck('name') }}" class="@error('groups') is-invalid @enderror"></group>
-
+                                                @else
+                                                <group  class="@error('groups') is-invalid @enderror"></group>
+                                                @endif
                                                 @error('groups')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>

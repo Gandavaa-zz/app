@@ -61,7 +61,17 @@ class ParticipantsController extends Controller
                   </div>
               <input type="checkbox" id="' . $row->id . '"';
                 return $btn;
-            })->addColumn('checkbox', '<input type="checkbox" id="chkboxes" name="participant_checkbox[]" class="participant_checkbox" value="{{$id}}" />')
+            })
+            // ->addColumn('name', function($row) {
+            //     $options = '';
+            //     $myArray = explode(',', $row->name);
+            //     foreach ($myArray as $name) {
+            //         $options .= $name;
+            //     }
+            //     $return = $options;
+            //     return $return;
+            // })
+            ->addColumn('checkbox', '<input type="checkbox" id="chkboxes" name="participant_checkbox[]" class="participant_checkbox" value="{{$id}}" />')
                 ->rawColumns(['action'])
                 ->make(true);
         }
@@ -106,15 +116,14 @@ class ParticipantsController extends Controller
     public function show($id)
     {
 
-        $user = DB::table('users')->select("users.id", DB::raw("(GROUP_CONCAT(groups.name)) as `name`") , DB::raw("CONCAT(tb2.lastname, ' ', tb2.firstname) as created_by") , DB::raw("CONCAT(users.lastname, ' ', users.firstname) as fullname") , "users.email", "users.phone", "users.created_at")
+        $user = DB::table('users')->select("users.id", DB::raw("(GROUP_CONCAT(groups.name)) as `name`") , DB::raw("CONCAT(tb2.lastname, ' ', tb2.firstname) as created_by") , DB::raw("CONCAT(users.lastname, ' ', users.firstname) as fullname") , "users.email","users.password", "users.phone", "users.created_at")
         ->leftJoin("group_user", "group_user.user_id", "=", "users.id")
         ->leftJoin("groups", "groups.id", "=", "group_user.group_id")
         ->leftJoin("users as tb2", "users.created_by", "=", "tb2.id")
-        ->groupBy('users.id', 'users.created_at', 'users.phone', 'users.email', 'users.firstname', 'users.lastname', 'tb2.firstname', 'tb2.lastname')
+        ->groupBy('users.id', 'users.created_at', 'users.phone', 'users.email', 'users.firstname', 'users.lastname', 'tb2.firstname', 'tb2.lastname', 'users.password')
         ->where('users.id', '=', $id)
         ->orderByDesc('id')
         ->get();
-        // dd($user);
         return view('layouts.settings.participants.show', compact('user'));
         // return response()->json($user);
 
@@ -242,14 +251,9 @@ class ParticipantsController extends Controller
             }
             $group_names = Group::whereIn('id', $groupids)->get();
         }
-        if ($group_names)
-        {
-            return view('layouts.settings.participants.edit', compact('participants'))->with("group_names", $group_names);
-        }
-        else
-        {
-            return view('layouts.settings.participants.edit', compact('participants'));
-        }
+
+        return view('layouts.settings.participants.edit', compact('participants'))->with("group_names", $group_names);
+
     }
 
     /**
@@ -260,7 +264,7 @@ class ParticipantsController extends Controller
     {
         // return request();
         // $data = $this->validateUser($id);
-        $userid = User::find($id);
+        // $userid = User::find($id);
         $data = User::find($id);
         $data->firstname = $request->get('firstname');
         $data->lastname = $request->get('lastname');
