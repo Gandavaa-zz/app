@@ -1684,8 +1684,8 @@
                                                     <th>Тест нэр</th>
                                                     <th>Evaluator</th>
                                                     <th>Огноо</th>
-                                                    <th>Гүйцэтгэсэн хугацаа</th>
-                                                    <th width="100px">Action</th>
+                                                    <th width="10px">Гүйцэтгэсэн хугацаа</th>
+                                                    <th width="400px">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>

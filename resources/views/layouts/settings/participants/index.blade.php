@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+  .mytbn:hover {
+        background-color: #00E2FF!important;
+        color: white!important;
+  }
+    </style>
         <meta name="csrf-token" content="{{ csrf_token() }}" />
         <div class="container-fluid">
           <div class="animated fadeIn">
@@ -18,17 +24,17 @@
                     <div class="card-body">
                     @include('layouts.shared.alert')
 
-                        <table class="table table-bordered yajra-datatable user_table " id="user_table">
+                        <table class="table table-bordered yajra-datatable user_table " id="user_table" style="width: 100%; font-size:13.5px;">
                             <thead>
                                 <tr>
                                     <th width="3px"><input type="checkbox" id="selectAll"/></th>
-                                    <th width="5px">#</th>
-                                    <th>Овог нэр</th>
-                                    <th>Цахим хаяг</th>
+                                    {{-- <th width="5px">#</th> --}}
+                                    <th width="300px">Овог нэр</th>
+                                    {{-- <th width="100px">Цахим хаяг</th> --}}
                                     <th>Бүртгэсэн огноо</th>
                                     <th>Үүсгэсэн</th>
-                                    <th>Групп</th>
-                                    <th width="100px">Action</th>
+                                    <th width="10px">Групп</th>
+                                    <th width="500px">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -100,18 +106,21 @@ $(function () {
                 orderable: false,
                 searchable: false
             },
-            {
-                data: 'DT_RowIndex',
-                name: 'DT_RowIndex'
-            },
+            // {
+            //     data: 'DT_RowIndex',
+            //     name: 'DT_RowIndex'
+            // },
             {
                 data: 'fullname',
-                name: 'fullname'
+                name: 'fullname',
+                render: function(data, type, row) {
+                    return "<a style='color:#4F5D73;font-weight:bold' href='/participants/show/"+ row.id +"'>" + row.fullname + "</a>"
+                }
             },
-            {
-                data: 'email',
-                name: 'email'
-            },
+            // {
+            //     data: 'email',
+            //     name: 'email'
+            // },
             {
                 data: 'created_at',
                 name: 'created_at'

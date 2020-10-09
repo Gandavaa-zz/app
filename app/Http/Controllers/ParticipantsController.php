@@ -45,24 +45,21 @@ class ParticipantsController extends Controller
             return FacadesDataTables::of($data)->addIndexColumn()->addColumn('action', function ($row)
             {
                 $btn = '
-                    <ul class="list-group list-group-horizontal list-unstyled">
-                    <li class="pr-1">
-                        <a href="' . route("participants.show", $row->id) . '" data-toggle="tooltip" data-id="' . $row->id . '" data-original-title="Edit" class="btn btn-success btn-md" title="Харах"><i class="cil-magnifying-glass"></i></a>
-                    </li>
-                    <li class="pr-1">
+                    <a class="btn btn-pill btn-light"><i class="cil-send"></i> Invite</a>
+                    <a class="btn btn-pill btn-light"><i class="cil-chart"></i> Talent map</a>
                     <div class="btn-group">
-                    <a href="" type="button" title="Бусад" class="btn btn-secondary  dropdown-toggle  btn-sm" data-toggle="dropdown">
-                    <i class="cil-cog"></i>
+                    <a href="" type="button" title="Бусад" class="btn btn-pill btn-light dropdown-toggle" data-toggle="dropdown">
+                    <i class="cil-cog"> More</i>
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item edit" href="' . route("participants.edit", $row->id) . '" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit">Edit</a>
-                        <a class="dropdown-item" href="javascript:void(0)">Assessment</a>
-                        <a class="dropdown-item addToGroup" data-toggle="modal"  data-id="' . $row->id . '"  href="">Add to the group</a>
-                        <a class="dropdown-item delete" style="color:red;" href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete">Delete</a>
+                        <a class="dropdown-item edit" href="' . route("participants.edit", $row->id) . '" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit"><i class="cil-pencil">&nbsp;</i> Edit</a>
+                        <a class="dropdown-item" href="javascript:void(0)"><i class="cil-vertical-align-bottom1">&nbsp;</i> Assessment</a>
+                        <a class="dropdown-item addToGroup" data-toggle="modal"  data-id="' . $row->id . '"  href=""><i class="cil-user-follow">&nbsp;</i>Add to the group</a>
+                        <a class="dropdown-item archive" data-toggle="modal"  href="javascript:void(0)" data-id=""  href=""><i class="cil-user-unfollow">&nbsp;</i>Archive</a>
+                        <a class="dropdown-item delete" style="color:red;" href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete"><i class="cil-trash">&nbsp;</i>Delete</a>
                     </div>
                   </div>
-                </li>
-                </ul><input type="checkbox" id="' . $row->id . '"';
+              <input type="checkbox" id="' . $row->id . '"';
                 return $btn;
             })->addColumn('checkbox', '<input type="checkbox" id="chkboxes" name="participant_checkbox[]" class="participant_checkbox" value="{{$id}}" />')
                 ->rawColumns(['action'])
@@ -82,11 +79,11 @@ class ParticipantsController extends Controller
             return FacadesDataTables::of($data)->addIndexColumn()->addColumn('action', function ($row)
             {
                 $btn = '
-                <div class="btn-group">
-                <button type="button" class="btn btn-success"><i class="cil-media-play"></i> Activate</button>
-                <button type="button" class="btn btn-primary"><i class="cil-send"></i> Invite</button>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+
+                <button type="button" class="btn btn-pill btn-light"><i class="cil-media-play"></i> Activate</button>
+                <button type="button" class="btn btn-pill btn-light"><i class="cil-send"></i> Invite</button>
+                <div class="">
+                  <button type="button" class="btn btn-pill  btn-light dropdown-toggle" data-toggle="dropdown">
                      Other
                   </button>
                   <div class="dropdown-menu">
@@ -94,7 +91,6 @@ class ParticipantsController extends Controller
                     <a class="dropdown-item" href="#"><i class="cil-folder"> </i>&nbspHistory</a>
                     <a class="dropdown-item" href="#" style="color:red"><i class="cil-trash">&nbsp</i> Delete</a>
                   </div>
-                </div>
               </div><input type="checkbox" id="' . $row->id . '"';
                 return $btn;
             })->addColumn('checkbox', '<input type="checkbox" id="chkboxes" name="participant_checkbox[]" class="participant_checkbox" value="{{$id}}" />')
