@@ -6,6 +6,9 @@
 
 require('./bootstrap');
 
+
+
+
 window.Vue = require('vue');
 
 import vSelect, { VueSelect } from 'vue-select'
@@ -34,6 +37,10 @@ Vue.component('part-test', require('./components/PartTest.vue').default);
 Vue.component('my-select', require('./components/Select.vue').default);
 
 Vue.component('group', require('./components/Group.vue').default);
+
+Vue.component('profile', require('./components/Profile.vue').default);
+
+Vue.component('quiz-picture', require('./components/QuizPicture.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -40,6 +40,10 @@
       <link href="{{ asset('css/coreui-chartjs.css') }}" rel="stylesheet">
       <link href="{{ asset('css/vue-multiselect.min.css') }}" rel="stylesheet">
 
+    <script>
+        var APP_URL = {!! json_encode(url('/')) !!}
+    </script>
+
   </head>
 
   <body class="c-app" >

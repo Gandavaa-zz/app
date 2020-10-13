@@ -31,9 +31,9 @@
                     <div class="card-header">
                         <span class="float-left"><h5><i class="fa fa-align-justify"></i>{{ __('Асуулт') }}</h5></span>                        
                         <span class="float-right ">
-                            <a class="btn btn-success" href="{{ route('settings.test') }}">Тест жагсаалт</a>
-                            <a class="btn btn-danger px-1" href="#">Импорт Асуулт</a>
                             <a class="btn btn-primary" href="{{ route('quiz.create', $test->id) }}">Шинэ асуулт</a>
+                            <a class="btn btn-success" href="{{ route('settings.test') }}">Тест рүү буцах</a>
+                            <a class="btn btn-danger px-1" href="#">XLS Асуулт импортлох </a>
                         </span>
                     </div>
 
@@ -88,8 +88,8 @@ var table = $('.quiz-table').DataTable({
             name: 'quiz'
         },        
         {
-            data: 'image',
-            name: 'image'
+            data: 'quiz_path',
+            name: 'quiz_path'
         },                     
         {
             data: 'action',

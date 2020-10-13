@@ -80,6 +80,8 @@ class AnswersController extends Controller
     {  
         $data = $this->validateAnswer();
 
+  
+
         Answer::create($data);
 
         return redirect()->route('answer.index', $data['quiz_id'])->with('success', 'Асуултыг амжилттай бүртгэлээ!');

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -17,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'firstname','lastname', 'email', 'password', 'register', 'phone', 'address', 'dob', 'gender', 'created_by'
+        'firstname','lastname', 'email', 'password', 'register', 'phone', 'address', 'dob', 'gender', 'created_by', 'groups'
     ];
 
     /**
@@ -28,6 +29,12 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+    
+    protected $dateFormat = 'Y-m-d';
+
+    protected $dates = ['created_at', 'updated_at'];
+
+    protected $appends = ['fullname', 'created_date'];
 
     /**
      * The attributes that should be cast to native types.
@@ -60,10 +67,13 @@ class User extends Authenticatable
         return $this->belongsToMany(Group::class);
     }
 
-    function activity()
-    {
-        return $this->hasMany(Activity::class);
+    public function getFullNameAttribute(){
+        return $this->firstname . ', '. $this->lastname;
     }
 
-    
+    public function getCreatedDateAttribute(){
+
+        return Carbon::parse($this->created_at)->format('Y-m-d');
+        
+    }
 }

@@ -89,7 +89,7 @@ class UsersController extends Controller
             'firstname' => ['required', ['string']],
             'lastname' => ['required', ['string']],
             'email' => ['required', 'string', 'email', 'max:255'],
-            'roles' => ['required', ['string']],            
+            'roles' => ['required', ['string']],
             'groups' => ['required', ['string']]            
         ]));
 
@@ -156,11 +156,13 @@ class UsersController extends Controller
     }
 
     protected function groupToArray($groups){
-        
+
         if(Str::contains($groups, ',')){
+
             foreach(explode(",", $groups) as $name)
             {
-                $group = Group::where('name', $name)->get();
+                $group = Group::where('name', $name)->first();
+
                 $group_ids[] = $group->id;
             }
         }else{
@@ -182,16 +184,13 @@ class UsersController extends Controller
     function getGroups(){
 
         // TODO хэрвээ user-ng role: admin|super-admin байвал            
-        $group_id = config('app.admin_group');
+        // $group_id = config('app.admin_group');
 
-        $groups =  Group::find($group_id);   
+        $groups =  Group::all();   
         
         if (response()->json()){
-            return response()->json([
-                $groups
-            ]);
+            return $groups;            
         }
-
     }
 
 

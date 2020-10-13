@@ -27,8 +27,7 @@ Route::group(['middleware' => ['role:super-admin']], function () {
     
     Route::get('settings/userGroups', 'Settings\UsersController@getGroups');
 
-    Route::get('settings/profile/{user}', 'Settings\ProfilesController@show')->name('user.profile');
-   
+       
 });
 
 Route::group(['middleware' => ['role:super-admin|admin']], function () {
@@ -40,7 +39,6 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
 
     Route::resource('settings/permission', 'Settings\PermissionsController')->middleware('auth');
     Route::get('settings/getPermissions', 'Settings\PermissionsController@getPermissions');
-
     Route::resource('settings/group', 'Settings\GroupsController');
 
     // Test routes begin
@@ -76,18 +74,16 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     /* end Answer */      
 
     Route::get('groups/list', 'ParticipantsController@fetch_groups')->name('groups.list');
-
-    Route::resource('test', 'TestsController');
     Route::get('participants/deleteMultiple', 'ParticipantsController@deleteMultiple')->name('participants.deleteMultiple');
-    Route::resource('/participants', 'ParticipantsController')->middleware('auth');
+    Route::get('participants/list', 'ParticipantsController@list')->middleware('auth')->name('participants.list');
+    Route::resource('/participants', 'ParticipantsController');
     Route::get('participants/destroy/{id}', 'ParticipantsController@destroy');
     Route::get('/participants/import', 'ParticipantsController@import')->name("participants.import");
-    Route::resource('/participants', 'ParticipantsController')->middleware('auth');
-    Route::get('participants/destroy/{id}', 'ParticipantsController@destroy');
-    Route::get('participants/create', 'ParticipantsController@create')->name('participants.create');
-    Route::post('participants/store', 'ParticipantsController@store')->name('participant.store');
-    Route::get('/participants/{id}edit', 'ParticipantsController@edit')->name('participant.edit');
-    Route::get('/participants/show/{id}', 'ParticipantsController@show');
+    // Route::get('participants/destroy/{id}', 'ParticipantsController@destroy');
+    // Route::get('participants/create', 'ParticipantsController@create')->name('participants.create');
+     Route::post('participants/store', 'ParticipantsController@store')->name('participant.store');
+    // Route::get('/participants/{id}edit', 'ParticipantsController@edit')->name('participant.edit');
+    // Route::get('/participants/show/{id}', 'ParticipantsController@show');
 });
 
 Route::get('skills',  function(){
@@ -95,3 +91,8 @@ Route::get('skills',  function(){
     return [ 'label'=> ['laravel', 'vue', 'php']];
 
 });
+
+Route::resource('test', 'TestsController');
+
+Route::get('settings/profile/{user}', 'Settings\ProfilesController@show')->name('user.profile')->middleware('auth');
+Route::get('settings/profile/{user}/edit', 'Settings\ProfilesController@edit')->name('edit.profile')->middleware('auth');

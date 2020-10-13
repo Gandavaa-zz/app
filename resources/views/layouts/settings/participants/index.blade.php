@@ -23,10 +23,9 @@
                             <thead>
                                 <tr>
                                     <th width="3px"><input type="checkbox" id="selectAll"/></th>
-                                    <th width="5px">#</th>
-                                    <th>Овог нэр</th>
-                                    <th>Цахим хаяг</th>
-                                    <th>Бүртгэсэн огноо</th>
+                                    <!-- <th width="5px">#</th> -->
+                                    <th>Нэр, овог</th>                                    
+                                    <th>Үүссэн.огноо</th>
                                     <th>Үүсгэсэн</th>
                                     <th>Групп</th>
                                     <th width="100px">Action</th>
@@ -66,29 +65,25 @@ $(function () {
                 orderable: false,
                 searchable: false
             },
-            {
-                data: 'DT_RowIndex',
-                name: 'DT_RowIndex'
-            },
+            // {
+            //     data: 'DT_RowIndex',
+            //     name: 'DT_RowIndex'
+            // },
             {
                 data: 'fullname',
                 name: 'fullname'
             },
             {
-                data: 'email',
-                name: 'email'
-            },
-            {
-                data: 'created_at',
-                name: 'created_at'
-            },
+                data: 'created_date',
+                name: 'created_date'
+            },            
             {
                 data: 'created_by',
                 name: 'created_by'
             },
             {
-                data: "name",
-                name: "name"
+                data: "groups.0.name",
+                name: "groups"
             },
             {
                 data: 'action',

@@ -1,3 +1,4 @@
+
 @extends('layouts.authBase')
 
 @section('content')
@@ -12,6 +13,11 @@
                 <p class="text-muted"></p>
                  <form method="POST" action="{{ route('login') }}">
                     @csrf
+                    <ul>
+                    @foreach($errors as $error)
+                      <li>{{ $error }} </li>
+                    @endforeach
+                    </ul>
                     <div class="input-group mb-3">
                     <div class="input-group-prepend">
                       <span class="input-group-text">
@@ -21,6 +27,11 @@
                       </span>
                     </div>
                     <input class="form-control" type="text" placeholder="{{ __('Имэйл хаяг') }}" name="email" value="{{ old('email') }}" required autofocus>
+                    @error('email')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                    @enderror
                     </div>
                     <div class="input-group mb-4">
                     <div class="input-group-prepend">
@@ -31,6 +42,11 @@
                       </span>
                     </div>
                     <input class="form-control" type="password" placeholder="{{ __('Нууц үг') }}" name="password" required>
+                    @error('password')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                    @enderror
                     </div>
                     <div class="row">
                       <div class="col-6">

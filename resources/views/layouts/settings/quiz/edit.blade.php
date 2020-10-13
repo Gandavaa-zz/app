@@ -11,7 +11,7 @@
                     <strong>{{ __('Хэрэглэгч засах') }}</strong></div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('quiz.update', $quiz->id) }}">
+                    <form method="POST" action="{{ route('quiz.update', $quiz->id) }}" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
@@ -48,19 +48,23 @@
 
                         </div>
 
-                        @if($quiz->image)
+                        @if($quiz->quiz_path)
                         <div class="form-group row">
                             <label for="quiz" class="col-md-4 col-form-label text-md-right">{{ __('Зураг') }}</label>
-
+                            
                             <div class="col-md-6">
-                                <textarea id="image" type="text" class="form-control @error('image') is-invalid @enderror" name="image" required >{{ $quiz->image }}</textarea>                                
-                                @error('image')
+                                
+                                <quiz-picture :quiz="{{ $quiz }} ">
+                                    
+                                </quiz-picture>
+                                                                        
+                                    @error('image')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                @enderror
+                                    @enderror
+                                </div>
                             </div>
-                        </div>
                         @endif
 
                         <div class="form-group row mb-0">

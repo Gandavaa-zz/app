@@ -88,7 +88,10 @@ class QuizzesController extends Controller
      */
     public function store(Request $request)
     {  
+
         $data = $this->validateQuiz();
+
+        if($request->has('image')) $this->validateImage($request);
 
         Quiz::create($data);
 
@@ -98,11 +101,12 @@ class QuizzesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Test $test)
+    public function show(Test $test, Quiz $quiz)
     {        
         return view('layouts.settings.quiz.show',
                     [
                         'test'=> $test,
+                        'quiz'=> $quiz,
                         'test_type' => $this->test_type,
                         'durations' => $this->durations
                     ]);
@@ -126,17 +130,21 @@ class QuizzesController extends Controller
      * Update the specified resource in storage.
      *
      */
-    public function update(Quiz $quiz)
+    public function update(Request $request, Quiz $quiz)
     {
         $this->validateQuiz();
 
-        $quiz->test_id = request('test_id');
-        $quiz->number = request('number');        
-        $quiz->quiz = request('quiz');
-        if(request('image')) $quiz->image = request('image');                
-        $quiz->save();
+        $data = [
+            'number' => $request->input('number'),
+            'quiz' => $request->input('quiz')
+        ];
         
-        return redirect()->route('quiz.index', request('test_id'))->with('success', 'Асуултыг амжилттай шинэчлэлээ!');
+        if($request->has('image'))         
+            $data['quiz_path'] = $this->validateImage($request);        
+
+        $quiz->update($data);       
+        
+        return redirect()->route('quiz.index', $request->input('test_id'))->with('success', 'Асуултыг амжилттай шинэчлэлээ!');
 
     }
 
@@ -163,6 +171,21 @@ class QuizzesController extends Controller
             'number'=> ['required', ['numeric']],
             'quiz' => ['required', ['string']]
         ]);
-    }    
+    }
+
+    public function validateImage($request){
+        
+            $request->validate([
+                'image' => 'required|mimes:jpg,jpeg,bmp,png|max:2048'
+            ]);
+
+            $imageFile = time().'.'.$request->file('image')->extension();
+
+            $filePath = $request->file('image')->storeAs('uploads', $imageFile, 'public');
+
+        return $filePath;           
+        
+    }
     
+       
 }

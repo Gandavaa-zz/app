@@ -9,7 +9,7 @@ class Quiz extends Model
     use RecordsActivity;
     
     protected $fillable = [
-        'test_id', 'number', 'quiz'
+        'test_id', 'number', 'quiz', 'quiz_path'
     ];
 
     public function test()

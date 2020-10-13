@@ -11,9 +11,17 @@
 
                 <div class="card-body">
            
-                    <form method="POST" action="{{ route('quiz.store')}}">
+                    <form method="POST" action="{{ route('quiz.store')}}" enctype="multipart/form-data">
+                       
                         @csrf
                         
+                        @if(count($errors))
+                        <ul>
+                        @foreach ($errors->all() as $error)
+                            <li><strong>{{ $error }}</strong></li>
+                        @endforeach
+                        </ul>
+                        @endif
                         <input type="hidden" name="test_id" value="{{ $test->id }} ">
                         <div class="form-group row">
 
@@ -48,22 +56,18 @@
                             </div>
                         </div>
 
-                        <!-- Хэрвээ mестийн төрөл image бвал энэ утгийг харуулна -->
-                        @if($test->type == 'image')
+                        <!-- Хэрвээ mестийн төрөл image бвал энэ утгийг харуулна -->                        
                         <div class="form-group row">
-                            <label for="info" class="col-md-4 col-form-label text-md-right">{{ __('Дэлгэрэнгүй') }}</label>
-
+                            <label for="info" class="col-md-4 col-form-label text-md-right">{{ __('Зураг оруулах') }}</label>                                                        
                             <div class="col-md-6">
-                                <textarea id="info" type="text" class="form-control @error('info') is-invalid @enderror" name="info"  autocomplete="info">{{ old('info') }}</textarea>
-
-                                @error('info')
+                                <input type="file" name="image" class="form-control-file" id="exampleFormControlFile1">
+                                @error('image')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                @enderror
+                                @enderror                            
                             </div>
-                        </div>
-                        @endif
+                        </div>                        
                             
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">

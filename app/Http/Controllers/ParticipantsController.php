@@ -3,21 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Group;
-use App\Group_User;
 use App\Http\Controllers\Controller;
-use App\Test;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use Illuminate\Http\POST;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
-use Yajra\DataTables\Contracts\DataTable;
-use Yajra\DataTables\DataTables as DataTablesDataTables;
-use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
+use Yajra\DataTables\Facades\DataTables ;
 
 class ParticipantsController extends Controller
 {
@@ -32,15 +25,9 @@ class ParticipantsController extends Controller
     {
 
         if ($request->ajax()) {
-            $data = DB::table('users')
-            ->select("users.id" ,DB::raw("(GROUP_CONCAT(groups.name)) as `name`"), DB::raw("CONCAT(tb2.lastname, ' ', tb2.firstname) as created_by"),  DB::raw("CONCAT(users.lastname, ' ', users.firstname) as fullname"), "users.email", "users.phone", "users.created_at")
-            ->leftJoin("group_user","group_user.user_id","=","users.id")
-            ->leftJoin("groups","groups.id","=","group_user.group_id")
-            ->leftJoin("users as tb2","users.created_by","=", "tb2.id")
-            ->groupBy('users.id', 'users.created_at', 'users.phone','users.email','users.firstname','users.lastname', 'tb2.firstname','tb2.lastname')
-            ->get();
+            $users = User::with('groups')->get();
 
-            return FacadesDataTables::of($data)
+            return DataTables::of($users)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
                     $btn = '
@@ -83,7 +70,6 @@ class ParticipantsController extends Controller
         // used for populate data for group dropdown
     public function fetch_groups(Request $request)
     {
-
         // return $request;
         $search = $request->search;
         if($search == ''){
@@ -128,14 +114,6 @@ class ParticipantsController extends Controller
         // $data['group'] = implode(',', $request->groups);        
         $data['created_by'] = auth()->id();
 
-        // for ($i=0; $i <count($request->groups) ; $i++){
-        //     $array[] = array(
-        //     'group_id' => $request->groups[$i],
-        //     'user_id' => 1
-        //     );
-        // }
-        // $group = Group_User::create( $array );
-
         $user = User::create( $data );
 
         if($role = request('role'))
@@ -149,7 +127,6 @@ class ParticipantsController extends Controller
 
         return redirect()->route('participants.index');
     }
-
 
     /**
      * Show the form for editing the specified resource.
@@ -165,7 +142,6 @@ class ParticipantsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-
     public function update(Request $request,$id)
     {
         // return request();
@@ -211,7 +187,6 @@ class ParticipantsController extends Controller
     /*
     * Validation user function
     */
-
     public function validateUser($id=null)
     {
         // return $id;
@@ -243,7 +218,6 @@ class ParticipantsController extends Controller
         return view('layouts.settings.participants.import', compact('user'));
     }
 
-
     public function import_excel(Request $request)
     {
         $this->validate($request, [
@@ -251,6 +225,7 @@ class ParticipantsController extends Controller
         ]);
 
         $path = $request->file('select_file')->getRealPath();
+
         $data = Excel::load($path)->get();
         if($data->count() > 0)
         {
@@ -276,6 +251,15 @@ class ParticipantsController extends Controller
         }
             return back()->with('success', 'Excel Data Imported successfully.');        
         
-        }
+    }
+
+    public function list()
+    {
+        // show view_data and values here
+        return User::with('groups')->get();
+
+        return view('layouts.app');
+
+    }
 
 }

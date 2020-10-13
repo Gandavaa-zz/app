@@ -10,7 +10,7 @@
 
             <label for="test" class="col-md-3 text-md-right">
                 <h5 class="mt-2">
-                {{ __('Хариулт:') }}
+                {{ __('Асуулт:') }}
                 </h5>
             </label>
 
@@ -33,13 +33,11 @@
                  <div class="card">
                     <div class="card-header">
 
-                        <span class="float-left"><h5><i class="fa fa-align-justify"></i>{{ __('Асуулт') }}</h5></span>
+                        <span class="float-left"><h5><i class="fa fa-align-justify"></i>{{ __('Хариулт') }}</h5></span>
 
                         <span class="float-right px-1">                        
-                            <a class="btn btn-success" href="{{ route('quiz.index', $quiz->test->id) }}">Асуулт жагсаалт</a>                  
-                            <a class="btn btn-primary" href="{{ route('answer.create', $quiz->id) }}">Шинэ асуулт</a>
-                            <a class="btn btn-danger" href="#">Импорт Асуулт</a>
-                            
+                            <a class="btn btn-primary" href="{{ route('answer.create', $quiz->id) }}">Шинэ хариулт</a>
+                            <a class="btn btn-success" href="{{ route('quiz.index', $quiz->test->id) }}">Асуулт жагсаалт</a>
                         </span>      
                     </div>
 
@@ -51,8 +49,8 @@
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Асуулт №</th>
-                                <th scope="col">Асуулт</th>
+                                <th scope="col">Хариулт №</th>
+                                <th scope="col">Хариулт</th>
                                 <th scope="col">Зураг</th>
                                 <th scope="col">Үйлдэл</th>
                             </tr>

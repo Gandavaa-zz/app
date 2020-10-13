@@ -11,14 +11,24 @@ class ProfilesController extends Controller
 {
     function show(User $user){
 
-        // return  Activity::feed($user, 50);
+        $this->authorize('view', $user);
 
-         $activities = $user->activity->fresh('subject');        
+        $activities = $user->activity->fresh('subject');        
 
         return view('layouts.settings.users.profile', [
                 'user' => $user,
                 'activities' => Activity::feed($user, 50)
             ]);
 
+    }
+
+    public function edit(User $user)
+    { 
+        $this->authorize('view', $user);
+
+        return view('layouts.settings.users.editProfile', 
+                    [ 'user' => $user, 
+                      'activities' => Activity::feed($user, 50)
+                    ]);
     }
 }
