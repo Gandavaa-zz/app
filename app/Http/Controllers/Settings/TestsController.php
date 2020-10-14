@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Settings;
 use App\Http\Controllers\Controller;
-use App\Part;
 use Illuminate\Http\Request;
 use App\Test;
-use App\PartTest;
 use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
+use Exporter;
+use Importer;
 
 class TestsController extends Controller
 {
@@ -72,8 +72,10 @@ class TestsController extends Controller
     public function create()
     {
         return view('layouts.settings.test.create',
-            ['test_type' => $this->test_type,
-             'durations' => $this->durations]);
+            [   
+                'test_type' => $this->test_type,
+                'durations' => $this->durations
+            ]);
     }
 
     /**
@@ -177,5 +179,42 @@ class TestsController extends Controller
             'part_info' => ['required']            
         ]);
     }    
+
+    public function import()
+    {
+        return view('layouts.settings.test.import', 
+            [   
+                'test_type' => $this->test_type,
+                'durations' => $this->durations
+            ]);
+    }
+
+    public function importExcel(Request $request)
+    {
+        $request->validate(
+            [
+                'file'=>'required|max:5000|mimes:xlsx,xls,csv'
+            ]);
+
+        $excelFile = time().'.'.$request->file('file')->extension();
+
+        $file = $request->file('file')->storeAs('uploads/excels', $excelFile, 'public');
+
+        $excels = Importer::make('Excel')->load('storage/'.$file)->getCollection();
+        
+        if($excels){
+            foreach($excels as $row){
+                try{
+                    dump ($row);
+
+                }catch(\Exception $e){
+                    return back();
+                }
+            }
+
+        }
+        // return back()->with('success', "Excel файлыг амжилттай импортлолоо!");
+    }
+    
     
 }

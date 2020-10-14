@@ -1,12 +1,11 @@
 ☐ Layout-г засварлах
     ✔ Blade template edit @done(20-08-26 15:50)
     ✔ Logo and other realted front-end @done(20-08-26 15:50)
-       
 ✔ Цэсүүдийг засварлах @done(20-08-26 15:49)
 ✔ Bread Crumb fix @done(20-08-27 13:47)
 
 ☐ Settings
-    ☐ User - Crud
+    ✔ User - Crud @done(20-10-14 14:56)
         ✔ Жагсаалт хийх @done(20-08-28 09:55)
         ✔ Create @done(20-08-28 09:55)
         ✔ Edit @done(20-08-28 10:26)
@@ -34,7 +33,7 @@
         ✔ destroy @done(20-08-28 11:57)  
     ✔ Group -crud @done(20-09-04 16:25)   
 
-    ☐ Assesments - Тест << TODO (Dec 13)
+    ☐ Test - Тест << TODO (Dec 13)
         ✔ Асуулт = CRUD @done(20-10-13 13:04)
         ☐ Todo: Асуултаа өөрчлөхөд Datagrid-г filter хийх хэрэгтэй.
         ✔ Хариултууд @done(20-10-14 10:19)
@@ -42,9 +41,11 @@
             ✔ Create  - Image create vue added @done(20-10-14 10:19)
             ✔ Read @done(20-10-14 10:19)
             ✔ Update @done(20-10-14 10:19)
-            ✔ Delete @done(20-10-14 10:19)
-    ☐ Export Result
+            ✔ Delete @done(20-10-14 10:19)            
+    ✔ Import XLS From test @done(20-10-14 14:48)
 
+☐ Import from User data
+    
 ☐ Participand management 
     ☐ List - Assesments | Edit | Add to a group | Archive | Delete
     ☐ Archive

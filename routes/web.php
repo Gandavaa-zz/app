@@ -49,7 +49,9 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::put('settings/test/{test}', 'Settings\TestsController@update')->name('settings.test.update');
     Route::get('settings/test/{test}/show', 'Settings\TestsController@show')->name('settings.test.show');
     Route::delete('settings/test/{test}', 'Settings\TestsController@destroy')->name('settings.test.destroy');
-    Route::delete('settings/test/import', 'Settings\TestsController@import')->name('settings.test.import');
+    
+    Route::get('settings/test/import', 'Settings\TestsController@import')->name('settings.test.import');
+    Route::post('settings/test/import', 'Settings\TestsController@importExcel')->name('test.importExcel');
     
     /* Quizes here */
     Route::get('settings/quiz/{test}', 'Settings\QuizzesController@index')->name('quiz.index');
