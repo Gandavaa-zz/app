@@ -42,6 +42,8 @@ Vue.component('profile', require('./components/Profile.vue').default);
 
 Vue.component('quiz-picture', require('./components/QuizPicture.vue').default);
 
+Vue.component('answer-picture', require('./components/AnswerPicture.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

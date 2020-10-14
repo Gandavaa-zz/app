@@ -33,34 +33,38 @@ class QuizzesController extends Controller
 
             $data = $test->quizzes;
 
-            return FacadesDataTables::of($data)
+                return FacadesDataTables::of($data)
             
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
                     $btn = '
                     <ul class="list-group list-group-horizontal list-unstyled"><li class="pr-1">
-                    <a href="'.route("quiz.show", ['test'=>$row->test_id, 'quiz'=>$row->id]).'" data-toggle="tooltip" data-id="'.$row->id.'" class="btn btn-secondary view btn-md">
+                    <a href="'.route("quiz.show", ['test'=>$row->test_id, 'quiz'=>$row->id]).'" 
+                        data-toggle="tooltip" 
+                        data-id="'.$row->id.'" class="btn btn-secondary view btn-md">
                         <i class="cil-magnifying-glass"></i>
                         </a>
                     </li>
                     <li class="pr-1">
-                        <a href="'.route("quiz.edit", ['test'=>$row->test_id, 'quiz' =>$row->id]).'" data-toggle="tooltip" data-id="'.$row->id.'" data-original-title="Edit" class="btn btn-primary btn-md" title="Edit">
+                        <a href="'.route("quiz.edit", ['test'=>$row->test_id, 'quiz' =>$row->id]).'" 
+                            data-toggle="tooltip" 
+                            data-id="'.$row->id.'" 
+                            data-original-title="Edit" 
+                            class="btn btn-primary btn-md" title="Засах">
                         <i class="cil-pencil"></i></a>
                     </li>
                     <li class="pr-1">
                         <form class="form-inline" action="'.route('quiz.destroy', $row->id).'" method="POST">
                             <input type="hidden" name="_method" value="DELETE">
                             <input type="hidden" name="_token" value="'.csrf_token().'">
-                            <button type="submit" class="btn btn-danger" onclick="return confirm(\'Та энэ бичлэгийг үнэхээр устгах уу?\')"><i class="cil-trash"></i></button>
+                            <button type="submit" class="btn btn-danger" title="Устгах" onclick="return confirm(\'Та энэ бичлэгийг үнэхээр устгах уу?\')"><i class="cil-trash"></i></button>
                         </form>
                     </li>
                     <li class="pr-1">
-                        <a href="'.route("answer.index", $row->id).'" class="btn btn-success btn-md">
+                        <a href="'.route("answer.index", $row->id).'" title="Хариултруу очих" class="btn btn-success btn-md">
                     <i class="cil-list-rich"></i></a>                        
                 </li>
                 </ul><input type="checkbox" id="'.$row->id.'"';
-
-
 
                     return $btn;
                 })
@@ -88,11 +92,10 @@ class QuizzesController extends Controller
      */
     public function store(Request $request)
     {  
-
         $data = $this->validateQuiz();
-
-        if($request->has('image')) $this->validateImage($request);
-
+        
+        if($request->has('image')) $data['quiz_path'] = $this->validateImage($request);
+        
         Quiz::create($data);
 
         return redirect()->route('quiz.index', $data['test_id'])->with('flash', 'Асуултыг амжилттай бүртгэлээ!');
@@ -114,7 +117,8 @@ class QuizzesController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     */
+    */
+
     public function edit(Test $test, Quiz $quiz)
     {
         return view('layouts.settings.quiz.edit',
@@ -176,7 +180,7 @@ class QuizzesController extends Controller
     public function validateImage($request){
         
             $request->validate([
-                'image' => 'required|mimes:jpg,jpeg,bmp,png|max:2048'
+                'image' => 'required|mimes:jpg,jpeg,bmp,png|max:10240'
             ]);
 
             $imageFile = time().'.'.$request->file('image')->extension();

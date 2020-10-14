@@ -19,11 +19,12 @@
 
                         <div class="form-group row">
 
-                            <label for="number" class="col-md-4 col-form-label text-md-right">{{ __('Асуулт') }}</label>
+                            <label for="number" class="col-md-4 col-form-label text-md-right">{{ __('Хариултын дугаар') }}</label>
 
                             <div class="col-md-6">
                                 
-                                <label id="quiz" type="text" class="form-control @error('quiz') is-invalid @enderror" disabled>{{ $answer->quiz->quiz }}</label>
+                                <input id="number" type="text" class="form-control @error('number') is-invalid @enderror" name="number" value="{{ $answer->number }}" required autocomplete="answer" autofocus>
+
                                 @error('number')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -35,11 +36,11 @@
 
                         <div class="form-group row">
 
-                            <label for="number" class="col-md-4 col-form-label text-md-right">{{ __('Хариултын дугаар') }}</label>
+                            <label for="number" class="col-md-4 col-form-label text-md-right">{{ __('Асуулт') }}</label>
 
                             <div class="col-md-6">
-                                <input id="number" type="text" class="form-control @error('number') is-invalid @enderror" name="number" value="{{ $answer->number }}" required autocomplete="answer" autofocus>
-
+                                
+                                <input id="quiz" type="text" class="form-control @error('quiz') is-invalid @enderror" value="{{ $answer->quiz->quiz }}">
                                 @error('number')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -64,12 +65,13 @@
 
                         </div>
 
-                        @if($answer->image)
+
                         <div class="form-group row">
                             <label for="quiz" class="col-md-4 col-form-label text-md-right">{{ __('Зураг') }}</label>
 
                             <div class="col-md-6">
-                                <textarea id="image" type="text" class="form-control @error('image') is-invalid @enderror" name="image" required >{{ $quiz->image }}</textarea>                                
+                                <answer-picture :answer="{{ $answer}}"></answer-picture>
+
                                 @error('image')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -77,7 +79,7 @@
                                 @enderror
                             </div>
                         </div>
-                        @endif
+
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">

@@ -48,6 +48,7 @@
                                 <th scope="col">Асуулт №</th>
                                 <th scope="col">Асуулт</th>
                                 <th scope="col">Зураг</th>
+                                <th scope="col">Хариулт</th>
                                 <th scope="col">Үйлдэл</th>
                             </tr>
                             </thead>
@@ -90,6 +91,10 @@ var table = $('.quiz-table').DataTable({
         {
             data: 'quiz_path',
             name: 'quiz_path'
+        },                     
+        {
+            data: 'answers_count',
+            name: 'answers_count'
         },                     
         {
             data: 'action',

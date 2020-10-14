@@ -22,6 +22,7 @@
                         @endforeach
                         </ul>
                         @endif
+
                         <input type="hidden" name="test_id" value="{{ $test->id }} ">
                         <div class="form-group row">
 
@@ -60,7 +61,9 @@
                         <div class="form-group row">
                             <label for="info" class="col-md-4 col-form-label text-md-right">{{ __('Зураг оруулах') }}</label>                                                        
                             <div class="col-md-6">
-                                <input type="file" name="image" class="form-control-file" id="exampleFormControlFile1">
+
+                                <quiz-picture></quiz-picture>
+                                
                                 @error('image')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>

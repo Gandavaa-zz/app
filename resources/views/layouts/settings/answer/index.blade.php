@@ -18,8 +18,8 @@
                                         
                     <select name="quiz_id" id="" class="form-control" onchange="javascript:location.href = this.value;">
                         <option>Нэг утгийг сонго</option>
-                        @foreach($quizzes as $quiz)
-                            <option value="{{ $quiz->id }}"> {{ $quiz->quiz }} </option>                                    
+                        @foreach($quizzes as $single)
+                            <option value="{{ $single->id }}" @if ($quiz->id==$single->id) selected @endif> {{ $single->quiz }} </option>                                    
                         @endforeach
                     </select>
                     
@@ -89,9 +89,9 @@ var table = $('.quiz-table').DataTable({
             name: 'answer'
         },        
         {
-            data: 'image',
-            name: 'image'
-        },                     
+            data: 'answer_path',
+            name: 'answer_path'
+        },                             
         {
             data: 'action',
             name: 'action',

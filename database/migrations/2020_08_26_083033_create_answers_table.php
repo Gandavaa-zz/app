@@ -19,7 +19,7 @@ class CreateAnswersTable extends Migration
             $table->integer('number');
             $table->string('answer');
             $table->string('type')->nullable();
-            $table->string('image')->nullable();
+            $table->string('answer_path')->nullable();
             $table->timestamps();
 
             $table->foreign('quiz_id')

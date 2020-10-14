@@ -71,7 +71,7 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::get('settings/answer/{answer}/edit', 'Settings\AnswersController@edit')->name('answer.edit');
     Route::put('settings/answer/{answer}', 'Settings\AnswersController@update')->name('answer.update'); 
     Route::delete('settings/answer/{answer}', 'Settings\AnswersController@destroy')->name('answer.destroy');
-    /* end Answer */      
+    /* end Answer */ 
 
     Route::get('groups/list', 'ParticipantsController@fetch_groups')->name('groups.list');
     Route::get('participants/deleteMultiple', 'ParticipantsController@deleteMultiple')->name('participants.deleteMultiple');

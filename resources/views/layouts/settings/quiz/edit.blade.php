@@ -54,9 +54,7 @@
                             
                             <div class="col-md-6">
                                 
-                                <quiz-picture :quiz="{{ $quiz }} ">
-                                    
-                                </quiz-picture>
+                                <quiz-picture :quiz="{{ $quiz }} "></quiz-picture>
                                                                         
                                     @error('image')
                                     <span class="invalid-feedback" role="alert">

@@ -14,8 +14,16 @@
 
                 <div class="card-body">
            
-                    <form method="POST" action="{{ route('answer.store')}}">
+                    <form method="POST" action="{{ route('answer.store')}}" enctype="multipart/form-data">
                         @csrf
+
+                        @if(count($errors))
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li><strong>{{ $error }}</strong></li>
+                            @endforeach
+                        </ul>
+                        @endif
                         
                         <input type="hidden" name="quiz_id" value="{{ $quiz->id }} ">
 
@@ -57,7 +65,7 @@
                             <label for="image" class="col-md-4 col-form-label text-md-right">{{ __('Зураг') }}</label>
 
                             <div class="col-md-6">
-                                <input id="image" type="title" class="form-control @error('image') is-invalid @enderror" name="image" value="{{ old('image') }}" autocomplete="image" autofocus>
+                                <answer-picture></answer-picture>                              
 
                                 @error('image')
                                     <span class="invalid-feedback" role="alert">

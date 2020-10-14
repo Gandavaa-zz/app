@@ -12,6 +12,8 @@ class Quiz extends Model
         'test_id', 'number', 'quiz', 'quiz_path'
     ];
 
+    protected $withCount = [ 'answers' ];
+
     public function test()
     {
         return $this->belongsTo(Test::class);
@@ -20,5 +22,10 @@ class Quiz extends Model
     public function answers()
     {
         return $this->hasMany(Answer::class);
+    }
+
+    public function counts(){
+        
+        return $this->get()->count();
     }
 }

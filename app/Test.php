@@ -10,6 +10,8 @@ class Test extends Model
     
     protected $fillable = ['title','info', 'type', 'duration'];
 
+    protected $withCount = [ 'quizzes' ];
+
     public function sections()
     {
         return $this->hasMany(TestSection::class);

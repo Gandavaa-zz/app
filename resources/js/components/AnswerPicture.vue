@@ -9,7 +9,7 @@
 <script>
     export default {
 
-        props: ['quiz'], 
+        props: ['answer'], 
 
         data(){
             return {
@@ -18,12 +18,13 @@
         },
 
         mounted(){
-
-            if (typeof this.quiz !== 'undefined') {
-              this.image = '/storage'+this.quiz.quiz_path
+                          
+            if (typeof this.answer !== 'undefined') {
+              this.image = '/storage'+this.answer.answer_path
             }
 
         },
+        
         methods:{
             onChange(e){
 

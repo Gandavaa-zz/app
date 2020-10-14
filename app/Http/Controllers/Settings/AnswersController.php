@@ -69,8 +69,10 @@ class AnswersController extends Controller
      */
     public function create(Quiz $quiz)
     {
-
-        return view('layouts.settings.answer.create', ['quiz' => $quiz]);
+            return view('layouts.settings.answer.create', 
+            [
+                'quiz' => $quiz                
+            ]);
     }
 
     /**
@@ -80,7 +82,7 @@ class AnswersController extends Controller
     {  
         $data = $this->validateAnswer();
 
-  
+        if($request->has('image')) $data['answer_path'] = $this->validateImage($request);
 
         Answer::create($data);
 
@@ -146,4 +148,17 @@ class AnswersController extends Controller
             'answer' => ['required', ['string']]
         ]);
     }   
+
+    public function validateImage($request){
+        
+        $request->validate([
+            'image' => 'required|mimes:jpg,jpeg,bmp,png|max:10240'
+        ]);
+
+        $imageFile = time().'.'.$request->file('image')->extension();
+
+        $filePath = $request->file('image')->storeAs('uploads', $imageFile, 'public');
+
+        return $filePath;          
+    }
 }

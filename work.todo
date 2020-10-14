@@ -25,7 +25,7 @@
         ✔ add permission @done(20-08-28 12:32)
         ✔ Multiple permissions @done(20-09-03 11:50)
         ✔ Set all roles can update function @done(20-09-23 16:11)
-        ☐ Change by add vue js
+        ✔ Change by add vue js @done(20-10-13 13:03)
                 
     ✔ Permission - CRUD - Datatable @done(20-08-28 11:20)
         ✔ Alert message @done(20-08-28 11:20)
@@ -34,8 +34,15 @@
         ✔ destroy @done(20-08-28 11:57)  
     ✔ Group -crud @done(20-09-04 16:25)   
 
-    ☐ Assesments - Тест
-    ☐ Assesments Management    
+    ☐ Assesments - Тест << TODO (Dec 13)
+        ✔ Асуулт = CRUD @done(20-10-13 13:04)
+        ☐ Todo: Асуултаа өөрчлөхөд Datagrid-г filter хийх хэрэгтэй.
+        ✔ Хариултууд @done(20-10-14 10:19)
+            ✔ Save - Хадгалагдах @done(20-10-14 10:19)
+            ✔ Create  - Image create vue added @done(20-10-14 10:19)
+            ✔ Read @done(20-10-14 10:19)
+            ✔ Update @done(20-10-14 10:19)
+            ✔ Delete @done(20-10-14 10:19)
     ☐ Export Result
 
 ☐ Participand management 
