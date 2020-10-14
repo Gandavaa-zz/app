@@ -68,16 +68,19 @@
                 <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-user"></use>
             </svg>Харилцагчид</a>
         <ul class="c-sidebar-nav-dropdown-items">
-            <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('participants.index') }} ">
-                <svg class="c-sidebar-nav-icon">
-                    <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-list"></use>
-                </svg>Жагсаалт</a>
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link" href="{{ route('participants.index') }} ">
+                    <svg class="c-sidebar-nav-icon">
+                        <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-list"></use>
+                    </svg> Жагсаалт
+                </a>
             </li>
-
-            <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('participants.import') }} ">
-                <svg class="c-sidebar-nav-icon">
-                    <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-list"></use>
-                </svg>Import </a>
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link" href="{{ route('participants.import') }} ">
+                    <svg class="c-sidebar-nav-icon">
+                        <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-spreadsheet"></use>
+                    </svg> Import
+                </a>
             </li>
         </ul>
     </li>

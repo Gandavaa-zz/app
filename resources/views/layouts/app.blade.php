@@ -30,8 +30,6 @@
     <link href="{{ asset('css/free.min.css') }}" rel="stylesheet"> <!-- icons -->
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" /> -->
     <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-
     <!-- Main styles for this application-->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
@@ -60,9 +58,10 @@
           @yield('content')
 
           <flash message="{{ session('success') }}{{ session('error') }}"
-                @if(Session::has('success')) alert="alert-success" 
-                @elseif(Session::has('error')) alert="alert-danger" 
-                @endif></flash>
+                @if(Session::has('success')) alert="alert-success"
+                @elseif(Session::has('error')) alert="alert-danger"
+                @endif>
+        </flash>
 
         </main>
 
@@ -76,34 +75,8 @@
     <script src="{{ asset('js/coreui.bundle.min.js') }}"></script>
     <script src="{{ asset('js/coreui-utils.js') }}"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
-    <script>
 
-$(document).ready(function() {
-$('.js-example-basic-multiple').select2();
-window.Laravel = { csrfToken: '{{ csrf_token() }}' };
-$('#groups').select2({
-    placeholder: 'Групп сонгоно уу',
-  ajax: {
-    url: "{{route('groups.list')}}",
-    dataType: 'json',
-    delay: 250,
-    processResults: function (data) {
-      return {
-        results:  $.map(data, function (item) {
-              return {
-                  text: item.name,
-                  id: item.id
-              }
-          })
-      };
-    },
-    cache: true
-  }
-});
-});
-    </script>
     @yield('javascript')
 
   </body>

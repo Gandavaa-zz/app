@@ -1,122 +1,465 @@
 @extends('layouts.app')
 
 @section('content')
-
-<div class="c-main">
-
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3>User detail</h3>
-                    </div>
-                <div class="card-body">
-                    <div class="container">
-                        <div class="row my-2">
-                            <div class="col-lg-8 order-lg-2">
-                                <ul class="nav nav-tabs">
-                                    <li class="nav-item">
-                                        <a href="" data-target="#profile" data-toggle="tab" class="nav-link active">Profile</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="" data-target="#messages" data-toggle="tab" class="nav-link">Contact info</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="" data-target="#edit" data-toggle="tab" class="nav-link">other info</a>
+    <div class="container-fluid">
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3">
+                        <!-- Profile Image -->
+                        <div class="card card-primary card-outline">
+                            <div class="card-body box-profile">
+                                <div class="text-center">
+                                    <img class="profile-user-img img-fluid img-circle" src="/assets/img/avatars/1.jpg"
+                                        alt="User profile picture">
+                                </div>
+                                {{-- <?php dd($user[0]->fullname); ?> --}}
+                                <h3 class="profile-username text-center">{{ $user[0]->fullname }}</h3>
+                                @foreach (explode(',', $user[0]->name) as $group_name)
+                                    <span class="badge badge-primary">{{ $group_name }}</span>
+                                @endforeach
+                                <hr>
+                                <ul class="list-group list-group-unbordered mb-3">
+                                    <li class="list-group-item">
+                                        <b>Followers</b> <a class="float-right">1,322</a>
                                     </li>
                                 </ul>
-                                <div class="tab-content py-4">
-                                    <div class="tab-pane active" id="profile">
-                                        <h5 class="mb-3">{{ $user->firstname }}</h5>
+                                <a href="{{ route('participants.edit', $user[0]->id) }}"
+                                    class="btn btn-info btn-block"><b><i class="cil-pencil"></i> Edit</b></a>
+                                <a class="btn btn-danger btn-block delete" href="javascript:void(0)" data-toggle="tooltip"
+                                    data-id='{{ $user[0]->id }}' data-original-title="Delete"><i class="cil-trash"></i>
+                                    Delete</a>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+
+                        <!-- /.card -->
+
+                        <!-- Authentication Box -->
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">Authentication</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <strong><i class="fas fa-book mr-1"></i> URL</strong>
+
+                                <p class="text-muted">
+                                    https://app.centraltest.com/united-management-consulting/auth-participant
+                                </p>
+
+                                <hr>
+
+                                <strong><i class="fas fa-map-marker-alt mr-1"></i> Username</strong>
+
+                                <p class="text-muted">{{ $user[0]->email }}</p>
+                                <hr>
+                                <strong><i class="far fa-file-alt mr-1"></i> Password</strong>
+                                <p class="text-muted">{{ $user[0]->password }}</p>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-md-9">
+                        <div class="card">
+                            <div class="card-header">
+                                <ul class="nav nav-tabs" style="font-size: 20px;">
+                                    <li class="nav-item"><a class="nav-link active" style="color:#3B4C64!important"
+                                            href="#overview" data-toggle="tab"><i class="cil-clipboard"></i> Overview</a>
+                                    </li>
+                                    <li class="nav-item"><a class="nav-link" style="color:#3B4C64!important" href="#invite"
+                                            data-toggle="tab"><i class="cil-cursor"></i> Invite</a></li>
+                                    <li class="nav-item"><a class="nav-link" style="color:#3B4C64!important"
+                                            href="#assessment" data-toggle="tab"><i class="cil-graph"></i> Assessment</a>
+                                    </li>
+                                    <li class="nav-item"><a class="nav-link" style="color:#3B4C64!important"
+                                            href="#settings" data-toggle="tab"><i class="cil-vertical-align-bottom1"></i>
+                                            Talent map</a></li>
+                                </ul>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="tab-content">
+                                    <div class="active tab-pane" id="overview">
                                         <div class="row">
-                                            <div class="col-md-6">
-                                                <h6>About</h6>
-                                                <p>
-                                                    Web Designer, UI/UX Engineer
-                                                </p>
-                                                <h6>Hobbies</h6>
-                                                <p>
-                                                    Indie music, skiing and hiking. I love the great outdoors.
-                                                </p>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <h6>Recent badges</h6>
-                                                <a href="#" class="badge badge-dark badge-pill">html5</a>
-                                                <a href="#" class="badge badge-dark badge-pill">react</a>
-                                                <a href="#" class="badge badge-dark badge-pill">codeply</a>
-                                                <a href="#" class="badge badge-dark badge-pill">angularjs</a>
-                                                <a href="#" class="badge badge-dark badge-pill">css3</a>
-                                                <a href="#" class="badge badge-dark badge-pill">jquery</a>
-                                                <a href="#" class="badge badge-dark badge-pill">bootstrap</a>
-                                                <a href="#" class="badge badge-dark badge-pill">responsive-design</a>
-                                                <hr>
-                                                <span class="badge badge-primary"><i class="fa fa-user"></i> 900 Followers</span>
-                                                <span class="badge badge-success"><i class="fa fa-cog"></i> 43 Forks</span>
-                                                <span class="badge badge-danger"><i class="fa fa-eye"></i> 245 Views</span>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <h5 class="mt-2"><span class="fa fa-clock-o ion-clock float-right"></span> Recent Activity</h5>
-                                                <table class="table table-sm table-hover table-striped">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                <strong>Abby</strong> joined ACME Project Team in <strong>`Collaboration`</strong>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <strong>Gary</strong> deleted My Board1 in <strong>`Discussions`</strong>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <strong>Kensington</strong> deleted MyBoard3 in <strong>`Discussions`</strong>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <strong>John</strong> deleted My Board1 in <strong>`Discussions`</strong>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <strong>Skell</strong> deleted his post Look at Why this is.. in <strong>`Discussions`</strong>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                        <!--/row-->
-                                    </div>
-                                    <div class="tab-pane" id="messages">
-                                        <div class="alert alert-info alert-dismissable">
-                                            <a class="panel-close close" data-dismiss="alert">×</a> This is an <strong>.alert</strong>. Use this to show important messages to the user.
-                                        </div>
-                                     <div class="row"><div class="col-sm-6 col-lg-3"><div class="card text-white bg-primary"><div class="card-body pb-0"><div class="btn-group float-right"><button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-transparent dropdown-toggle p-0"><svg class="c-icon"><use xlink:href="assets/icons/coreui/free-symbol-defs.svg#cui-settings"></use></svg></button> <div class="dropdown-menu dropdown-menu-right"><a href="#" class="dropdown-item">Action</a><a href="#" class="dropdown-item">Another action</a><a href="#" class="dropdown-item">Something else here</a></div></div> <div class="text-value-lg">9.823</div> <div>Members online</div></div> <div class="c-chart-wrapper mt-3 mx-3" style="height: 70px;"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div><canvas id="card-chart1" height="70" class="chart chartjs-render-monitor" style="display: block; width: 339px; height: 70px;" width="339"></canvas></div></div></div> <div class="col-sm-6 col-lg-3"><div class="card text-white bg-info"><div class="card-body pb-0"><button type="button" class="btn btn-transparent p-0 float-right"><svg class="c-icon"><use xlink:href="assets/icons/coreui/free-symbol-defs.svg#cui-location-pin"></use></svg></button> <div class="text-value-lg">9.823</div> <div>Members online</div></div> <div class="c-chart-wrapper mt-3 mx-3" style="height: 70px;"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div><canvas id="card-chart2" height="70" class="chart chartjs-render-monitor" width="339" style="display: block; width: 339px; height: 70px;"></canvas></div></div></div> <div class="col-sm-6 col-lg-3"><div class="card text-white bg-warning"><div class="card-body pb-0"><div class="btn-group float-right"><button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-transparent dropdown-toggle p-0"><svg class="c-icon"><use xlink:href="assets/icons/coreui/free-symbol-defs.svg#cui-settings"></use></svg></button> <div class="dropdown-menu dropdown-menu-right"><a href="#" class="dropdown-item">Action</a><a href="#" class="dropdown-item">Another action</a><a href="#" class="dropdown-item">Something else here</a></div></div> <div class="text-value-lg">9.823</div> <div>Members online</div></div> <div class="c-chart-wrapper mt-3" style="height: 70px;"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div><canvas id="card-chart3" height="70" class="chart chartjs-render-monitor" width="371" style="display: block; width: 371px; height: 70px;"></canvas></div></div></div> <div class="col-sm-6 col-lg-3"><div class="card text-white bg-danger"><div class="card-body pb-0"><div class="btn-group float-right"><button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-transparent dropdown-toggle p-0"><svg class="c-icon"><use xlink:href="assets/icons/coreui/free-symbol-defs.svg#cui-settings"></use></svg></button> <div class="dropdown-menu dropdown-menu-right"><a href="#" class="dropdown-item">Action</a><a href="#" class="dropdown-item">Another action</a><a href="#" class="dropdown-item">Something else here</a></div></div> <div class="text-value-lg">9.823</div> <div>Members online</div></div> <div class="c-chart-wrapper mt-3 mx-3" style="height: 70px;"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div><canvas id="card-chart4" height="70" class="chart chartjs-render-monitor" width="339" style="display: block; width: 339px; height: 70px;"></canvas></div></div></div></div>
-                                    </div>
-                                    <div class="tab-pane" id="edit">
-                                        <form role="form">
-                                            <div class="form-group row">
-                                                <label class="col-lg-3 col-form-label form-control-label">First name</label>
-                                                <div class="col-lg-9">
-                                                    <input class="form-control" type="text" value="Jane">
+                                            <div class="col-sm-8 col-md-8">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h4>Talent map</h4>
+                                                    </div>
+                                                    <div class="card-body row">
+                                                        <div class="wrapper col-md-6">
+                                                            <h2 class="how-title">Skills</h2>
+                                                            <div class="progress-group">
+                                                                <div class="progress-group-header align-items-end">
+                                                                    <div>Risk Management</div>
+                                                                </div>
+                                                                <div class="progress-group-bars">
+                                                                    <div class="progress mb-3">
+                                                                        <div class="progress-bar progress-bar bg-success"
+                                                                            role="progressbar" style="width: 25%"
+                                                                            aria-valuenow="25" aria-valuemin="0"
+                                                                            aria-valuemax="100">25%</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="progress-group">
+                                                                <div class="progress-group-header align-items-end">
+                                                                    <div>Strategic Planning</div>
+                                                                </div>
+                                                                <div class="progress-group-bars">
+                                                                    <div class="progress mb-3">
+                                                                        <div class="progress-bar progress-bar bg-success"
+                                                                            role="progressbar" style="width: 25%"
+                                                                            aria-valuenow="56" aria-valuemin="0"
+                                                                            aria-valuemax="100">56%</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="progress-group">
+                                                                <div class="progress-group-header align-items-end">
+                                                                    <div>Analytical Thinking</div>
+                                                                </div>
+                                                                <div class="progress-group-bars">
+                                                                    <div class="progress mb-3">
+                                                                        <div class="progress-bar progress-bar bg-success"
+                                                                            role="progressbar" style="width: 25%"
+                                                                            aria-valuenow="87" aria-valuemin="0"
+                                                                            aria-valuemax="100">87%</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div>
+                                                        <!-- end of /.coloumn -->
+                                                        <div class="wrapper col-md-6">
+                                                            <h2 class="how-title">Occupations</h2>
+                                                            <div class="progress-group">
+                                                                <div class="progress-group-header align-items-end">
+                                                                    <div>Horticulturalist</div>
+                                                                </div>
+                                                                <div class="progress-group-bars">
+                                                                    <div class="progress mb-3">
+                                                                        <div class="progress-bar progress-bar bg-warning"
+                                                                            role="progressbar" style="width: 25%"
+                                                                            aria-valuenow="25" aria-valuemin="0"
+                                                                            aria-valuemax="100">25%</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="progress-group">
+                                                                <div class="progress-group-header align-items-end">
+                                                                    <div>Travel Agent</div>
+                                                                </div>
+                                                                <div class="progress-group-bars">
+                                                                    <div class="progress mb-3">
+                                                                        <div class="progress-bar progress-bar bg-warning"
+                                                                            role="progressbar" style="width: 25%"
+                                                                            aria-valuenow="56" aria-valuemin="0"
+                                                                            aria-valuemax="100">56%</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="progress-group">
+                                                                <div class="progress-group-header align-items-end">
+                                                                    <div>Network Administration</div>
+                                                                </div>
+                                                                <div class="progress-group-bars">
+                                                                    <div class="progress mb-3">
+                                                                        <div class="progress-bar progress-bar bg-warning"
+                                                                            role="progressbar" style="width: 25%"
+                                                                            aria-valuenow="87" aria-valuemin="0"
+                                                                            aria-valuemax="100">87%</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- end of /.coloumn -->
+
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </form>
+                                            <div class="col-sm-8 col-md-4">
+                                                <div class="card">
+                                                    <div class="card-header">Card title</div>
+                                                    <div class="card-body">Lorem ipsum dolor sit amet, consectetuer
+                                                        adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet
+                                                        dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam,
+                                                        quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut
+                                                        aliquip ex ea commodo consequat.</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-8 col-md-8">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h4>Profile</h4>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="c100 p90 blue">
+                                                            <span data-toggle="modal"
+                                                                data-target="#basicExampleModal"><strong style="color: #3B4C64; cursor: pointer;">90%</strong></span>
+                                                            <div class="slice">
+                                                                <div class="bar"></div>
+                                                                <div class="fill"></div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="c100 p15 green">
+                                                            <span data-toggle="modal"
+                                                                data-target="#basicExampleModal"><strong style="color: #3B4C64; cursor: pointer;">15%</strong></span>
+                                                            <div class="slice">
+                                                                <div class="bar"></div>
+                                                                <div class="fill"></div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="c100 p74 orange">
+                                                            <span data-toggle="modal"
+                                                                data-target="#basicExampleModal"><strong style="color: #3B4C64; cursor: pointer;">74%</strong></span>
+                                                            <div class="slice">
+                                                                <div class="bar"></div>
+                                                                <div class="fill"></div>
+                                                            </div>
+                                                        </div>
+                                                     <h4><span class="badge badge-primary">Social</span></h4>
+                                                    </div>
+
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="basicExampleModal" tabindex="-1"
+                                                        role="dialog" aria-labelledby="exampleModalLabel"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog modal-lg" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h3 class="modal-title" id="exampleModalLabel">
+                                                                        <strong>Professional Profile 2</strong>
+                                                                    </h3>
+                                                                    <button type="button" class="close" data-dismiss="modal"
+                                                                        aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="row">
+                                                                        <div class="col-12 col-sm-5">
+                                                                            <div
+                                                                                class="d-flex align-items-center justify-content-center m-auto">
+                                                                                <div>
+                                                                                    <div
+                                                                                        class="chart-wrapper row align-items-center justify-content-center">
+                                                                                        <div class="c100 p90 blue">
+                                                                                            <span><strong style="color: #3B4C64; cursor: pointer;">90%</strong></span>
+                                                                                            <div class="slice">
+                                                                                                <div class="bar"></div>
+                                                                                                <div class="fill"></div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="text-center ml-1 mb-1 mt-1">
+                                                                                        <div
+                                                                                            class="synthetic-box-label-donuts badge text-white p-2 red-background">
+                                                                                            Social </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-12 col-sm-7">
+                                                                            <div>Social individuals are gregarious by nature
+                                                                                and have the need to belong to a group. They
+                                                                                enjoy networking and can easily form good
+                                                                                professional and personal bonds with others.
+                                                                                They enjoy working in teams and tend to
+                                                                                spread their enthusiasm to their
+                                                                                team-members. As a result, they integrate
+                                                                                very easily into different teams.</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+
+
+                                        </div>
                                     </div>
+                                    <!-- /.tab-pane -->
+                                    <div class="tab-pane" id="invite">
+                                            <div class="card">
+                                                <div class="card-header d-flex justify-content-between" id="headingCollapse1">
+                                                    <div>
+                                                        <a class="collapsed" data-toggle="collapse" href="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                                                            Card Header
+                                                        </a>
+                                                    </div>
+                                                    <div>
+                                                        <a data-toggle="collapse" class="collapsed btn btn-default btn-xs text-right" href="#collapse1" aria-label="Expand/Collapse Card 1" aria-expanded="false" role="button">
+                                                            <i class="fa" aria-hidden="true"></i>
+                                                            <span class="sr-only">Expand/Collapse Card 1</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div id="collapse1" class="collapse" aria-labelledby="headingCollapse1">
+                                                    <div class="card-body">
+                                                        Here is some wonderful content that you can't see...until expanded!
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.tab-pane -->
+
+                                    <div class="tab-pane" id="assessment">
+                                        <div class="form-group">
+                                            <select id='status' class="form-control" style="width: 200px">
+                                                <option value="">--Select Status--</option>
+                                                <option value="1">Active</option>
+                                                <option value="0">Deactive</option>
+                                            </select>
+                                        </div>
+                                        <table class="table table-bordered yajra-datatable user_table " id="user_table">
+                                            <thead>
+                                                <tr>
+                                                    <th width="3px"><input type="checkbox" id="selectAll" /></th>
+                                                    <th width="5px">#</th>
+                                                    <th>Тест нэр</th>
+                                                    <th>Evaluator</th>
+                                                    <th>Огноо</th>
+                                                    <th>Гүйцэтгэсэн хугацаа</th>
+                                                    <th width="100px">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.tab-pane -->
                                 </div>
-                            </div>
-                            <div class="col-lg-4 order-lg-1 text-center">
-                                <img src="//placehold.it/150" class="mx-auto img-fluid img-circle d-block" alt="avatar">
-                                <label class=""><br/>
-                                {{ $user->lastname }} {{ $user->firstname }}</label>
-                            </div>
+                                <!-- /.tab-content -->
+                            </div><!-- /.card-body -->
                         </div>
+                        <!-- /.nav-tabs-custom -->
                     </div>
+                    <!-- /.col -->
                 </div>
-            </div>
-        </div>
+                <!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
     </div>
-</div>
 @endsection
+{{-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> --}}
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script>
+    $(document).ready(function() {
+        var table = $('.yajra-datatable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('participants.assessment') }}",
+            columns: [{
+                    data: 'checkbox',
+                    name: 'checkbox',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex'
+                },
+                {
+                    data: 'title',
+                    name: 'title'
+                },
+                {
+                    data: 'info',
+                    name: 'info'
+                },
+                {
+                    data: 'created_at',
+                    name: 'created_at'
+                },
+                {
+                    data: "duration",
+                    name: "duration",
+                    render: function(data) {
+                        return "<i class='cil-clock'> " + data + "<i/>";
+                    }
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: true,
+                    searchable: true
+
+                },
+            ]
+        });
+
+    });
+
+
+    $(document).ready(function() {
+        $('body').on('click', '.addToGroup', function() {
+            var id = $(this).data('id');
+            $('#user_id').val(id);
+            $('#groupModal').modal('show');
+            // alert(id);
+        })
+    });
+
+    $(document).ready(function() {
+        $(".delete").click(function(e) {
+            var id = $(this).data("id");
+            Swal.fire({
+                title: 'Are you sure?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Тийм',
+                cancelButtonText: 'Үгүй'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        type: "get",
+                        url: "/participants/destroy/" + id,
+                        success: function(data) {
+                            $('#confirmModal').modal('hide');
+                            Swal.fire(
+                                'Deleted!',
+                                'Амжилттай устгагдлаа',
+                                'success'
+                            )
+                            setTimeout(function() {
+                                window.history.back();
+                            }, 1000);
+                        },
+                        error: function(data) {
+                            alert('Error:', data);
+                        }
+                    });
+                }
+            })
+            $('#select_all').click(function(event) {
+                var $that = $(this);
+                $(':checkbox').each(function() {
+                    this.checked = $that.is(':checked');
+                });
+            });
+
+
+            function addPost() {
+                $('#add-group-modal').modal('show');
+            }
+        });
+    });
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>

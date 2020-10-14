@@ -40,12 +40,12 @@ class CreateTestsTable extends Migration
             $table->UnsignedBigInteger('test_id');
             $table->integer('num');
             $table->string('title');
-            $table->string('info');           
+            $table->string('info');
             $table->timestamps();
 
             $table->foreign('test_id')
                   ->references('id')->on('tests')->onDelete('cascade')->onUpdate('cascade');
-             
+
         });
     }
 

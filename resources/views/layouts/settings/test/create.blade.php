@@ -70,7 +70,7 @@
 
                             <div class="col-md-4">
                                 <select name="duration" id="duration" class="form-control @error('type') is-invalid @enderror">
-                                    @foreach($durations as $minute)
+                                    @foreach($durations ?? '' as $minute)
                                         <option value="{{ $minute }}">{{ $minute }}</option>
                                     @endforeach
                                 </select>

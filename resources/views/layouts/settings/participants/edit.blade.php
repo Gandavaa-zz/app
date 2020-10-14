@@ -16,6 +16,11 @@
                         <div class="container py-5">
                             <div class="row">
                                 <div class="col-md-10 mx-auto">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                   </ul>
                                     <form>
                                         <div class="form-group row">
                                             <div class="col-sm-6">
@@ -103,6 +108,19 @@
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
+                                                @enderror
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="groups">Group</label>
+                                                @if ($group_names)
+                                                <group :selected="{{ $group_names->pluck('name') }}" class="@error('groups') is-invalid @enderror"></group>
+                                                @else
+                                                <group  class="@error('groups') is-invalid @enderror"></group>
+                                                @endif
+                                                @error('groups')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
                                                 @enderror
                                             </div>
                                         </div>

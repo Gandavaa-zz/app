@@ -2081,6 +2081,10 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_0___default.a);
 
     axios.get('/settings/userGroups/').then(function (response) {
       response.data.forEach(function (element) {
+        console.log("element [] - " + element.name);
+
+        _this.options.push(element.id);
+
         _this.options.push(element.name);
       });
     });

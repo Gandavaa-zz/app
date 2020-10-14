@@ -14,7 +14,7 @@ class ProfilesController extends Controller
         $this->authorize('view', $user);
 
         $activities = $user->activity->fresh('subject');        
-
+        
         return view('layouts.settings.users.profile', [
                 'user' => $user,
                 'activities' => Activity::feed($user, 50)

@@ -99,10 +99,13 @@
                                             </div>
                                             <div class="col-sm-6">
                                                 <label for="groups">Group</label>
-                                                <select id="groups" class="js-example-basic-multiple form-control groups" name="groups[]" multiple="multiple">
-                                                  </select>
-                                             </div>
-
+                                                <group  class="@error('groups') is-invalid @enderror"></group>
+                                                @error('groups')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
                                         </div>
                                 </div>
                             </div>

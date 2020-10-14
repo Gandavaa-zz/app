@@ -2,7 +2,7 @@
 <template>
   <div>
     <v-select v-model="selected" multiple :options="options" @input="setSelected" />
-    <input type="hidden" v-model="selected" name="roles" />
+    <input type="hidden" v-model="selected" name="groups" />
   </div>
 </template>
 
@@ -31,7 +31,7 @@ export default {
           })
         }
 
-         axios.get('/settings/getRoles').then(response => {
+         axios.get('/participants/fetchGroup').then(response => {
              response.data.forEach(element => {
                this.options.push(element.name)
              });

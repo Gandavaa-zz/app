@@ -35,7 +35,6 @@ Vue.component('flash', require('./components/Flash.vue').default);
 Vue.component('part-test', require('./components/PartTest.vue').default);
 // Vue.component('vue-multiselect', require('./components/Multiselect.vue').default);
 Vue.component('my-select', require('./components/Select.vue').default);
-
 Vue.component('group', require('./components/Group.vue').default);
 
 Vue.component('profile', require('./components/Profile.vue').default);
@@ -51,5 +50,5 @@ Vue.component('answer-picture', require('./components/AnswerPicture.vue').defaul
  */
 
 const app = new Vue({
-    el: '#app'    
+    el: '#app'
 });
