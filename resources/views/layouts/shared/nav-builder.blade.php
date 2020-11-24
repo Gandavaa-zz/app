@@ -46,7 +46,7 @@
             <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('group.index') }}">
                 <svg class="c-sidebar-nav-icon">
                     <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-people"></use>
-                </svg> Хэрэглэгчийн групп</a>
+                </svg> Бүлэг</a>
             </li>
             <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="#">
                 <svg class="c-sidebar-nav-icon">

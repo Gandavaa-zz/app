@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('created_by')->nullable();
             $table->string('register', 10)->nullable();
             $table->string('address')->nullable();
+            $table->string('avatar_path')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

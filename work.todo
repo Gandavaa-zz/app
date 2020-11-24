@@ -5,16 +5,16 @@
 ✔ Bread Crumb fix @done(20-08-27 13:47)
 
 ☐ Settings
-    ✔ User - Crud @done(20-10-14 14:56)
+    ✔ Системийн хэрэглэгчид - Crud @done(20-10-14 14:56)
         ✔ Жагсаалт хийх @done(20-08-28 09:55)
         ✔ Create @done(20-08-28 09:55)
         ✔ Edit @done(20-08-28 10:26)
         ✔ Destroy @done(20-08-28 10:29)
-        // Хэрэв устгах бол
         ✔ View @done(20-08-28 10:29)
         ✔ >System-n hereglegchiig filterdeh @done(20-09-23 16:11)
         ✔ Assign roles @done(20-09-23 16:11)
-
+        ☐ Import User Data
+        
     ☐ Role - CRUD - Datatable
         ✔ Alert message @done(20-08-27 15:08)
         ✔ create @done(20-08-27 13:48)
@@ -25,6 +25,7 @@
         ✔ Multiple permissions @done(20-09-03 11:50)
         ✔ Set all roles can update function @done(20-09-23 16:11)
         ✔ Change by add vue js @done(20-10-13 13:03)
+        ✔ Premission-г засварлах @done(20-11-18 13:32)
                 
     ✔ Permission - CRUD - Datatable @done(20-08-28 11:20)
         ✔ Alert message @done(20-08-28 11:20)
@@ -33,27 +34,43 @@
         ✔ destroy @done(20-08-28 11:57)  
     ✔ Group -crud @done(20-09-04 16:25)   
 
-    ☐ Test - Тест << TODO (Dec 13)
+    ☐ Test -  TODO (Dec 13)
         ✔ Асуулт = CRUD @done(20-10-13 13:04)
-        ☐ Todo: Асуултаа өөрчлөхөд Datagrid-г filter хийх хэрэгтэй.
+        ☐ Асуултаа өөрчлөхөд Datagrid-г filter хийх хэрэгтэй !!!
         ✔ Хариултууд @done(20-10-14 10:19)
             ✔ Save - Хадгалагдах @done(20-10-14 10:19)
             ✔ Create  - Image create vue added @done(20-10-14 10:19)
             ✔ Read @done(20-10-14 10:19)
             ✔ Update @done(20-10-14 10:19)
             ✔ Delete @done(20-10-14 10:19)            
-    ✔ Import XLS From test @done(20-10-14 14:48)
+        ✔ Import XLS From test @done(20-10-14 14:48)
 
-☐ Import from User data
-    
 ☐ Participand management 
-    ☐ List - Assesments | Edit | Add to a group | Archive | Delete
+    ✔ List - Assesments @done(20-11-18 16:04)
+        ✔ Edit @done(20-11-19 19:57)
+        ✔ Зураг нэмэх хэрэгтэй байна. @done(20-11-19 19:57)
+        ✔ Профайл засах хэрэгтэй байна. @done(20-11-19 19:57)
+        ☐ Хэрэглэгч, групп дээр нэг хэрэглэгч нэг групп uniq index тавих                      
+        ☐ Add to a group 
+        ☐ Archive 
+        ☐ Delete
     ☐ Archive
     ☐ Notification-s 
 
 ☐ Result Matching 
     ☐ Management
     ☐ Result texts
+
+☐ Dashboard
+    ☐ Participant -counts
+    ☐ Assesments
+    ☐ Referentials
+    ☐ Notifications
+    ☐ News
+    ☐ Graphic - New participants status by month
+    ☐ Grapic - New assessments status by month
+
+
         
 ☐ Тохиргоо
     ☐ Системийн хэрэглэгчид
@@ -63,3 +80,4 @@
     ☐ Other 
 
     https://stackoverflow.com/questions/5032210/php-sentence-boundaries-detection
+

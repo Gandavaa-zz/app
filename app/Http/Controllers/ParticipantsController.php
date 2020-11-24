@@ -2,14 +2,17 @@
 namespace App\Http\Controllers;
 
 use App\Group;
-use App\Http\Controllers\Controller;
 use App\User;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables ;
+use App\Group_User;
+// use App\Participant;
+
 
 class ParticipantsController extends Controller
 {
@@ -19,32 +22,31 @@ class ParticipantsController extends Controller
     }
     /**
      * Display a listing of the resource.
-     */
+    */
     public function index(Request $request)
     {
-
         if ($request->ajax()) {
             $users = User::with('groups')->get();
 
             return DataTables::of($users)
                 ->addIndexColumn()
-                ->addColumn('action', function($row){
+                ->addColumn('action', function($user){
                     $btn = '
-                    <a class="btn btn-pill btn-light"><i class="cil-send"></i> Invite</a>
-                    <a class="btn btn-pill btn-light"><i class="cil-chart"></i> Talent map</a>
+                    <a class="btn btn-pill btn-light btn-sm"><i class="cil-send"></i> Урих</a>
+                    <a class="btn btn-pill btn-light btn-sm"><i class="cil-chart"></i> Тайлан</a>
                     <div class="btn-group">
-                    <a href="" type="button" title="Бусад" class="btn btn-pill btn-light dropdown-toggle" data-toggle="dropdown">
-                    <i class="cil-cog"> More</i>
-                    </a>
+                        <a href="" type="button" title="Илүү" class="btn btn-pill btn-light dropdown-toggle btn-sm" data-toggle="dropdown">
+                            <i class="cil-cog"> Бусад...</i>
+                        </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item edit" href="' . route("participants.edit", $row->id) . '" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit"><i class="cil-pencil">&nbsp;</i> Edit</a>
+                        <a class="dropdown-item edit" href="' .route("participants.edit", $user->id) . '" data-toggle="tooltip"  data-id="' . $user->id . '" data-original-title="Edit"><i class="cil-pencil">&nbsp;</i> Засах</a>
                         <a class="dropdown-item" href="javascript:void(0)"><i class="cil-vertical-align-bottom1">&nbsp;</i> Assessment</a>
-                        <a class="dropdown-item addToGroup" data-toggle="modal"  data-id="' . $row->id . '"  href=""><i class="cil-user-follow">&nbsp;</i>Add to the group</a>
+                        <a class="dropdown-item addToGroup" data-toggle="modal"  data-id="' . $user->id . '"  href=""><i class="cil-user-follow">&nbsp;</i>Add to the group</a>
                         <a class="dropdown-item archive" data-toggle="modal"  href="javascript:void(0)" data-id=""  href=""><i class="cil-user-unfollow">&nbsp;</i>Archive</a>
-                        <a class="dropdown-item delete" style="color:red;" href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete"><i class="cil-trash">&nbsp;</i>Delete</a>
+                        <a class="dropdown-item delete" style="color:red;" href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $user->id . '" data-original-title="Delete"><i class="cil-trash">&nbsp;</i>Delete</a>
                     </div>
                   </div>
-              <input type="checkbox" id="' . $row->id . '"';
+              <input type="checkbox" id="' . $user->id . '"';
                 return $btn;
             })
             // ->addColumn('name', function($row) {
@@ -61,17 +63,16 @@ class ParticipantsController extends Controller
                 ->make(true);
         }
 
-        return view('layouts.settings.participants.index');
+        return view('layouts.participants.index');
     }
 
     public function assessment_table(Request $request)
     {
-
         if ($request->ajax())
         {
             $data = Test::all();
 
-            return FacadesDataTables::of($data)->addIndexColumn()->addColumn('action', function ($row)
+            return DataTables::of($data)->addIndexColumn()->addColumn('action', function ($row)
             {
                 $btn = '
                 <div class="btn-group">
@@ -97,6 +98,11 @@ class ParticipantsController extends Controller
         // return view('layouts.settings.participants.index');
     }
 
+    public function show(User $user)
+    {      
+        return view('layouts.participants.show', compact('user'));
+    }
+
     /**
      * Create user view here
      *
@@ -105,7 +111,7 @@ class ParticipantsController extends Controller
     {
         $roles = Role::all();
 
-        return view('layouts.settings.participants.create', ['roles' => $roles]);
+        return view('layouts.participants.create', ['roles' => $roles]);
     }
 
     /**
@@ -117,7 +123,6 @@ class ParticipantsController extends Controller
         $data = $this->validateUser(null);
         $data['password'] = Hash::make($this->keyGenerator());
         $data['group_id'] = $request->group_id;        
-        // $data['group'] = implode(',', $request->groups);        
         $data['created_by'] = auth()->id();
         $data['group_id'] = $request->group_id;
         $data['firstname'] = $request->firstname;
@@ -133,7 +138,6 @@ class ParticipantsController extends Controller
         $data['groups'] = $this->groupToArray(request('groups'));
         $array = array();
         $lastInsertedId = $user->id;
-
 
         for ($i = 0;$i < count( $data['groups']);$i++)
         {
@@ -161,6 +165,7 @@ class ParticipantsController extends Controller
 
 
     protected function groupToArray($groups){
+        $group_ids = array();
 
         if(Str::contains($groups, ',')){
             foreach(explode(",", $groups) as $name)
@@ -168,31 +173,27 @@ class ParticipantsController extends Controller
                 $group = Group::where('name', $name)->first();
                 $group_ids[] = $group->id;
             }
+            
+            return $group_ids;
+
         }else{
+            
             $group = Group::where('name', $groups)->first();
 
-            $group_ids[] = $group->id;
-
+            return $group->id;
         }
-
-        return $group_ids;
     }
 
     public function addToGroup(Request $request)
     {
-        // return $request;
-        // $data = $this->validateUser(null);
-        // $groups = $this->groupToArray($request->groups);
-        // var_dump(request('groups'));
         $data = $this->groupToArray(request('groups'));
 
-        for ($i = 0;$i < count($data); $i++)
+        for ($i = 0; $i < count($data); $i++)
         {
             $user = Group_User::updateOrCreate(['user_id' => $request->user_id, ], ['group_id' => $data[$i]]);
         }
 
         // return $user;
-
         // $user->tests()->attach(request('tests'));
         $request->session()
             ->flash('message', 'Group-д амжилттай бүртгэлээ!');
@@ -205,14 +206,14 @@ class ParticipantsController extends Controller
      * Show the form for editing the specified resource.
      *
      */
-    public function edit(User $user, $id)
+    public function edit(User $user)
     {
-        $participants = User::find($id);
-        $groups = Group_User::whereIn('user_id', array(
-            $id
-        ))->get();
+        $groups = Group_User::whereIn('user_id', array($user->id))->get();
+
         $groupids = array();
+
         $group_names = null;
+
         if (count($groups) > 0)
         {
             foreach ($groups as $group)
@@ -222,30 +223,47 @@ class ParticipantsController extends Controller
             $group_names = Group::whereIn('id', $groupids)->get();
         }
 
-        return view('layouts.settings.participants.edit', compact('participants'))->with("group_names", $group_names);
+        return view('layouts.participants.edit', ['user' => $user])->with("group_names", $group_names);
 
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,$id)
+    public function update(Request $request, User $user)
     {
-        // return request();
-        // $data = $this->validateUser($id);
-        // $userid = User::find($id);
-        $data = User::find($id);
-        $data->firstname = $request->get('firstname');
-        $data->lastname = $request->get('lastname');
-        $data->email = $request->get('email');
-        $data->dob = $request->get('dob');
-        $data->register = $request->get('register');
-        $data->phone = $request->get('phone');
-        $data->gender = $request->get('gender');
-        $data->address = $request->get('address');
-        $data->groups()->attach($this->groupToArray(request('groups')));
-        $data->update();
-        return redirect()->route('participants.index')->with('success', 'Харилцагч амжилттай засварлалаа!');
+        
+        request()->validate([
+            'firstname' => ['required', ['string']],
+            'lastname' => ['required', ['string']],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'dob' => ['required', ['string']],            
+            'register' => ['required', ['string']],
+            'phone' => ['required', ['string']],
+            'gender' => ['required', ['string']],
+            'address' => ['required', ['string']],
+            'groups' => ['required']            
+        ]);
+
+        $user->update([
+            'firstname'=> request()->input('firstname'), 
+            'lastname'=> request()->input('lastname'), 
+            'email'=> request()->input('email'), 
+            'dob'=> request()->input('dob'), 
+            'register'=> request()->input('register'), 
+            'phone'=> request()->input('phone'), 
+            'gender'=> request()->input('gender'), 
+            'address'=> request()->input('address')            
+        ]);
+
+        if( request()->file('avatar')){
+            request()->validate(['avatar' => ['required', ['image']]]);
+            $user->update(['avatar_path'=> request()->file('avatar')->store('avatar', 'public') ]);           
+        }
+        
+        $user->groups()->attach($this->groupToArray(request('groups')));
+
+        return redirect()->route('participants.index')->with('success', 'Харилцагчын мэдээллийг амжилттай засварлалаа!');
     }
 
     /**
@@ -284,9 +302,8 @@ class ParticipantsController extends Controller
     }
 
      // used for populate data for group dropdown
-     public function fetch_groups(Request $request)
+     public function rolePermission(Request $request)
      {
-
          // return $request;
          $search = $request->search;
          if ($search == '')
@@ -301,6 +318,7 @@ class ParticipantsController extends Controller
          }
 
          $response = array();
+
          foreach ($groups as $group)
          {
              $response[] = array(
@@ -308,7 +326,6 @@ class ParticipantsController extends Controller
                  "name" => $group->name
              );
          }
-
          echo json_encode($response);
          exit;
      }
@@ -325,7 +342,7 @@ class ParticipantsController extends Controller
             'id' => 1
         );
         $user = User::where($where)->first();
-        return view('layouts.settings.participants.import', compact('user'));
+        return view('layouts.participants.import', compact('user'));
     }
 
     public function import_excel(Request $request)

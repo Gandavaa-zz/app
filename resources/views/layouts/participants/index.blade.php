@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
         <meta name="csrf-token" content="{{ csrf_token() }}" />
         <div class="container-fluid">
           <div class="animated fadeIn">
@@ -26,8 +25,8 @@
                                     <th>Нэр, овог</th>                                    
                                     <th>Үүссэн.огноо</th>
                                     <th>Үүсгэсэн</th>
-                                    <th width="10px">Групп</th>
-                                    <th width="500px">Action</th>
+                                    <th width="200px">Групп</th>
+                                    <th width="250px">Үйлдэл</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -99,28 +98,20 @@ $(function () {
                 orderable: false,
                 searchable: false
             },
-            // {
-            //     data: 'DT_RowIndex',
-            //     name: 'DT_RowIndex'
-            // },
             {
                 data: 'fullname',
                 name: 'fullname',
                 render: function(data, type, row) {
-                    return "<a style='color:#4F5D73;font-weight:bold' href='/participants/show/"+ row.id +"'>" + row.fullname + "</a>"
+                    return "<a style='color:#4F5D73;font-weight:bold' href='/participants/"+ row.id +"'>" + row.fullname + "</a>"
                 }
             },
-            // {
-            //     data: 'email',
-            //     name: 'email'
-            // },
             {
-                data: 'created_at',
-                name: 'created_at'
+                data: 'created_date',
+                name: 'created_date'
             },
             {
-                data: 'created_by',
-                name: 'created_by'
+                data: 'created_by_name',
+                name: 'created_by_name'
             },
             {
                 data: "groups.0.name",
@@ -162,46 +153,45 @@ $(document).ready(function () {
 $(document).on('click', '#deleteMultiple', function(){
     var id = [];
     Swal.fire({
-    title: 'Are you sure?',
-    // text: "You won't be able to revert this!",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Тийм',
-    cancelButtonText: 'Үгүй'
+        title: 'Are you sure?',
+        // text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Тийм',
+        cancelButtonText: 'Үгүй'
     }).then((result) => {
     if (result.value) {
         $('.participant_checkbox:checked').each(function(){
-                id.push($(this).val());
-            });
-            if(id.length > 0)
-            {
-                $.ajax({
-                    url:"{{ route('participants.deleteMultiple')}}",
-                    method:"get",
-                    data:{id:id},
-                    success:function(data)
-                    {
-                        Swal.fire(
+            id.push($(this).val());
+        });
+        
+        if(id.length > 0)
+        {
+            $.ajax({
+                url:"{{ route('participants.deleteMultiple')}}",
+                method:"get",
+                data:{id:id},
+                success:function(data)
+                {
+                    Swal.fire(
                         'Deleted!',
                         'Амжилттай устгагдлаа',
-                        'success'
-                        )
-                        $('#user_table').DataTable().ajax.reload();
-                    }
-                });
-            }
-            else
-            {
-                        Swal.fire({
-                        icon: 'error',
-                        title: 'Алдаа...',
-                        text: 'Харилцагч сонгоно уу!'
-                        })
-
-            };
-    }
+                        'success')                       
+                    $('#user_table').DataTable().ajax.reload();
+                }
+            });
+        }
+        else
+        {
+            Swal.fire({
+            icon: 'error',
+            title: 'Алдаа...',
+            text: 'Харилцагч сонгоно уу!'
+            })
+        };
+        }
     })
     });
 
@@ -240,12 +230,14 @@ var id = $(this).data("id");
     )
   }
 })
+
 $('#select_all').click(function(event) {
-        var $that = $(this);
-        $(':checkbox').each(function() {
-            this.checked = $that.is(':checked');
-        });
+    var $that = $(this);
+    
+    $(':checkbox').each(function() {
+        this.checked = $that.is(':checked');
     });
+});
 
 
   function addPost() {

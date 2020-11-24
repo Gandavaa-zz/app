@@ -13,10 +13,11 @@
                         <div>
                             <div class="text-center mt-4">                         
                                 <img class="rounded-circle"
-                                    src="{{ env('APP_URL', '') }}/assets/img/avatars/8.jpg" width="150" alt="{{ $user->email }}">
+                                    src="/storage/{{ $user->avatar_path }}" width="150" alt="{{ $user->email }}">
                                     <h4 class="card-title mt-2">{{ $user->firstname}}, {{ $user->lastname}}</h4>
+                                    
                                     @foreach( $user->groups as $group)                            
-                                    <h6 class="card-subtitle">{{ $group->name }}</h6>
+                                    <h6>{{ $group->name }}</h6>
                                     @endforeach
                                     <div class="row text-center justify-content-md-center pt-2">
                                         <!-- <button class="btn btn-sm btn-primary" @click="editing = true">Засах</button>      -->

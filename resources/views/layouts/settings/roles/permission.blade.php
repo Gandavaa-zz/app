@@ -55,7 +55,7 @@
                                     <input type="hidden" name="permission[]" value="{{ $perm->id }}" :value="selected">
                                 @endforeach
 
-                                @if(isset($permissions))
+                                @if(isset($permission_names))
                                     <select name="permission[]" multiple id="permission" class="form-control @error('permission') is-invalid @enderror">
                                         <option value="0">Нэг зөвшөөрлийг сонгоно уу!</option>
                                         @foreach($permissions as $permission)
@@ -72,21 +72,11 @@
                                         </span>
                                     @enderror
                                 @else
-                                    <a class="btn btn-primary" href="{{ route('create.permission') }} ">Шинэ нэмэх</a>
+                                    <a class="btn btn-primary" href=" ">Шинэ нэмэх</a>
                                 @endif
 
                             </div>
-                        </div>
-
-                        <div class="form-group row">
-
-                            <label class="col-md-4 col-form-label text-md-right">Зөшөөрөл</label>
-
-                            <div class="col-md-6">
-                                <v-select multiple :options="options" v-model="selected" />
-                            </div>
-
-                        </div>
+                        </div>                      
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
@@ -94,7 +84,7 @@
                                     {{ __('Хадгалах') }}
                                 </button>
                                 <a href="{{ route('role.index') }}" class="btn btn-danger">
-                                    {{ __('Цуцлах') }}
+                                    {{ __('Буцах') }}
                                 </a>
                             </div>
                         </div>

@@ -11,6 +11,9 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     use Notifiable, HasRoles, RecordsActivity;
+    
+    // protected $primaryKey = 'user_id';
+
     protected $table = 'users';
     /**
      * The attributes that are mass assignable.
@@ -18,8 +21,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'firstname','lastname', 'email', 'password', 'register', 'phone', 'address', 'dob', 'gender', 'created_by', 'groups'
+        'firstname','lastname', 'email', 'password', 'register', 'phone', 'address', 'dob', 'gender', 'created_by', 'groups', 'created_at', 'created_by_name', 'avatar_path'
     ];
+
+    // protected $guarded = [];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -28,13 +33,13 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password', 'remember_token',
-    ];
+    ];                                  
     
     protected $dateFormat = 'Y-m-d';
 
     protected $dates = ['created_at', 'updated_at'];
 
-    protected $appends = ['fullname', 'created_date'];
+    protected $appends = ['fullname', 'created_date', 'created_by_name'];
 
     /**
      * The attributes that should be cast to native types.
@@ -45,7 +50,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected $guard_name = 'web';
+     protected $guard_name = 'web';
 
     protected static function boot()
     {
@@ -64,7 +69,12 @@ class User extends Authenticatable
 
     public function groups()
     {
-        return $this->belongsToMany(Group::class);
+        return $this->belongsToMany('App\Group');
+    }
+    
+    public function getCreatedByNameAttribute()
+    {
+        return User::where('id', $this->created_by)->pluck('firstname')->first();
     }
 
     public function getFullNameAttribute(){
@@ -76,4 +86,10 @@ class User extends Authenticatable
         return Carbon::parse($this->created_at)->format('Y-m-d');
         
     }
+
+    // public function getIdAttribute(){
+
+    //     return $this->id;
+        
+    // }
 }

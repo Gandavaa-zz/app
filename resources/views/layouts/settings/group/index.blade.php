@@ -9,7 +9,7 @@
                 <div class="card">
                     <div class="card-header">
 
-                    <span class="float-left"><h5><i class="fa fa-align-justify"></i>{{ __('Хэрэглэгчийн Групп') }}</h5></span> <span class="float-right">
+                    <span class="float-left"><h5><i class="fa fa-align-justify"></i>{{ __('Бүлэг') }}</h5></span> <span class="float-right">
                     <a class="btn btn-primary" href="{{ route('group.create') }}">Шинэ</a></span>
                     </div>
 
@@ -21,7 +21,7 @@
                         <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Нэр</th>                            
+                            <th scope="col">Бүлэг</th>                            
                         </tr>
                         </thead>
                         <tbody>

@@ -30,12 +30,13 @@ export default {
               this.selected.push(element);
           })
         }
+          console.log('this selected'+ this.selected);
 
-         axios.get('/participants/fetchGroup').then(response => {
-             response.data.forEach(element => {
-               this.options.push(element.name)
-             });
-          });
+        //  axios.get('/roles/permission', { params: { data: this.selected}} ).then(response => {
+        //      response.data.forEach(element => {
+        //        this.options.push(element.name)
+        //      });
+        //   });
       },
       methods: {
         setSelected() {

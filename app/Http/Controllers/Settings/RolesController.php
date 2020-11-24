@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Settings;
 
+use App\Group;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
@@ -66,8 +67,21 @@ class RolesController extends Controller
     public function permission(Role $role)
     {
         $permissions = Permission::all();
+        
+        $permission_ids = array();
+        $perm_names = array();
 
-        return view('layouts.settings.roles.permission', compact('role', 'permissions'));
+        if ($permissions)
+        {
+            foreach ($permissions as $permission)
+            {
+                array_push($permission_ids, $permission->id);
+                array_push($perm_names, $permission->name);
+            }
+            $permission_names = Permission::whereIn('id', $permission_ids)->get();
+        }
+        $strings = implode(', ', $perm_names);
+        return view('layouts.settings.roles.permission', compact('role', 'permission_names', 'permissions', 'strings'));
     }
 
     public function givePermission(Role $role)
@@ -85,5 +99,33 @@ class RolesController extends Controller
         return Role::all();
         // return Role::where('name', '!=', 'client')->get();        
     }
+
+    public function rolePermission(Request $request)
+     {
+        $permission = $request->data;
+         
+        if ($permission == '')
+         {
+             $permissions = Permission::orderby('name', 'asc')->select('id', 'name')
+                 ->get();
+         }
+         else
+         {
+             $strings =implode(', ', $permission);
+             $permissions = Permission::orderby('name', 'asc')->select('id', 'name')
+                 ->whereIn('name',  $permission )->get();
+         }
+
+        //  $response = array();
+
+         foreach ($permissions as $perm)
+         {
+             $response[] = array(                 
+                 "name" => $perm->name
+             );
+         }
+         echo json_encode($response);
+         exit;
+     }
 
 }

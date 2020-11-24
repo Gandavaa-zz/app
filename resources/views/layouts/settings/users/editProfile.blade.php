@@ -11,10 +11,9 @@
                 <div class="card-body">
                     <profile inline-template>
                         <form action="">
-
                             <div class="text-center mt-4">                         
-                                <img class="rounded-circle"
-                                    src="{{ env('APP_URL', '') }}/assets/img/avatars/8.jpg" width="150" alt="{{ $user->email }}">
+                                <img class="rounded-circle" src="{{ env('APP_URL', '') }}/assets/img/avatars/8.jpg" width="150" alt="{{ $user->email }}">
+                                    <input type="file" id="avatar" name="filename">
                                     <h4 class="card-title mt-2">
                                         <input type="text" name="firstname" value="{{ $user->firstname }}" placeholder="Өөрийн нэр" required>,
                                         

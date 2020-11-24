@@ -73,6 +73,8 @@ class UsersController extends Controller
      */
     public function edit(User $user)
     {
+        return $user;
+        
         return view('layouts.settings.users.edit' ,
                     [
                         'user' =>$user
@@ -85,16 +87,13 @@ class UsersController extends Controller
 
     public function update(User $user)
     {
+
         $user->update(request()->validate([
             'firstname' => ['required', ['string']],
             'lastname' => ['required', ['string']],
             'email' => ['required', 'string', 'email', 'max:255'],
-            'roles' => ['required', ['string']],
-<<<<<<< HEAD
-            'groups' => ['required', ['string']]            
-=======
+            'roles' => ['required', ['string']],            
             'groups' => ['required', ['string']]
->>>>>>> e4f89c7536d29a73c52566d359cdffbcf0f9f661
         ]));
 
         $user->syncRoles($this->rolesToArray(request('roles')));
@@ -187,23 +186,13 @@ class UsersController extends Controller
 
     function getGroups(){
 
-<<<<<<< HEAD
         // TODO хэрвээ user-ng role: admin|super-admin байвал            
-        // $group_id = config('app.admin_group');
-
-        $groups =  Group::all();   
-        
-        if (response()->json()){
-            return $groups;            
-=======
-        // TODO хэрвээ user-ng role: admin|super-admin байвал
         $group_id = config('app.admin_group');
 
         $groups =  Group::all();
 
         if (response()->json()){
             return $groups;
->>>>>>> e4f89c7536d29a73c52566d359cdffbcf0f9f661
         }
     }
 

@@ -6,13 +6,13 @@
   </div>
 </template>
 
-
 <script>
 import vSelect, { VueSelect } from 'vue-select'
 
 Vue.component('v-select', vSelect);
 
 export default {
+    inheritAttrs: false,
     data() {
         return {
             options:[],
@@ -32,7 +32,7 @@ export default {
          axios.get('/settings/userGroups/').then(response => {
              response.data.forEach(element => {
                  console.log("element [] - " + element.name);
-               this.options.push(element.id)
+              //  this.options.push(element.id)
                this.options.push(element.name)
              });
           });

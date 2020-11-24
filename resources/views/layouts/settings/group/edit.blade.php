@@ -16,7 +16,7 @@
                         @method('PUT')
 
                         <div class="form-group row">
-                            <label for="firstname" class="col-md-4 col-form-label text-md-right">{{ __('Нэр') }}</label>
+                            <label for="firstname" class="col-md-4 col-form-label text-md-right">{{ __('Бүлэг') }}</label>
 
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $group->name }}" required autocomplete="name" autofocus>
