@@ -14,7 +14,7 @@
         ✔ >System-n hereglegchiig filterdeh @done(20-09-23 16:11)
         ✔ Assign roles @done(20-09-23 16:11)
         ☐ Import User Data
-        
+
     ☐ Role - CRUD - Datatable
         ✔ Alert message @done(20-08-27 15:08)
         ✔ create @done(20-08-27 13:48)
@@ -26,13 +26,12 @@
         ✔ Set all roles can update function @done(20-09-23 16:11)
         ✔ Change by add vue js @done(20-10-13 13:03)
         ✔ Premission-г засварлах @done(20-11-18 13:32)
-                
     ✔ Permission - CRUD - Datatable @done(20-08-28 11:20)
         ✔ Alert message @done(20-08-28 11:20)
         ✔ create @done(20-08-28 11:57)
         ✔ edit @done(20-08-28 11:57)
-        ✔ destroy @done(20-08-28 11:57)  
-    ✔ Group -crud @done(20-09-04 16:25)   
+        ✔ destroy @done(20-08-28 11:57)
+    ✔ Group -crud @done(20-09-04 16:25)
 
     ☐ Test -  TODO (Dec 13)
         ✔ Асуулт = CRUD @done(20-10-13 13:04)
@@ -42,22 +41,35 @@
             ✔ Create  - Image create vue added @done(20-10-14 10:19)
             ✔ Read @done(20-10-14 10:19)
             ✔ Update @done(20-10-14 10:19)
-            ✔ Delete @done(20-10-14 10:19)            
+            ✔ Delete @done(20-10-14 10:19)
         ✔ Import XLS From test @done(20-10-14 14:48)
 
-☐ Participand management 
-    ✔ List - Assesments @done(20-11-18 16:04)
-        ✔ Edit @done(20-11-19 19:57)
-        ✔ Зураг нэмэх хэрэгтэй байна. @done(20-11-19 19:57)
-        ✔ Профайл засах хэрэгтэй байна. @done(20-11-19 19:57)
-        ☐ Хэрэглэгч, групп дээр нэг хэрэглэгч нэг групп uniq index тавих                      
-        ☐ Add to a group 
-        ☐ Archive 
-        ☐ Delete
-    ☐ Archive
-    ☐ Notification-s 
+☐ Participand management
+     ✔ List -> хэрэглэгчийн тест болон бусад мэдээллийг харуулах @done(21-05-06 14:24)
+     ✔ Хэрэглэгчийн утгуудыг авах canditate @done(21-05-10 16:12)
+     ☐ Collection - pagination хийх
+     ☐ Group жагсаалт хийх.
 
-☐ Result Matching 
+     ☐ System-н ерөнхий архитектурыг гаргах
+        ☐ Edit
+        ☐ Зураг нэмэх хэрэгтэй байна.
+        ☐ Профайл засах хэрэгтэй байна.
+        ☐ Хэрэглэгч зураггүй байвал Default зургийг эрэгтэй эмэгтэй хамаараад нэмэх
+        ☐ Хэрэглэгч, групп дээр нэг хэрэглэгч нэг групп uniq_index
+        ☐ Add to a group
+        ☐ Archive
+        ☐ Delete
+    ☐ Хэрэглэгчийн тайлан.
+    ☐ Харилцагчийн харах
+        ☐ Ерөнхийн мэдээллийг хаанаас авах вэ?
+        ☐ Урилга хаанаас авах вэ?
+        ☐ Тест хаанаас авах вэ?
+        ☐ Чадварын мап байх хэрэгтэй юу?
+    ☐ Archive
+    ☐ Notification-s
+
+☐ Result Matching - Тестийг хэрхэн Result match хийх вэ?
+    ☐ 8 тест дээр хэрхэн үр дүнг харуулах вэ?
     ☐ Management
     ☐ Result texts
 
@@ -70,14 +82,12 @@
     ☐ Graphic - New participants status by month
     ☐ Grapic - New assessments status by month
 
-
-        
 ☐ Тохиргоо
     ☐ Системийн хэрэглэгчид
     ✔ Profile @done(20-09-23 16:12)
     ☐ Зөвшөөрөл
     ☐ Notifications
-    ☐ Other 
+    ☐ Other
 
     https://stackoverflow.com/questions/5032210/php-sentence-boundaries-detection
 
