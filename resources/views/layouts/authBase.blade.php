@@ -41,7 +41,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics-->
     <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-118965717-3"></script>
     <script>
- 
+
     </script>
 
     <link href="{{ asset('css/coreui-chartjs.css') }}" rel="stylesheet">
@@ -49,7 +49,7 @@
   </head>
   <body class="c-app flex-row align-items-center">
 
-    @yield('content') 
+    @yield('content')
 
     <!-- CoreUI and necessary plugins-->
     <script src="{{ asset('js/coreui.bundle.min.js') }}"></script>

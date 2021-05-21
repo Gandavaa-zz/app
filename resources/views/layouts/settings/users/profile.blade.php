@@ -13,7 +13,7 @@
                         <div>
                             <div class="text-center mt-4">                         
                                 <img class="rounded-circle"
-                                    src="/storage/{{ $user->avatar_path }}" width="150" alt="{{ $user->email }}">
+                                    src="{{ $user->avatar() }}" width="150" alt="{{ $user->email }}">
                                     <h4 class="card-title mt-2">{{ $user->firstname}}, {{ $user->lastname}}</h4>
                                     
                                     @foreach( $user->groups as $group)                            

@@ -74,7 +74,7 @@ class UsersController extends Controller
     public function edit(User $user)
     {
         return $user;
-        
+
         return view('layouts.settings.users.edit' ,
                     [
                         'user' =>$user
@@ -92,7 +92,7 @@ class UsersController extends Controller
             'firstname' => ['required', ['string']],
             'lastname' => ['required', ['string']],
             'email' => ['required', 'string', 'email', 'max:255'],
-            'roles' => ['required', ['string']],            
+            'roles' => ['required', ['string']],
             'groups' => ['required', ['string']]
         ]));
 
@@ -186,7 +186,7 @@ class UsersController extends Controller
 
     function getGroups(){
 
-        // TODO хэрвээ user-ng role: admin|super-admin байвал            
+        // TODO хэрвээ user-ng role: admin|super-admin байвал
         $group_id = config('app.admin_group');
 
         $groups =  Group::all();

@@ -30,6 +30,8 @@ class CreateGroupsTable extends Migration
                 
             $table->foreign('group_id')
                 ->references('id')->on('groups')->onDelete('cascade')->onDelete('cascade');
+
+            $table->unique('user_id', 'group_id');
         });
     }
 
@@ -39,7 +41,7 @@ class CreateGroupsTable extends Migration
      * @return void
      */
     public function down()
-    {
+    {   
         Schema::dropIfExists('group_user');
         Schema::dropIfExists('groups');
     }

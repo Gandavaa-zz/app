@@ -15,10 +15,10 @@ class CreateTestsTable extends Migration
     {
         Schema::create('tests', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('title');
-            $table->string('info', 755);
-            $table->string('type');
-            $table->integer('duration');
+            $table->string('category');
+            $table->string('label', 755);
+            $table->string('logo');
+            $table->integer('price_in_credits');
             $table->timestamps();
         });
 

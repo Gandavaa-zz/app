@@ -2,6 +2,8 @@
 namespace App\Http\Controllers;
 
 use App\Group;
+use App\Test;
+use App\Participant;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -26,7 +28,20 @@ class ParticipantsController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $users = User::with('groups')->get();
+            // $users = Participant::with('tests')->get();
+
+            $users = DB::connection('mysql2')->table('aauth_users')
+                ->selectRaw("aauth_users.id as id, email, CONCAT(firstname, ', ',lastname) AS fullname, test, company, aauth_users.created_at, deleted")
+                ->leftJoin('company', 'company.id', '=', 'aauth_users.company_id')
+                ->leftJoin(DB::connection('mysql2')->raw('(SELECT a.user_id, GROUP_CONCAT(DISTINCT test SEPARATOR ", ") as test
+                               FROM unitedco_test.user_test a
+                               join unitedco_test.aauth_users b on a.user_id = b.id
+                               join unitedco_test.test c on a.test_id = c.test_id
+                           group by user_id) as UserTests'),
+                           function($join){
+                               $join->on('aauth_users.id', '=', 'UserTests.user_id');
+                           })
+                ->get();
 
             return DataTables::of($users)
                 ->addIndexColumn()
@@ -99,7 +114,7 @@ class ParticipantsController extends Controller
     }
 
     public function show(User $user)
-    {      
+    {
         return view('layouts.participants.show', compact('user'));
     }
 
@@ -122,7 +137,7 @@ class ParticipantsController extends Controller
     {
         $data = $this->validateUser(null);
         $data['password'] = Hash::make($this->keyGenerator());
-        $data['group_id'] = $request->group_id;        
+        $data['group_id'] = $request->group_id;
         $data['created_by'] = auth()->id();
         $data['group_id'] = $request->group_id;
         $data['firstname'] = $request->firstname;
@@ -136,6 +151,7 @@ class ParticipantsController extends Controller
         $id = Auth::user()->id;
         $data['created_by'] = $id;
         $data['groups'] = $this->groupToArray(request('groups'));
+
         $array = array();
         $lastInsertedId = $user->id;
 
@@ -163,7 +179,6 @@ class ParticipantsController extends Controller
         return redirect()->route('participants.index')->with('success', 'Харилцагч амжилттай бүртгэлээ!');
     }
 
-
     protected function groupToArray($groups){
         $group_ids = array();
 
@@ -173,13 +188,10 @@ class ParticipantsController extends Controller
                 $group = Group::where('name', $name)->first();
                 $group_ids[] = $group->id;
             }
-            
             return $group_ids;
 
         }else{
-            
             $group = Group::where('name', $groups)->first();
-
             return $group->id;
         }
     }
@@ -192,9 +204,8 @@ class ParticipantsController extends Controller
         {
             $user = Group_User::updateOrCreate(['user_id' => $request->user_id, ], ['group_id' => $data[$i]]);
         }
-
-        // return $user;
         // $user->tests()->attach(request('tests'));
+
         $request->session()
             ->flash('message', 'Group-д амжилттай бүртгэлээ!');
 
@@ -232,38 +243,38 @@ class ParticipantsController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        
+
         request()->validate([
             'firstname' => ['required', ['string']],
             'lastname' => ['required', ['string']],
             'email' => ['required', 'string', 'email', 'max:255'],
-            'dob' => ['required', ['string']],            
+            'dob' => ['required', ['string']],
             'register' => ['required', ['string']],
             'phone' => ['required', ['string']],
             'gender' => ['required', ['string']],
             'address' => ['required', ['string']],
-            'groups' => ['required']            
+            'groups' => ['required']
         ]);
 
         $user->update([
-            'firstname'=> request()->input('firstname'), 
-            'lastname'=> request()->input('lastname'), 
-            'email'=> request()->input('email'), 
-            'dob'=> request()->input('dob'), 
-            'register'=> request()->input('register'), 
-            'phone'=> request()->input('phone'), 
-            'gender'=> request()->input('gender'), 
-            'address'=> request()->input('address')            
+            'firstname'=> request()->input('firstname'),
+            'lastname'=> request()->input('lastname'),
+            'email'=> request()->input('email'),
+            'dob'=> request()->input('dob'),
+            'register'=> request()->input('register'),
+            'phone'=> request()->input('phone'),
+            'gender'=> request()->input('gender'),
+            'address'=> request()->input('address')
         ]);
 
         if( request()->file('avatar')){
             request()->validate(['avatar' => ['required', ['image']]]);
-            $user->update(['avatar_path'=> request()->file('avatar')->store('avatar', 'public') ]);           
+            $user->update(['avatar_path'=> request()->file('avatar')->store('avatar', 'public') ]);
         }
-        
+
         $user->groups()->attach($this->groupToArray(request('groups')));
 
-        return redirect()->route('participants.index')->with('success', 'Харилцагчын мэдээллийг амжилттай засварлалаа!');
+        return redirect()->route('participants.index')->with('success', 'Харилцагчын мэдээллийг амжилттай бүртгэлээ');
     }
 
     /**
@@ -281,11 +292,11 @@ class ParticipantsController extends Controller
     public function deleteMultiple(Request $request)
     {
         $participant_id_array = $request->input('id');
+
         $data = User::whereIn('id', $participant_id_array);
-        if ($data->delete())
-        {
-            return response()
-                ->json(['msg' => 'Selected Participants deleted successfully.']);
+
+        if ($data->delete()){
+            return response()->json(['msg' => 'Selected Participants deleted successfully.']);
         }
     }
 
@@ -294,7 +305,6 @@ class ParticipantsController extends Controller
     */
     public function validateUser($id=null)
     {
-        // return $id;
         return request()->validate(['firstname' => ['required', ['string']], 'lastname' => ['required', ['string']], 'email' => 'required|email|unique:users,email,' . $id . ',id', 'phone' => ['required', 'string', 'max:10'], 'register' => ['required', 'string', 'max:10'], 'dob' => ['required', 'date', 'max:10'], 'address' => ['required', 'string', 'max:100'], 'gender' => ['required'], 'role' => ['sometimes', 'required']
         // 'password' => ['required', 'string', 'min:8', 'confirmed'],
         // 'tests' => 'exists:tests,id'
@@ -304,32 +314,25 @@ class ParticipantsController extends Controller
      // used for populate data for group dropdown
      public function rolePermission(Request $request)
      {
-         // return $request;
-         $search = $request->search;
-         if ($search == '')
-         {
-             $groups = Group::orderby('name', 'asc')->select('id', 'name')
-                 ->get();
-         }
-         else
-         {
+        $search = $request->search;
+        if ($search == ''){
+            $groups = Group::orderby('name', 'asc')->select('id', 'name')->get();
+        }else{
              $groups = Group::orderby('name', 'asc')->select('id', 'name')
                  ->where('name', 'like', '%' . $search . '%')->get();
-         }
+        }
 
-         $response = array();
+        $response = array();
 
-         foreach ($groups as $group)
-         {
-             $response[] = array(
+        foreach ($groups as $group){
+            $response[] = array(
                  "id" => $group->id,
                  "name" => $group->name
-             );
-         }
-         echo json_encode($response);
-         exit;
+            );
+        }
+        echo json_encode($response);
+        exit;
      }
-
 
     public function keyGenerator()
     {
@@ -338,9 +341,7 @@ class ParticipantsController extends Controller
 
     public function import()
     {
-        $where = array(
-            'id' => 1
-        );
+        $where = array( 'id' => 1);
         $user = User::where($where)->first();
         return view('layouts.participants.import', compact('user'));
     }
@@ -354,6 +355,7 @@ class ParticipantsController extends Controller
         $path = $request->file('select_file')->getRealPath();
 
         $data = Excel::load($path)->get();
+
         if($data->count() > 0)
         {
             foreach($data->toArray() as $key => $value)
@@ -376,8 +378,8 @@ class ParticipantsController extends Controller
                 DB::table('user ')->insert($insert_data);
             }
         }
-            return back()->with('success', 'Excel Data Imported successfully.');        
-        
+            return back()->with('success', 'Excel Data Imported successfully.');
+
     }
 
     public function list()
@@ -387,6 +389,15 @@ class ParticipantsController extends Controller
 
         return view('layouts.app');
 
+    }
+
+    public function getList(){
+
+        // $user = User::with('groups')->find(1);
+        // return $user;
+        DB::enableQueryLog();
+        $participants = Participant::with('tests')->find(1);
+        return $participants->tests;
     }
 
 }

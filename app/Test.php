@@ -3,36 +3,20 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Test extends Model
 {
-    use RecordsActivity;
-    
-    protected $fillable = ['title','info', 'type', 'duration'];
+    protected $connection = 'mysql2';
 
-    protected $withCount = [ 'quizzes' ];
+    protected $table = 'test';
+    protected $primaryKey = 'test_id';
 
-    public function sections()
+    public function participants()
     {
-        return $this->hasMany(TestSection::class);
+        // return DB::connection('mysql2')->table('user_test')->where('user_id', $this->id)->get();
+        return $this->belongsToMany(Participant::class, env('DB_DATABASE_SECOND').'.user_test', 'test_id', 'user_id');
+
     }
-
-    public function quizzes()
-    {
-        return $this->hasMany(Quiz::class);
-    }
-
-    public function parts()
-    {
-        return $this->hasMany(Part::class);
-    }
-
-    public function users()
-    {
-        return $this->belongsToMany(User::class);
-    }
-
-
-
 
 }

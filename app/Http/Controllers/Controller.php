@@ -10,4 +10,10 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    protected $token;
+
+    function __construct(){
+        $this->token = getToken('user@Webservice', 'UnitedCon$ultWS2021');
+    }
 }

@@ -22,10 +22,11 @@
                                 <tr>
                                     <th width="3px"><input type="checkbox" id="selectAll"/></th>
                                     <!-- <th width="5px">#</th> -->
-                                    <th>Нэр, овог</th>                                    
+                                    <th>Нэр, овог</th>
+                                    <th>Имэйл</th>
+                                    <th>Байгууллага</th>
                                     <th>Үүссэн.огноо</th>
-                                    <th>Үүсгэсэн</th>
-                                    <th width="200px">Групп</th>
+                                    <th width="200px">Assesments</th>
                                     <th width="250px">Үйлдэл</th>
                                 </tr>
                             </thead>
@@ -106,16 +107,21 @@ $(function () {
                 }
             },
             {
-                data: 'created_date',
-                name: 'created_date'
+                data: 'email',
+                name: 'email'
             },
             {
-                data: 'created_by_name',
-                name: 'created_by_name'
+                data: 'company',
+                name: 'company'
             },
             {
-                data: "groups.0.name",
-                name: "groups"
+                data: 'created_at',
+                name: 'created_at'
+            },
+
+            {
+                data: "test",
+                name: "test"
             },
             {
                 data: 'action',
@@ -166,7 +172,7 @@ $(document).on('click', '#deleteMultiple', function(){
         $('.participant_checkbox:checked').each(function(){
             id.push($(this).val());
         });
-        
+
         if(id.length > 0)
         {
             $.ajax({
@@ -178,7 +184,7 @@ $(document).on('click', '#deleteMultiple', function(){
                     Swal.fire(
                         'Deleted!',
                         'Амжилттай устгагдлаа',
-                        'success')                       
+                        'success')
                     $('#user_table').DataTable().ajax.reload();
                 }
             });
@@ -233,7 +239,7 @@ var id = $(this).data("id");
 
 $('#select_all').click(function(event) {
     var $that = $(this);
-    
+
     $(':checkbox').each(function() {
         this.checked = $that.is(':checked');
     });

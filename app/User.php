@@ -11,7 +11,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     use Notifiable, HasRoles, RecordsActivity;
-    
+
     // protected $primaryKey = 'user_id';
 
     protected $table = 'users';
@@ -33,33 +33,40 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password', 'remember_token',
-    ];                                  
-    
+    ];
+
     protected $dateFormat = 'Y-m-d';
 
     protected $dates = ['created_at', 'updated_at'];
 
     protected $appends = ['fullname', 'created_date', 'created_by_name'];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
 
-     protected $guard_name = 'web';
+    protected $guard_name = 'web';
 
     protected static function boot()
     {
         parent::boot();
     }
 
+    public function avatar()
+    {
+        if (! $this->avatar_path)
+        {
+            if($this->gender =='male')
+                return '/storage/avatar/man.png';
+            else return '/storage/avatar/woman.png';
+        }
+
+        return '/storage/'.$this->avatar_path;
+    }
+
     public function tests()
     {
-        return $this->belongsToMany(Test::class)->withTimestamps();
+        return $this->belongsToMany(Test::class, 'user_test')->withTimestamps();
     }
 
     public function test_answer()
@@ -71,7 +78,7 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\Group');
     }
-    
+
     public function getCreatedByNameAttribute()
     {
         return User::where('id', $this->created_by)->pluck('firstname')->first();
@@ -84,12 +91,12 @@ class User extends Authenticatable
     public function getCreatedDateAttribute(){
 
         return Carbon::parse($this->created_at)->format('Y-m-d');
-        
+
     }
 
     // public function getIdAttribute(){
 
     //     return $this->id;
-        
+
     // }
 }

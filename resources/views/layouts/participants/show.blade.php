@@ -9,10 +9,10 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <div class="pt-1 pb-4">
+                                <div class="pt-2 pb-4">
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <img class=" rounded-circle" width="150"  src="/storage/{{ $user->avatar_path }}" alt="{{ $user->fullname }}">                                             
+                                            <img class=" rounded-circle" width="150"  src="{{ $user->avatar() }}" alt="{{ $user->fullname }}">                                             
                                         </div>                                        
                                         <div class="col-md-10">
                                             <h3 class="profile-username">{{ $user->fullname }} <a href="{{ route('participants.edit', $user->id) }}"
@@ -207,8 +207,7 @@
                                                                     <div class="modal-body">
                                                                         <div class="row">
                                                                             <div class="col-12 col-sm-5">
-                                                                                <div
-                                                                                    class="d-flex align-items-center justify-content-center m-auto">
+                                                                                <div class="d-flex align-items-center justify-content-center m-auto">
                                                                                     <div>
                                                                                         <div
                                                                                             class="chart-wrapper row align-items-center justify-content-center">
@@ -277,28 +276,7 @@
                                         <!-- /.tab-pane -->
 
                                         <div class="tab-pane" id="assessment">
-                                            <div class="form-group">
-                                                <select id='status' class="form-control" style="width: 200px">
-                                                    <option value="">--Select Status--</option>
-                                                    <option value="1">Active</option>
-                                                    <option value="0">Deactive</option>
-                                                </select>
-                                            </div>
-                                            <table class="table table-bordered yajra-datatable user_table " id="user_table">
-                                                <thead>
-                                                    <tr>
-                                                        <th width="3px"><input type="checkbox" id="selectAll" /></th>
-                                                        <th width="5px">#</th>
-                                                        <th>Тест нэр</th>
-                                                        <th>Evaluator</th>
-                                                        <th>Огноо</th>
-                                                        <th>Гүйцэтгэсэн хугацаа</th>
-                                                        <th width="100px">Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
+                                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, cum suscipit cupiditate repudiandae culpa quo vitae sit hic provident eligendi nulla earum temporibus similique, perferendis ipsum ducimus magni ex. Veniam.
                                         </div>
                                         <!-- /.tab-pane -->
                                     </div>

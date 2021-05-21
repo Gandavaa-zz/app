@@ -4,8 +4,6 @@
 
 <div class="container">
 
-{{ $user}}
-
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
@@ -20,15 +18,10 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-10 mx-auto">
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                   </ul>
-
+                                    
                                    <div class="form-group row">                               
                                         <div class="col-sm-12 text-center">
-                                            <img class="rounded-circle" width="150"  src="/storage/{{ $user->avatar_path }}" alt="Хэрэглэгчийн зураг">                                           
+                                            <img class="rounded-circle" width="150"  src="{{ $user->avatar() }}" alt="Хэрэглэгчийн зураг">                                           
                                             <div class="text-center" >
                                                 <input type="file" name="avatar">   
                                             </div>

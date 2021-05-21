@@ -76,7 +76,7 @@
                     role="button" aria-haspopup="true" aria-expanded="false">
                     <div class="c-avatar">
                     <img class="c-avatar-img"
-                    src="/storage/{{ auth()->user()->avatar_path }}" alt="user@email.com">
+                    src="{{ auth()->user()->avatar() }}" alt="user@email.com">
                     </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right pt-0">

@@ -35,7 +35,7 @@
 
     ☐ Test -  TODO (Dec 13)
         ✔ Асуулт = CRUD @done(20-10-13 13:04)
-        ☐ Асуултаа өөрчлөхөд Datagrid-г filter хийх хэрэгтэй !!!
+        ✔ Асуултаа өөрчлөхөд Datagrid-г filter хийх хэрэгтэй !!! @done(21-05-11 17:56)
         ✔ Хариултууд @done(20-10-14 10:19)
             ✔ Save - Хадгалагдах @done(20-10-14 10:19)
             ✔ Create  - Image create vue added @done(20-10-14 10:19)
@@ -43,6 +43,9 @@
             ✔ Update @done(20-10-14 10:19)
             ✔ Delete @done(20-10-14 10:19)
         ✔ Import XLS From test @done(20-10-14 14:48)
+
+    ☐ TestAPI - Харуулах хэсгийг хийх
+        ✔ Жагсаалтуудыг харуулах @done(21-05-11 18:31)
 
 ☐ Participand management
      ✔ List -> хэрэглэгчийн тест болон бусад мэдээллийг харуулах @done(21-05-06 14:24)
