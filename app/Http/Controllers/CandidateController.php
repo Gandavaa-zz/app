@@ -94,7 +94,6 @@ class CandidateController extends Controller
         return $response;
     }
 
-
     public function getToken(){
         return $this->token;
     }

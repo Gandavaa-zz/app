@@ -49,6 +49,8 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
 
     // get test API controller
     Route::resource('testapi',  'TestApiController');
+    Route::get('scores/getXml/{assessment_id}',  'ScoresController@getXml');
+    Route::get('scores/getHtml/{assessment_id}',  'ScoresController@getHtml');
     Route::get('scores/result/{assessment_id}',  'ScoresController@result');
     Route::get('scores/global/{assessment_id}',  'ScoresController@global');
     Route::get('scores/factory/{assessment_id}',  'ScoresController@factory');

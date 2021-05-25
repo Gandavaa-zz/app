@@ -52,11 +52,12 @@
                                         </td>
                                         <td>
                                         <!-- <i class="cil-description"></i> -->
-                                            <a href="/scores/result/{{ $assessment->id }}" title="Full result" class="btn btn-primary">Full Result Score</a>
-                                            <a href="/scores/global/{{ $assessment->id }}" title="Global оноо" class="btn btn-primary">Global Score</a>
-                                            <a href="/scores/factory/{{ $assessment->id }}" title="Factory оноо" class="btn btn-primary">Factory Score</a>
-                                            <a href="/scores/groups/{{ $assessment->id }}" title="Factory оноо" class="btn btn-primary">Groups Score</a>
-                                            <a href="/scores/referential/{{ $assessment->id }}" title="Factory оноо" class="btn btn-primary">Referential</a>
+                                            <a href="/scores/getHtml/{{ $assessment->id }}/?link={{$assessment->candidate_report_link}}" target="_blank" title="Link" class="btn btn-primary">Report Link</a>
+                                            <a href="/scores/result/{{ $assessment->id }}" target="_blank" title="Full result" class="btn btn-primary">Full Result Score</a>
+                                            <a href="/scores/global/{{ $assessment->id }}" target="_blank" title="Global оноо" class="btn btn-primary">Global Score</a>
+                                            <a href="/scores/factory/{{ $assessment->id }}" target="_blank" title="Factory оноо" class="btn btn-primary">Factory Score</a>
+                                            <a href="/scores/groups/{{ $assessment->id }}" target="_blank" title="Factory оноо" class="btn btn-primary">Groups Score</a>
+                                            <a href="/scores/referential/{{ $assessment->id }}" target="_blank" title="Factory оноо" class="btn btn-primary">Referential</a>
                                         </td>
                                     </tr>
                                     @endforeach

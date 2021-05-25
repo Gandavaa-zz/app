@@ -1,8 +1,14 @@
+☐ Тайланг авах:
+    ✔ Тайлангийн текстийг авах хэрэгтэй байна @done(21-05-25 14:52)
+    ✔ Тайланг бүх талаас шүүж авах хэрэгтэй @done(21-05-25 14:52)
+    ☐ XML-р тайлангийн утгуудыг харуулах!
+
+
 ☐ Layout-г засварлах
     ✔ Blade template edit @done(20-08-26 15:50)
     ✔ Logo and other realted front-end @done(20-08-26 15:50)
-✔ Цэсүүдийг засварлах @done(20-08-26 15:49)
-✔ Bread Crumb fix @done(20-08-27 13:47)
+    ✔ Цэсүүдийг засварлах @done(20-08-26 15:49)
+    ✔ Bread Crumb fix @done(20-08-27 13:47)
 
 ☐ Settings
     ✔ Системийн хэрэглэгчид - Crud @done(20-10-14 14:56)
@@ -92,5 +98,6 @@
     ☐ Notifications
     ☐ Other
 
-    https://stackoverflow.com/questions/5032210/php-sentence-boundaries-detection
+
+
 
