@@ -17,8 +17,6 @@ class ScoresController extends Controller
 
         // echo $response;
         // ($response, 200)->header('Content-Type', 'application/xml')
-        return $response;
-
     }
 
     function global($assessment_id = null)
