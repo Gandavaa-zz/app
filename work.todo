@@ -1,9 +1,26 @@
+☐ API тухайн Тайланг харах - Тестийг хэрхэн Result match хийх вэ?
+    ✔ Тайлангийн мэдээллийг авах @done(21-05-26 15:14)
+
+    ☐ Тайлангийн мэдээллийг translation хийх.
+        ☐ Translation DB Table create
+        ☐ Тranslation дээр editor нэмэх EN, MN хоёр
+        ☐ Translation утгуудыг EN-руу татах хэрхэн татах вэ? шийдэх
+        ☐ Хэрвээ тухайн тестийн үр дүн татагдсан эсэхийг шалгана!
+        ☐ Текстийн орчуулгуудыг нэмнэ тухайн EN-утгийн бүх HTML Тагуудыг Regex Remove Хийж filterдэнэ. Хэрвээ утга байвал Утгийг авна.
+
+☐ Тохиргоо
+    ☐ Системийн хэрэглэгчид
+    ✔ Profile @done(20-09-23 16:12)
+    ☐ Зөвшөөрөл
+    ☐ Notifications
+    ☐ Other
+
 ☐ Тайланг авах:
     ✔ Тайлангийн текстийг авах хэрэгтэй байна @done(21-05-25 14:52)
     ✔ Тайланг бүх талаас шүүж авах хэрэгтэй @done(21-05-25 14:52)
     ☐ XML-р тайлангийн утгуудыг харуулах!
 
-
+☐ Route-г цэвэрлэх хэрэгтэй
 ☐ Layout-г засварлах
     ✔ Blade template edit @done(20-08-26 15:50)
     ✔ Logo and other realted front-end @done(20-08-26 15:50)
@@ -19,7 +36,7 @@
         ✔ View @done(20-08-28 10:29)
         ✔ >System-n hereglegchiig filterdeh @done(20-09-23 16:11)
         ✔ Assign roles @done(20-09-23 16:11)
-        ☐ Import User Data
+        ✔ Import User Data @done(21-05-26 11:04)
 
     ☐ Role - CRUD - Datatable
         ✔ Alert message @done(20-08-27 15:08)
@@ -52,52 +69,4 @@
 
     ☐ TestAPI - Харуулах хэсгийг хийх
         ✔ Жагсаалтуудыг харуулах @done(21-05-11 18:31)
-
-☐ Participand management
-     ✔ List -> хэрэглэгчийн тест болон бусад мэдээллийг харуулах @done(21-05-06 14:24)
-     ✔ Хэрэглэгчийн утгуудыг авах canditate @done(21-05-10 16:12)
-     ☐ Collection - pagination хийх
-     ☐ Group жагсаалт хийх.
-
-     ☐ System-н ерөнхий архитектурыг гаргах
-        ☐ Edit
-        ☐ Зураг нэмэх хэрэгтэй байна.
-        ☐ Профайл засах хэрэгтэй байна.
-        ☐ Хэрэглэгч зураггүй байвал Default зургийг эрэгтэй эмэгтэй хамаараад нэмэх
-        ☐ Хэрэглэгч, групп дээр нэг хэрэглэгч нэг групп uniq_index
-        ☐ Add to a group
-        ☐ Archive
-        ☐ Delete
-    ☐ Хэрэглэгчийн тайлан.
-    ☐ Харилцагчийн харах
-        ☐ Ерөнхийн мэдээллийг хаанаас авах вэ?
-        ☐ Урилга хаанаас авах вэ?
-        ☐ Тест хаанаас авах вэ?
-        ☐ Чадварын мап байх хэрэгтэй юу?
-    ☐ Archive
-    ☐ Notification-s
-
-☐ Result Matching - Тестийг хэрхэн Result match хийх вэ?
-    ☐ 8 тест дээр хэрхэн үр дүнг харуулах вэ?
-    ☐ Management
-    ☐ Result texts
-
-☐ Dashboard
-    ☐ Participant -counts
-    ☐ Assesments
-    ☐ Referentials
-    ☐ Notifications
-    ☐ News
-    ☐ Graphic - New participants status by month
-    ☐ Grapic - New assessments status by month
-
-☐ Тохиргоо
-    ☐ Системийн хэрэглэгчид
-    ✔ Profile @done(20-09-23 16:12)
-    ☐ Зөвшөөрөл
-    ☐ Notifications
-    ☐ Other
-
-
-
 

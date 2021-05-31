@@ -18,6 +18,9 @@ class CreateReportsTable extends Migration
             $table->unsignedBigInteger('participant_id');
             $table->unsignedBigInteger('test_id');
             $table->unsignedBigInteger('assessment_id');
+            $table->string('type');
+            $table->string('mn');
+            $table->string('en');
             $table->timestamps();
         });
     }

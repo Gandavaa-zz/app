@@ -29,7 +29,6 @@ class ParticipantsController extends Controller
     {
         if ($request->ajax()) {
             // $users = Participant::with('tests')->get();
-
             $users = DB::connection('mysql2')->table('aauth_users')
                 ->selectRaw("aauth_users.id as id, email, CONCAT(firstname, ', ',lastname) AS fullname, test, company, aauth_users.created_at, deleted")
                 ->leftJoin('company', 'company.id', '=', 'aauth_users.company_id')
@@ -204,7 +203,6 @@ class ParticipantsController extends Controller
         {
             $user = Group_User::updateOrCreate(['user_id' => $request->user_id, ], ['group_id' => $data[$i]]);
         }
-        // $user->tests()->attach(request('tests'));
 
         $request->session()
             ->flash('message', 'Group-д амжилттай бүртгэлээ!');
@@ -392,9 +390,6 @@ class ParticipantsController extends Controller
     }
 
     public function getList(){
-
-        // $user = User::with('groups')->find(1);
-        // return $user;
         DB::enableQueryLog();
         $participants = Participant::with('tests')->find(1);
         return $participants->tests;

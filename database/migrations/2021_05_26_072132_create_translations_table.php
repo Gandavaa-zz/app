@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateReportSectorsTable extends Migration
+class CreateTranslationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,11 @@ class CreateReportSectorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('report_sectors', function (Blueprint $table) {
+        Schema::create('translations', function (Blueprint $table) {
             $table->id();
-            $table->integer('number');
-            $table->string('title1');
-            $table->string('title2');
-            $table->string('title3');
-            $table->string('info');
-            $table->string('info');
+            $table->unsignedBigInteger('test_id');
+            $table->text('EN');
+            $table->text('MN');
             $table->timestamps();
         });
     }
@@ -32,6 +29,6 @@ class CreateReportSectorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('report_sectors');
+        Schema::dropIfExists('translations');
     }
 }

@@ -21,8 +21,6 @@ class CandidateController extends Controller
     function getGroup(){
 
         $results = $this->header('https://app.centraltest.com/customer/REST/list/title', 'json');
-
-        // return $results;
         $data = json_decode($results);
 
         return view('layouts.candidate.group', compact('data'));
@@ -109,6 +107,8 @@ class CandidateController extends Controller
         ]);
 
         $assessments = json_decode($response);
+
+        // return $assessments;
         // тухайн хэрэглэгчийн утга буцсан байвал тухайн id-г аваад
         foreach ($assessments as $item) {
             $test = TestAPI::find($item->test_id);
@@ -139,6 +139,19 @@ class CandidateController extends Controller
         [
         ]);
         return $response;
+    }
+
+
+    public function list(){
+        $response = Http::withHeaders([
+            'WWW-Authenticate'=> $this->token
+        ])->get('https://app.centraltest.com/customer/REST/candidate/import/json',
+        [
+            'candidates' => [4809202]
+        ]);
+
+        return $response;
+
     }
 
 

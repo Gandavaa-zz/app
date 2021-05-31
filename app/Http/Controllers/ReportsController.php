@@ -4,12 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
-class ScoresController extends Controller
+class ReportsController extends Controller
 {
     function result($assessment_id = null)
     {
@@ -21,23 +20,6 @@ class ScoresController extends Controller
         ]);
 
         return $response;
-
-        // $xmlObject = simplexml_load_string($xmlString);
-        // $json = json_encode($xmlObject);
-        // $phpArray = json_decode($json, true);
-        // dd($phpArray);
-        // foreach ($phpArray['elements'] as $key => $value) {
-        //     dd($key);
-        // }
-
-        // $json  = json_encode($xml);
-        // $array_data = json_decode($json, true);
-
-        // return $array_data;
-        // return str_replace('<html>', ' ', $response);
-        // $xhtml = <? xml version='1.0' encoding='UTF-8'
-        // return simplexml_load_string($response);
-        // ($response, 200)->header('Content-Type', 'application/xml')
     }
 
     function global($assessment_id = null)
@@ -48,7 +30,6 @@ class ScoresController extends Controller
         [
             'id' => $assessment_id
         ]);
-
         return $response;
     }
 
@@ -99,10 +80,12 @@ class ScoresController extends Controller
     function getXml($assessment_id = null)
     {
         // print_r($encrypted);
-        if($contents = Storage::get("assets/assessments/{$assessment_id}.xml")){
-            $decrypted= Crypt::decryptString($contents);
-            $xml = xml_decode($decrypted);
+        if(Storage::exists("/assets/assessments/{$assessment_id}.xml")){
+            $contents = Storage::get("assets/assessments/{$assessment_id}.xml");
+            // $decrypted= Crypt::decryptString($contents);
+            $xml = xml_decode($contents);
             return $xml;
+
         }else {
             $response = Http::withHeaders([
                 'WWW-Authenticate'=> $this->token
@@ -111,13 +94,10 @@ class ScoresController extends Controller
                 'id' => $assessment_id,
                 'language_id' => "1"
             ]);
-
-            $encrypted = Crypt::encryptString($response);
-            Storage::put("/assets/assessments/{$assessment_id}.xml", $encrypted);
+            // $encrypted = Crypt::encryptString($response);
+            Storage::put("/assets/assessments/{$assessment_id}.xml", $response);
             return true;
         }
-
-
 
         // RIASEC report
         // foreach($xml['elements']['test_groupe_facteurs']['test_groupe_facteur'] as $value){

@@ -17,25 +17,14 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-use App\User;
-
 Route::get('/',  'HomeController@index')->name('dashboard');
 
-
-
 Route::group(['middleware' => ['role:super-admin']], function () {
-
     Route::resource('settings/users', 'Settings\UsersController')->middleware('auth');
-
     Route::get('settings/users/{user}/roles', 'Settings\UsersController@roles')->name('user.roles')->middleware('auth');
-
     Route::post('settings/users/{user}/giveRoles', 'Settings\UsersController@giveRoles')->name('user.giveRoles')->middleware('auth');
-
     Route::get('settings/userGroups', 'Settings\UsersController@getGroups');
-
     Route::get('settings/profile/{user}', 'Settings\ProfilesController@show')->name('user.profile');
-
-
 
 });
 
@@ -45,27 +34,29 @@ Route::group(['middleware' => ['role:super-admin']], function () {
 //     Route::resource('api',  'ApiController');
 // });
 
-Route::group(['middleware' => ['role:super-admin|admin']], function () {
+Route::resource('translations',  'TranslationsController');
 
+Route::group(['middleware' => ['role:super-admin|admin']], function () {
     // get test API controller
     Route::resource('testapi',  'TestApiController');
-    Route::get('scores/getXml/{assessment_id}',  'ScoresController@getXml');
-    Route::get('scores/getHtml/{assessment_id}',  'ScoresController@getHtml');
-    Route::get('scores/result/{assessment_id}',  'ScoresController@result');
-    Route::get('scores/global/{assessment_id}',  'ScoresController@global');
-    Route::get('scores/factory/{assessment_id}',  'ScoresController@factory');
-    Route::get('scores/groups/{assessment_id}',  'ScoresController@groups');
-    Route::get('scores/referential/{assessment_id}',  'ScoresController@referential');
+
+    Route::resource('translations',  'TranslationsController');
+
+    Route::get('reports/getXml/{assessment_id}',  'ReportsController@getXml');
+    Route::get('reports/result/{assessment_id}',  'ReportsController@result');
+    Route::get('reports/global/{assessment_id}',  'ReportsController@global');
+    Route::get('reports/factory/{assessment_id}',  'ReportsController@factory');
+    Route::get('reports/groups/{assessment_id}',  'ReportsController@groups');
+    Route::get('reports/referential/{assessment_id}',  'ReportsController@referential');
 
     Route::get('candidate/contract',  'CandidateController@contract');
-    // Route::get('candidate/group',  'CandidateController@getGroup');
     Route::get('candidate/group',  'CandidateController@group');
     Route::get('candidate/gettoken',  'CandidateController@getToken');
     Route::get('candidate/company',  'CandidateController@getCompany');
     Route::get('candidate/assessments/{candidate_id}',  'CandidateController@assessments');
     Route::get('candidate/tests',  'CandidateController@getTest');
     Route::get('candidate/getList',  'CandidateController@testList');
-
+    Route::get('candidate/list',  'CandidateController@list');
     Route::resource('candidate',  'CandidateController');
 
     Route::resource('role', 'Settings\RolesController')->middleware('auth');
@@ -87,7 +78,6 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::put('settings/test/{test}', 'Settings\TestsController@update')->name('settings.test.update');
     Route::get('settings/test/{test}/show', 'Settings\TestsController@show')->name('settings.test.show');
     Route::delete('settings/test/{test}', 'Settings\TestsController@destroy')->name('settings.test.destroy');
-
     Route::get('settings/test/import', 'Settings\TestsController@import')->name('settings.test.import');
     Route::post('settings/test/import', 'Settings\TestsController@importExcel')->name('test.importExcel');
 
@@ -95,7 +85,6 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::get('settings/quiz/{test}', 'Settings\QuizzesController@index')->name('quiz.index');
     Route::get('settings/quiz/{test}/create', 'Settings\QuizzesController@create')->name('quiz.create');
     Route::post('settings/quiz/store', 'Settings\QuizzesController@store')->name('quiz.store');
-
     Route::get('settings/quiz/{test}/{quiz}/show', 'Settings\QuizzesController@show')->name('quiz.show');
     Route::get('settings/quiz/{test}/{quiz}/edit', 'Settings\QuizzesController@edit')->name('quiz.edit');
     Route::put('settings/quiz/{quiz}', 'Settings\QuizzesController@update')->name('quiz.update');
@@ -106,56 +95,36 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::get('settings/answer/{quiz}', 'Settings\AnswersController@index')->name('answer.index');
     Route::get('settings/answer/{quiz}/create', 'Settings\AnswersController@create')->name('answer.create');
     Route::post('settings/answer/store', 'Settings\AnswersController@store')->name('answer.store');
-
     Route::get('settings/answer/{answer}/show', 'Settings\AnswersController@show')->name('answer.show');
     Route::get('settings/answer/{answer}/edit', 'Settings\AnswersController@edit')->name('answer.edit');
     Route::put('settings/answer/{answer}', 'Settings\AnswersController@update')->name('answer.update');
     Route::delete('settings/answer/{answer}', 'Settings\AnswersController@destroy')->name('answer.destroy');
     /* end Answer */
 
+    Route::resource('test', 'TestsController');
     // Participants
     Route::get('participants/getList', 'ParticipantsController@getList');
     Route::post('participants/avatar', 'ParticipantsController@avatar')->name('avatar');
     Route::get('groups/list', 'ParticipantsController@fetchGroup');
     Route::get('participants/create', 'ParticipantsController@create')->name('participants.create');
     Route::get('participants/index', 'ParticipantsController@index')->name('participants.index');
-
     Route::get('participants/destroy/{id}', 'ParticipantsController@destroy');
     Route::get('/participants/import', 'ParticipantsController@import')->name("participants.import");
     Route::post('participants/store', 'ParticipantsController@store')->name('participant.store');
     Route::get('participants/fetchGroup', 'ParticipantsController@fetch_groups');
     Route::get('participants/assessment', 'ParticipantsController@assessment_table')->name('participants.assessment');
     Route::post('participants/addToGroup', 'ParticipantsController@addToGroup')->name('participants.addToGroup');
-
-    Route::resource('test', 'TestsController');
-
     Route::get('participants/deleteMultiple', 'ParticipantsController@deleteMultiple')->name('participants.deleteMultiple');
-
-    // Route::resource('/participants', 'ParticipantsController')->middleware('auth');
     Route::get('/participants/{user}/edit', 'ParticipantsController@edit')->name('participants.edit');
-
     Route::get('/participants/list', 'ParticipantsController@list')->name('participants.list');
     Route::post('/participants/store', 'ParticipantsController@store')->name('participants.store');
     Route::put('/participants/{user}', 'ParticipantsController@update')->middleware('auth')->name('participants.update');
     Route::get('/participants/{user}', 'ParticipantsController@show')->middleware('auth')->name('participants.show');
     Route::delete('/participants/{user}', 'ParticipantsController@destroy')->name('participants.destroy');
-    // Route::resource('/participants', 'ParticipantsController')->middleware('auth');
-
-    // Route::get('participants/destroy/{id}', 'ParticipantsController@destroy');
-
-    // Route::get('participants/create', 'ParticipantsController@create')->name('participants.create');
-
-    // Route::post('participants/store', 'ParticipantsController@store')->name('participant.store');
-
-    // Route::get('/participants/{id}edit', 'ParticipantsController@edit')->name('participant.edit');
-
-    // Route::get('/participants/show/{id}', 'ParticipantsController@show');
 });
 
 Route::get('skills',  function(){
-
     return [ 'label'=> ['laravel', 'vue', 'php']];
-
 });
 
 Route::resource('test', 'TestsController');

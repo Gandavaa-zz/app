@@ -54,13 +54,9 @@ class UsersController extends Controller
     public function store(Request $request)
     {
         $data = $this->validateUser();
-
         $data['password'] = Hash::make($this->keyGenerator());
-
         $user = User::create( $data );
-
         $user->assignRole($this->rolesToArray(request('roles')));
-
         $user->groups()->attach($this->groupToArray(request('groups')));
 
         // TODO: Хэрэглэгч үүссэний дараа тухайн хэрэглэгчрүү имэйл явуулна.
