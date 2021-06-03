@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">{{ __('Харилцагч засах') }}</div>
+                <div class="card-header">{{ __('Орчуулга нэмэх') }}</div>
                 <div class="card-body">
                     <form method="POST" action="{{ route('translations.store') }}">
                         @csrf
@@ -14,14 +14,22 @@
                                 <div class="col-md-10 mx-auto">
                                     <form>
                                         <div class="form-group row">
+                                        <div class="form-group col-sm-12">
+                                            {!! Form::Label('test_id', 'Тест') !!}
+                                            <select class="form-control" name="test_id">
+                                                @foreach($assessments as $item)
+                                                <option value="{{$item->id}}">{{$item->label}}</option>
+                                                @endforeach
+                                             </select>
+                                            </div> 
                                             <div class="col-sm-6">
-                                                <label for="firstname">Англи</label>
+                                                <label for="en">Англи</label>
                                                 <input
-                                                    placeholder="Нэр оруулна уу..."
+                                                    placeholder="Текст оруулна уу..."
                                                     type="text"
-                                                    class="form-control @error('firstname') is-invalid @enderror"
-                                                    name="EN" value="{{ old('EN') }}" autocomplete="EN" autofocus>
-                                                @error('EN')
+                                                    class="form-control @error('en') is-invalid @enderror"
+                                                    name="en" value="{{ old('en') }}" autocomplete="en" autofocus>
+                                                @error('en')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -29,12 +37,12 @@
                                             </div>
                                             <div class="col-sm-6">
                                                 <label for="firstname">Монгол</label>
-                                                <input placeholder="Нэр оруулна уу..." type="text"
-                                                    class="form-control @error('firstname') is-invalid @enderror"
-                                                    name="MN"
-                                                    value="{{ old('MN') }}"
-                                                    autocomplete="MN" autofocus>
-                                                @error('MN')
+                                                <input placeholder="Текст оруулна уу..." type="text"
+                                                    class="form-control @error('mn') is-invalid @enderror"
+                                                    name="mn"
+                                                    value="{{ old('mn') }}"
+                                                    autocomplete="mn" autofocus>
+                                                @error('mn')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -63,5 +71,3 @@
 </div>
 <!-- Initialize the plugin: -->
 @endsection
-
-

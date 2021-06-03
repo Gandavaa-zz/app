@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TranslationsController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -41,7 +42,9 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::resource('testapi',  'TestApiController');
 
     Route::resource('translations',  'TranslationsController');
-
+    Route::get('translation/getJSON/{test_id}',  'TranslationsController@getJSON');
+    // Route::get('translations/{id}/edit', 'TranslationsController@edit')->name('translations.edit');
+    // Route::get('translations/{id}/edit', 'TranslationsController@edit')->name('translations.edit');
     Route::get('reports/getXml/{assessment_id}',  'ReportsController@getXml');
     Route::get('reports/result/{assessment_id}',  'ReportsController@result');
     Route::get('reports/global/{assessment_id}',  'ReportsController@global');

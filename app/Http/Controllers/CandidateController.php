@@ -5,31 +5,37 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Support\Collection;
 use App\TestAPI;
+use Box\Spout\Writer\CSV\Writer;
 use Illuminate\Support\Facades\Http;
-
+use Illuminate\Support\Facades\Log;
 class CandidateController extends Controller
 {
-    private function header($url, $format){
+    private function header($url, $format)
+    {
         $result = Http::withHeaders([
-            'WWW-Authenticate'=> $this->token
-        ])->get($url.'/'.$format);
+            'WWW-Authenticate' => $this->token
+        ])->get($url . '/' . $format);
 
         return $result;
     }
 
     // get list title
-    function getGroup(){
+    function getGroup()
+    {
 
         $results = $this->header('https://app.centraltest.com/customer/REST/list/title', 'json');
+
+        // return $results;
         $data = json_decode($results);
 
         return view('layouts.candidate.group', compact('data'));
     }
 
     // get Group
-    public function group(){
+    public function group()
+    {
         $response = Http::withHeaders([
-            'WWW-Authenticate'=> $this->token
+            'WWW-Authenticate' => $this->token
         ])->post('https://app.centraltest.com/customer/REST/list/group/json');
 
         $data = json_decode($response);
@@ -37,7 +43,8 @@ class CandidateController extends Controller
         return view('layouts.candidate.group', compact('data'));
     }
 
-    function getCompany(){
+    function getCompany()
+    {
 
         $result = $this->header('https://app.centraltest.com/customer/REST/list/test', 'json');
 
@@ -45,73 +52,83 @@ class CandidateController extends Controller
     }
 
     // get canditates
-    function index(Request $request){
+    function index(Request $request)
+    {
         // return $results;
         $group = $this->header('https://app.centraltest.com/customer/REST/list/group', 'json');
         $groups = json_decode($group);
 
-        if($request->group_id){
+        if ($request->group_id) {
             $results = Http::withHeaders([
-                'WWW-Authenticate'=> $this->token
-            ])->get('https://app.centraltest.com/customer/REST/retrieve/group/json',
-            [
-                'id' => $request->group_id
-            ]);
+                'WWW-Authenticate' => $this->token
+            ])->get(
+                'https://app.centraltest.com/customer/REST/retrieve/group/json',
+                [
+                    'id' => $request->group_id
+                ]
+            );
 
             $group_id = $request->group_id;
-        }else
+        } else
             $group_id = null;
 
         $canditateList = array();
 
-        if(isset($results) && $results['candidates']){
-            foreach($results['candidates'] as $candidate){
-                $candidates = Http::withHeaders(['WWW-Authenticate'=> $this->token])->get('https://app.centraltest.com/customer/REST/retrieve/candidate/json',
+        if (isset($results) && $results['candidates']) {
+            foreach ($results['candidates'] as $candidate) {
+                $candidates = Http::withHeaders(['WWW-Authenticate' => $this->token])->get(
+                    'https://app.centraltest.com/customer/REST/retrieve/candidate/json',
                     [
                         'id' =>  $candidate['id']
-                    ]);
+                    ]
+                );
                 $canditateList[] = json_decode($candidates);
             }
-        }elseif(isset($request->email)){
-            $candidates = Http::withHeaders(['WWW-Authenticate'=> $this->token])->get('https://app.centraltest.com/customer/REST/retrieve/candidate/json',
+        } elseif (isset($request->email)) {
+            $candidates = Http::withHeaders(['WWW-Authenticate' => $this->token])->get(
+                'https://app.centraltest.com/customer/REST/retrieve/candidate/json',
                 [
                     'email' =>  $request->email
-                ]);
+                ]
+            );
             $canditateList[] = json_decode($candidates);
         }
 
         return view('layouts.candidate.list', compact('canditateList', 'groups', 'group_id'));
     }
 
-     public function contract()
+    public function contract()
     {
         $response = Http::withHeaders([
-            'WWW-Authenticate'=> $this->token
+            'WWW-Authenticate' => $this->token
         ])->post('https://app.centraltest.com/customer/REST/list/contract/json');
 
         return $response;
     }
 
-    public function getToken(){
+    public function getToken()
+    {
         return $this->token;
     }
 
     public function assessments($candidate_id = null)
     {
+        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
         // https://app.centraltest.com/customer/REST/assessment/paginate/completed/
         $response = Http::withHeaders([
-            'WWW-Authenticate'=> $this->token
-        ])->GET('https://app.centraltest.com/customer/REST/assessment/completed/json',
-        [
-            'candidate_id' => $candidate_id
-        ]);
+            'WWW-Authenticate' => $this->token
+        ])->GET(
+            'https://app.centraltest.com/customer/REST/assessment/completed/json',
+            [
+                'candidate_id' => $candidate_id
+            ]
+        );
 
         $assessments = json_decode($response);
-
-        // return $assessments;
         // тухайн хэрэглэгчийн утга буцсан байвал тухайн id-г аваад
         foreach ($assessments as $item) {
             $test = TestAPI::find($item->test_id);
+            // $out->writeln(print_r(TestAPI::find($item->test_id), true));
             $item->test = $test->label;
         }
         // тухайн тестийн утгуудыг авна
@@ -122,38 +139,26 @@ class CandidateController extends Controller
     public function getTest()
     {
         $response = Http::withHeaders([
-            'WWW-Authenticate'=> $this->token
-        ])->get('https://app.centraltest.com/customer/REST/assessment/test_factors/json',
-        [
-            'test_id' => 13
-        ]);
+            'WWW-Authenticate' => $this->token
+        ])->get(
+            'https://app.centraltest.com/customer/REST/assessment/test_factors/json',
+            [
+                'test_id' => 13
+            ]
+        );
 
         return $response;
     }
 
     // get Test info
-    public function testList(){
+    public function testList()
+    {
         $response = Http::withHeaders([
-            'WWW-Authenticate'=> $this->token
-        ])->get('https://app.centraltest.com/customer/REST/list/test/json',
-        [
-        ]);
+            'WWW-Authenticate' => $this->token
+        ])->get(
+            'https://app.centraltest.com/customer/REST/list/test/json',
+            []
+        );
         return $response;
     }
-
-
-    public function list(){
-        $response = Http::withHeaders([
-            'WWW-Authenticate'=> $this->token
-        ])->get('https://app.centraltest.com/customer/REST/candidate/import/json',
-        [
-            'candidates' => [4809202]
-        ]);
-
-        return $response;
-
-    }
-
-
-
 }
