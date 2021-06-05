@@ -18,6 +18,8 @@ class TestApiController extends Controller
     }
 
     public function index(Request $request) {
+
+        $count = TestAPI::count();
         // get all result from API TEST
         $responses = Http::withHeaders([
             'WWW-Authenticate'=> $this->token

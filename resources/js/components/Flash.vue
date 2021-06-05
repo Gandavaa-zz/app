@@ -1,6 +1,6 @@
 <template>
     <div class="alert alert-flash alert-dismissible fade show" :class="activeClass" role="alert" v-show="show">
-        <strong>{{ title }}</strong> {{ body}} !
+        <strong>{{ title }}</strong> {{ body }}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -9,36 +9,47 @@
 
 <script>
 export default {
-    props: ['message', 'alert'],
+    props: ['message', 'alert', 'status'],
     data() {
         return {
             activeClass: '',
-            title: '',         
+            title: '',
             body: '',
-            show: false            
+            show: false
         }
     },
     created() {
-       
         if (this.message){
-            this.flash (this.message); 
+            if (this.status =='success'){
+                this.activeClass = 'alert-success';
+                this.title = 'Амжилттай!';
+            }else{
+                this.title = 'Анхаар!';
+                this.activeClass = 'alert-danger';
+            }
+            this.flash (this.message, this.status);
         }
-        this.activeClass = this.alert; 
-        if (this.alert =='alert-success') this.title = 'Амжилттай!';
-        else this.title = 'Анхаар!';
-        
-        window.events.$on('flash', message => this.flash(message));
+        window.events.$on('flash', (message, status) => this.flash(message, status));
+
+
     },
     methods:{
-        flash(message){
+        flash(message, status){
             this.body = message;
             this.show = true;
             this.hide();
+            if(status=='success'){
+                this.title = 'Амжилттай!';
+                this.activeClass = 'alert-success';
+            }else{
+                this.activeClass = 'alert-danger';
+                this.title = 'Анхаар!';
+            }
         },
 
-        hide(){            
+        hide(){
             setTimeout(() =>{
-                this.show = false;                
+                this.show = false;
             }, 15000);
         }
     }

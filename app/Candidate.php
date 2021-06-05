@@ -5,13 +5,14 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class Participant extends Model
+class Candidate extends Model
 {
-    protected $connection = 'mysql2';
-
+    // protected $connection = 'mysql2';
     protected $table = 'aauth_users';
 
     protected $appends = ['fullname'];
+
+    protected $guarded = [];
 
     public function getFullNameAttribute(){
         return $this->firstname . ', '. $this->lastname;
@@ -25,7 +26,7 @@ class Participant extends Model
 
     public function tests()
     {
-        return DB::connection('mysql2')->table('user_test')->where('user_id', $this->id)->get();
-        // return $this->belongsToMany(Test::class, env('DB_DATABASE_SECOND').'.user_test', 'user_id', 'test_id', 'user_test_id');
+        // return DB::connection('mysql2')->table('user_test')->where('user_id', $this->id)->get();
+        return $this->hasMany('App\Test_User','user_id');
     }
 }

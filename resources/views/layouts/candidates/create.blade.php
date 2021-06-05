@@ -13,9 +13,6 @@
                             <div class="row">
                                 <div class="col-md-10 mx-auto">
                                     <form>
-                                    @foreach ($errors->all() as $message)
-                                        {{ $message }}
-                                    @endforeach
                                         <div class="form-group row">
                                             <div class="col-sm-6">
                                                 <label for="lastname">Эцэг/эх-н нэр</label>
@@ -68,14 +65,9 @@
                                         <div class="form-group row">
 
                                             <div class="col-sm-6">
-                                                <label for="birthday">Төрсөн огноо</label>
-                                                <input id="birthday"
-                                                    placeholder="Огноо сонгоно уу..."
-                                                    type="date"
-                                                    class="form-control @error('birthday') is-invalid @enderror"
-                                                    name="birthday"
-                                                    value="{{ old('birthday') }}" autocomplete="birthday" autofocus>
-                                                @error('birthday')
+                                                <label for="dob">Төрсөн огноо</label>
+                                                <input id="dob" placeholder="Огноо сонгоно уу..." type="date" class="form-control @error('dob') is-invalid @enderror" name="dob" value="{{ old('dob') }}" autocomplete="dob" autofocus>
+                                                @error('dob')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -97,14 +89,7 @@
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-sm-6">
-                                                <label for="groups">Байгууллага</label>
-                                                <select class="form-control" id="company_id" name="company_id">
-                                                    @foreach ($company as $item )
-                                                        <option value="{{ $item->id }}">{{$item->company}}</option>
-                                                    @endforeach
-
-                                                </select>
-
+                                                <label for="groups">Group</label>  <group  class="@error('groups') is-invalid @enderror"></group>
                                                 @error('groups')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>

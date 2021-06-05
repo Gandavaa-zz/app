@@ -27,6 +27,10 @@ class CreateUsersTable extends Migration
             $table->string('register', 10)->nullable();
             $table->string('address')->nullable();
             $table->string('avatar_path')->nullable();
+            $table->string('country_code')->nullable();
+            $table->unsignedSmallInteger('title_id')->nullable();
+            $table->unsignedBigInteger('candidate_id')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

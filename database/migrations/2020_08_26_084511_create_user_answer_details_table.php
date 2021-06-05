@@ -11,23 +11,23 @@ class CreateUserAnswerDetailsTable extends Migration
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('user_answer_details', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->bigInteger('answer_id');
-            $table->smallInteger('detail_num');
-            $table->timestamps();
-        });
-    }
+    // public function up()
+    // {
+    //     Schema::create('user_answer_details', function (Blueprint $table) {
+    //         $table->bigIncrements('id');
+    //         $table->bigInteger('answer_id');
+    //         $table->smallInteger('detail_num');
+    //         $table->timestamps();
+    //     });
+    // }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('user_answer_details');
-    }
+    // /**
+    //  * Reverse the migrations.
+    //  *
+    //  * @return void
+    //  */
+    // public function down()
+    // {
+    //     Schema::dropIfExists('user_answer_details');
+    // }
 }

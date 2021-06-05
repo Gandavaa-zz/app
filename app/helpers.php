@@ -43,3 +43,12 @@ if( ! function_exists('getToken')){
         }
     }
 }
+/* Hash password
+* return hash password
+*/
+if( ! function_exists('hash_password')){
+    function hash_password($pass, $userid) {
+        $salt = md5($userid);
+        return hash('sha256', $salt.$pass);
+    }
+}

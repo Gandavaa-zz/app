@@ -11,30 +11,30 @@ class CreateUserAnswersTable extends Migration
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('user_answers', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->UnsignedBigInteger('user_id');
-            $table->UnsignedBigInteger('quiz_id');
-            $table->integer('answer_number');                                    
-            $table->timestamps();
+    // public function up()
+    // {
+    //     Schema::create('user_answers', function (Blueprint $table) {
+    //         $table->bigIncrements('id');
+    //         $table->UnsignedBigInteger('user_id');
+    //         $table->UnsignedBigInteger('quiz_id');
+    //         $table->integer('answer_number');
+    //         $table->timestamps();
 
-            $table->foreign('user_id')
-                ->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            
-            $table->foreign('quiz_id')
-                ->references('id')->on('quizzes')->onDelete('cascade')->onUpdate('cascade');
-        });
-    }
+    //         $table->foreign('user_id')
+    //             ->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('user_answers');
-    }
+    //         $table->foreign('quiz_id')
+    //             ->references('id')->on('quizzes')->onDelete('cascade')->onUpdate('cascade');
+    //     });
+    // }
+
+    // /**
+    //  * Reverse the migrations.
+    //  *
+    //  * @return void
+    //  */
+    // public function down()
+    // {
+    //     Schema::dropIfExists('user_answers');
+    // }
 }

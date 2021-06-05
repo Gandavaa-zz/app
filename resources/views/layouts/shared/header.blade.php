@@ -65,11 +65,11 @@
             </li>
             <li class="c-header-nav-item d-md-down-none mx-2"><a class="c-header-nav-link">
                     <svg class="c-icon">
-                        <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-list-rich"></use>
+                        <use xlink:href="{{ asset('icons/sprites/free.svg#cil-list-rich') }}"></use>
                     </svg></a></li>
             <li class="c-header-nav-item d-md-down-none mx-2"><a class="c-header-nav-link">
                     <svg class="c-icon">
-                        <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-envelope-open"></use>
+                        <use xlink:href="{{ asset('icons/sprites/free.svg#cil-envelope-open') }}"></use>
                     </svg></a>
                     </li>
             <li class="c-header-nav-item dropdown"><a class="c-header-nav-link" data-toggle="dropdown" href="#"
@@ -84,18 +84,18 @@
                     </div>
                     <a class="dropdown-item"  href="{{ route('user.profile', auth()->id()) }}">
                         <svg class="c-icon mr-2">
-                            <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-user"></use>
+                            <use xlink:href="{{ asset('icons/sprites/free.svg#cil-user') }}"></use>
                         </svg> Хувийн профайл</a>
                     <a class="dropdown-item" href="#">
                         <svg class="c-icon mr-2">
-                            <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-settings"></use>
+                            <use xlink:href="{{ asset('icons/sprites/free.svg#cil-settings') }}"></use>
                         </svg> Тохиргоо</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">                       
+                    <a class="dropdown-item" href="#">
                         <svg class="c-icon mr-2">
-                            <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-account-logout"></use>
+                            <use xlink:href="{{ asset('icons/sprites/free.svg#cil-account-logout') }}"></use>
                         </svg>
-                        <form class="m-0 p-0" action="{{ env('APP_URL', '') }}/logout" method="POST"> @csrf 
+                        <form class="m-0 p-0" action="/logout" method="POST"> @csrf
                             <button type="submit" class="btn">Гарах</button>
                         </form>
                     </a>

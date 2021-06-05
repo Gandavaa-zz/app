@@ -31,7 +31,17 @@ return [
     | so make sure you have the driver for your particular database of
     | choice installed on your machine before you begin development.
     |
+
     */
+
+    /*  Second database connection
+        DB_CONNECTION_SECOND=mysql
+        DB_HOST_SECOND=127.0.0.1
+        DB_PORT_SECOND=3306
+        DB_DATABASE_SECOND=unitedco_test
+        DB_USERNAME_SECOND=root
+        DB_PASSWORD_SECOND=
+*/
 
     'connections' => [
 
@@ -52,6 +62,8 @@ return [
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
             'unix_socket' => env('DB_SOCKET', ''),
+            // 'charset' => 'utf8',
+            // 'collation' => 'utf8_unicode_ci',
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
@@ -70,6 +82,8 @@ return [
             'database'  => env('DB_DATABASE_SECOND'),
             'username'  => env('DB_USERNAME_SECOND'),
             'password'  => env('DB_PASSWORD_SECOND'),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci'
         ],
 
         'pgsql' => [

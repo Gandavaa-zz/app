@@ -8,10 +8,13 @@
               <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                 <div class="card">
                     <div class="card-header">
-                    <span class="float-left"><h5><i class="fa fa-align-justify"></i>{{ __('Харилцагчид') }}</h5></span> <span class="float-right">
-                    <button type="button" id="deleteMultiple" class="btn btn-danger deleteMultiple"  href="javascript:void(0)" data-original-title="Delete">Олноор устгах</button>
-                    <a class="btn btn-primary" href="{{ route('participants.create') }}"><i class="cil-plus"></i>Шинэ</a></span>
-
+                    <span class="float-left"><h5><i class="fa fa-align-justify"></i>{{ __('Харилцагчид') }}</h5></span>
+                    <span class="float-right">
+                        <!-- <button type="button" id="deleteMultiple" class="btn btn-danger deleteMultiple"  href="javascript:void(0)" data-original-title="Delete">Олноор устгах</button> -->
+                        <a class="btn btn-primary" href="{{ route('candidate.create') }}">
+                            <svg class="c-icon">
+                                    <use xlink:href="{{ asset('icons/sprites/free.svg#cil-plus') }}"></use>
+                            </svg> Шинэ</a>
                     </div>
 
                     <div class="card-body">
@@ -26,7 +29,6 @@
                                     <th>Имэйл</th>
                                     <th>Байгууллага</th>
                                     <th>Үүссэн.огноо</th>
-                                    <th width="200px">Assesments</th>
                                     <th width="250px">Үйлдэл</th>
                                 </tr>
                             </thead>
@@ -91,7 +93,7 @@ $(function () {
     var table = $('.yajra-datatable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('participants.index') }}",
+        ajax: "{{ route('candidate.index') }}",
         columns: [
             {
                 data: 'checkbox',
@@ -117,11 +119,6 @@ $(function () {
             {
                 data: 'created_at',
                 name: 'created_at'
-            },
-
-            {
-                data: "test",
-                name: "test"
             },
             {
                 data: 'action',

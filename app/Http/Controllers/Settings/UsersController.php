@@ -192,5 +192,14 @@ class UsersController extends Controller
         }
     }
 
+    /*
+    * cdc.users-n мэдээллийг import Хийж ороуулах
+    * aauth user рольтой хэрэглэгчидийг import хийх хэрэгтэй
+    */
+    function import(){
+
+
+    }
+
 
 }

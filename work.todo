@@ -1,6 +1,15 @@
+☐ DB Merge and fix confilcts
+
+☐ Candidate - Participant болгох жагсаалт
+    ✔ candidate ajax - үүсгэх @done(21-06-04 13:37)
+    ✔ Button засах @done(21-06-04 15:21)
+    ✔ Create @done(21-06-05 11:58)
+    ✔ Edit @done(21-06-05 13:08)
+    ☐ Delete
+    ☐ Тухайн хэрэглэгчийг candidate_id-тай холбогдсон эсэхийг харуулна
+
 ☐ API тухайн Тайланг харах - Тестийг хэрхэн Result match хийх вэ?
     ✔ Тайлангийн мэдээллийг авах @done(21-05-26 15:14)
-
     ☐ Тайлангийн мэдээллийг translation хийх.
         ☐ Translation DB Table create
         ☐ Тranslation дээр editor нэмэх EN, MN хоёр
@@ -11,21 +20,12 @@
 ☐ Тохиргоо
     ☐ Системийн хэрэглэгчид
     ✔ Profile @done(20-09-23 16:12)
-    ☐ Зөвшөөрөл
-    ☐ Notifications
     ☐ Other
 
 ☐ Тайланг авах:
     ✔ Тайлангийн текстийг авах хэрэгтэй байна @done(21-05-25 14:52)
     ✔ Тайланг бүх талаас шүүж авах хэрэгтэй @done(21-05-25 14:52)
-    ☐ XML-р тайлангийн утгуудыг харуулах!
-
-☐ Route-г цэвэрлэх хэрэгтэй
-☐ Layout-г засварлах
-    ✔ Blade template edit @done(20-08-26 15:50)
-    ✔ Logo and other realted front-end @done(20-08-26 15:50)
-    ✔ Цэсүүдийг засварлах @done(20-08-26 15:49)
-    ✔ Bread Crumb fix @done(20-08-27 13:47)
+    ✔ XML-р тайлангийн утгуудыг харуулах! @done(21-06-02 14:31)
 
 ☐ Settings
     ✔ Системийн хэрэглэгчид - Crud @done(20-10-14 14:56)

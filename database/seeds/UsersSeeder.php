@@ -29,7 +29,7 @@ class UsersSeeder extends Seeder
         $superAdminRole = Role::create(['name' => 'super-admin', 'guard_name' => 'web', 'created_at' => now(), 'updated_at' => now()]);
         $adminRole = Role::create(['name' => 'admin', 'guard_name' => 'web', 'created_at' => now(), 'updated_at' => now()]);
         $writterRole = Role::create(['name' => 'writer', 'guard_name' => 'web', 'created_at' => now(), 'updated_at' => now()]);
-        $clientRole = Role::create(['name' => 'client', 'guard_name' => 'web', 'created_at' => now(), 'updated_at' => now()]);
+        $clientRole = Role::create(['name' => 'candidate', 'guard_name' => 'web', 'created_at' => now(), 'updated_at' => now()]);
 
         $CreateUserPerm = Permission::create(['name' => 'create-user', 'guard_name' => 'web', 'created_at' => now(), 'updated_at' => now()]);
         $EditUserPerm = Permission::create(['name' => 'edit-user', 'guard_name' => 'web', 'created_at' => now(), 'updated_at' => now()]);

@@ -11,30 +11,30 @@ class CreateAnswersTable extends Migration
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('answers', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->UnsignedBigInteger('quiz_id');
-            $table->integer('number');
-            $table->string('answer');
-            $table->string('type')->nullable();
-            $table->string('answer_path')->nullable();
-            $table->timestamps();
+    // public function up()
+    // {
+    //     Schema::create('answers', function (Blueprint $table) {
+    //         $table->bigIncrements('id');
+    //         $table->UnsignedBigInteger('quiz_id');
+    //         $table->integer('number');
+    //         $table->string('answer');
+    //         $table->string('type')->nullable();
+    //         $table->string('answer_path')->nullable();
+    //         $table->timestamps();
 
-            $table->foreign('quiz_id')
-            ->references('id')->on('quizzes')->onDelete('cascade')->onUpdate('cascade');
-        
-        });
-    }
+    //         $table->foreign('quiz_id')
+    //         ->references('id')->on('quizzes')->onDelete('cascade')->onUpdate('cascade');
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('answers');
-    }
+    //     });
+    // }
+
+    // /**
+    //  * Reverse the migrations.
+    //  *
+    //  * @return void
+    //  */
+    // public function down()
+    // {
+    //     Schema::dropIfExists('answers');
+    // }
 }

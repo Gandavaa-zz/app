@@ -14,32 +14,25 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Auth::routes();
+
 
 Route::get('/',  'HomeController@index')->name('dashboard');
 
 Route::group(['middleware' => ['role:super-admin']], function () {
+    Route::get('settings/users/import', 'Settings\UsersController@import')->name('user.import');
     Route::resource('settings/users', 'Settings\UsersController')->middleware('auth');
     Route::get('settings/users/{user}/roles', 'Settings\UsersController@roles')->name('user.roles')->middleware('auth');
     Route::post('settings/users/{user}/giveRoles', 'Settings\UsersController@giveRoles')->name('user.giveRoles')->middleware('auth');
     Route::get('settings/userGroups', 'Settings\UsersController@getGroups');
     Route::get('settings/profile/{user}', 'Settings\ProfilesController@show')->name('user.profile');
-
 });
-
-// Route::group(['middleware' => ['api']], function () {
-//     Route::get('gettoken', 'ApiController@gettoken');
-//     // Route::get('index', 'ApiController@index');
-//     Route::resource('api',  'ApiController');
-// });
 
 Route::resource('translations',  'TranslationsController');
 
 Route::group(['middleware' => ['role:super-admin|admin']], function () {
     // get test API controller
     Route::resource('testapi',  'TestApiController');
-
     Route::resource('translations',  'TranslationsController');
 
     Route::get('reports/getXml/{assessment_id}',  'ReportsController@getXml');
@@ -49,23 +42,28 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::get('reports/groups/{assessment_id}',  'ReportsController@groups');
     Route::get('reports/referential/{assessment_id}',  'ReportsController@referential');
 
-    Route::get('candidate/contract',  'CandidateController@contract');
-    Route::get('candidate/group',  'CandidateController@group');
-    Route::get('candidate/gettoken',  'CandidateController@getToken');
-    Route::get('candidate/company',  'CandidateController@getCompany');
-    Route::get('candidate/assessments/{candidate_id}',  'CandidateController@assessments');
-    Route::get('candidate/tests',  'CandidateController@getTest');
-    Route::get('candidate/getList',  'CandidateController@testList');
-    Route::get('candidate/list',  'CandidateController@list');
-    Route::resource('candidate',  'CandidateController');
+    Route::resource('candidate',  'CandidatesController');
+    Route::get('candidate/group',  'CandidatesController@group')->name('candidate.group');
+    Route::get('candidate/deleteMultiple', 'CandidatesController@deleteMultiple')->name('candidate.deleteMultiple');
 
+    // Candidate
+    Route::get('api/assessments/{candidate_id}',  'ApiController@assessments');
+    Route::get('api/import',  'ApiController@import')->name('Api.import');
+    Route::get('api/retrieve',  'ApiController@retrieve');
+    Route::get('api/token',  'ApiController@getToken');
+    Route::get('api/group',  'ApiController@group');
+    Route::get('api/contract',  'ApiController@contract');
+    Route::get('api/company',  'ApiController@getCompany');
+    Route::get('api/tests',  'ApiController@getTest');
+    Route::get('api/import',  'ApiController@import');
+    Route::get('api/getList',  'ApiController@testList');
+
+    // SETTINGS Controller
     Route::resource('role', 'Settings\RolesController')->middleware('auth');
     Route::get('role/{role}/permission', 'Settings\RolesController@permission')->middleware('auth');
     Route::post('role/{role}/permission', 'Settings\RolesController@givePermission')->name('give.permission')->middleware('auth');
-
     Route::get('settings/getRoles', 'Settings\RolesController@getRoles');
     Route::get('roles/permission', 'Settings\RolesController@rolePermission');
-
     Route::resource('settings/permission', 'Settings\PermissionsController')->middleware('auth');
     Route::get('settings/getPermissions', 'Settings\PermissionsController@getPermissions');
     Route::resource('settings/group', 'Settings\GroupsController');
@@ -80,6 +78,7 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::delete('settings/test/{test}', 'Settings\TestsController@destroy')->name('settings.test.destroy');
     Route::get('settings/test/import', 'Settings\TestsController@import')->name('settings.test.import');
     Route::post('settings/test/import', 'Settings\TestsController@importExcel')->name('test.importExcel');
+
 
     /* Quizes here */
     Route::get('settings/quiz/{test}', 'Settings\QuizzesController@index')->name('quiz.index');
@@ -103,24 +102,24 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
 
     Route::resource('test', 'TestsController');
     // Participants
-    Route::get('participants/getList', 'ParticipantsController@getList');
-    Route::post('participants/avatar', 'ParticipantsController@avatar')->name('avatar');
-    Route::get('groups/list', 'ParticipantsController@fetchGroup');
-    Route::get('participants/create', 'ParticipantsController@create')->name('participants.create');
-    Route::get('participants/index', 'ParticipantsController@index')->name('participants.index');
-    Route::get('participants/destroy/{id}', 'ParticipantsController@destroy');
-    Route::get('/participants/import', 'ParticipantsController@import')->name("participants.import");
-    Route::post('participants/store', 'ParticipantsController@store')->name('participant.store');
-    Route::get('participants/fetchGroup', 'ParticipantsController@fetch_groups');
-    Route::get('participants/assessment', 'ParticipantsController@assessment_table')->name('participants.assessment');
-    Route::post('participants/addToGroup', 'ParticipantsController@addToGroup')->name('participants.addToGroup');
-    Route::get('participants/deleteMultiple', 'ParticipantsController@deleteMultiple')->name('participants.deleteMultiple');
-    Route::get('/participants/{user}/edit', 'ParticipantsController@edit')->name('participants.edit');
-    Route::get('/participants/list', 'ParticipantsController@list')->name('participants.list');
-    Route::post('/participants/store', 'ParticipantsController@store')->name('participants.store');
-    Route::put('/participants/{user}', 'ParticipantsController@update')->middleware('auth')->name('participants.update');
-    Route::get('/participants/{user}', 'ParticipantsController@show')->middleware('auth')->name('participants.show');
-    Route::delete('/participants/{user}', 'ParticipantsController@destroy')->name('participants.destroy');
+    // Route::get('participants/getList', 'ParticipantsController@getList');
+    // Route::post('participants/avatar', 'ParticipantsController@avatar')->name('avatar');
+    // Route::get('groups/list', 'ParticipantsController@fetchGroup');
+    // Route::get('participants/create', 'ParticipantsController@create')->name('participants.create');
+    // Route::get('participants/index', 'ParticipantsController@index')->name('participants.index');
+    // Route::get('participants/destroy/{id}', 'ParticipantsController@destroy');
+    // Route::get('/participants/import', 'ParticipantsController@import')->name("participants.import");
+    // Route::post('participants/store', 'ParticipantsController@store')->name('participant.store');
+    // Route::get('participants/fetchGroup', 'ParticipantsController@fetch_groups');
+    // Route::get('participants/assessment', 'ParticipantsController@assessment_table')->name('participants.assessment');
+    // Route::post('participants/addToGroup', 'ParticipantsController@addToGroup')->name('participants.addToGroup');
+    // Route::get('participants/deleteMultiple', 'ParticipantsController@deleteMultiple')->name('participants.deleteMultiple');
+    // Route::get('/participants/{user}/edit', 'ParticipantsController@edit')->name('participants.edit');
+    // Route::get('/participants/list', 'ParticipantsController@list')->name('participants.list');
+    // Route::post('/participants/store', 'ParticipantsController@store')->name('participants.store');
+    // Route::put('/participants/{user}', 'ParticipantsController@update')->middleware('auth')->name('participants.update');
+    // Route::get('/participants/{user}', 'ParticipantsController@show')->middleware('auth')->name('participants.show');
+    // Route::delete('/participants/{user}', 'ParticipantsController@destroy')->name('participants.destroy');
 });
 
 Route::get('skills',  function(){

@@ -59,7 +59,7 @@
 
           @yield('content')
 
-          <flash message="{{ session('success') }}{{ session('error') }}"
+        <flash message="{{ session('success') }}{{ session('error') }}" title=""
                 @if(Session::has('success')) alert="alert-success"
                 @elseif(Session::has('error')) alert="alert-danger"
                 @endif>
