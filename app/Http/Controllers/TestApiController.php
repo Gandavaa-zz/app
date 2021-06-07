@@ -3,39 +3,40 @@
 namespace App\Http\Controllers;
 
 use App\TestAPI;
-use Illuminate\Support\Facades\Http;
-
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class TestApiController extends Controller
 {
-    private function header($url, $format){
+    private function header($url, $format)
+    {
         $result = Http::withHeaders([
-            'WWW-Authenticate'=> $this->token
-        ])->get($url.'/'.$format);
+            'WWW-Authenticate' => $this->token,
+        ])->get($url . '/' . $format);
 
         return $result;
     }
 
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         // get all result from API TEST
         $responses = Http::withHeaders([
-            'WWW-Authenticate'=> $this->token
+            'WWW-Authenticate' => $this->token,
         ])->get('https://app.centraltest.com/customer/REST/list/test/json',
-        []);
+            []);
 
         //  insert to Test result to TESTAPI
         // dd(json_decode($responses));
-        foreach(json_decode($responses) as $response){
-       
+        foreach (json_decode($responses) as $response) {
+
             $testAPI = TestAPI::firstOrCreate(
                 ['id' => $response->id],
-                [ 'id'    => $response->id,
-                  'category' => $response->category,
-                  'label' => $response->label,
-                  'logo' => $response->logo,
-                  'price_in_credits' => $response->price_in_credits
-            ]);
+                ['id' => $response->id,
+                    'category' => $response->category,
+                    'label' => $response->label,
+                    'logo' => $response->logo,
+                    'price_in_credits' => $response->price_in_credits,
+                ]);
         }
 
         // return testAPI result

@@ -1,9 +1,7 @@
 <?php
 
-use App\Http\Controllers\TranslationsController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -14,11 +12,11 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+ */
 
 Auth::routes();
 
-Route::get('/',  'HomeController@index')->name('dashboard');
+Route::get('/', 'HomeController@index')->name('dashboard');
 
 Route::group(['middleware' => ['role:super-admin']], function () {
     Route::resource('settings/users', 'Settings\UsersController')->middleware('auth');
@@ -35,32 +33,32 @@ Route::group(['middleware' => ['role:super-admin']], function () {
 //     Route::resource('api',  'ApiController');
 // });
 
-Route::resource('translations',  'TranslationsController');
+Route::resource('translations', 'TranslationsController');
 
 Route::group(['middleware' => ['role:super-admin|admin']], function () {
     // get test API controller
-    Route::resource('testapi',  'TestApiController');
+    Route::resource('testapi', 'TestApiController');
 
-    Route::resource('translations',  'TranslationsController');
-    Route::get('translation/getJSON/{test_id}',  'TranslationsController@getJSON');
+    Route::resource('translations', 'TranslationsController');
+    Route::get('translation/getJSON/{test_id}', 'TranslationsController@getJSON');
     // Route::get('translations/{id}/edit', 'TranslationsController@edit')->name('translations.edit');
     // Route::get('translations/{id}/edit', 'TranslationsController@edit')->name('translations.edit');
-    Route::get('reports/getXml/{assessment_id}',  'ReportsController@getXml');
-    Route::get('reports/result/{assessment_id}',  'ReportsController@result');
-    Route::get('reports/global/{assessment_id}',  'ReportsController@global');
-    Route::get('reports/factory/{assessment_id}',  'ReportsController@factory');
-    Route::get('reports/groups/{assessment_id}',  'ReportsController@groups');
-    Route::get('reports/referential/{assessment_id}',  'ReportsController@referential');
+    Route::get('reports/getXml/{assessment_id}', 'ReportsController@getXml');
+    Route::get('reports/result/{assessment_id}', 'ReportsController@result');
+    Route::get('reports/global/{assessment_id}', 'ReportsController@global');
+    Route::get('reports/factory/{assessment_id}', 'ReportsController@factory');
+    Route::get('reports/groups/{assessment_id}', 'ReportsController@groups');
+    Route::get('reports/referential/{assessment_id}', 'ReportsController@referential');
 
-    Route::get('candidate/contract',  'CandidateController@contract');
-    Route::get('candidate/group',  'CandidateController@group');
-    Route::get('candidate/gettoken',  'CandidateController@getToken');
-    Route::get('candidate/company',  'CandidateController@getCompany');
-    Route::get('candidate/assessments/{candidate_id}',  'CandidateController@assessments');
-    Route::get('candidate/tests',  'CandidateController@getTest');
-    Route::get('candidate/getList',  'CandidateController@testList');
-    Route::get('candidate/list',  'CandidateController@list');
-    Route::resource('candidate',  'CandidateController');
+    Route::get('candidate/contract', 'CandidateController@contract');
+    Route::get('candidate/group', 'CandidateController@group');
+    Route::get('candidate/gettoken', 'CandidateController@getToken');
+    Route::get('candidate/company', 'CandidateController@getCompany');
+    Route::get('candidate/assessments/{candidate_id}', 'CandidateController@assessments');
+    Route::get('candidate/tests', 'CandidateController@getTest');
+    Route::get('candidate/getList', 'CandidateController@testList');
+    Route::get('candidate/list', 'CandidateController@list');
+    Route::resource('candidate', 'CandidateController');
 
     Route::resource('role', 'Settings\RolesController')->middleware('auth');
     Route::get('role/{role}/permission', 'Settings\RolesController@permission')->middleware('auth');
@@ -126,8 +124,8 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::delete('/participants/{user}', 'ParticipantsController@destroy')->name('participants.destroy');
 });
 
-Route::get('skills',  function(){
-    return [ 'label'=> ['laravel', 'vue', 'php']];
+Route::get('skills', function () {
+    return ['label' => ['laravel', 'vue', 'php']];
 });
 
 Route::resource('test', 'TestsController');

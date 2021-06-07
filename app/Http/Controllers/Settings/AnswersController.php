@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Settings;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Quiz;
 use App\Answer;
+use App\Http\Controllers\Controller;
+use App\Quiz;
+use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
 
 class AnswersController extends Controller
@@ -33,34 +33,34 @@ class AnswersController extends Controller
             $data = $quiz->answers;
 
             return FacadesDataTables::of($data)
-            
+
                 ->addIndexColumn()
-                ->addColumn('action', function($row){
+                ->addColumn('action', function ($row) {
                     $btn = '
                     <ul class="list-group list-group-horizontal list-unstyled"><li class="pr-1">
-                    <a href="'.route("answer.show", ['quiz'=>$row->quiz_id, 'answer'=>$row->id]).'" data-toggle="tooltip" data-id="'.$row->id.'" class="btn btn-secondary view btn-md">
+                    <a href="' . route("answer.show", ['quiz' => $row->quiz_id, 'answer' => $row->id]) . '" data-toggle="tooltip" data-id="' . $row->id . '" class="btn btn-secondary view btn-md">
                         <i class="cil-magnifying-glass"></i>
                         </a>
                     </li>
                     <li class="pr-1">
-                        <a href="'.route("answer.edit", $row->id).'" data-toggle="tooltip" data-id="'.$row->id.'" data-original-title="Edit" class="btn btn-primary btn-md" title="Edit">
+                        <a href="' . route("answer.edit", $row->id) . '" data-toggle="tooltip" data-id="' . $row->id . '" data-original-title="Edit" class="btn btn-primary btn-md" title="Edit">
                         <i class="cil-pencil"></i></a>
                     </li>
                     <li class="pr-1">
-                        <form class="form-inline" action="'.route('answer.destroy', $row->id).'" method="POST">
+                        <form class="form-inline" action="' . route('answer.destroy', $row->id) . '" method="POST">
                             <input type="hidden" name="_method" value="DELETE">
-                            <input type="hidden" name="_token" value="'.csrf_token().'">
+                            <input type="hidden" name="_token" value="' . csrf_token() . '">
                             <button type="submit" class="btn btn-danger" onclick="return confirm(\'Та энэ бичлэгийг үнэхээр устгах уу?\')"><i class="cil-trash"></i></button>
                         </form>
-                    </li>                    
+                    </li>
                 </li>
-                </ul><input type="checkbox" id="'.$row->id.'"';
+                </ul><input type="checkbox" id="' . $row->id . '"';
                     return $btn;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
         }
-        
+
         return view('layouts.settings.answer.index', compact('quizzes', 'quiz'));
     }
 
@@ -69,9 +69,9 @@ class AnswersController extends Controller
      */
     public function create(Quiz $quiz)
     {
-            return view('layouts.settings.answer.create', 
+        return view('layouts.settings.answer.create',
             [
-                'quiz' => $quiz                
+                'quiz' => $quiz,
             ]);
     }
 
@@ -79,10 +79,12 @@ class AnswersController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {  
+    {
         $data = $this->validateAnswer();
 
-        if($request->has('image')) $data['answer_path'] = $this->validateImage($request);
+        if ($request->has('image')) {
+            $data['answer_path'] = $this->validateImage($request);
+        }
 
         Answer::create($data);
 
@@ -93,8 +95,8 @@ class AnswersController extends Controller
      * Display the specified resource.
      */
     public function show(Answer $answer)
-    {        
-        return view('layouts.settings.answer.show', ['answer'=> $answer]);
+    {
+        return view('layouts.settings.answer.show', ['answer' => $answer]);
     }
 
     /**
@@ -102,7 +104,7 @@ class AnswersController extends Controller
      */
     public function edit(Answer $answer)
     {
-        return view('layouts.settings.answer.edit',['answer'=> $answer]);
+        return view('layouts.settings.answer.edit', ['answer' => $answer]);
     }
 
     /**
@@ -114,9 +116,12 @@ class AnswersController extends Controller
         $this->validateAnswer();
 
         $answer->quiz_id = request('quiz_id');
-        $answer->number = request('number');        
+        $answer->number = request('number');
         $answer->answer = request('answer');
-        if(request('image')) $answer->image = request('image');                
+        if (request('image')) {
+            $answer->image = request('image');
+        }
+
         $answer->save();
 
         return redirect()->route('answer.index', request('quiz_id'))->with('success', 'Асуултыг амжилттай шинэчлэлээ!');
@@ -129,13 +134,13 @@ class AnswersController extends Controller
      */
     public function destroy(Answer $answer)
     {
-        if($answer->quiz->test->users)
-             request()->session()->flash('error', " '". $answer->quiz->test->title. "' -энэ тест дээр хэрэглэгч бүртгэгдсэн байгаа тул устгах боломжгүй!");    
-         else{
-             $answer->delete();
-             request()->session()->flash('success', $answer->answer. "-г амжилттай устгалаа!");
-         }
-        
+        if ($answer->quiz->test->users) {
+            request()->session()->flash('error', " '" . $answer->quiz->test->title . "' -энэ тест дээр хэрэглэгч бүртгэгдсэн байгаа тул устгах боломжгүй!");
+        } else {
+            $answer->delete();
+            request()->session()->flash('success', $answer->answer . "-г амжилттай устгалаа!");
+        }
+
         return back();
 
     }
@@ -144,21 +149,22 @@ class AnswersController extends Controller
     {
         return request()->validate([
             'quiz_id' => ['required'],
-            'number'=> ['required', ['numeric']],
-            'answer' => ['required', ['string']]
+            'number' => ['required', ['numeric']],
+            'answer' => ['required', ['string']],
         ]);
-    }   
+    }
 
-    public function validateImage($request){
-        
+    public function validateImage($request)
+    {
+
         $request->validate([
-            'image' => 'required|mimes:jpg,jpeg,bmp,png|max:10240'
+            'image' => 'required|mimes:jpg,jpeg,bmp,png|max:10240',
         ]);
 
-        $imageFile = time().'.'.$request->file('image')->extension();
+        $imageFile = time() . '.' . $request->file('image')->extension();
 
         $filePath = $request->file('image')->storeAs('uploads', $imageFile, 'public');
 
-        return $filePath;          
+        return $filePath;
     }
 }

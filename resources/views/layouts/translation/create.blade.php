@@ -21,33 +21,29 @@
                                                 <option value="{{$item->id}}">{{$item->label}}</option>
                                                 @endforeach
                                              </select>
-                                            </div> 
+                                            </div>
+                                            @foreach($json as $texts)
                                             <div class="col-sm-6">
-                                                <label for="en">Англи</label>
-                                                <input
+                                                <label for="en"></label>
+                                                <textarea
                                                     placeholder="Текст оруулна уу..."
                                                     type="text"
-                                                    class="form-control @error('en') is-invalid @enderror"
-                                                    name="en" value="{{ old('en') }}" autocomplete="en" autofocus>
-                                                @error('en')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                                @enderror
+                                                    class="form-control"
+                                                    name="en" value="{{ $texts }}" autocomplete="en" disabled autofocus>{{ $texts }}</textarea>
                                             </div>
                                             <div class="col-sm-6">
-                                                <label for="firstname">Монгол</label>
-                                                <input placeholder="Текст оруулна уу..." type="text"
+                                                <label for="firstname"></label>
+                                                <textarea placeholder="Монгол орчуулга оруулна уу..." type="text"
                                                     class="form-control @error('mn') is-invalid @enderror"
                                                     name="mn"
-                                                    value="{{ old('mn') }}"
-                                                    autocomplete="mn" autofocus>
+                                                    autocomplete="mn" autofocus>aa</textarea>
                                                 @error('mn')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
                                                 @enderror
                                             </div>
+                                            @endforeach
                                         </div>
                                 </div>
                             </div>
@@ -69,5 +65,34 @@
     </div>
 
 </div>
+<script type="text/javascript">
+    jQuery(document).ready(function ()
+    {
+            jQuery('select[name="country"]').on('change',function(){
+               var countryID = jQuery(this).val();
+               if(countryID)
+               {
+                  jQuery.ajax({
+                     url : 'dropdownlist/getstates/' +countryID,
+                     type : "GET",
+                     dataType : "json",
+                     success:function(data)
+                     {
+                        console.log(data);
+                        jQuery('select[name="state"]').empty();
+                        jQuery.each(data, function(key,value){
+                           $('select[name="state"]').append('<option value="'+ key +'">'+ value +'</option>');
+                        });
+                     }
+                  });
+               }
+               else
+               {
+                  $('select[name="state"]').empty();
+               }
+            });
+    });
+    </script>
+
 <!-- Initialize the plugin: -->
 @endsection
