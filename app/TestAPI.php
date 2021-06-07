@@ -8,5 +8,5 @@ class TestAPI extends Model
 {
     protected $table = 'tests';
 
-    protected $fillable = ['id', 'category','label', 'logo', 'price_in_credits'];
+    protected $fillable = ['id', 'category', 'label', 'logo', 'price_in_credits'];
 }
