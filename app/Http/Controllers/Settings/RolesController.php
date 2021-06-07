@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Settings;
 
-use App\Group;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
@@ -27,54 +26,53 @@ class RolesController extends Controller
 
     public function store(Request $request)
     {
-        Role::create( $this->validateRole() );
+        Role::create($this->validateRole());
 
         return redirect()->route('role.index')->with('success', 'Роль амжилттай хадгаллаа!');
     }
 
     public function show(Role $role)
     {
-        return view('layouts.settings.roles.show', ['role' =>$role ]);
+        return view('layouts.settings.roles.show', ['role' => $role]);
     }
 
     public function edit(Role $role)
     {
-        return view('layouts.settings.roles.edit', ['role' =>$role ]);
+        return view('layouts.settings.roles.edit', ['role' => $role]);
     }
 
     public function update(Role $role)
     {
         $role->update($this->validateRole());
 
-        return redirect()->route('role.index')-with('success', 'Роль амжилттай засагдлаа!');
+        return redirect()->route('role.index') - with('success', 'Роль амжилттай засагдлаа!');
     }
 
     public function validateRole()
     {
         return request()->validate([
             'name' => ['required', ['string']],
-            'guard_name' => ['required', ['string']]
+            'guard_name' => ['required', ['string']],
         ]);
     }
 
-    function destroy(Role $role){
+    public function destroy(Role $role)
+    {
 
         $role->delete();
-        
+
         return redirect()->route('role.index')->with('success', 'Роль амжилттай устгагдлаа!');
     }
 
     public function permission(Role $role)
     {
         $permissions = Permission::all();
-        
+
         $permission_ids = array();
         $perm_names = array();
 
-        if ($permissions)
-        {
-            foreach ($permissions as $permission)
-            {
+        if ($permissions) {
+            foreach ($permissions as $permission) {
                 array_push($permission_ids, $permission->id);
                 array_push($perm_names, $permission->name);
             }
@@ -95,37 +93,33 @@ class RolesController extends Controller
 
     public function getRoles()
     {
-        //get roles excerpt 
+        //get roles excerpt
         return Role::all();
-        // return Role::where('name', '!=', 'client')->get();        
+        // return Role::where('name', '!=', 'client')->get();
     }
 
     public function rolePermission(Request $request)
-     {
+    {
         $permission = $request->data;
-         
-        if ($permission == '')
-         {
-             $permissions = Permission::orderby('name', 'asc')->select('id', 'name')
-                 ->get();
-         }
-         else
-         {
-             $strings =implode(', ', $permission);
-             $permissions = Permission::orderby('name', 'asc')->select('id', 'name')
-                 ->whereIn('name',  $permission )->get();
-         }
+
+        if ($permission == '') {
+            $permissions = Permission::orderby('name', 'asc')->select('id', 'name')
+                ->get();
+        } else {
+            $strings = implode(', ', $permission);
+            $permissions = Permission::orderby('name', 'asc')->select('id', 'name')
+                ->whereIn('name', $permission)->get();
+        }
 
         //  $response = array();
 
-         foreach ($permissions as $perm)
-         {
-             $response[] = array(                 
-                 "name" => $perm->name
-             );
-         }
-         echo json_encode($response);
-         exit;
-     }
+        foreach ($permissions as $perm) {
+            $response[] = array(
+                "name" => $perm->name,
+            );
+        }
+        echo json_encode($response);
+        exit;
+    }
 
 }

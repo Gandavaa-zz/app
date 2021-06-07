@@ -1,0 +1,274 @@
+[33mcommit cc1143cef1e1773df2ca64dc02737f3196e0c845[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: Gandavaa <ganaa7@gmail.com>
+Date:   Sat Jun 5 21:01:17 2021 +0800
+
+    Candidate updated
+
+[33mcommit 41e18e42b62879d3cf531b227a559ba9d125102f[m
+Author: Gandavaa <ganaa7@gmail.com>
+Date:   Mon May 31 22:27:37 2021 +0800
+
+    translation added
+
+[33mcommit d27b88080a9f9c5ab61e0ef2817ff330ba163b71[m
+Author: Gandavaa <ganaa7@gmail.com>
+Date:   Tue May 25 17:50:18 2021 +0800
+
+    xml added your getXML
+
+[33mcommit 8af196cf9ff0f538e8a75b6cb1c42fd3c41c55e7[m
+Author: Gandavaa <ganaa7@gmail.com>
+Date:   Tue May 25 17:47:51 2021 +0800
+
+    Medeelel
+
+[33mcommit 4e692239b60237024e9bc5599e5eb9b4288682c1[m
+Author: Gandavaa <ganaa7@gmail.com>
+Date:   Fri May 21 19:53:53 2021 +0800
+
+    add TestAPiController ScoresController
+
+[33mcommit 0138bad76f54072e535e25e435f014b9d59dfc53[m
+Author: Gandavaa <ganaa7@gmail.com>
+Date:   Mon May 10 16:14:33 2021 +0800
+
+    #done connection Candidate get from API
+
+[33mcommit f657911b63f24214ab4e8483834bcf3bd7aeb1d0[m
+Author: Ganaa Mongol <ganaa7@gmail.com>
+Date:   Tue Nov 24 13:34:04 2020 +0800
+
+    Participants updated view, edit, show
+
+[33mcommit a59b85fcee601c804184d7e364c0fbe7605e7985[m[33m ([m[1;31morigin/ganaa[m[33m, [m[1;32mganaa[m[33m)[m
+Merge: 5e82b26 e4f89c7
+Author: Ganaa Mongol <ganaa7@gmail.com>
+Date:   Wed Oct 14 17:26:18 2020 +0800
+
+    Merge branch 'ider_dev' of https://github.com/Gandavaa/app into ganaa
+
+[33mcommit 5e82b26ea19d27f5ec7eca4f1df372751e8358f6[m
+Author: Ganaa Mongol <ganaa7@gmail.com>
+Date:   Wed Oct 14 16:38:01 2020 +0800
+
+    excel import function
+
+[33mcommit 535e91dfd9461d2d2896ea2cf40862f6e6815f86[m
+Author: Ganaa Mongol <ganaa7@gmail.com>
+Date:   Wed Oct 14 10:38:51 2020 +0800
+
+    Assesments Answer Test update
+
+[33mcommit 7842d0ed86e0622e9552f23ce4c0d0da1f903e97[m
+Author: Ganaa Mongol <ganaa7@gmail.com>
+Date:   Tue Oct 13 12:38:22 2020 +0800
+
+    finished quiz picture upload
+
+[33mcommit e4f89c7536d29a73c52566d359cdffbcf0f9f661[m[33m ([m[1;31morigin/ider_dev[m[33m, [m[1;32mider_dev[m[33m)[m
+Author: ider <iderhangai2014@gmail.com>
+Date:   Fri Oct 9 16:08:04 2020 +0200
+
+    scss ruu css nemew
+
+[33mcommit 4ff60558b40b753a8f3902a5dab6833d2d4576c1[m
+Author: ider <iderhangai2014@gmail.com>
+Date:   Fri Oct 9 12:08:52 2020 +0200
+
+    button zasaw
+
+[33mcommit 43829f73a811d9da1b321f0d5ff285bf526844c3[m
+Author: ider <iderhangai2014@gmail.com>
+Date:   Fri Oct 9 12:04:28 2020 +0200
+
+    table button zasaw
+
+[33mcommit bd5b48e25f3be4509e5f7ff41a74eddda14f8fba[m
+Author: ider <iderhangai2014@gmail.com>
+Date:   Thu Oct 8 21:22:15 2020 +0200
+
+    assessment deer circular progress nemsen
+
+[33mcommit 3cdc9aa4bbaa7a0c805d93660a4db01de694bc13[m
+Author: ider <iderhangai2014@gmail.com>
+Date:   Thu Oct 8 19:27:41 2020 +0200
+
+    show blade der group iig implode hiiw
+
+[33mcommit 1e3096f1fa3c8621bfa91b8e3374ec5abfebe0c8[m
+Author: ider <iderhangai2014@gmail.com>
+Date:   Wed Oct 7 10:50:23 2020 +0200
+
+    show bade
+
+[33mcommit baf84475b4ba1410bec8b3c6cbdbb472cf8362e6[m
+Author: ider <iderhangai2014@gmail.com>
+Date:   Wed Oct 7 10:44:03 2020 +0200
+
+    .
+
+[33mcommit 6af2c7e8cc5ccd6e8b0497b8483ce9ce5615c57b[m
+Author: ider <iderhangai2014@gmail.com>
+Date:   Thu Oct 1 12:00:44 2020 +0200
+
+    first
+
+[33mcommit 3799e1968dff432e4b77de5cc59f80ef4eb6a97a[m
+Author: ider <iderhangai2014@gmail.com>
+Date:   Thu Oct 1 11:45:34 2020 +0200
+
+    add to group, userdetails  edit delete
+
+[33mcommit f4f9b8af92d3e2d50520e7f19bb3c5221f529b0b[m
+Author: ider <iderhangai2014@gmail.com>
+Date:   Wed Sep 30 14:52:35 2020 +0200
+
+    user details, assessment nemj baigaa
+
+[33mcommit a1e0e3daf2f764d820aca5f2395bfb42347fe9b2[m
+Merge: 8beee3a a72f61e
+Author: ider <iderhangai2014@gmail.com>
+Date:   Tue Sep 29 10:18:59 2020 +0200
+
+    Merge remote-tracking branch 'origin/ganaa' into ider_dev
+
+[33mcommit 8beee3a93b2302e046593cf660747dcdcdc74d6c[m
+Author: ider <iderhangai2014@gmail.com>
+Date:   Tue Sep 29 10:17:07 2020 +0200
+
+    user detaiks
+
+[33mcommit a72f61e0cacefcdff0fa93b0732d71d1df44314d[m
+Author: Ganaa Mongol <ganaa7@gmail.com>
+Date:   Mon Sep 28 15:21:32 2020 +0800
+
+    profile settings, menu, view, activity update
+
+[33mcommit a6536b82a3d9d09c7483d33732c935a6b0a81eb2[m
+Author: Ganaa Mongol <ganaa7@gmail.com>
+Date:   Wed Sep 23 16:13:05 2020 +0800
+
+    Updated Flash message, Select, Group vue
+
+[33mcommit 3183768cf1e2d741502e0df900ff84dfa41f83b3[m
+Author: Ganaa Mongol <ganaa7@gmail.com>
+Date:   Fri Sep 18 17:44:05 2020 +0800
+
+    #Quiz and #Answer done
+
+[33mcommit 22699aa7462ddcdd34160edc3fe3e440c729fe0c[m
+Merge: 5a58e0d 9d4a212
+Author: Ganaa Mongol <ganaa7@gmail.com>
+Date:   Mon Sep 14 11:24:45 2020 +0800
+
+    Merge branch 'ider_dev' of https://github.com/Gandavaa/app into ganaa
+
+[33mcommit 5a58e0dd5cf47b28301db563c2890b91a2ab0c2e[m
+Author: Ganaa Mongol <ganaa7@gmail.com>
+Date:   Mon Sep 14 10:58:13 2020 +0800
+
+    updated Test
+
+[33mcommit 135a12bb20231691099671ea7850300e0b9934e0[m
+Author: ider <iderhangai2014@gmail.com>
+Date:   Fri Sep 11 16:31:28 2020 +0800
+
+    select2 uud nemew
+
+[33mcommit 9d4a212a9cab300a5a536caf0f6375017e0bdf4c[m
+Author: ider <iderhangai2014@gmail.com>
+Date:   Thu Sep 10 21:10:36 2020 +0800
+
+    participant ynzlaw
+
+[33mcommit ad05ef9918d2b3cd8798e1efcefa55c7a3a49b4a[m
+Merge: a269e75 2223f37
+Author: ider <iderhangai2014@gmail.com>
+Date:   Thu Sep 10 11:37:43 2020 +0800
+
+    Merge remote-tracking branch 'origin/ganaa' into ider_dev
+
+[33mcommit a269e755c05137d6d372edc6590020e32b4d05ad[m
+Author: ider <iderhangai2014@gmail.com>
+Date:   Thu Sep 10 11:34:33 2020 +0800
+
+    import blade nemew
+
+[33mcommit 2223f372c33d04ef1b6c96d541901d1c7304053b[m
+Author: Ganaa Mongol <ganaa7@gmail.com>
+Date:   Wed Sep 9 19:56:08 2020 +0800
+
+    Settings Test done
+
+[33mcommit 6f49b57a6a80fa806eb05a3a0308ae51e92b9505[m
+Author: ider <iderhangai2014@gmail.com>
+Date:   Sat Sep 5 18:55:47 2020 +0800
+
+    alert newsen
+
+[33mcommit 7655b0d3868fd841c728bacadb3a2e06fac02e25[m
+Author: Ganaa Mongol <ganaa7@gmail.com>
+Date:   Fri Sep 4 16:38:40 2020 +0800
+
+    Group CRUD done
+
+[33mcommit fa4ec4480ca27c100011572050ad671c62bfa9c9[m
+Author: ider <iderhangai2014@gmail.com>
+Date:   Thu Sep 3 21:50:22 2020 +0800
+
+    checkbox utga ajax-s check hiideg bolgow
+
+[33mcommit f57c782a93444e588fa43a204ff2a6a034fb72d2[m
+Author: ider <iderhangai2014@gmail.com>
+Date:   Thu Sep 3 21:22:04 2020 +0800
+
+    userseeder nemew
+
+[33mcommit 715155950509d577d8dc110edae002cf58d463c5[m
+Author: ider <iderhangai2014@gmail.com>
+Date:   Thu Sep 3 21:15:55 2020 +0800
+
+    merge hoow
+
+[33mcommit 45696a96e5f3fed47cbc578a8d6d44c244d38c28[m
+Merge: 2449067 6e371f7
+Author: ider <iderhangai2014@gmail.com>
+Date:   Thu Sep 3 21:11:07 2020 +0800
+
+    Merge remote-tracking branch 'origin/master' into ider_dev
+
+[33mcommit 2449067ec39be21a3ce08805a98149bf7d6eb1fb[m
+Author: ider <iderhangai2014@gmail.com>
+Date:   Thu Sep 3 21:02:37 2020 +0800
+
+    test
+
+[33mcommit 9065b4fa853b368b94c9545f83bed454fb999670[m
+Author: ider <iderhangai2014@gmail.com>
+Date:   Thu Sep 3 15:13:09 2020 +0800
+
+    jj
+
+[33mcommit 6e371f72f1bc25ce8c3040898e47ad44a4b781e5[m
+Author: Ganaa Mongol <ganaa7@gmail.com>
+Date:   Thu Sep 3 13:38:45 2020 +0800
+
+    #Group and Controllers added
+
+[33mcommit 36b559e8695b30d3a7bf565b63dbc33094bd4cb2[m
+Author: ider <iderhangai2014@gmail.com>
+Date:   Wed Sep 2 19:36:45 2020 +0800
+
+    first push
+
+[33mcommit 42764f04625a86966e7a695fe09a744633c35978[m
+Author: Ganaa Mongol <ganaa7@gmail.com>
+Date:   Wed Sep 2 17:49:16 2020 +0800
+
+    #finished user and roles and perm seed add vselect
+
+[33mcommit 1f76726d4d0fc336a400547202cde8261a514249[m
+Author: Ganaa Mongol <ganaa7@gmail.com>
+Date:   Sat Aug 29 15:01:41 2020 +0800
+
+    start controller, models, front-end, settings done

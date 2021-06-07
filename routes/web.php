@@ -1,9 +1,7 @@
 <?php
 
-use App\Http\Controllers\TranslationsController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -14,11 +12,11 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+ */
+
 Auth::routes();
 
-
-Route::get('/',  'HomeController@index')->name('dashboard');
+Route::get('/', 'HomeController@index')->name('dashboard');
 
 Route::group(['middleware' => ['role:super-admin']], function () {
     Route::get('settings/users/import', 'Settings\UsersController@import')->name('user.import');
@@ -62,6 +60,30 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::get('api/getList',  'ApiController@testList');
 
     // SETTINGS Controller
+// Route::group(['middleware' => ['api']], function () {
+//     Route::get('gettoken', 'ApiController@gettoken');
+//     // Route::get('index', 'ApiController@index');
+//     Route::resource('api',  'ApiController');
+// });
+
+Route::resource('translations', 'TranslationsController');
+
+Route::group(['middleware' => ['role:super-admin|admin']], function () {
+    // get test API controller
+    Route::resource('testapi', 'TestApiController');
+
+    Route::resource('translations', 'TranslationsController');
+    Route::get('translation/getJSON/{test_id}', 'TranslationsController@getJSON');
+    // Route::get('translations/{id}/edit', 'TranslationsController@edit')->name('translations.edit');
+    // Route::get('translations/{id}/edit', 'TranslationsController@edit')->name('translations.edit');
+    Route::get('reports/getXml/{assessment_id}', 'ReportsController@getXml');
+    Route::get('reports/result/{assessment_id}', 'ReportsController@result');
+    Route::get('reports/global/{assessment_id}', 'ReportsController@global');
+    Route::get('reports/factory/{assessment_id}', 'ReportsController@factory');
+    Route::get('reports/groups/{assessment_id}', 'ReportsController@groups');
+    Route::get('reports/referential/{assessment_id}', 'ReportsController@referential');
+
+
     Route::resource('role', 'Settings\RolesController')->middleware('auth');
     Route::get('role/{role}/permission', 'Settings\RolesController@permission')->middleware('auth');
     Route::post('role/{role}/permission', 'Settings\RolesController@givePermission')->name('give.permission')->middleware('auth');
@@ -104,29 +126,10 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     /* end Answer */
 
     Route::resource('test', 'TestsController');
-    // Participants
-    // Route::get('participants/getList', 'ParticipantsController@getList');
-    // Route::post('participants/avatar', 'ParticipantsController@avatar')->name('avatar');
-    // Route::get('groups/list', 'ParticipantsController@fetchGroup');
-    // Route::get('participants/create', 'ParticipantsController@create')->name('participants.create');
-    // Route::get('participants/index', 'ParticipantsController@index')->name('participants.index');
-    // Route::get('participants/destroy/{id}', 'ParticipantsController@destroy');
-    // Route::get('/participants/import', 'ParticipantsController@import')->name("participants.import");
-    // Route::post('participants/store', 'ParticipantsController@store')->name('participant.store');
-    // Route::get('participants/fetchGroup', 'ParticipantsController@fetch_groups');
-    // Route::get('participants/assessment', 'ParticipantsController@assessment_table')->name('participants.assessment');
-    // Route::post('participants/addToGroup', 'ParticipantsController@addToGroup')->name('participants.addToGroup');
-    // Route::get('participants/deleteMultiple', 'ParticipantsController@deleteMultiple')->name('participants.deleteMultiple');
-    // Route::get('/participants/{user}/edit', 'ParticipantsController@edit')->name('participants.edit');
-    // Route::get('/participants/list', 'ParticipantsController@list')->name('participants.list');
-    // Route::post('/participants/store', 'ParticipantsController@store')->name('participants.store');
-    // Route::put('/participants/{user}', 'ParticipantsController@update')->middleware('auth')->name('participants.update');
-    // Route::get('/participants/{user}', 'ParticipantsController@show')->middleware('auth')->name('participants.show');
-    // Route::delete('/participants/{user}', 'ParticipantsController@destroy')->name('participants.destroy');
 });
 
-Route::get('skills',  function(){
-    return [ 'label'=> ['laravel', 'vue', 'php']];
+Route::get('skills', function () {
+    return ['label' => ['laravel', 'vue', 'php']];
 });
 
 Route::resource('test', 'TestsController');
