@@ -26,17 +26,19 @@
                                             @foreach($json as $texts)
                                             <div class="col-sm-6">
                                                 <label for="en"></label>
-                                                <textarea
+                                                <p class="form-control bg-secondary">
+                                                    {{ $texts }}
+                                                </p>
+                                                <input
                                                     placeholder="Текст оруулна уу..."
-                                                    type="text"
-                                                    class="form-control"
-                                                    name="en" value="{{ $texts }}" autocomplete="en" disabled autofocus>{{ $texts }}</textarea>
+                                                    type="hidden"
+                                                    name="en[]" value="{{ $texts }}">
                                             </div>
                                             <div class="col-sm-6">
                                                 <label for="firstname"></label>
                                                 <textarea placeholder="Монгол орчуулга оруулна уу..." type="text"
                                                     class="form-control @error('mn') is-invalid @enderror"
-                                                    name="mn"
+                                                    name="mn[]"
                                                     autocomplete="mn" autofocus>aa</textarea>
                                                 @error('mn')
                                                 <span class="invalid-feedback" role="alert">

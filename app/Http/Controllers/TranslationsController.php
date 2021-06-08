@@ -169,16 +169,16 @@ class TranslationsController extends Controller
      */
     public function store(Request $request)
     {
+        $en  = $request->en;
+        $mn  = $request->mn;
 
-        $inputs = $request->except('_method', '_token');
-        foreach ($inputs as $row) {
+        foreach ($en as $key => $val) {
             //Instantiate your object
             $translation = new Translation();
-            dd($inputs);
-            $translation->MN = $row->MN;
-            $translation->EN = $row->EN;
-           //Do the insertion
-           $translation->save();
+            $translation->test_id = 1;
+            $translation->MN = $val;
+            $translation->EN = $mn[$key];
+            $translation->save();
         };
         return redirect()->route('translations.index')->with('success', 'Асуултыг амжилттай бүртгэлээ!');
     }
