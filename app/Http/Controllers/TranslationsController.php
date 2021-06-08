@@ -119,8 +119,8 @@ class TranslationsController extends Controller
                 'description' => isset($value["contenus"]["contenu"]["description"]) ? $value["contenus"]["contenu"]["description"] : null,
                 'description_long' => isset($value["contenus"]["contenu"]["libelle"]) ? $value["contenus"]["contenu"]["description_longue"] : null,
             ];
-            array_push($texts, isset($value["contenus"]["contenu"]["libelle"]) ? $value["contenus"]["contenu"]["libelle"] :
-                null, isset($value["contenus"]["contenu"]["description_longue"]) ? $value["contenus"]["contenu"]["description_longue"] : null, isset($value["contenus"]["contenu"]["description"]) ? $value["contenus"]["contenu"]["description"] : null, );
+            // array_push($texts, isset($value["contenus"]["contenu"]["libelle"]) ? $value["contenus"]["contenu"]["libelle"] :
+            //     null, isset($value["contenus"]["contenu"]["description_longue"]) ? $value["contenus"]["contenu"]["description_longue"] : null, isset($value["contenus"]["contenu"]["description"]) ? $value["contenus"]["contenu"]["description"] : null, );
         }
 
         $data['test_mini_tests'] = [
@@ -174,7 +174,7 @@ class TranslationsController extends Controller
         foreach ($inputs as $row) {
             //Instantiate your object
             $translation = new Translation();
-            dd($translation);
+            dd($inputs);
             $translation->MN = $row->MN;
             $translation->EN = $row->EN;
            //Do the insertion

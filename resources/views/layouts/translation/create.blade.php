@@ -7,12 +7,13 @@
             <div class="card">
                 <div class="card-header">{{ __('Орчуулга нэмэх') }}</div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('translations.store') }}">
+                    {!! Form::open(['route' => ['translations.store'],
+                     'method' => 'post',
+                     'enctype' => 'multipart/form-data']) !!}
                         @csrf
                         <div class="container py-5">
                             <div class="row">
                                 <div class="col-md-10 mx-auto">
-                                    <form>
                                         <div class="form-group row">
                                         <div class="form-group col-sm-12">
                                             {!! Form::Label('test_id', 'Тест') !!}
