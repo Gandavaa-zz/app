@@ -7,7 +7,7 @@ use App\Translation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
-use App\Http\Controllers\Input;
+
 class TranslationsController extends Controller
 {
     /**
@@ -71,6 +71,29 @@ class TranslationsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store($data)
+    {
+        // dd($data);
+        // $en  = $request->en;
+        // $mn  = $request->mn;
+        foreach ($data as $row) {
+            //Instantiate your object
+            $translation = new Translation();
+            $translation->test_id = 1;
+            // $translation->MN = $mn[$key];
+            $translation->EN = $row;
+            $translation->save();
+        };
+        return redirect()->route('translations.index')->with('success', 'Асуултыг амжилттай бүртгэлээ!');
+    }
+
     public function getJSON($id)
     {
         $data = array();
@@ -98,7 +121,7 @@ class TranslationsController extends Controller
                 'score' => $value["@attributes"]["score_calcule"],
                 'label' => $value["contenus"]["contenu"]["libelle"],
             ];
-            array_push($texts, $value["contenus"]["contenu"]["libelle"]);
+            // array_push($texts, $value["contenus"]["contenu"]["libelle"]);
         }
 
         foreach ($xml['elements']['test_groupe_facteurs']['test_groupe_facteur'] as $value) {
@@ -108,9 +131,9 @@ class TranslationsController extends Controller
                 'score' => $value["@attributes"]["score_calcule"],
                 'label' => $value["contenus"]["contenu"]["libelle"],
             ];
-            array_push($texts, $value["contenus"]["contenu"]["libelle"]);
+            // array_push($texts, $value["contenus"]["contenu"]["libelle"]);
         }
-
+        $json = $this->store($texts);
         foreach ($xml['elements']['test_ref_adequation_profils']['test_ref_adequation_profil'] as $value) {
             $data2["test_group_factors"][] =
                 [
@@ -119,8 +142,9 @@ class TranslationsController extends Controller
                 'description' => isset($value["contenus"]["contenu"]["description"]) ? $value["contenus"]["contenu"]["description"] : null,
                 'description_long' => isset($value["contenus"]["contenu"]["libelle"]) ? $value["contenus"]["contenu"]["description_longue"] : null,
             ];
-            // array_push($texts, isset($value["contenus"]["contenu"]["libelle"]) ? $value["contenus"]["contenu"]["libelle"] :
-            //     null, isset($value["contenus"]["contenu"]["description_longue"]) ? $value["contenus"]["contenu"]["description_longue"] : null, isset($value["contenus"]["contenu"]["description"]) ? $value["contenus"]["contenu"]["description"] : null, );
+            // array_push($texts, isset($value["contenus"]["contenu"]["libelle"]) ? $value["contenus"]["contenu"]["libelle"] : null);
+            // array_push($texts, isset($value["contenus"]["contenu"]["description"]) ? $value["contenus"]["contenu"]["description"] : null);
+            // array_push($texts, isset($value["contenus"]["contenu"]["description_longue"]) ? $value["contenus"]["contenu"]["description_longue"] : null);
         }
 
         $data['test_mini_tests'] = [
@@ -135,13 +159,16 @@ class TranslationsController extends Controller
                 'label' => $value["contenus"]["contenu"]["libelle"],
                 'title' => $value["contenus"]["contenu"]["titre"],
                 'sub_title' => isset($value["contenus"]["contenu"]["sous_titre"]) ? $value["contenus"]["contenu"]["sous_titre"] : null,
-                'comment' => isset($value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"]) ? $value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"] : null,
+                'comment' => isset($value["domaines"]["domaine"]["cibles_secondaires"]) ? $value["domaines"]["domaine"]["cibles_secondaires"] : null,
             ];
-            array_push($texts, $value["contenus"]["contenu"]["titre"], $value["contenus"]["contenu"]["libelle"], isset($value["contenus"]["contenu"]["sous_titre"]) ? $value["contenus"]["contenu"]["sous_titre"] : null, isset($value["domaines"]["domaine"]["contenus"]["contenu"]["libelle"]) ? $value["domaines"]["domaine"]["contenus"]["contenu"]["libelle"] : null);
+            // array_push($texts, $value["contenus"]["contenu"]["titre"], $value["contenus"]["contenu"]["libelle"], 
+            // isset($value["contenus"]["contenu"]["sous_titre"]) ? $value["contenus"]["contenu"]["sous_titre"] : null, 
+            // isset($value["domaines"]["domaine"]["contenus"]["contenu"]["libelle"]) ? $value["domaines"]["domaine"]["contenus"]["contenu"]["libelle"] : null);
+            print_r(isset($value["domaines"]['domaine']["cibles_secondaires"]["cibles_secondaire"]["[@attributes]"]) ? 
+                          $value["domaines"]['domaine']["cibles_secondaires"]["cibles_secondaire"]["[@attributes]"] : "sda");
             array_push($texts, isset($value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"]) ? $value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"] : null);
         }
 
-        // dd($data2);
         array_map('strip_tags', $texts);
         $newArray = array_map(function ($v) {
             return trim(strip_tags($v));
@@ -149,6 +176,7 @@ class TranslationsController extends Controller
 
         // dd(array_unique($newArray));
         $xml = array_unique($newArray);
+        dd($xml);
         return $xml;
         // $texts =
         // return json_encode($states);
@@ -159,28 +187,6 @@ class TranslationsController extends Controller
         $assessments = TestAPI::all(['id', 'label']);
         $json = $this->getJSON(null);
         return view('layouts.translation.create', compact('assessments', 'json'));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $en  = $request->en;
-        $mn  = $request->mn;
-
-        foreach ($en as $key => $val) {
-            //Instantiate your object
-            $translation = new Translation();
-            $translation->test_id = 1;
-            $translation->MN = $val;
-            $translation->EN = $mn[$key];
-            $translation->save();
-        };
-        return redirect()->route('translations.index')->with('success', 'Асуултыг амжилттай бүртгэлээ!');
     }
 
     /**
@@ -214,9 +220,8 @@ class TranslationsController extends Controller
      */
     public function update(Translation $translation)
     {
-
         $translation->update($this->validateInputs());
-        return redirect()->route('translations.index', request('id'))->with('success', 'Орчуулгыг амжилттай шинэчлэлээ!');
+        return redirect()->route('translations.index')->with('success', 'Орчуулгыг амжилттай шинэчлэлээ!');
     }
 
     /**

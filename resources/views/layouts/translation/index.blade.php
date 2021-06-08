@@ -71,13 +71,12 @@ $(function () {
                 name: 'test_id'
             },
             {
-                data: 'EN',
-                name: 'en'
-            },
-
-            {
                 data: "MN",
                 name: "mn"
+            },
+            {
+                data: 'EN',
+                name: 'en'
             },
             {
                 data: 'action',

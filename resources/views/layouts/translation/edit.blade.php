@@ -22,11 +22,11 @@
                                                     name="test_id" value="123" autocomplete="en">
 
                                                 <label for="en">Англи</label>
-                                                <input
+                                                <textarea
                                                     placeholder="Текст оруулна уу..."
                                                     type="text"
                                                     class="form-control @error('en') is-invalid @enderror"
-                                                    name="en" value="{{ $translation->EN }}" autocomplete="en" autofocus>
+                                                    name="en" value="{{ $translation->EN }}" autocomplete="en" autofocus>{{ $translation->EN }}</textarea>
                                                 @error('en')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -35,11 +35,11 @@
                                             </div>
                                             <div class="col-sm-6">
                                                 <label for="firstname">Монгол</label>
-                                                <input placeholder="Текст оруулна уу..." type="text"
+                                                <textarea placeholder="Текст оруулна уу..." type="text"
                                                     class="form-control @error('mn') is-invalid @enderror"
                                                     name="mn"
                                                     value="{{ $translation->MN}}"
-                                                    autocomplete="mn" autofocus>
+                                                    autocomplete="mn" autofocus>{{ $translation->MN}}</textarea>
                                                 @error('mn')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>

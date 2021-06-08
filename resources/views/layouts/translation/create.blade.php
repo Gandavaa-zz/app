@@ -26,13 +26,9 @@
                                             @foreach($json as $texts)
                                             <div class="col-sm-6">
                                                 <label for="en"></label>
-                                                <p class="form-control bg-secondary">
-                                                    {{ $texts }}
-                                                </p>
-                                                <input
-                                                    placeholder="Текст оруулна уу..."
-                                                    type="hidden"
-                                                    name="en[]" value="{{ $texts }}">
+                                                <textarea
+                                                    placeholder="Текст оруулна уу..." class="form-control"
+                                                    name="en[]" value="{{ $texts }}">{{ $texts }}</textarea>
                                             </div>
                                             <div class="col-sm-6">
                                                 <label for="firstname"></label>
