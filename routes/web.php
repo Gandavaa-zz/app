@@ -65,6 +65,7 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
 //     // Route::get('index', 'ApiController@index');
 //     Route::resource('api',  'ApiController');
 // });
+});
 
 Route::resource('translations', 'TranslationsController');
 
