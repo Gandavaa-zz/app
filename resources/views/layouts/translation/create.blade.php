@@ -30,7 +30,7 @@
                                                     placeholder="Текст оруулна уу..."
                                                     type="text"
                                                     class="form-control"
-                                                    name="en" value="{{ $texts }}" autocomplete="en" disabled autofocus>{{ $texts }}</textarea>
+                                                    name="en" value="{{ $texts }}" autocomplete="en"  autofocus>{{ $texts }}</textarea>
                                             </div>
                                             <div class="col-sm-6">
                                                 <label for="firstname"></label>
