@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\TranslationsController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -12,11 +14,11 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
- */
-
+*/
 Auth::routes();
 
-Route::get('/', 'HomeController@index')->name('dashboard');
+
+Route::get('/',  'HomeController@index')->name('dashboard');
 
 Route::group(['middleware' => ['role:super-admin']], function () {
     Route::get('settings/users/import', 'Settings\UsersController@import')->name('user.import');
@@ -127,10 +129,11 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     /* end Answer */
 
     Route::resource('test', 'TestsController');
+
 });
 
-Route::get('skills', function () {
-    return ['label' => ['laravel', 'vue', 'php']];
+Route::get('skills',  function(){
+    return [ 'label'=> ['laravel', 'vue', 'php']];
 });
 
 Route::resource('test', 'TestsController');
