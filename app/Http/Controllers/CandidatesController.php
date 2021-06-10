@@ -14,36 +14,22 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables ;
 use App\Group_User;
+use App\TestAPI;
+use Illuminate\Support\Facades\Http;
 
 class CandidatesController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
     /**
      * Display a listing of the resource.
      * Тухайн хэрэглэгчийг candidate_id-тай холбогдсон эсэхийг харуулна
+     * <a class="dropdown-item addToGroup" data-toggle="modal"  data-id="' . $user->id . '"  href=""><i class="cil-user-follow">&nbsp;</i>Add to the group</a>
+     * <a class="dropdown-item archive" data-toggle="modal"  href="javascript:void(0)" data-id=""  href=""><i class="cil-user-unfollow">&nbsp;</i>Archive</a>
     */
     public function index(Request $request)
     {
         $users = Candidate::with('company')->get();
 
         if ($request->ajax()) {
-
-            // $users = DB::connection('mysql2')->table('aauth_users')
-            //     ->selectRaw("aauth_users.id as id, email, CONCAT(firstname, ', ',lastname) AS fullname, company, aauth_users.created_at, deleted")
-            //     ->leftJoin('company', 'company.id', '=', 'aauth_users.company_id')
-            //     // ->leftJoin(DB::connection('mysql2')->raw('(SELECT a.user_id, GROUP_CONCAT(DISTINCT test SEPARATOR ", ") as test
-            //     //                FROM unitedco_test.user_test a
-            //     //                join unitedco_test.aauth_users b on a.user_id = b.id
-            //     //                join unitedco_test.test c on a.test_id = c.test_id
-            //     //            group by user_id) as UserTests'),
-            //     //            function($join){
-            //     //                $join->on('aauth_users.id', '=', 'UserTests.user_id');
-            //     //            })
-            //     ->get();
-
             return DataTables::of($users)
                 ->addIndexColumn()
                 ->addColumn('action', function($user){
@@ -56,9 +42,7 @@ class CandidatesController extends Controller
                         </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item edit" href="' .route("candidate.edit", $user->id) . '" data-toggle="tooltip"  data-id="' . $user->id . '" data-original-title="Edit"><i class="cil-pencil">&nbsp;</i> Засах</a>
-                        <a class="dropdown-item" href="javascript:void(0)"><i class="cil-vertical-align-bottom1">&nbsp;</i> Assessment</a>
-                        <a class="dropdown-item addToGroup" data-toggle="modal"  data-id="' . $user->id . '"  href=""><i class="cil-user-follow">&nbsp;</i>Add to the group</a>
-                        <a class="dropdown-item archive" data-toggle="modal"  href="javascript:void(0)" data-id=""  href=""><i class="cil-user-unfollow">&nbsp;</i>Archive</a>
+                        <a class="dropdown-item" href="'. route("candidate.assessment", $user->id) . '"><i class="cil-arrow-left"></i> Тест татах</a>
                         <a class="dropdown-item delete" style="color:red;" href="javascript:destroy('.$user->id.')" data-toggle="tooltip" id="delete" data-id="' . $user->id . '" data-original-title="Delete"><i class="cil-trash">&nbsp;</i>Delete</a>
                     </div>
                   </div>
@@ -69,7 +53,6 @@ class CandidatesController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-
         return view('layouts.candidate.index');
     }
 
@@ -106,15 +89,64 @@ class CandidatesController extends Controller
 
     public function show(User $user)
     {
-        return view('layouts.participants.show', compact('user'));
+
     }
 
     /**
      * Get group values
-     *
+     * Connect APi get result of user email!    *
      */
-    function group(){
-        echo "lorem10";
+    function assessment(Candidate $candidate){
+        // Тухайн candidate-n candidate_id -р шалгана, Candidate id утгагүй байвал
+        if ( $candidate->candidate_id){
+            $newCandidate = Http::withHeaders([
+                'WWW-Authenticate'=> $this->token
+            ])->get('https://app.centraltest.com/customer/REST/retrieve/candidate/json',
+            [
+                'id' => $candidate->candidate_id
+            ]);
+        }else{
+            $newCandidate = Http::withHeaders([
+                'WWW-Authenticate'=> $this->token
+            ])->get('https://app.centraltest.com/customer/REST/retrieve/candidate/json',
+            [
+                'email' =>  $candidate->email
+            ]);
+        }
+
+        $Candidate = json_decode($newCandidate, true);
+
+        // Хэрвээ email- утгагүй байвал тухайн хэрэглэгчийг татаж авах боломжгүй болно!
+        if ( isset($Candidate['error'])) {
+            return redirect()->route('candidate.index')->with('success', 'Харилцагч олдсонгүй таны имэйл хаягаар Centraltest.com дээр бүртгэгдээгүй байна!');
+        }else{
+            // Candidate-н имэйл хаягаар утгийг татаж авч Update хийнэ
+            if( $Candidate['title_id'] == "2") $gender = 'female';
+            else $gender = 'male';
+
+            $candidate->update([
+                'candidate_id'=> $Candidate['id'],
+                'gender'=> $gender,
+            ]);
+
+            // Тестийн жагсаалтыг харуулах
+            $response = Http::withHeaders([
+                'WWW-Authenticate'=> $this->token
+            ])->GET('https://app.centraltest.com/customer/REST/assessment/completed/json',
+            [
+                'candidate_id' => $Candidate['id']
+            ]);
+
+            $assessments = json_decode($response);
+
+            foreach ($assessments as $item) {
+                $test = TestAPI::find($item->test_id);
+                $item->test = $test->label;
+            }
+
+            return view('layouts.candidate.assessments', compact('assessments', 'candidate'));
+        }
+
     }
 
     /**
