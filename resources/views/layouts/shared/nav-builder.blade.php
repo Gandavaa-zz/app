@@ -95,6 +95,13 @@
                     </svg> Жагсаалт
                 </a>
             </li>
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link" href="{{ route('assessment.index') }} ">
+                    <svg class="c-sidebar-nav-icon">
+                        <use xlink:href="{{ asset('icons/sprites/free.svg#cil-list') }}"></use>
+                    </svg> Үнэлгээ
+                </a>
+            </li>
         </ul>
     </li>
 

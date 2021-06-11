@@ -28,7 +28,6 @@ class TestApiController extends Controller
         //  insert to Test result to TESTAPI
         // dd(json_decode($responses));
         foreach (json_decode($responses) as $response) {
-
             $testAPI = TestAPI::firstOrCreate(
                 ['id' => $response->id],
                 ['id' => $response->id,

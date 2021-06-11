@@ -98,14 +98,11 @@ class TranslationsController extends Controller
     {
         $data = array();
         $texts = array();
-        $contents = Storage::get("assets/assessments/901903.xml");
+        $contents = Storage::get("assets/assessments/5220521.xml");
         // $decrypted= Crypt::decryptString($contents);
         $xml = xml_decode($contents);
         // get test factor results done
-
-        $xml = xml_decode($contents);
         // dd($xml['elements']['test_tests']);
-
         // dd($xml["elements"]["test_tests"]["test_test"]["@attributes"]["id"]);
         $data['general'] = [
             'test_id' => $xml["elements"]["test_tests"]["test_test"]["@attributes"]["id"],
@@ -161,10 +158,10 @@ class TranslationsController extends Controller
                 'sub_title' => isset($value["contenus"]["contenu"]["sous_titre"]) ? $value["contenus"]["contenu"]["sous_titre"] : null,
                 'comment' => isset($value["domaines"]["domaine"]["cibles_secondaires"]) ? $value["domaines"]["domaine"]["cibles_secondaires"] : null,
             ];
-            // array_push($texts, $value["contenus"]["contenu"]["titre"], $value["contenus"]["contenu"]["libelle"], 
-            // isset($value["contenus"]["contenu"]["sous_titre"]) ? $value["contenus"]["contenu"]["sous_titre"] : null, 
+            // array_push($texts, $value["contenus"]["contenu"]["titre"], $value["contenus"]["contenu"]["libelle"],
+            // isset($value["contenus"]["contenu"]["sous_titre"]) ? $value["contenus"]["contenu"]["sous_titre"] : null,
             // isset($value["domaines"]["domaine"]["contenus"]["contenu"]["libelle"]) ? $value["domaines"]["domaine"]["contenus"]["contenu"]["libelle"] : null);
-            print_r(isset($value["domaines"]['domaine']["cibles_secondaires"]["cibles_secondaire"]["[@attributes]"]) ? 
+            print_r(isset($value["domaines"]['domaine']["cibles_secondaires"]["cibles_secondaire"]["[@attributes]"]) ?
                           $value["domaines"]['domaine']["cibles_secondaires"]["cibles_secondaire"]["[@attributes]"] : "sda");
             array_push($texts, isset($value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"]) ? $value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"] : null);
         }
