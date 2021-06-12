@@ -14,12 +14,20 @@ class AssessmentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $tests = TestAPI::all();
+        // Хэрвээ test_id шүүх болон candidate_id-р шүүнэ.
+        if ($request->test_id){
+            $response = Http::withHeaders([
+                'WWW-Authenticate'=> $this->token
+            ])->post('https://app.centraltest.com/customer/REST/assessment/paginate/completed/json',  [
+                'test_id' => $request->test_id
+            ]);
+        }
         $response = Http::withHeaders([
             'WWW-Authenticate'=> $this->token
         ])->post('https://app.centraltest.com/customer/REST/assessment/paginate/completed/json');
-
         // return $assessments;
         // echo json_decode($assessments);
         $assessments = json_decode($response, true);
@@ -39,7 +47,7 @@ class AssessmentsController extends Controller
         // foreach хийж тухайн id-р хэрэглэгчтэй тестийг холбоно
         // test_id -mай холбох
         // candidate_id тай холбох
-        return view('layouts.assessments.index', compact('assessments'));
+        return view('layouts.assessments.index', compact('assessments', 'tests'));
     }
 
     /**
