@@ -18,6 +18,15 @@
                     <div class="card-body">
                         @include('layouts.shared.alert')
 
+<<<<<<< HEAD
+=======
+                        <select name="test_id" id="" class="form-dropdown">
+                            @foreach ($tests as $test)
+                                <option value="{{ $test->id}}" >{{ $test->label}}</option>
+                            @endforeach
+                        </select>
+
+>>>>>>> 63f345b322ce992d188c48c2876422756a220d19
                         <table class="table table-bordered yajra-datatable user_table " id="user_table"
                             style="width: 100%; font-size:13.5px;">
                             <thead>
@@ -53,6 +62,10 @@
                                         <td>
                                             {{ $item['assessment_end_date']}}
                                         </td>
+<<<<<<< HEAD
+=======
+                                        <td><a href="#" class="btn btn-primary btn-sm">Харах</a></td>
+>>>>>>> 63f345b322ce992d188c48c2876422756a220d19
                                     </tr>
                                     @endforeach
                             </tbody>

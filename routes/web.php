@@ -3,19 +3,9 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
- */
 Auth::routes();
 
-Route::get('/', 'HomeController@index')->name('dashboard');
+Route::get('/',  'HomeController@index')->name('dashboard');
 
 Route::group(['middleware' => ['role:super-admin']], function () {
     Route::get('settings/users/import', 'Settings\UsersController@import')->name('user.import');
@@ -24,6 +14,15 @@ Route::group(['middleware' => ['role:super-admin']], function () {
     Route::post('settings/users/{user}/giveRoles', 'Settings\UsersController@giveRoles')->name('user.giveRoles')->middleware('auth');
     Route::get('settings/userGroups', 'Settings\UsersController@getGroups');
     Route::get('settings/profile/{user}', 'Settings\ProfilesController@show')->name('user.profile');
+
+    Route::resource('role', 'Settings\RolesController')->middleware('auth');
+    Route::get('role/{role}/permission', 'Settings\RolesController@permission')->middleware('auth');
+    Route::post('role/{role}/permission', 'Settings\RolesController@givePermission')->name('give.permission')->middleware('auth');
+    Route::get('settings/getRoles', 'Settings\RolesController@getRoles');
+    Route::get('roles/permission', 'Settings\RolesController@rolePermission');
+    Route::resource('settings/permission', 'Settings\PermissionsController')->middleware('auth');
+    Route::get('settings/getPermissions', 'Settings\PermissionsController@getPermissions');
+    Route::resource('settings/group', 'Settings\GroupsController');
 });
 Route::get('translations/add', 'TranslationsController@add')->name('translations.add')->middleware('auth');
 Route::post('translations/save', 'TranslationsController@saveTranslations')->name('translations.save')->middleware('auth');
@@ -124,8 +123,6 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
 Route::get('skills', function () {
     return ['label' => ['laravel', 'vue', 'php']];
 });
-
-Route::resource('test', 'TestsController');
 
 Route::get('settings/profile/{user}', 'Settings\ProfilesController@show')->name('user.profile')->middleware('auth');
 Route::get('settings/profile/{user}/edit', 'Settings\ProfilesController@edit')->name('edit.profile')->middleware('auth');
