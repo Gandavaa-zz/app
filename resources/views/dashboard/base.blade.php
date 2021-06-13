@@ -31,7 +31,7 @@
 
     <!-- Main styles for this application-->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-
+`
     @yield('css')
 
       <link href="{{ asset('css/coreui-chartjs.css') }}" rel="stylesheet">

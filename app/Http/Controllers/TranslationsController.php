@@ -21,9 +21,10 @@ class TranslationsController extends Controller
         if ($request->ajax()) {
             $data = Translation::all();
             return DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function ($row) {
-                    $btn = '
+                ->addIndexColumn()->editColumn('status', function ($data) {
+                return ($data->MN !== null) ? '<span class="badge badge-success">Орчуулсан</span>' : '<span class="badge badge-warning">Орчуулаагүй</span>';
+            })->addColumn('action', function ($row) {
+                $btn = '
                     <ul class="list-group list-group-horizontal list-unstyled"><li class="pr-1">
                     <a href="' . route("translations.show", $row->id) . '"
                         data-toggle="tooltip"
@@ -48,8 +49,8 @@ class TranslationsController extends Controller
                     </li>
                 </ul><input type="checkbox" id="' . $row->id . '"';
 
-                    return $btn;
-                })
+                return $btn;
+            })
             // ->addColumn('name', function($row) {
             //     $options = '';
             //     $myArray = explode(',', $row->name);
@@ -59,7 +60,7 @@ class TranslationsController extends Controller
             //     $return = $options;
             //     return $return;
             // })
-                ->rawColumns(['action'])
+                ->rawColumns(['action', 'status'])
                 ->make(true);
         }
 
@@ -78,115 +79,157 @@ class TranslationsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store($data)
+    public function store($test_id, $data)
     {
-        // dd($data);
-        // $en  = $request->en;
-        // $mn  = $request->mn;
-        foreach ($data as $row) {
-            //Instantiate your object
-            $translation = new Translation();
-            $translation->test_id = 1;
-            // $translation->MN = $mn[$key];
-            $translation->EN = $row;
-            $translation->save();
-        };
-        return redirect()->route('translations.index')->with('success', 'Асуултыг амжилттай бүртгэлээ!');
+        // foreach ($data as $row) {
+        //     //Instantiate your object
+        //     $translation = new Translation();
+        //     $translation->test_id = $test_id;
+        //     // $translation->MN = $mn[$key];
+        //     $translation->EN = $row;
+        //     // $translation->save();
+        // };
+        // return redirect()->route('translations.add')->with('success', 'Асуултыг амжилттай бүртгэлээ!');
     }
 
-    public function getJSON($id)
+    public function saveTranslations(Request $request)
     {
-        $data = array();
-        $texts = array();
-        $contents = Storage::get("assets/assessments/901903.xml");
-        // $decrypted= Crypt::decryptString($contents);
-        $xml = xml_decode($contents);
-        // get test factor results done
+        // dd($request->input());
+        $en = $request->en;
+        $mn = $request->mn;
+        $test_id = $request->test_id;
+        $input = $request->all();
+        $condition = $input["en"];
+        $id = $input["id"];
+        $count = count($condition);
+        // dd($count);
+        for ($i = 0; $i < $count; $i++) {
+            Translation::where('id', $id[$i])
+                ->update([
+                    // 'en' => $en[$i],
+                    'mn' => $mn[$i],
+                    'test_id' => $test_id,
+                ]);
 
-        $xml = xml_decode($contents);
-        // dd($xml['elements']['test_tests']);
-
-        // dd($xml["elements"]["test_tests"]["test_test"]["@attributes"]["id"]);
-        $data['general'] = [
-            'test_id' => $xml["elements"]["test_tests"]["test_test"]["@attributes"]["id"],
-            'score' => $xml["elements"]["test_tests"]["test_test"]["@attributes"]["score_calcule"],
-            'label' => $xml["elements"]["test_tests"]["test_test"]["contenus"]["contenu"]["libelle"],
-            'participant_name' => $xml["noyau_utilisateur_info"]["nom"] . " " . $xml["noyau_utilisateur_info"]["prenom"],
-        ];
-
-        foreach ($xml['elements']['test_facteurs']['test_facteur'] as $value) {
-            $data['test_factors'][] =
-                [
-                'id' => $value["@attributes"]["id"],
-                'score' => $value["@attributes"]["score_calcule"],
-                'label' => $value["contenus"]["contenu"]["libelle"],
-            ];
-            // array_push($texts, $value["contenus"]["contenu"]["libelle"]);
         }
 
-        foreach ($xml['elements']['test_groupe_facteurs']['test_groupe_facteur'] as $value) {
-            $data["test_group_factors"][] =
-                [
-                'id' => $value["@attributes"]["id"],
-                'score' => $value["@attributes"]["score_calcule"],
-                'label' => $value["contenus"]["contenu"]["libelle"],
-            ];
-            // array_push($texts, $value["contenus"]["contenu"]["libelle"]);
+        return redirect()->route('translations.add')->with('success', 'Монгол орчуулгыг амжилттай бүртгэлээ!');
+    }
+
+    public function add(Request $request)
+    {
+
+        $test_id = $request->test_id;
+        // dd($test_id);
+        $this->getJSON($test_id);
+        // dd("inserted already");
+        $data = Translation::where('MN', null)->limit(10)->get();
+        return view('layouts.translation.addTranslations', compact('data'));
+    }
+
+    public function getJSON($test_id)
+    {
+        $isExist = Translation::where('test_id', '=', $test_id)->first();
+        if ($isExist === null && $test_id !== null) {
+
+            $data = array();
+            $texts = array();
+            $contents = Storage::get("assets/assessments/4329501.xml");
+            // $decrypted= Crypt::decryptString($contents);
+            $xml = xml_decode($contents);
+            // get test factor results done
+            // $data['general'] = [
+            //     'test_id' => $xml["elements"]["test_tests"]["test_test"]["@attributes"]["id"],
+            //     'score' => $xml["elements"]["test_tests"]["test_test"]["@attributes"]["score_calcule"],
+            //     'label' => $xml["elements"]["test_tests"]["test_test"]["contenus"]["contenu"]["libelle"],
+            //     'participant_name' => $xml["noyau_utilisateur_info"]["nom"] . " " . $xml["noyau_utilisateur_info"]["prenom"],
+            // ];
+
+            foreach ($xml['elements']['test_facteurs']['test_facteur'] as $value) {
+                // $data['test_factors'][] =
+                //     [
+                //     'id' => $value["@attributes"]["id"],
+                //     'score' => $value["@attributes"]["score_calcule"],
+                //     'label' => $value["contenus"]["contenu"]["libelle"],
+                // ];
+                array_push($texts, $value["contenus"]["contenu"]["libelle"]);
+            }
+
+            foreach ($xml['elements']['test_groupe_facteurs']['test_groupe_facteur'] as $value) {
+                // $data["test_group_factors"][] =
+                //     [
+                //     'id' => $value["@attributes"]["id"],
+                //     'score' => $value["@attributes"]["score_calcule"],
+                //     'label' => $value["contenus"]["contenu"]["libelle"],
+                // ];
+                array_push($texts, $value["contenus"]["contenu"]["libelle"]);
+            }
+            $json = $this->store($test_id, $texts);
+            foreach ($xml['elements']['test_ref_adequation_profils']['test_ref_adequation_profil'] as $value) {
+                // $data2["test_group_factors"][] =
+                //     [
+                //     'id' => $value["@attributes"]["id"],
+                //     'label' => $value["contenus"]["contenu"]["libelle"],
+                //     'description' => isset($value["contenus"]["contenu"]["description"]) ? $value["contenus"]["contenu"]["description"] : null,
+                //     'description_long' => isset($value["contenus"]["contenu"]["libelle"]) ? $value["contenus"]["contenu"]["description_longue"] : null,
+                // ];
+                array_push($texts, isset($value["contenus"]["contenu"]["libelle"]) ? $value["contenus"]["contenu"]["libelle"] : null);
+                array_push($texts, isset($value["contenus"]["contenu"]["description"]) ? $value["contenus"]["contenu"]["description"] : null);
+                array_push($texts, isset($value["contenus"]["contenu"]["description_longue"]) ? $value["contenus"]["contenu"]["description_longue"] : null);
+            }
+
+            // $data['test_mini_tests'] = [
+            //     'id' => $xml["elements"]["test_mini_tests"]["test_mini_test"]["@attributes"]["id"],
+            //     'score' => $xml["elements"]["test_mini_tests"]["test_mini_test"]["@attributes"]["score_calcule"],
+            // ];
+
+            foreach ($xml['parties']['partie'] as $value) {
+                // $data2[] =
+                //     [
+                //     'id' => $value["@attributes"]["id"],
+                //     'label' => $value["contenus"]["contenu"]["libelle"],
+                //     'title' => $value["contenus"]["contenu"]["titre"],
+                //     'sub_title' => isset($value["contenus"]["contenu"]["sous_titre"]) ? $value["contenus"]["contenu"]["sous_titre"] : null,
+                //     'comment' => isset($value["domaines"]["domaine"]["cibles_secondaires"]) ? $value["domaines"]["domaine"]["cibles_secondaires"] : null,
+                // ];
+                array_push($texts, $value["contenus"]["contenu"]["titre"], $value["contenus"]["contenu"]["libelle"],
+                    isset($value["contenus"]["contenu"]["sous_titre"]) ? $value["contenus"]["contenu"]["sous_titre"] : null,
+                    isset($value["domaines"]["domaine"]["contenus"]["contenu"]["libelle"]) ? $value["domaines"]["domaine"]["contenus"]["contenu"]["libelle"] : null);
+
+                if (isset($value["domaines"])) {
+                    foreach ($value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"] as $value2) {
+                        array_push($texts, isset($value2["contenus"]["contenu"]["commentaire_perso"]) ? $value2["contenus"]["contenu"]["commentaire_perso"] : null);
+                    }
+                }
+
+            }
+
+            array_map('strip_tags', $texts);
+            $newArray = array_map(function ($v) {
+                return trim(strip_tags($v));
+            }, $texts);
+            $xml = preg_replace("/\r|\n/", "", $newArray);
+            $xml = array_filter($xml);
+            $xml = array_unique($xml);
+
+            foreach ($xml as $row) {
+                $translation = new Translation();
+                $translation->test_id = $test_id;
+                $translation->EN = $row;
+                $translation->save();
+            };
+
         }
-        $json = $this->store($texts);
-        foreach ($xml['elements']['test_ref_adequation_profils']['test_ref_adequation_profil'] as $value) {
-            $data2["test_group_factors"][] =
-                [
-                'id' => $value["@attributes"]["id"],
-                'label' => $value["contenus"]["contenu"]["libelle"],
-                'description' => isset($value["contenus"]["contenu"]["description"]) ? $value["contenus"]["contenu"]["description"] : null,
-                'description_long' => isset($value["contenus"]["contenu"]["libelle"]) ? $value["contenus"]["contenu"]["description_longue"] : null,
-            ];
-            // array_push($texts, isset($value["contenus"]["contenu"]["libelle"]) ? $value["contenus"]["contenu"]["libelle"] : null);
-            // array_push($texts, isset($value["contenus"]["contenu"]["description"]) ? $value["contenus"]["contenu"]["description"] : null);
-            // array_push($texts, isset($value["contenus"]["contenu"]["description_longue"]) ? $value["contenus"]["contenu"]["description_longue"] : null);
+        else{
+            // dd("existed");
+            return "1";
         }
-
-        $data['test_mini_tests'] = [
-            'id' => $xml["elements"]["test_mini_tests"]["test_mini_test"]["@attributes"]["id"],
-            'score' => $xml["elements"]["test_mini_tests"]["test_mini_test"]["@attributes"]["score_calcule"],
-        ];
-
-        foreach ($xml['parties']['partie'] as $value) {
-            $data2[] =
-                [
-                'id' => $value["@attributes"]["id"],
-                'label' => $value["contenus"]["contenu"]["libelle"],
-                'title' => $value["contenus"]["contenu"]["titre"],
-                'sub_title' => isset($value["contenus"]["contenu"]["sous_titre"]) ? $value["contenus"]["contenu"]["sous_titre"] : null,
-                'comment' => isset($value["domaines"]["domaine"]["cibles_secondaires"]) ? $value["domaines"]["domaine"]["cibles_secondaires"] : null,
-            ];
-            // array_push($texts, $value["contenus"]["contenu"]["titre"], $value["contenus"]["contenu"]["libelle"], 
-            // isset($value["contenus"]["contenu"]["sous_titre"]) ? $value["contenus"]["contenu"]["sous_titre"] : null, 
-            // isset($value["domaines"]["domaine"]["contenus"]["contenu"]["libelle"]) ? $value["domaines"]["domaine"]["contenus"]["contenu"]["libelle"] : null);
-            print_r(isset($value["domaines"]['domaine']["cibles_secondaires"]["cibles_secondaire"]["[@attributes]"]) ? 
-                          $value["domaines"]['domaine']["cibles_secondaires"]["cibles_secondaire"]["[@attributes]"] : "sda");
-            array_push($texts, isset($value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"]) ? $value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"] : null);
-        }
-
-        array_map('strip_tags', $texts);
-        $newArray = array_map(function ($v) {
-            return trim(strip_tags($v));
-        }, $texts);
-
-        // dd(array_unique($newArray));
-        $xml = array_unique($newArray);
-        dd($xml);
-        return $xml;
-        // $texts =
-        // return json_encode($states);
     }
 
     public function create()
     {
         $assessments = TestAPI::all(['id', 'label']);
-        $json = $this->getJSON(null);
-        return view('layouts.translation.create', compact('assessments', 'json'));
+        return view('layouts.translation.create', compact('assessments'));
     }
 
     /**

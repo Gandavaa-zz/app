@@ -28,7 +28,6 @@ class TestApiController extends Controller
         //  insert to Test result to TESTAPI
         // dd(json_decode($responses));
         foreach (json_decode($responses) as $response) {
-
             $testAPI = TestAPI::firstOrCreate(
                 ['id' => $response->id],
                 ['id' => $response->id,
@@ -38,12 +37,10 @@ class TestApiController extends Controller
                     'price_in_credits' => $response->price_in_credits,
                 ]);
         }
-
         // return testAPI result
         $tests = TestAPI::paginate(10);
 
         return view('layouts.test.list', compact('tests'));
-
     }
 
     /**

@@ -5,25 +5,38 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">{{ __('Орчуулга нэмэх') }}</div>
+                <div class="card-header">{{ __('Орчуулга нэмэх')}} (Тестийн дугаар: <span class="badge badge-success badge-2x">{{ $data[0]->test_id }}</span>)</div>
                 <div class="card-body">
-                <form method="get" action="/translations/add">
-                        <!-- @method('PUT') -->
+                    {!! Form::open(['route' => ['translations.save'],
+                     'method' => 'post',
+                     'enctype' => 'multipart/form-data']) !!}
                         @csrf
                         <div class="container py-5">
                             <div class="row">
                                 <div class="col-md-10 mx-auto">
                                         <div class="form-group row">
-                                        <div class="form-group col-sm-12">
-                                            {!! Form::Label('test_id', 'Тест') !!}
-                                            <!-- <input type="hidden" value="1" name="test_id"> -->
-                                            <select class="form-control" name="test_id">
-                                                @foreach($assessments as $item)
-                                                <option value="{{$item->id}}">{{$item->label}}</option>
-                                                @endforeach
-                                             </select>
+                                            @foreach($data as $row)
+                                            <div class="col-sm-6">
+                                                <label for="en"></label>
+                                                <input type="hidden" value="{{ $row->id }}" name="id[]">
+                                                <input type="hidden" value="{{ $row->test_id }}" name="test_id">
+                                                <textarea
+                                                    placeholder="Текст оруулна уу..." class="form-control"
+                                                    name="en[]" value="{{ $row->EN }}">{{ $row->EN }}</textarea>
                                             </div>
-
+                                            <div class="col-sm-6">
+                                                <label for="firstname"></label>
+                                                <textarea placeholder="Монгол орчуулга оруулна уу..." type="text"
+                                                    class="form-control @error('mn') is-invalid @enderror"
+                                                    name="mn[]"
+                                                    autocomplete="mn" autofocus></textarea>
+                                                @error('mn')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+                                            @endforeach
                                         </div>
                                 </div>
                             </div>

@@ -19,12 +19,15 @@
                                             <input
                                                     type="hidden"
                                                     class="form-control"
-                                                    name="test_id" value="123" autocomplete="en">
-
-                                                <label for="en">Англи</label>
+                                                    name="test_id" value="{{ $translation->test_id }}" autocomplete="en">
+                                                    <input
+                                                    type="hidden"
+                                                    class="form-control"
+                                                    name="id" value="{{ $translation->id }}" autocomplete="en">
+                                                <label for="en">Англи <img  width="25px" src="https://image.flaticon.com/icons/png/128/330/330425.png"></label>
                                                 <textarea
                                                     placeholder="Текст оруулна уу..."
-                                                    type="text"
+                                                    type="text" rows="10"
                                                     class="form-control @error('en') is-invalid @enderror"
                                                     name="en" value="{{ $translation->EN }}" autocomplete="en" autofocus>{{ $translation->EN }}</textarea>
                                                 @error('en')
@@ -34,10 +37,10 @@
                                                 @enderror
                                             </div>
                                             <div class="col-sm-6">
-                                                <label for="firstname">Монгол</label>
+                                                <label for="mn">Монгол <img  width="30px" src="https://icons.iconarchive.com/icons/wikipedia/flags/1024/MN-Mongolia-Flag-icon.png"></label>
                                                 <textarea placeholder="Текст оруулна уу..." type="text"
                                                     class="form-control @error('mn') is-invalid @enderror"
-                                                    name="mn"
+                                                    name="mn" rows="10"
                                                     value="{{ $translation->MN}}"
                                                     autocomplete="mn" autofocus>{{ $translation->MN}}</textarea>
                                                 @error('mn')

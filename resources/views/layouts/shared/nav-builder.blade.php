@@ -27,11 +27,7 @@
                     <use xlink:href="{{ asset('icons/sprites/free.svg#cil-user') }}"></use>
                 </svg> Систем хэрэглэгчид</a>
             </li>
-            <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('settings.test') }}">
-                <svg class="c-sidebar-nav-icon">
-                    <use xlink:href="{{ asset('icons/sprites/free.svg#cil-description') }}"></use>
-                </svg> Тест ба асуултууд</a>
-            </li>
+
             <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('role.index') }}">
                 <svg class="c-sidebar-nav-icon">
                     <use xlink:href="{{ asset('icons/sprites/free.svg#cil-people') }}"></use>
@@ -97,6 +93,14 @@
                     <svg class="c-sidebar-nav-icon">
                         <use xlink:href="{{ asset('icons/sprites/free.svg#cil-list') }}"></use>
                     </svg> Жагсаалт
+                </a>
+            </li>
+            <li class="c-sidebar-nav-item">
+
+                <a class="c-sidebar-nav-link" href="">
+                    <svg class="c-sidebar-nav-icon">
+                        <use xlink:href="{{ asset('icons/sprites/free.svg#cil-list') }}"></use>
+                    </svg> Үнэлгээ
                 </a>
             </li>
         </ul>

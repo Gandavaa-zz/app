@@ -173,6 +173,7 @@ class ApiController extends Controller
         }else
             $group_id = null;
 
+
         $canditateList = array();
 
         if(isset($results) && $results['candidates']){
@@ -191,7 +192,10 @@ class ApiController extends Controller
             $canditateList[] = json_decode($candidates);
         }
 
-        return view('layouts.candidate.list', compact('canditateList', 'groups', 'group_id'));
+
+        return $canditateList;
+
+        // return view('layouts.candidate.list', compact('canditateList', 'groups', 'group_id'));
     }
 
     // get list title
