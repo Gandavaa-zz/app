@@ -79,6 +79,8 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Group');
     }
 
+
+
     public function getCreatedByNameAttribute()
     {
         return User::where('id', $this->created_by)->pluck('firstname')->first();

@@ -9,8 +9,9 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="float-left"><h5><i class="fa fa-align-justify"></i>{{ __('Орчуулгын жагсаалт') }}</h5></span> <span class="float-right">
-                        <!-- <button type="button" id="deleteMultiple" class="btn btn-danger deleteMultiple"  href="javascript:void(0)" data-original-title="Delete">Олноор устгах</button> -->
-                        <a class="btn btn-primary" href="{{ route('translations.create') }}"><i class="cil-plus"></i>Орчуулга Нэмэх</a></span>
+                        @can('create-translation')
+                            <a class="btn btn-primary" href="{{ route('translations.create') }}"><i class="cil-plus"></i>Орчуулга Нэмэх</a></span>
+                        @endcan
                     </div>
 
                     <div class="card-body">
@@ -61,7 +62,6 @@ $(function () {
             //     orderable: false,
             //     searchable: false
             // },
-
             {
                 data: 'id',
                 name: 'id'

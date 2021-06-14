@@ -4,14 +4,13 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+require("./bootstrap");
 
+window.Vue = require("vue");
 
-window.Vue = require('vue');
+import vSelect, { VueSelect } from "vue-select";
 
-import vSelect, { VueSelect } from 'vue-select'
-
-import Axios from 'axios';
+import Axios from "axios";
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -21,26 +20,29 @@ import Axios from 'axios';
  */
 
 $.ajaxSetup({
-  headers: {
-      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-  }
+    headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+    }
 });
 
-Vue.component('flash', require('./components/Flash.vue').default);
+Vue.component("flash", require("./components/Flash.vue").default);
 
-Vue.component('part-test', require('./components/PartTest.vue').default);
+Vue.component("part-test", require("./components/PartTest.vue").default);
 // Vue.component('vue-multiselect', require('./components/Multiselect.vue').default);
-Vue.component('my-select', require('./components/Select.vue').default);
+Vue.component("my-select", require("./components/Select.vue").default);
 
-Vue.component('group', require('./components/Group.vue').default);
+Vue.component("group", require("./components/Group.vue").default);
 
-Vue.component('roles-group', require('./components/RolesGroup.vue').default);
+Vue.component("roles-group", require("./components/RolesGroup.vue").default);
 
-Vue.component('profile', require('./components/Profile.vue').default);
+Vue.component("profile", require("./components/Profile.vue").default);
 
-Vue.component('quiz-picture', require('./components/QuizPicture.vue').default);
+Vue.component("quiz-picture", require("./components/QuizPicture.vue").default);
 
-Vue.component('answer-picture', require('./components/AnswerPicture.vue').default);
+Vue.component(
+    "answer-picture",
+    require("./components/AnswerPicture.vue").default
+);
 
 // Vue.component('avatar-form', require('./components/AvatarForm.vue').default);
 
@@ -52,7 +54,7 @@ Vue.component('answer-picture', require('./components/AnswerPicture.vue').defaul
 
 const app = new Vue({
     data: {
-       selected: ''
+        selected: ""
     },
-    el: '#app'
+    el: "#app"
 });

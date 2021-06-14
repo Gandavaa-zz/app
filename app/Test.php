@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TestAPI extends Model
+class Test extends Model
 {
     protected $table = 'tests';
 

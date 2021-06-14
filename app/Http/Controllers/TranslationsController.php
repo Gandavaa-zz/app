@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\TestAPI;
+use App\Test;
 use App\Translation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -19,7 +19,8 @@ class TranslationsController extends Controller
     {
         $translations = Translation::get();
         if ($request->ajax()) {
-            $data = Translation::all();
+            $data = Translation::with('test')->get();
+
             return DataTables::of($data)
                 ->addIndexColumn()->editColumn('status', function ($data) {
                 return ($data->MN !== null) ? '<span class="badge badge-success">Орчуулсан</span>' : '<span class="badge badge-warning">Орчуулаагүй</span>';
@@ -228,7 +229,7 @@ class TranslationsController extends Controller
 
     public function create()
     {
-        $assessments = TestAPI::all(['id', 'label']);
+        $assessments = Test::all(['id', 'label']);
         return view('layouts.translation.create', compact('assessments'));
     }
 

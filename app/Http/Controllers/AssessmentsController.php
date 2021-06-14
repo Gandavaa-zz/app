@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Candidate;
-use App\TestAPI;
+use App\Test;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -16,7 +16,7 @@ class AssessmentsController extends Controller
      */
     public function index(Request $request)
     {
-        $tests = TestAPI::all();
+        $tests = Test::all();
         // Хэрвээ test_id шүүх болон candidate_id-р шүүнэ.
         if ($request->test_id){
             $response = Http::withHeaders([
@@ -38,7 +38,7 @@ class AssessmentsController extends Controller
             $candidate = Candidate::find($value['candidate_id']);
             $assessments['result']['data'][$key]['candidate'] = $candidate;
 
-            $test = TestAPI::find($value['test_id']);
+            $test = Test::find($value['test_id']);
             $assessments['result']['data'][$key]['test'] = $test;
         }
 

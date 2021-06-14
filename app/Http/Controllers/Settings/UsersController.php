@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Settings;
 
+use App\Company;
 use App\Group;
 use App\Http\Controllers\Controller;
 use App\Test;
@@ -25,7 +26,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::role(['admin', 'super-admin', 'writer'])->paginate(10);
+        $users = User::role(['admin', 'super-admin', 'writer', 'analyst'])->paginate(10);
 
         return view('layouts.settings.users.index', compact('users'));
     }
@@ -43,8 +44,9 @@ class UsersController extends Controller
     public function create()
     {
         $roles = Role::all();
+        $companies  = Company::all();
 
-        return view('layouts.settings.users.create', ['roles' => $roles]);
+        return view('layouts.settings.users.create', ['roles' => $roles, 'companies' => $companies]);
     }
 
     /**
@@ -59,7 +61,6 @@ class UsersController extends Controller
         $user->assignRole($this->rolesToArray(request('roles')));
         $user->groups()->attach($this->groupToArray(request('groups')));
 
-        // TODO: Хэрэглэгч үүссэний дараа тухайн хэрэглэгчрүү имэйл явуулна.
         return redirect()->route('users.index')->with('success', 'Хэрэглэгчийг амжилттай бүртгэлээ!');
     }
 
@@ -122,8 +123,8 @@ class UsersController extends Controller
             'firstname' => ['required', ['string']],
             'lastname' => ['required', ['string']],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'roles' => ['sometimes', 'required'],
-            'groups' => ['required', ['string']],
+            'roles' => ['sometimes', 'required']
+            // 'groups' => ['required', ['string']],
         ]);
     }
 

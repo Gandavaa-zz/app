@@ -14,7 +14,7 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables ;
 use App\Group_User;
-use App\TestAPI;
+use App\Test;
 use Illuminate\Support\Facades\Http;
 
 class CandidatesController extends Controller
@@ -140,7 +140,7 @@ class CandidatesController extends Controller
             $assessments = json_decode($response);
 
             foreach ($assessments as $item) {
-                $test = TestAPI::find($item->test_id);
+                $test = Test::find($item->test_id);
                 $item->test = $test->label;
             }
 
