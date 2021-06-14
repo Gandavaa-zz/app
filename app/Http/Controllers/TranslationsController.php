@@ -18,9 +18,9 @@ class TranslationsController extends Controller
     public function index(Request $request)
     {
         $translations = Translation::get();
+
         if ($request->ajax()) {
             $data = Translation::with('test')->get();
-
             return DataTables::of($data)
                 ->addIndexColumn()->editColumn('status', function ($data) {
                 return ($data->MN !== null) ? '<span class="badge badge-success">Орчуулсан</span>' : '<span class="badge badge-warning">Орчуулаагүй</span>';
@@ -131,8 +131,8 @@ class TranslationsController extends Controller
     public function getJSON($test_id)
     {
         $isExist = Translation::where('test_id', '=', $test_id)->first();
-        if ($isExist === null && $test_id !== null) {
 
+        if ($isExist === null && $test_id !== null) {
             $data = array();
             $texts = array();
             $contents = Storage::get("assets/assessments/4329501.xml");

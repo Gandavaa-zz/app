@@ -35,13 +35,14 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     // get test API controller
     Route::resource('testapi', 'TestApiController');
     Route::get('translation/getJSON/{test_id}', 'TranslationsController@getJSON');
-    Route::get('reports/getXml/{assessment_id}', 'ReportsController@getXml');
+    Route::get('reports/getXml/{assessment_id}/{test_id}', 'ReportsController@getXml');
     Route::get('reports/result/{assessment_id}', 'ReportsController@result');
     Route::get('reports/global/{assessment_id}', 'ReportsController@global');
     Route::get('reports/factory/{assessment_id}', 'ReportsController@factory');
     Route::get('reports/groups/{assessment_id}', 'ReportsController@groups');
     Route::get('reports/referential/{assessment_id}', 'ReportsController@referential');
 
+    Route::get('candidate/assessment', 'CandidatesController@assessment')->name('candidate.assessment');
     Route::resource('candidate', 'CandidatesController');
     Route::resource('assessment', 'AssessmentsController');
 

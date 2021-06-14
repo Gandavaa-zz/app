@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 use App\Candidate;
 use App\Company;
 use App\Group;
-use App\Test;
 use App\Participant;
 use App\User;
 use App\Http\Controllers\Controller;
