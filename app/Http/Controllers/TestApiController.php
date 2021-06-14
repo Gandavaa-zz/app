@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\TestAPI;
+use App\Test;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -25,10 +25,10 @@ class TestApiController extends Controller
         ])->get('https://app.centraltest.com/customer/REST/list/test/json',
             []);
 
-        //  insert to Test result to TESTAPI
+        //  insert to Test result to TEST
         // dd(json_decode($responses));
         foreach (json_decode($responses) as $response) {
-            $testAPI = TestAPI::firstOrCreate(
+            $test = Test::firstOrCreate(
                 ['id' => $response->id],
                 ['id' => $response->id,
                     'category' => $response->category,
@@ -37,8 +37,8 @@ class TestApiController extends Controller
                     'price_in_credits' => $response->price_in_credits,
                 ]);
         }
-        // return testAPI result
-        $tests = TestAPI::paginate(10);
+
+        $tests = Test::paginate(10);
 
         return view('layouts.test.list', compact('tests'));
     }

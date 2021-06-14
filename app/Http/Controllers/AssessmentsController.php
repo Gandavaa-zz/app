@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Candidate;
-use App\TestAPI;
+use App\Test;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -16,32 +16,33 @@ class AssessmentsController extends Controller
      */
     public function index(Request $request)
     {
-        $tests = TestAPI::all();
+        // return $request->test_id;
+        $tests = Test::all();
         // Хэрвээ test_id шүүх болон candidate_id-р шүүнэ.
         if ($request->test_id){
             $response = Http::withHeaders([
                 'WWW-Authenticate'=> $this->token
-            ])->post('https://app.centraltest.com/customer/REST/assessment/paginate/completed/json',  [
+            ])->get('https://app.centraltest.com/customer/REST/assessment/paginate/completed/json',  [
                 'test_id' => $request->test_id
             ]);
+        }else {
+            $response = Http::withHeaders([
+                'WWW-Authenticate'=> $this->token
+            ])->post('https://app.centraltest.com/customer/REST/assessment/paginate/completed/json');
         }
-        $response = Http::withHeaders([
-            'WWW-Authenticate'=> $this->token
-        ])->post('https://app.centraltest.com/customer/REST/assessment/paginate/completed/json');
-        // return $assessments;
+
         // echo json_decode($assessments);
         $assessments = json_decode($response, true);
+        // return $assessments;
         // тухайн assessment-тад data нэмэх
-        // return $assessments['result']['data'];
         foreach( $assessments['result']['data'] as $key => $value){
             // return $value['test_id'];
             $candidate = Candidate::find($value['candidate_id']);
             $assessments['result']['data'][$key]['candidate'] = $candidate;
 
-            $test = TestAPI::find($value['test_id']);
+            $test = Test::find($value['test_id']);
             $assessments['result']['data'][$key]['test'] = $test;
         }
-
         // return $assessments;
         // $candidate= retrieve https://app.centraltest.com/customer/REST/retrieve/candidate/ [FORMAT ]
         // foreach хийж тухайн id-р хэрэглэгчтэй тестийг холбоно

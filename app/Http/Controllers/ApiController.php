@@ -6,7 +6,7 @@ use App\Group;
 use App\Group_User;
 use Illuminate\Http\Request;
 use App\Support\Collection;
-use App\TestAPI;
+use App\Test;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
@@ -224,7 +224,7 @@ class ApiController extends Controller
         // return $assessments;
         // тухайн хэрэглэгчийн утга буцсан байвал тухайн id-г аваад
         foreach ($assessments as $item) {
-            $test = TestAPI::find($item->test_id);
+            $test = Test::find($item->test_id);
             $item->test = $test->label;
         }
         // тухайн тестийн утгуудыг авна

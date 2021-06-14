@@ -103,14 +103,14 @@
         </ul>
     </li>
 
+    @endrole
+
     <li class="c-sidebar-nav-item c-sidebar-nav-dropdown">
         <a class="c-sidebar-nav-link" href="{{ route('translations.index') }}">
             <svg class="c-sidebar-nav-icon">
                 <use xlink:href="{{ asset('icons/sprites/free.svg#cil-description') }}"></use>
             </svg> Орчуулга</a>
     </li>
-
-    @endrole
 
     @hasanyrole('writer|admin')
     <li class="c-sidebar-nav-item c-sidebar-nav-dropdown"><a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">

@@ -18,11 +18,19 @@
                     <div class="card-body">
                         @include('layouts.shared.alert')
 
-                        <select name="test_id" id="" class="form-dropdown">
-                            @foreach ($tests as $test)
-                                <option value="{{ $test->id}}" >{{ $test->label}}</option>
-                            @endforeach
-                        </select>
+                        <form action="assessment" method="GET">
+                            <div class="form-group row">
+                                <label class="col-md-1 col-form-label" for="test">Тест:</label>
+                                <div class="col-md-4">
+                                    <select name="test_id" id="test" class="form-control" onchange="this.form.submit()">
+                                        <option value="0">Нэг утгийг сонго</option>
+                                        @foreach ($tests as $test)
+                                            <option @if( $test->id == request()->get('test_id')) selected @endif value="{{ $test->id}}" >{{ $test->label}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
 
                         <table class="table table-bordered yajra-datatable user_table " id="user_table"
                             style="width: 100%; font-size:13.5px;">
@@ -59,7 +67,10 @@
                                         <td>
                                             {{ $item['assessment_end_date']}}
                                         </td>
-                                        <td><a href="#" class="btn btn-primary btn-sm">Харах</a></td>
+                                        <td>
+                                            <a href="#" class="btn btn-primary btn-sm">Харах</a>
+                                            <a href="/reports/getXml/{{$item['id']}}/{{$item['test']['id']}}" class="btn btn-warning btn-sm">Xml Татах</a>
+                                        </td>
                                     </tr>
                                     @endforeach
                             </tbody>
@@ -120,8 +131,12 @@
 
     <script>
 
+        $( document ).ready(function() {
+            $('#test').change(function() {
+                // var id = $(this).children("option:selected").val();
 
-
+            });
+        });
     </script>
 
     @endsection

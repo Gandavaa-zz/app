@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\TestAPI;
+use App\Test;
 use App\Translation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -18,6 +18,7 @@ class TranslationsController extends Controller
     public function index(Request $request)
     {
         $translations = Translation::get();
+
         if ($request->ajax()) {
             // $data = Translation::all();
             $data = Translation::join('tests', 'translations.test_id', '=', 'tests.id')
@@ -134,8 +135,8 @@ class TranslationsController extends Controller
     public function getJSON($test_id)
     {
         $isExist = Translation::where('test_id', '=', $test_id)->first();
-        if ($isExist === null && $test_id !== null) {
 
+        if ($isExist === null && $test_id !== null) {
             $data = array();
             $texts = array();
             $contents = Storage::get("assets/assessments/4329501.xml");
@@ -230,7 +231,7 @@ class TranslationsController extends Controller
 
     public function create()
     {
-        $assessments = TestAPI::all(['id', 'label']);
+        $assessments = Test::all(['id', 'label']);
         return view('layouts.translation.create', compact('assessments'));
     }
 

@@ -67,7 +67,6 @@ $(function () {
             //     orderable: false,
             //     searchable: false
             // },
-
             {
                 data: 'id',
                 name: 'id'

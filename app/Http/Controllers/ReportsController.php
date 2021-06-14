@@ -84,7 +84,7 @@ class ReportsController extends Controller
         return $response;
     }
 
-    public function getXml($assessment_id = null)
+    public function getXml($assessment_id = null, $test_id =null)
     {
         // print_r($encrypted);
         if (Storage::exists("/assets/assessments/{$assessment_id}.xml")) {
@@ -105,15 +105,14 @@ class ReportsController extends Controller
             // $encrypted = Crypt::encryptString($response);
 
             Storage::put("/assets/assessments/{$assessment_id}.xml", $response);
-            return true;
-        }
 
+            return redirect()->route('assessment.index', "test_id={$test_id}")->with('success', 'XML амжилттай татагдлаа!');
+        }
         // RIASEC report
         // foreach($xml['elements']['test_groupe_facteurs']['test_groupe_facteur'] as $value){
         //     print_r($value);
         //     echo "<br>";
         // }
-
         // get test factor results done
         // foreach($xml['elements']['test_facteurs']['test_facteur'] as $value){
         //     echo $value["@attributes"]["score_brut"];
