@@ -5,13 +5,14 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">{{ __('Орчуулга нэмэх')}} (Тестийн дугаар: <span class="badge badge-success badge-2x">{{ $data[0]->test_id }}</span>)</div>
+                <div class="card-header">{{ __('Орчуулга оруулах')}} (Тестийн дугаар: <span class="badge badge-success badge-2x">{{ $test[0]['id'] }}</span>)      <img src="{{$test[0]['logo']}}" ></div>
                 <div class="card-body">
                     {!! Form::open(['route' => ['translations.save'],
                      'method' => 'post',
                      'enctype' => 'multipart/form-data']) !!}
                         @csrf
                         <div class="container py-5">
+                            <h2 class="text-center">{{ $test[0]['label'] }}</h2>
                             <div class="row">
                                 <div class="col-md-10 mx-auto">
                                         <div class="form-group row">

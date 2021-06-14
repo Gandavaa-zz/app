@@ -84,14 +84,14 @@ class ReportsController extends Controller
         return $response;
     }
 
-    public function getXml($assessment_id = null, $test_id =null)
+    public function getXml($assessment_id = null, $test_id = null)
     {
         // print_r($encrypted);
         if (Storage::exists("/assets/assessments/{$assessment_id}.xml")) {
             $contents = Storage::get("assets/assessments/{$assessment_id}.xml");
             // $decrypted= Crypt::decryptString($contents);
-            $xml = xml_decode($contents);
-            return $xml;
+            // $xml = xml_decode($contents);
+            return redirect()->route('assessment.index', "test_id={$test_id}")->with('success', 'XML татагдсан байна');
         } else {
             $response = Http::withHeaders([
                 'WWW-Authenticate' => $this->token,
@@ -105,6 +105,7 @@ class ReportsController extends Controller
             // $encrypted = Crypt::encryptString($response);
 
             Storage::put("/assets/assessments/{$assessment_id}.xml", $response);
+            Storage::put("/assets/tests/{$test_id}.xml", $response);
 
             return redirect()->route('assessment.index', "test_id={$test_id}")->with('success', 'XML амжилттай татагдлаа!');
         }
