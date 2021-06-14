@@ -19,7 +19,10 @@ class TranslationsController extends Controller
     {
         $translations = Translation::get();
         if ($request->ajax()) {
-            $data = Translation::all();
+            // $data = Translation::all();
+            $data = Translation::join('tests', 'translations.test_id', '=', 'tests.id')
+                ->get(['translations.*', 'tests.label']);
+
             return DataTables::of($data)
                 ->addIndexColumn()->editColumn('status', function ($data) {
                 return ($data->MN !== null) ? '<span class="badge badge-success">Орчуулсан</span>' : '<span class="badge badge-warning">Орчуулаагүй</span>';
@@ -79,17 +82,18 @@ class TranslationsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store($test_id, $data)
+    public function store(Request $request)
     {
-        // foreach ($data as $row) {
-        //     //Instantiate your object
-        //     $translation = new Translation();
-        //     $translation->test_id = $test_id;
-        //     // $translation->MN = $mn[$key];
-        //     $translation->EN = $row;
-        //     // $translation->save();
-        // };
-        // return redirect()->route('translations.add')->with('success', 'Асуултыг амжилттай бүртгэлээ!');
+        $data = $this->validateInputs();
+        // dd($data);
+        $data = Translation::create($data);
+        return redirect()->route('translations.index')->with('success', 'Асуултыг амжилттай бүртгэлээ!');
+    }
+
+    function new (Request $request) {
+
+        $assessments = TestAPI::all(['id', 'label']);
+        return view('layouts.translation.new', compact('assessments'));
     }
 
     public function saveTranslations(Request $request)
@@ -164,7 +168,6 @@ class TranslationsController extends Controller
                 // ];
                 array_push($texts, $value["contenus"]["contenu"]["libelle"]);
             }
-            $json = $this->store($test_id, $texts);
             foreach ($xml['elements']['test_ref_adequation_profils']['test_ref_adequation_profil'] as $value) {
                 // $data2["test_group_factors"][] =
                 //     [
@@ -219,8 +222,7 @@ class TranslationsController extends Controller
                 $translation->save();
             };
 
-        }
-        else{
+        } else {
             // dd("existed");
             return "1";
         }

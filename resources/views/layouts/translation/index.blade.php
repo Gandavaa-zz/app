@@ -10,7 +10,8 @@
                     <div class="card-header">
                         <span class="float-left"><h5><i class="fa fa-align-justify"></i>{{ __('Орчуулгын жагсаалт') }}</h5></span> <span class="float-right">
                         <!-- <button type="button" id="deleteMultiple" class="btn btn-danger deleteMultiple"  href="javascript:void(0)" data-original-title="Delete">Олноор устгах</button> -->
-                        <a class="btn btn-primary" href="{{ route('translations.create') }}"><i class="cil-plus"></i>Орчуулга Нэмэх</a></span>
+                        <a class="btn btn-primary" href="{{ route('translations.create') }}"><i class="cil-pencil"></i>Орчуулга оруулах</a>
+                        <a class="btn btn-success" href="{{ route('translations.new') }}"><i class="cil-plus"></i>Орчуулга нэмэх</a></span>
                     </div>
 
                     <div class="card-body">
@@ -20,7 +21,8 @@
                                 <tr>
                                     <!-- <th width="3px"><input type="checkbox" id="selectAll"/></th> -->
                                     <th width="5px">#</th>
-                                    <th>Тест #</th>
+                                    <th>Тест</th>
+                                    <th>Нэр</th>
                                     <th>Орчуулга EN</th>
                                     <th>Орчуулга MN</th>
                                     <th>Төлөв</th>
@@ -51,8 +53,12 @@
 $(function () {
 
     var table = $('.yajra-datatable').DataTable({
+        responsive: true,   
         processing: true,
         serverSide: true,
+        order: [[ 1, "desc" ]],
+        // pageLength: 15,
+        // stateSave: true,
         ajax: "{{ route('translations.index') }}",
         columns: [
             // {
@@ -70,6 +76,10 @@ $(function () {
             {
                 data: 'test_id',
                 name: 'test_id'
+            },
+            {
+                data: 'label',
+                name: 'label'
             },
             {
                 data: 'EN',

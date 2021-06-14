@@ -25,7 +25,7 @@
                                                     name="en[]" value="{{ $row->EN }}">{{ $row->EN }}</textarea>
                                             </div>
                                             <div class="col-sm-6">
-                                                <label for="firstname"></label>
+                                                <label for="mn"></label>
                                                 <textarea placeholder="Монгол орчуулга оруулна уу..." type="text"
                                                     class="form-control @error('mn') is-invalid @enderror"
                                                     name="mn[]"

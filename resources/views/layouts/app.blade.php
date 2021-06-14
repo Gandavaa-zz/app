@@ -40,7 +40,7 @@
       <link href="{{ asset('css/vue-multiselect.min.css') }}" rel="stylesheet">
 
     <script>
-        var APP_URL = {!! json_encode(url('/')) !!}
+        var APP_URL = {!! json_encode(url('/')) !!};
     </script>
 
   </head>

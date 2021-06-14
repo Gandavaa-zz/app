@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/',  'HomeController@index')->name('dashboard');
+Route::get('/', 'HomeController@index')->name('dashboard');
 
 Route::group(['middleware' => ['role:super-admin']], function () {
     Route::get('settings/users/import', 'Settings\UsersController@import')->name('user.import');
@@ -24,9 +24,11 @@ Route::group(['middleware' => ['role:super-admin']], function () {
     Route::get('settings/getPermissions', 'Settings\PermissionsController@getPermissions');
     Route::resource('settings/group', 'Settings\GroupsController');
 });
+Route::get('translations/new', 'TranslationsController@new')->name('translations.new')->middleware('auth');
 Route::get('translations/add', 'TranslationsController@add')->name('translations.add')->middleware('auth');
 Route::post('translations/save', 'TranslationsController@saveTranslations')->name('translations.save')->middleware('auth');
 Route::resource('translations', 'TranslationsController');
+Route::resource('assessment', 'AssessmentsController');
 
 Route::group(['middleware' => ['role:super-admin|admin']], function () {
     // get test API controller
@@ -41,6 +43,7 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::get('reports/groups/{assessment_id}', 'ReportsController@groups');
     Route::get('reports/referential/{assessment_id}', 'ReportsController@referential');
 
+    Route::get('candidate/assessment', 'CandidatesController@assessment')->name('candidate.assessment');
     Route::resource('candidate', 'CandidatesController');
     Route::get('candidate/group', 'CandidatesController@group')->name('candidate.group');
     Route::get('candidate/deleteMultiple', 'CandidatesController@deleteMultiple')->name('candidate.deleteMultiple');

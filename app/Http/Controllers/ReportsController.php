@@ -12,10 +12,12 @@ class ReportsController extends Controller
     {
         $response = Http::withHeaders([
             'WWW-Authenticate' => $this->token,
-        ])->get('https://app.centraltest.com/customer/REST/assessment/result/xml',
+        ])->get(
+            'https://app.centraltest.com/customer/REST/assessment/result/xml',
             [
                 'id' => $assessment_id,
-            ]);
+            ]
+        );
 
         return $response;
     }
@@ -23,10 +25,12 @@ class ReportsController extends Controller
     function global ($assessment_id = null) {
         $response = Http::withHeaders([
             'WWW-Authenticate' => $this->token,
-        ])->post('https://app.centraltest.com/customer/REST/report/score/json',
+        ])->post(
+            'https://app.centraltest.com/customer/REST/report/score/json',
             [
                 'id' => $assessment_id,
-            ]);
+            ]
+        );
         return $response;
     }
 
@@ -34,10 +38,12 @@ class ReportsController extends Controller
     {
         $response = Http::withHeaders([
             'WWW-Authenticate' => $this->token,
-        ])->get('https://app.centraltest.com/customer/REST/report/factors_scores/json',
+        ])->get(
+            'https://app.centraltest.com/customer/REST/report/factors_scores/json',
             [
                 'assessment_id' => $assessment_id,
-            ]);
+            ]
+        );
 
         return $response;
     }
@@ -46,10 +52,12 @@ class ReportsController extends Controller
     {
         $response = Http::withHeaders([
             'WWW-Authenticate' => $this->token,
-        ])->post('https://app.centraltest.com/customer/REST/report/groups_score/json',
+        ])->post(
+            'https://app.centraltest.com/customer/REST/report/groups_score/json',
             [
                 'assessment_id' => $assessment_id,
-            ]);
+            ]
+        );
 
         return $response;
     }
@@ -58,10 +66,12 @@ class ReportsController extends Controller
     {
         $response = Http::withHeaders([
             'WWW-Authenticate' => $this->token,
-        ])->get('https://app.centraltest.com/customer/REST/assessment/referentials/json',
+        ])->get(
+            'https://app.centraltest.com/customer/REST/assessment/referentials/json',
             [
                 'id' => $assessment_id,
-            ]);
+            ]
+        );
 
         return $response;
     }
@@ -82,16 +92,18 @@ class ReportsController extends Controller
             // $decrypted= Crypt::decryptString($contents);
             $xml = xml_decode($contents);
             return $xml;
-
         } else {
             $response = Http::withHeaders([
                 'WWW-Authenticate' => $this->token,
-            ])->get('https://app.centraltest.com/customer/REST/assessment/result/xml',
+            ])->get(
+                'https://app.centraltest.com/customer/REST/assessment/result/xml',
                 [
                     'id' => $assessment_id,
                     'language_id' => "1",
-                ]);
+                ]
+            );
             // $encrypted = Crypt::encryptString($response);
+
             Storage::put("/assets/assessments/{$assessment_id}.xml", $response);
             return true;
         }
@@ -132,5 +144,4 @@ class ReportsController extends Controller
         //     echo $key;
         // }
     }
-
 }
