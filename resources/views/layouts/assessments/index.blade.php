@@ -69,6 +69,7 @@
                                         </td>
                                         <td>
                                             <a href="#" class="btn btn-primary btn-sm">Харах</a>
+                                            <a href="{{$item['candidate_report_link']}}" target="_blank" class="btn btn-primary btn-danger">Тайлан харах</a>
                                             <a href="/reports/getXml/{{$item['id']}}/{{$item['test']['id']}}" class="btn btn-warning btn-sm">Xml Татах</a>
                                         </td>
                                     </tr>
