@@ -12,21 +12,26 @@ class ReportsController extends Controller
     {
         $response = Http::withHeaders([
             'WWW-Authenticate' => $this->token,
-        ])->get('https://app.centraltest.com/customer/REST/assessment/result/xml',
+        ])->get(
+            'https://app.centraltest.com/customer/REST/assessment/result/xml',
             [
                 'id' => $assessment_id,
-            ]);
+            ]
+        );
 
         return $response;
     }
 
-    function global ($assessment_id = null) {
+    function global($assessment_id = null)
+    {
         $response = Http::withHeaders([
             'WWW-Authenticate' => $this->token,
-        ])->post('https://app.centraltest.com/customer/REST/report/score/json',
+        ])->post(
+            'https://app.centraltest.com/customer/REST/report/score/json',
             [
                 'id' => $assessment_id,
-            ]);
+            ]
+        );
         return $response;
     }
 
@@ -34,10 +39,12 @@ class ReportsController extends Controller
     {
         $response = Http::withHeaders([
             'WWW-Authenticate' => $this->token,
-        ])->get('https://app.centraltest.com/customer/REST/report/factors_scores/json',
+        ])->get(
+            'https://app.centraltest.com/customer/REST/report/factors_scores/json',
             [
                 'assessment_id' => $assessment_id,
-            ]);
+            ]
+        );
 
         return $response;
     }
@@ -46,10 +53,12 @@ class ReportsController extends Controller
     {
         $response = Http::withHeaders([
             'WWW-Authenticate' => $this->token,
-        ])->post('https://app.centraltest.com/customer/REST/report/groups_score/json',
+        ])->post(
+            'https://app.centraltest.com/customer/REST/report/groups_score/json',
             [
                 'assessment_id' => $assessment_id,
-            ]);
+            ]
+        );
 
         return $response;
     }
@@ -58,40 +67,48 @@ class ReportsController extends Controller
     {
         $response = Http::withHeaders([
             'WWW-Authenticate' => $this->token,
-        ])->get('https://app.centraltest.com/customer/REST/assessment/referentials/json',
+        ])->get(
+            'https://app.centraltest.com/customer/REST/assessment/referentials/json',
             [
                 'id' => $assessment_id,
-            ]);
+            ]
+        );
 
         return $response;
     }
 
+    //report iin layout hevlej baina
     public function getHtml($assessment_id = null)
     {
-        //    return $assessment_id;
-        $link = request()->input('link');
-        $response = Http::get($link);
-        return $response;
+        $datas = null;
+        // Storage-s assessment iin xml iig tatah
+
+        //db deres filter hiij awah
+        return view('layouts.reports.index', compact('datas'));
     }
 
-    public function getXml($assessment_id = null, $test_id =null)
+    public function getXml($assessment_id = null, $test_id = null)
     {
         // print_r($encrypted);
         if (Storage::exists("/assets/assessments/{$assessment_id}.xml")) {
             $contents = Storage::get("assets/assessments/{$assessment_id}.xml");
             // $decrypted= Crypt::decryptString($contents);
-            $xml = xml_decode($contents);
-            return $xml;
+            // $xml = xml_decode($contents);
+            return redirect()->route('assessment.index', "test_id={$test_id}")->with('success', 'XML татагдсан байна');
         } else {
             $response = Http::withHeaders([
                 'WWW-Authenticate' => $this->token,
-            ])->get('https://app.centraltest.com/customer/REST/assessment/result/xml',
+            ])->get(
+                'https://app.centraltest.com/customer/REST/assessment/result/xml',
                 [
                     'id' => $assessment_id,
                     'language_id' => "1",
-                ]);
+                ]
+            );
             // $encrypted = Crypt::encryptString($response);
+
             Storage::put("/assets/assessments/{$assessment_id}.xml", $response);
+            Storage::put("/assets/tests/{$test_id}.xml", $response);
 
             return redirect()->route('assessment.index', "test_id={$test_id}")->with('success', 'XML амжилттай татагдлаа!');
         }
@@ -130,5 +147,4 @@ class ReportsController extends Controller
         //     echo $key;
         // }
     }
-
 }
