@@ -22,7 +22,8 @@ class ReportsController extends Controller
         return $response;
     }
 
-    function global ($assessment_id = null) {
+    function global($assessment_id = null)
+    {
         $response = Http::withHeaders([
             'WWW-Authenticate' => $this->token,
         ])->post(
@@ -76,12 +77,14 @@ class ReportsController extends Controller
         return $response;
     }
 
+    //report iin layout hevlej baina
     public function getHtml($assessment_id = null)
     {
-        //    return $assessment_id;
-        $link = request()->input('link');
-        $response = Http::get($link);
-        return $response;
+        $datas = null;
+        // Storage-s assessment iin xml iig tatah
+
+        //db deres filter hiij awah
+        return view('layouts.reports.index', compact('datas'));
     }
 
     public function getXml($assessment_id = null, $test_id = null)

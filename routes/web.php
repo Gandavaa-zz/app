@@ -24,6 +24,7 @@ Route::group(['middleware' => ['role:super-admin']], function () {
     Route::get('settings/getPermissions', 'Settings\PermissionsController@getPermissions');
     Route::resource('settings/group', 'Settings\GroupsController');
 });
+
 Route::get('translations/new', 'TranslationsController@new')->name('translations.new')->middleware('auth');
 Route::get('translations/add', 'TranslationsController@add')->name('translations.add')->middleware('auth');
 Route::post('translations/save', 'TranslationsController@saveTranslations')->name('translations.save')->middleware('auth');
@@ -35,6 +36,7 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::resource('testapi', 'TestApiController');
     Route::get('translation/getJSON/{test_id}', 'TranslationsController@getJSON');
     Route::get('reports/getXml/{assessment_id}/{test_id}', 'ReportsController@getXml');
+    Route::get('reports/getHtml/{id}', 'ReportsController@getHtml');
     Route::get('reports/result/{assessment_id}', 'ReportsController@result');
     Route::get('reports/global/{assessment_id}', 'ReportsController@global');
     Route::get('reports/factory/{assessment_id}', 'ReportsController@factory');
@@ -82,7 +84,6 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::post('settings/test/import', 'Settings\TestsController@importExcel')->name('test.importExcel');
 
     Route::resource('test', 'TestsController');
-
 });
 
 Route::get('skills', function () {

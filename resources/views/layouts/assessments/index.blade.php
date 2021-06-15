@@ -67,7 +67,7 @@
                                         {{ $item['assessment_end_date']}}
                                     </td>
                                     <td>
-                                        <a href="#" class="btn btn-primary btn-sm">Харах</a>
+                                        <a href="/reports/getHtml/1" class="btn btn-primary btn-sm">Харах</a>
                                         <a href="/reports/getXml/{{$item['id']}}/{{$item['test']['id']}}" class="btn btn-warning btn-sm">Xml Татах</a>
                                     </td>
                                 </tr>
