@@ -26,9 +26,9 @@ class TranslationsController extends Controller
 
             return DataTables::of($data)
                 ->addIndexColumn()->editColumn('status', function ($data) {
-                return ($data->MN !== null) ? '<span class="badge badge-success">Орчуулсан</span>' : '<span class="badge badge-warning">Орчуулаагүй</span>';
-            })->addColumn('action', function ($row) {
-                $btn = '
+                    return ($data->MN !== null) ? '<span class="badge badge-success">Орчуулсан</span>' : '<span class="badge badge-warning">Орчуулаагүй</span>';
+                })->addColumn('action', function ($row) {
+                    $btn = '
                     <ul class="list-group list-group-horizontal list-unstyled"><li class="pr-1">
                     <a href="' . route("translations.show", $row->id) . '"
                         data-toggle="tooltip"
@@ -53,17 +53,17 @@ class TranslationsController extends Controller
                     </li>
                 </ul><input type="checkbox" id="' . $row->id . '"';
 
-                return $btn;
-            })
-            // ->addColumn('name', function($row) {
-            //     $options = '';
-            //     $myArray = explode(',', $row->name);
-            //     foreach ($myArray as $name) {
-            //         $options .= $name;
-            //     }
-            //     $return = $options;
-            //     return $return;
-            // })
+                    return $btn;
+                })
+                // ->addColumn('name', function($row) {
+                //     $options = '';
+                //     $myArray = explode(',', $row->name);
+                //     foreach ($myArray as $name) {
+                //         $options .= $name;
+                //     }
+                //     $return = $options;
+                //     return $return;
+                // })
                 ->rawColumns(['action', 'status'])
                 ->make(true);
         }
@@ -91,7 +91,8 @@ class TranslationsController extends Controller
         return redirect()->route('translations.index')->with('success', 'Асуултыг амжилттай бүртгэлээ!');
     }
 
-    function new (Request $request) {
+    function new(Request $request)
+    {
 
         $assessments = Test::all(['id', 'label']);
         return view('layouts.translation.new', compact('assessments'));
@@ -115,7 +116,6 @@ class TranslationsController extends Controller
                     'mn' => $mn[$i],
                     'test_id' => $test_id,
                 ]);
-
         }
 
         return redirect()->route('translations.add')->with('success', 'Монгол орчуулгыг амжилттай бүртгэлээ!');
@@ -141,7 +141,7 @@ class TranslationsController extends Controller
 
             $data = array();
             $texts = array();
-            $contents = Storage::get("assets/tests/$test_id.xml");
+            $contents = Storage::get("assets/tests/13.xml");
             // $decrypted= Crypt::decryptString($contents);
             $xml = xml_decode($contents);
             // get test factor results done
@@ -181,7 +181,7 @@ class TranslationsController extends Controller
                 // ];
                 array_push($texts, isset($value["contenus"]["contenu"]["libelle"]) ? $value["contenus"]["contenu"]["libelle"] : null);
                 array_push($texts, isset($value["contenus"]["contenu"]["description"]) ? $value["contenus"]["contenu"]["description"] : null);
-                array_push($texts, isset($value["contenus"]["contenu"]["description_longue"]) ? $value["contenus"]["contenu"]["description_longue"] : null);
+                // array_push($texts, isset($value["contenus"]["contenu"]["description_longue"]) ? $value["contenus"]["contenu"]["description_longue"] : null);
             }
 
             // $data['test_mini_tests'] = [
@@ -198,18 +198,17 @@ class TranslationsController extends Controller
                 //     'sub_title' => isset($value["contenus"]["contenu"]["sous_titre"]) ? $value["contenus"]["contenu"]["sous_titre"] : null,
                 //     'comment' => isset($value["domaines"]["domaine"]["cibles_secondaires"]) ? $value["domaines"]["domaine"]["cibles_secondaires"] : null,
                 // ];
+
+                array_push($texts, isset($value["contenus"]["contenu"]["introduction"]) ? $value["contenus"]["contenu"]["introduction"] : null);
+
                 array_push($texts, $value["contenus"]["contenu"]["titre"], $value["contenus"]["contenu"]["libelle"],
                     isset($value["contenus"]["contenu"]["sous_titre"]) ? $value["contenus"]["contenu"]["sous_titre"] : null,
                     isset($value["domaines"]["domaine"]["contenus"]["contenu"]["libelle"]) ? $value["domaines"]["domaine"]["contenus"]["contenu"]["libelle"] : null);
 
-                if (isset($value["domaines"])) {
-                    foreach ($value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"] as $value2) {
-                        array_push($texts, isset($value2["contenus"]["contenu"]["commentaire_perso"]) ? $value2["contenus"]["contenu"]["commentaire_perso"] : null);
-                    }
-                }
 
+                array_push($texts, isset($value["domaines"]["domaine"]["cibles_secondaires"]['cibles_secondaire']["contenus"]["contenu"]["commentaire_perso"]) ?
+                    $value["domaines"]["domaine"]["cibles_secondaires"]['cibles_secondaire']["contenus"]["contenu"]["commentaire_perso"] : null);
             }
-
             array_map('strip_tags', $texts);
             $newArray = array_map(function ($v) {
                 return trim(strip_tags($v));
@@ -217,7 +216,7 @@ class TranslationsController extends Controller
             $xml = preg_replace("/\r|\n/", "", $newArray);
             $xml = array_filter($xml);
             $xml = array_unique($xml);
-
+            Storage::put("", dd($xml));;
             foreach ($xml as $row) {
                 $translation = new Translation();
                 $translation->test_id = $test_id;
@@ -225,9 +224,10 @@ class TranslationsController extends Controller
                 $translation->save();
             };
             return true;
-        } else {
-            return redirect()->route('translations.create', ['test_id' => $test_id])->with('success', '(' . $test_id . '): Тестийн орчуулга бүртгэгдсэн байна!');
         }
+        // else {
+        //     return redirect()->route('translations.create', ['test_id' => $test_id])->with('success', '(' . $test_id . '): Тестийн орчуулга бүртгэгдсэн байна!');
+        // }
     }
 
     public function create()
@@ -238,7 +238,6 @@ class TranslationsController extends Controller
         $files = array();
         foreach ($tests as $file) {
             $files[] = $this->fileInfo(pathinfo('/storage/app/assets/tests/' . $file));
-
         }
 
         $assessments = Test::select("*")
