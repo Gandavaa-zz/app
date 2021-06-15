@@ -25,19 +25,18 @@
                                     <select name="test_id" id="test" class="form-control" onchange="this.form.submit()">
                                         <option value="0">Нэг утгийг сонго</option>
                                         @foreach ($tests as $test)
-                                            <option @if( $test->id == request()->get('test_id')) selected @endif value="{{ $test->id}}" >{{ $test->label}}</option>
+                                        <option @if( $test->id == request()->get('test_id')) selected @endif value="{{ $test->id}}" >{{ $test->label}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                         </form>
 
-                        <table class="table table-bordered yajra-datatable user_table " id="user_table"
-                            style="width: 100%; font-size:13.5px;">
+                        <table class="table table-bordered yajra-datatable user_table " id="user_table" style="width: 100%; font-size:13.5px;">
                             <thead>
                                 <tr>
                                     <th width="3px">
-                                     #
+                                        #
                                     </th>
                                     <th>Оролцогч</th>
                                     <th>Тест</th>
@@ -91,11 +90,9 @@
                                                 @csrf
                                                 <input type="hidden" name="user_id" id="user_id">
                                                 <div class="form-group row">
-                                                    <label for="groups"
-                                                        class="col-md-2 col-form-label text-md-right">{{ __('Групп') }}</label>
+                                                    <label for="groups" class="col-md-2 col-form-label text-md-right">{{ __('Групп') }}</label>
                                                     <div class="col-md-8">
-                                                        <group {{--:selected="{{ $group_names->pluck('name') }}"--}}
-                                                            class="@error('groups') is-invalid @enderror"></group>
+                                                        <group {{--:selected="{{ $group_names->pluck('name') }}"--}} class="@error('groups') is-invalid @enderror"></group>
                                                         @error('groups')
                                                         <span class="invalid-feedback" role="alert">
                                                             <strong>{{ $message }}</strong>
@@ -127,12 +124,10 @@
             width: 60px !important;
             display: inline-block;
         }
-
     </style>
 
     <script>
-
-        $( document ).ready(function() {
+        $(document).ready(function() {
             $('#test').change(function() {
                 // var id = $(this).children("option:selected").val();
 

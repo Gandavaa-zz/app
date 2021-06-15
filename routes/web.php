@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/',  'HomeController@index')->name('dashboard');
+Route::get('/', 'HomeController@index')->name('dashboard');
 
 Route::group(['middleware' => ['role:super-admin']], function () {
     Route::get('settings/users/import', 'Settings\UsersController@import')->name('user.import');
@@ -25,17 +25,18 @@ Route::group(['middleware' => ['role:super-admin']], function () {
     Route::resource('settings/group', 'Settings\GroupsController');
 });
 
-Route::group(['middleware' => ['role:super-admin|admin|analyst']], function () {
-    Route::resource('translations', 'TranslationsController');
-    Route::get('translations/add', 'TranslationsController@add')->name('translations.add')->middleware('auth');
-    Route::post('translations/save', 'TranslationsController@saveTranslations')->name('translations.save')->middleware('auth');
-});
+Route::get('translations/new', 'TranslationsController@new')->name('translations.new')->middleware('auth');
+Route::get('translations/add', 'TranslationsController@add')->name('translations.add')->middleware('auth');
+Route::post('translations/save', 'TranslationsController@saveTranslations')->name('translations.save')->middleware('auth');
+Route::resource('translations', 'TranslationsController');
+Route::resource('assessment', 'AssessmentsController');
 
 Route::group(['middleware' => ['role:super-admin|admin']], function () {
     // get test API controller
     Route::resource('testapi', 'TestApiController');
     Route::get('translation/getJSON/{test_id}', 'TranslationsController@getJSON');
     Route::get('reports/getXml/{assessment_id}/{test_id}', 'ReportsController@getXml');
+    Route::get('reports/getHtml/{id}', 'ReportsController@getHtml');
     Route::get('reports/result/{assessment_id}', 'ReportsController@result');
     Route::get('reports/global/{assessment_id}', 'ReportsController@global');
     Route::get('reports/factory/{assessment_id}', 'ReportsController@factory');
@@ -83,7 +84,6 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::post('settings/test/import', 'Settings\TestsController@importExcel')->name('test.importExcel');
 
     Route::resource('test', 'TestsController');
-
 });
 
 Route::get('skills', function () {

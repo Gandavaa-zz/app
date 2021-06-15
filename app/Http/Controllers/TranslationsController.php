@@ -20,7 +20,10 @@ class TranslationsController extends Controller
         $translations = Translation::get();
 
         if ($request->ajax()) {
-            $data = Translation::with('test')->get();
+            // $data = Translation::all();
+            $data = Translation::join('tests', 'translations.test_id', '=', 'tests.id')
+                ->get(['translations.*', 'tests.label']);
+
             return DataTables::of($data)
                 ->addIndexColumn()->editColumn('status', function ($data) {
                 return ($data->MN !== null) ? '<span class="badge badge-success">Орчуулсан</span>' : '<span class="badge badge-warning">Орчуулаагүй</span>';
@@ -80,17 +83,18 @@ class TranslationsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store($test_id, $data)
+    public function store(Request $request)
     {
-        // foreach ($data as $row) {
-        //     //Instantiate your object
-        //     $translation = new Translation();
-        //     $translation->test_id = $test_id;
-        //     // $translation->MN = $mn[$key];
-        //     $translation->EN = $row;
-        //     // $translation->save();
-        // };
-        // return redirect()->route('translations.add')->with('success', 'Асуултыг амжилттай бүртгэлээ!');
+        $data = $this->validateInputs();
+        // dd($data);
+        $data = Translation::create($data);
+        return redirect()->route('translations.index')->with('success', 'Асуултыг амжилттай бүртгэлээ!');
+    }
+
+    function new (Request $request) {
+
+        $assessments = Test::all(['id', 'label']);
+        return view('layouts.translation.new', compact('assessments'));
     }
 
     public function saveTranslations(Request $request)
@@ -122,20 +126,22 @@ class TranslationsController extends Controller
 
         $test_id = $request->test_id;
         // dd($test_id);
-        $this->getJSON($test_id);
-        // dd("inserted already");
-        $data = Translation::where('MN', null)->limit(10)->get();
-        return view('layouts.translation.addTranslations', compact('data'));
+        $inserted = $this->getJSON($test_id);
+        if ($inserted) {
+            $data = Translation::where('MN', null)->limit(10)->get();
+            $test = Test::where('id', $test_id)->get();
+            return view('layouts.translation.addTranslations', compact('data'))->with(['test' => $test]);
+        }
     }
 
     public function getJSON($test_id)
     {
         $isExist = Translation::where('test_id', '=', $test_id)->first();
+        if ($isExist === null) {
 
-        if ($isExist === null && $test_id !== null) {
             $data = array();
             $texts = array();
-            $contents = Storage::get("assets/assessments/4329501.xml");
+            $contents = Storage::get("assets/tests/$test_id.xml");
             // $decrypted= Crypt::decryptString($contents);
             $xml = xml_decode($contents);
             // get test factor results done
@@ -165,7 +171,6 @@ class TranslationsController extends Controller
                 // ];
                 array_push($texts, $value["contenus"]["contenu"]["libelle"]);
             }
-            $json = $this->store($test_id, $texts);
             foreach ($xml['elements']['test_ref_adequation_profils']['test_ref_adequation_profil'] as $value) {
                 // $data2["test_group_factors"][] =
                 //     [
@@ -219,18 +224,36 @@ class TranslationsController extends Controller
                 $translation->EN = $row;
                 $translation->save();
             };
-
-        }
-        else{
-            // dd("existed");
-            return "1";
+            return true;
+        } else {
+            return redirect()->route('translations.create', ['test_id' => $test_id])->with('success', '(' . $test_id . '): Тестийн орчуулга бүртгэгдсэн байна!');
         }
     }
 
     public function create()
     {
-        $assessments = Test::all(['id', 'label']);
+
+        //storage folder dotroos buh file iig tataj baina
+        $tests = Storage::disk('local')->allFiles();
+        $files = array();
+        foreach ($tests as $file) {
+            $files[] = $this->fileInfo(pathinfo('/storage/app/assets/tests/' . $file));
+
+        }
+
+        $assessments = Test::select("*")
+            ->whereIn('id', $files)
+            ->get();
+
         return view('layouts.translation.create', compact('assessments'));
+    }
+
+    //storage folder dotroos file name uudiig awj baina
+    public function fileInfo($filePath)
+    {
+        $file = array();
+        $file = $filePath['filename'];
+        return $file;
     }
 
     /**
@@ -239,9 +262,11 @@ class TranslationsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Translation $translation)
+    public function show($id)
     {
-        return view('layouts.translation.show', ['translation' => $translation]);
+        $translation = Translation::join('tests', 'translations.test_id', '=', 'tests.id')->where("translations.id", $id)
+            ->get(['translations.*', 'tests.label', 'tests.logo']);
+        return view('layouts.translation.show')->with(['translation' => $translation]);
     }
 
     /**
