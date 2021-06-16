@@ -90,7 +90,7 @@ class ReportsController extends Controller
     {
         // print_r($encrypted);
         if (Storage::exists("/assets/assessments/{$assessment_id}.xml")) {
-            $contents = Storage::get("assets/assessments/{$assessment_id}.xml");
+            // $contents = Storage::get("assets/assessments/{$assessment_id}.xml");
             // $decrypted= Crypt::decryptString($contents);
             // $xml = xml_decode($contents);
             return redirect()->route('assessment.index', "test_id={$test_id}")->with('success', 'XML татагдсан байна');
@@ -107,7 +107,7 @@ class ReportsController extends Controller
             // $encrypted = Crypt::encryptString($response);
 
             Storage::put("/assets/assessments/{$assessment_id}.xml", $response);
-            Storage::put("/assets/tests/{$test_id}.xml", $response);
+            Storage::put("/assets/tests/{$test_id}/$assessment_id.xml", $response);
 
             return redirect()->route('assessment.index', "test_id={$test_id}")->with('success', 'XML амжилттай татагдлаа!');
         }
