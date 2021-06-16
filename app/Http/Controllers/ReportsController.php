@@ -92,6 +92,8 @@ class ReportsController extends Controller
         $data['general'] = [
             'test_id' => $xml["elements"]["test_tests"]["test_test"]["@attributes"]["id"],
             'score' => $xml["elements"]["test_tests"]["test_test"]["@attributes"]["score_calcule"],
+            'score_brut' => $xml["elements"]["test_tests"]["test_test"]["@attributes"]["score_brut"],
+            'logo' => $xml["elements"]["test_tests"]["test_test"]["contenus"]["contenu"]["logo3"],
             'label' => $xml["elements"]["test_tests"]["test_test"]["contenus"]["contenu"]["libelle"],
             'participant_name' => $xml["noyau_utilisateur_info"]["nom"] . " " . $xml["noyau_utilisateur_info"]["prenom"],
         ];
@@ -174,10 +176,9 @@ class ReportsController extends Controller
             unset($domain);
             //setting all values to variable $data
             $data["parties"] = $party;
-         
         }
         // $data = $this->JSONMapper($data);
-        dd($data);
+        // dd($data);
         return view('layouts.reports.index', compact('data'));
     }
 
