@@ -145,82 +145,31 @@ class TranslationsController extends Controller
         }
         $data = array();
         $texts = array();
-        // 1 torliin test_id-tai buh testeer loop hiij DB ruu hiij baina
+        // 1 torliin test_id-tai buh testeer loop hiij DB ruu VALUES hiij baina
         for ($i = 0; $i < count($files); $i++) {
-            // dd("loop statrted");
+
             $contents = Storage::get("assets/tests/{$test_id}/" . $files[$i] . ".xml");
             $xml = xml_decode($contents);
-            // get test factor results done
-            $data['general'] = [
-                'test_id' => $xml["elements"]["test_tests"]["test_test"]["@attributes"]["id"],
-                'score' => $xml["elements"]["test_tests"]["test_test"]["@attributes"]["score_calcule"],
-                'label' => $xml["elements"]["test_tests"]["test_test"]["contenus"]["contenu"]["libelle"],
-                'participant_name' => $xml["noyau_utilisateur_info"]["nom"] . " " . $xml["noyau_utilisateur_info"]["prenom"],
-            ];
 
+            //TEST FACTORS - GRAPH
             foreach ($xml['elements']['test_facteurs']['test_facteur'] as $value) {
-                $data['test_factors'][] =
-                    [
-                        'id' => $value["@attributes"]["id"],
-                        'score' => $value["@attributes"]["score_brut"],
-                        'score_calc' => $value["@attributes"]["score_calcule"],
-                        'color' => $value["couleur"],
-                        'label' => $value["contenus"]["contenu"]["libelle"],
-                    ];
                 array_push($texts, $value["contenus"]["contenu"]["libelle"]);
             }
 
+            // TEST GROUP FACTORS
             foreach ($xml['elements']['test_groupe_facteurs']['test_groupe_facteur'] as $value) {
-                $data["test_group_factors"][] =
-                    [
-                        'id' => $value["@attributes"]["id"],
-                        'score' => $value["@attributes"]["score_brut"],
-                        'color' => $value["couleur"],
-                        'score_calc' => $value["@attributes"]["score_calcule"],
-                        'label' => $value["contenus"]["contenu"]["libelle"],
-                    ];
                 array_push($texts, $value["contenus"]["contenu"]["libelle"]);
             }
 
+            // test_ref_adequation_profil
             foreach ($xml['elements']['test_ref_adequation_profils']['test_ref_adequation_profil'] as $value) {
-                $data["test_group_factors"] =
-                    [
-                        'id' => $value["@attributes"]["id"],
-                        'label' => $value["contenus"]["contenu"]["libelle"],
-                        'description' => isset($value["contenus"]["contenu"]["description"]) ? $value["contenus"]["contenu"]["description"] : null,
-                        'description_long' => isset($value["contenus"]["contenu"]["libelle"]) ? $value["contenus"]["contenu"]["description_longue"] : null,
-                    ];
                 array_push($texts, isset($value["contenus"]["contenu"]["libelle"]) ? $value["contenus"]["contenu"]["libelle"] : null);
                 array_push($texts, isset($value["contenus"]["contenu"]["description"]) ? $value["contenus"]["contenu"]["description"] : null);
                 // array_push($texts, isset($value["contenus"]["contenu"]["description_longue"]) ? $value["contenus"]["contenu"]["description_longue"] : null);
             }
 
-            // $data['test_mini_tests'] = [
-            //     'id' => $xml["elements"]["test_mini_tests"]["test_mini_test"]["@attributes"]["id"],
-            //     'score' => $xml["elements"]["test_mini_tests"]["test_mini_test"]["@attributes"]["score_calcule"],
-            // ];
-
+            // PARTIES
             foreach ($xml['parties']['partie'] as $value) {
-                $data["parties"]['partie']["content"] =
-                    [
-                        'id' => $value["@attributes"]["id"],
-                        'label' => $value["contenus"]["contenu"]["libelle"],
-                        'title' => $value["contenus"]["contenu"]["titre"],
-                        'sub_title' => isset($value["contenus"]["contenu"]["sous_titre"]) ? $value["contenus"]["contenu"]["sous_titre"] : null,
-                        // 'comment' => isset($value["domaines"]["domaine"]["cibles_secondaires"]) ? $value["domaines"]["domaine"]["cibles_secondaires"] : null,
-                        'description_long' => isset($value["contenus"]["contenu"]["description_long"]) ? $value["contenus"]["contenu"]["description_long"] : null,
-                        'description' => isset($value["contenus"]["contenu"]["description"]) ? $value["contenus"]["contenu"]["description"] : null,
-                        'introduction' => isset($value["contenus"]["contenu"]["introduction"]) ? $value["contenus"]["contenu"]["introduction"] : null,
-                        'description_courte' => isset($value["contenus"]["contenu"]["description_courte"]) ? $value["contenus"]["contenu"]["description_courte"] : null,
-                    ];
-
-                if (isset($value["domaines"]["domaine"])) {
-                    foreach ($value["domaines"]["domaine"] as $domains) {
-                        $data["parties"]['partie']["content"]['domain']  = $domains['contenus']['contenu'];
-                    }
-                }
-
-
                 array_push($texts, isset($value["contenus"]["contenu"]["introduction"]) ? $value["contenus"]["contenu"]["introduction"] : null);
                 array_push($texts, isset($value["contenus"]["contenu"]["description_courte"]) ? $value["contenus"]["contenu"]["description_courte"] : null);
                 array_push(
@@ -234,7 +183,7 @@ class TranslationsController extends Controller
                 array_push($texts, isset($value["domaines"]["domaine"]["cibles_secondaires"]['cibles_secondaire']["contenus"]["contenu"]["commentaire_perso"]) ?
                     $value["domaines"]["domaine"]["cibles_secondaires"]['cibles_secondaire']["contenus"]["contenu"]["commentaire_perso"] : null);
             }
-            dd($data);
+
             array_map('strip_tags', $texts);
             $newArray = array_map(function ($v) {
                 return trim(strip_tags($v));

@@ -1,4 +1,5 @@
 <html>
+
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
@@ -16,12 +17,13 @@
                     <i class="fas fa-times"></i>
                 </div>
             </div>
+
             <div class="sidebar-header">
                 <div class="user-pic">
                     <img class="img-responsive img-rounded" src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg" alt="User picture">
                 </div>
                 <div class="user-info">
-                    <span class="user-name">Ichin-Khorloo.
+                    <span class="user-name">{{$data['general']['participant_name']}}
                         <strong>E</strong>
                     </span>
                     <span class="user-role">Administrator</span>
