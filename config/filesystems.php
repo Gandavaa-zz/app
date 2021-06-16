@@ -51,6 +51,7 @@ return [
         'tests' => [
             'driver' => 'local',
             'root' => storage_path('app/assets/tests/'),
+            'visibility' => 'public',
         ],
 
         'public' => [

@@ -54,17 +54,7 @@ class TranslationsController extends Controller
                 </ul><input type="checkbox" id="' . $row->id . '"';
 
                     return $btn;
-                })
-                // ->addColumn('name', function($row) {
-                //     $options = '';
-                //     $myArray = explode(',', $row->name);
-                //     foreach ($myArray as $name) {
-                //         $options .= $name;
-                //     }
-                //     $return = $options;
-                //     return $return;
-                // })
-                ->rawColumns(['action', 'status'])
+                })->rawColumns(['action', 'status', 'EN', 'MN'])
                 ->make(true);
         }
 
@@ -100,7 +90,6 @@ class TranslationsController extends Controller
 
     public function saveTranslations(Request $request)
     {
-        // dd($request->input());
         $en = $request->en;
         $mn = $request->mn;
         $test_id = $request->test_id;
@@ -117,7 +106,6 @@ class TranslationsController extends Controller
                     'test_id' => $test_id,
                 ]);
         }
-
         return redirect()->route('translations.add')->with('success', 'Монгол орчуулгыг амжилттай бүртгэлээ!');
     }
 

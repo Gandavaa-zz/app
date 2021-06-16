@@ -41,18 +41,6 @@
                         <use xlink:href="{{ asset('icons/sprites/free.svg#cil-people') }}"></use>
                     </svg> Бүлэг</a>
             </li>
-            <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="#">
-                    <svg class="c-sidebar-nav-icon">
-                        <use xlink:href="{{ asset('icons/sprites/free.svg#cil-bell') }}"></use>
-                    </svg> Сонордуулга</a>
-            </li>
-            <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="#">
-                    <svg class="c-sidebar-nav-icon">
-                        <use xlink:href="{{ asset('icons/sprites/free.svg#cil-applications') }}"></use>
-                    </svg> Бусад</a>
-            </li>
-
-
         </ul>
     </li>
 
@@ -105,11 +93,25 @@
 
     @endrole
 
-    <li class="c-sidebar-nav-item c-sidebar-nav-dropdown">
-        <a class="c-sidebar-nav-link" href="{{ route('translations.index') }}">
-            <svg class="c-sidebar-nav-icon">
+    <li class="c-sidebar-nav-item c-sidebar-nav-dropdown"><a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
+        <svg class="c-sidebar-nav-icon">
                 <use xlink:href="{{ asset('icons/sprites/free.svg#cil-description') }}"></use>
             </svg> Орчуулга</a>
+        <ul class="c-sidebar-nav-dropdown-items">
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link" href="{{ route('translations.index') }} ">
+                    <svg class="c-sidebar-nav-icon">
+                        <use xlink:href="{{ asset('icons/sprites/free.svg#cil-list') }}"></use>
+                    </svg> Жагсаалт
+                </a>
+            </li>
+            <li class="c-sidebar-nav-item c-sidebar-nav-dropdown">
+            <a class="c-sidebar-nav-link" href="{{ route('import.index')}}">
+                <svg class="c-sidebar-nav-icon">
+                  <use xlink:href="{{ asset('icons/sprites/free.svg#cil-list') }}"></use>
+                </svg> АPI Импорт</a>
+            </li>
+        </ul>
     </li>
 
     @hasanyrole('writer|admin')

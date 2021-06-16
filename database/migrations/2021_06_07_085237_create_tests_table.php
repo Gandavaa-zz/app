@@ -19,6 +19,7 @@ class CreateTestsTable extends Migration
             $table->string('label', 755);
             $table->string('logo');
             $table->integer('price_in_credits');
+            $table->integer('priority')->nullable();
             $table->timestamps();
         });
 

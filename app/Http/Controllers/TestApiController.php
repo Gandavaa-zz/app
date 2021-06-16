@@ -19,15 +19,20 @@ class TestApiController extends Controller
 
     public function index(Request $request)
     {
+        $primary_tests = array('Occupational Interest Inventory-R', 'Big Five Profile', 'CTPI-R', 'EMOTION', 'Sales Profile–R', 'Professional Profile 2', 'Reasoning Test-R', 'Entrepreneur Test', 'VOCATION');
         // get all result from API TEST
         $responses = Http::withHeaders([
             'WWW-Authenticate' => $this->token,
         ])->get('https://app.centraltest.com/customer/REST/list/test/json',
             []);
 
-        //  insert to Test result to TEST
-        // dd(json_decode($responses));
+       //  insert to Test result to TEST
         foreach (json_decode($responses) as $response) {
+            $priority = 0;
+
+            if (in_array($response->label, $primary_tests)){
+                $priority = 1;
+            }
             $test = Test::firstOrCreate(
                 ['id' => $response->id],
                 ['id' => $response->id,
@@ -35,6 +40,7 @@ class TestApiController extends Controller
                     'label' => $response->label,
                     'logo' => $response->logo,
                     'price_in_credits' => $response->price_in_credits,
+                    'priority' => $priority
                 ]);
         }
 

@@ -71,6 +71,7 @@
                                             <a href="{{$item['candidate_report_link']}}" target="_blank" class="btn btn-primary btn-danger">Тайлан харах</a>
                                             <a href="/reports/getXml/{{$item['id']}}/{{$item['test']['id']}}" class="btn btn-warning btn-sm">Xml Татах</a>
                                             <a href="/assessment/salesProfile/{{$item['id']}}" class="btn btn-warning btn-sm">SalesProfile задлах</a>
+                                            <a href="/assessment/convert/{{$item['id']}}/{{ $item['test']['id']}}" target="_blank" class="btn btn-primary btn-success">Тайлан хөрвүүлэх</a>
                                         </td>
                                     </tr>
                                     @endforeach

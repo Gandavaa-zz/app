@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables ;
-use App\Group_User;
 use App\Test;
 use Illuminate\Support\Facades\Http;
 

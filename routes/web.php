@@ -25,6 +25,8 @@ Route::group(['middleware' => ['role:super-admin']], function () {
     Route::resource('settings/group', 'Settings\GroupsController');
 });
 
+Route::resource('import', 'ImportsController');
+
 Route::get('translations/new', 'TranslationsController@new')->name('translations.new')->middleware('auth');
 Route::get('translations/add', 'TranslationsController@add')->name('translations.add')->middleware('auth');
 Route::post('translations/save', 'TranslationsController@saveTranslations')->name('translations.save')->middleware('auth');
@@ -42,9 +44,7 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::get('reports/groups/{assessment_id}', 'ReportsController@groups');
     Route::get('reports/referential/{assessment_id}', 'ReportsController@referential');
 
-
     Route::get('assessment/salesProfile/{assessment_id}', 'AssessmentsController@salesProfile');
-
     Route::resource('assessment', 'AssessmentsController');
 
     Route::get('candidate/assessment', 'CandidatesController@assessment')->name('candidate.assessment');

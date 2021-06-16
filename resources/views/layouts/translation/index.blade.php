@@ -77,11 +77,15 @@
                     },
                     {
                         data: 'EN',
-                        name: 'en'
+                        name: 'en',
+                        orderable: true,
+                        searchable: true
                     },
                     {
                         data: "MN",
-                        name: "mn"
+                        name: "mn",
+                        orderable: true,
+                        searchable: true
                     },
                     {
                         data: 'status',

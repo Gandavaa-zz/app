@@ -81,14 +81,11 @@ class ReportsController extends Controller
     public function getHtml($assessment_id = null)
     {
         $datas = null;
-        // Storage-s assessment iin xml iig tatah
-        //db deres filter hiij awah
         return view('layouts.reports.index', compact('datas'));
     }
 
     public function getXml($assessment_id = null, $test_id = null)
     {
-        // print_r($encrypted);
         if (Storage::exists("/assets/assessments/{$assessment_id}.xml")) {
             // $contents = Storage::get("assets/assessments/{$assessment_id}.xml");
             // $decrypted= Crypt::decryptString($contents);
@@ -111,39 +108,5 @@ class ReportsController extends Controller
 
             return redirect()->route('assessment.index', "test_id={$test_id}")->with('success', 'XML амжилттай татагдлаа!');
         }
-        // RIASEC report
-        // foreach($xml['elements']['test_groupe_facteurs']['test_groupe_facteur'] as $value){
-        //     print_r($value);
-        //     echo "<br>";
-        // }
-        // get test factor results done
-        // foreach($xml['elements']['test_facteurs']['test_facteur'] as $value){
-        //     echo $value["@attributes"]["score_brut"];
-        //     echo "<br>";
-        // }
-
-        // COMBINED PROFILES FROM HOLLAND TYPOLOGY
-        // foreach($xml['elements']['rapport_adequation_profils']['rapport_adequation_profil'] as $value){
-        //     echo $value["@attributes"]["score_calcule"];
-        //     echo "<br>";
-        // }
-
-        // parties
-        // 1
-        // titre: Graph
-        // sous-titre: "Results on the factors "
-        // $parties  = collect($xml['parties']['partie']);
-
-        // foreach( $parties as $data){
-        //     print_r($data['contenus']);
-        // }
-
-        // return $parties_data;
-        // return $parties_data->contains('@attributes');
-        // return $xml['elements']['rapport_adequation_profils'];
-        // return $xml['elements']['test_facteurs'];
-        // foreach ($xml as $key => $value) {
-        //     echo $key;
-        // }
     }
 }
