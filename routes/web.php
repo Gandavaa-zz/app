@@ -29,7 +29,6 @@ Route::get('translations/new', 'TranslationsController@new')->name('translations
 Route::get('translations/add', 'TranslationsController@add')->name('translations.add')->middleware('auth');
 Route::post('translations/save', 'TranslationsController@saveTranslations')->name('translations.save')->middleware('auth');
 Route::resource('translations', 'TranslationsController');
-Route::resource('assessment', 'AssessmentsController');
 
 Route::group(['middleware' => ['role:super-admin|admin']], function () {
     // get test API controller
@@ -43,9 +42,13 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::get('reports/groups/{assessment_id}', 'ReportsController@groups');
     Route::get('reports/referential/{assessment_id}', 'ReportsController@referential');
 
+
+    Route::get('assessment/salesProfile/{assessment_id}', 'AssessmentsController@salesProfile');
+
+    Route::resource('assessment', 'AssessmentsController');
+
     Route::get('candidate/assessment', 'CandidatesController@assessment')->name('candidate.assessment');
     Route::resource('candidate', 'CandidatesController');
-    Route::resource('assessment', 'AssessmentsController');
 
     Route::get('candidate/group', 'CandidatesController@group')->name('candidate.group');
     Route::get('candidate/deleteMultiple', 'CandidatesController@deleteMultiple')->name('candidate.deleteMultiple');
@@ -71,17 +74,6 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::resource('settings/permission', 'Settings\PermissionsController')->middleware('auth');
     Route::get('settings/getPermissions', 'Settings\PermissionsController@getPermissions');
     Route::resource('settings/group', 'Settings\GroupsController');
-
-    // Test routes begin
-    Route::get('settings/test', 'Settings\TestsController@index')->name('settings.test');
-    Route::get('settings/test/create', 'Settings\TestsController@create')->name('settings.test.create');
-    Route::post('settings/test/store', 'Settings\TestsController@store')->name('settings.test.store');
-    Route::get('settings/test/{test}/edit', 'Settings\TestsController@edit')->name('settings.test.edit');
-    Route::put('settings/test/{test}', 'Settings\TestsController@update')->name('settings.test.update');
-    Route::get('settings/test/{test}/show', 'Settings\TestsController@show')->name('settings.test.show');
-    Route::delete('settings/test/{test}', 'Settings\TestsController@destroy')->name('settings.test.destroy');
-    Route::get('settings/test/import', 'Settings\TestsController@import')->name('settings.test.import');
-    Route::post('settings/test/import', 'Settings\TestsController@importExcel')->name('test.importExcel');
 
     Route::resource('test', 'TestsController');
 });

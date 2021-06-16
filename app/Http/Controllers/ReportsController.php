@@ -82,7 +82,6 @@ class ReportsController extends Controller
     {
         $datas = null;
         // Storage-s assessment iin xml iig tatah
-
         //db deres filter hiij awah
         return view('layouts.reports.index', compact('datas'));
     }

@@ -6,6 +6,7 @@ use App\Candidate;
 use App\Test;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class AssessmentsController extends Controller
 {
@@ -49,6 +50,96 @@ class AssessmentsController extends Controller
         // test_id -mай холбох
         // candidate_id тай холбох
         return view('layouts.assessments.index', compact('assessments', 'tests'));
+    }
+
+    public function test()
+    {
+        echo "test";
+    }
+
+
+    /**
+     * Sales Profile fix
+     */
+    public function salesProfile($assessment_id =null)
+    {
+        if (!Storage::exists("/assets/assessments/{$assessment_id}.xml")) {
+            $response = Http::withHeaders([
+                'WWW-Authenticate' => $this->token,
+            ])->get(
+                'https://app.centraltest.com/customer/REST/assessment/result/xml',
+                [
+                    'id' => $assessment_id,
+                    'language_id' => "1",
+                ]
+            );
+            Storage::put("/assets/assessments/{$assessment_id}.xml", $response);
+        }
+
+        /*  1. Parties-с шүүж харуулна
+            2. fdsfds
+        */
+        $contents = Storage::get("assets/assessments/$assessment_id.xml");
+
+        $xml = xml_decode($contents);
+
+        return $xml;
+
+        $salesProfile = array();
+
+        foreach($xml['parties']['partie'] as $part ){
+            $salesProfile[] = $part['params']['ordre'];
+
+            // if ordre 1 content -s title avna
+            switch($part['params']['ordre']){
+                case 1:
+                    $salesProfile[1] = array();
+                    $salesProfile[1]['title']=  $part['contenus']['contenu']['titre'];
+                    $salesProfile[1]['subtitle'] = $part['contenus']['contenu']['sous_titre'];
+                    break;
+                case 2:
+                    $salesProfile[2] = array();
+                    $salesProfile[2]['score'] =  $part['params']['moyenne_generale'];
+                    $salesProfile[2]['percentage'] =  $part['params']['pourcentage_score'];
+                    $salesProfile[2]['color'] =  $part['params']['note_couleur'];
+                    $salesProfile[2]['title'] =  $part['contenus']['contenu']['titre'];
+                    $salesProfile[2]['description'] = $part['contenus']['contenu']['description_courte'];
+                    break;
+                case 3:
+                    $salesProfile[3] = array();
+                    $salesProfile[3]['title'] =  $part['contenus']['contenu']['titre'];
+                    $salesProfile[3]['introduction'] = $part['contenus']['contenu']
+                    ['introduction'];
+                    $salesProfile[3]['percentage_score'] = $part['rapport_adequation_classes']['rapport_adequation_classe']
+                    ['rapport_adequation_profils']['rapport_adequation_profil']['pourcentage_score'];
+                break;
+
+                case 4:
+                    $salesProfile[4] = array();
+                    $salesProfile[4]['type'] = 'text';
+                    $salesProfile[4]['title'] =  $part['contenus']['contenu']['titre'];
+                break;
+
+                case 5:
+                    $salesProfile[5] = array();
+                    if ( $part['@attributes']['type'] =='rapport_graphique'){
+                        $salesProfile[5]['type'] = 'graphic';
+                        $salesProfile[5]['label'] =  $part['contenus']['contenu']['libelle'];
+                        $salesProfile[5]['title'] =  $part['contenus']['contenu']['titre'];
+                    }
+                break;
+
+                case 6:
+                    $salesProfile[6] = array();
+                    if ( $part['@attributes']['type'] =='rapport_ancre'){
+                        $salesProfile[6]['title'] =  $part['contenus']['contenu']['titre'];
+                        $salesProfile[6]['sub_title'] =  $part['contenus']['contenu']['sous_titre'];
+                    }
+                break;
+            }
+        }
+
+        return $salesProfile;
     }
 
     /**

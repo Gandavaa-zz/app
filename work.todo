@@ -1,5 +1,7 @@
-☐ DB Merge and fix confilcts
+☐ Sales Profile-г parse хийх
+    ☐  1-6
 
+✔ DB Merge and fix confilcts @done(21-06-15 15:07)
 ☐ Candidate - Participant болгох жагсаалт
     ✔ candidate ajax - үүсгэх @done(21-06-04 13:37)
     ✔ Button засах @done(21-06-04 15:21)
@@ -12,7 +14,6 @@
 ☐ AssessmentsController
     ✔ Assessments-дыг харуулах with Candidate-тай хамт харуулах хэсэг. @done(21-06-14 18:34)
     ☐ Тухайн тестээр шүүж харуулах - vue хийх
-    ☐
 
 ☐ API тухайн Тайланг харах - Тестийг хэрхэн Result match хийх вэ?
     ✔ Тайлангийн мэдээллийг авах @done(21-05-26 15:14)

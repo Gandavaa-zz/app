@@ -18,7 +18,7 @@
                     <div class="card-body">
                         @include('layouts.shared.alert')
 
-                        <form action="assessment" method="GET">
+                        <form action="/assessment" method="GET">
                             <div class="form-group row">
                                 <label class="col-md-1 col-form-label" for="test">Тест:</label>
                                 <div class="col-md-4">
@@ -70,6 +70,7 @@
                                             <a href="#" class="btn btn-primary btn-sm">Харах</a>
                                             <a href="{{$item['candidate_report_link']}}" target="_blank" class="btn btn-primary btn-danger">Тайлан харах</a>
                                             <a href="/reports/getXml/{{$item['id']}}/{{$item['test']['id']}}" class="btn btn-warning btn-sm">Xml Татах</a>
+                                            <a href="/assessment/salesProfile/{{$item['id']}}" class="btn btn-warning btn-sm">SalesProfile задлах</a>
                                         </td>
                                     </tr>
                                     @endforeach
