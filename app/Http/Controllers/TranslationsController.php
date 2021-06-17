@@ -123,7 +123,6 @@ class TranslationsController extends Controller
 
     public function getJSON($test_id)
     {
-
         // $isExist = Translation::where('test_id', '=', $test_id)->first();
         $contents = null;
         $tests = Storage::allFiles('/assets/tests/' . $test_id);
