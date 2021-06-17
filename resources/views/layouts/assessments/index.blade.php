@@ -46,35 +46,32 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                    @foreach( $assessments['result']['data']  as $item )
-                                    <tr>
-                                        <td>
-                                            {{ $item['candidate_id'] }}
-                                        </td>
-                                        <td> @if(isset($item->candidate ))
-                                                {{ $item->candidate->full_name }}
-                                            @else
-                                                Холбогдоогүй байна
-                                            @endif
-                                        </td>
-                                        <td>
-                                            {{ $item['test']['label'] }}
-                                        </td>
-                                        <td>
-                                            {{ $item['assessment_start_date']}}
-                                        </td>
-                                        <td>
-                                            {{ $item['assessment_end_date']}}
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-primary btn-sm">Харах</a>
-                                            <a href="{{$item['candidate_report_link']}}" target="_blank" class="btn btn-primary btn-danger">Тайлан харах</a>
-                                            <a href="/reports/getXml/{{$item['id']}}/{{$item['test']['id']}}" class="btn btn-warning btn-sm">Xml Татах</a>
-                                            <a href="/assessment/salesProfile/{{$item['id']}}" class="btn btn-warning btn-sm">SalesProfile задлах</a>
-                                            <a href="/assessment/convert/{{$item['id']}}/{{ $item['test']['id']}}" target="_blank" class="btn btn-primary btn-success">Тайлан хөрвүүлэх</a>
-                                        </td>
-                                    </tr>
-                                    @endforeach
+                                @foreach( $assessments['result']['data'] as $item )
+                                <tr>
+                                    <td>
+                                        {{ $item['candidate_id'] }}
+                                    </td>
+                                    <td> @if(isset($item->candidate ))
+                                        {{ $item->candidate->full_name }}
+                                        @else
+                                        Холбогдоогүй байна
+                                        @endif
+                                    </td>
+                                    <td>
+                                        {{ $item['test']['label'] }}
+                                    </td>
+                                    <td>
+                                        {{ $item['assessment_start_date']}}
+                                    </td>
+                                    <td>
+                                        {{ $item['assessment_end_date']}}
+                                    </td>
+                                    <td>
+                                        <a href="/reports/getHtml/{{$item['id']}}" class="btn btn-primary btn-sm">Харах</a>
+                                        <a href="/reports/getXml/{{$item['id']}}/{{$item['test']['id']}}" class="btn btn-warning btn-sm">Xml Татах</a>
+                                    </td>
+                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
                         <div class="modal fade" id="groupModal" tabindex="-1" aria-hidden="true">

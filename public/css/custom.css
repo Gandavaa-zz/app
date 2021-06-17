@@ -127,11 +127,13 @@ body {
 }
 
 .sidebar-wrapper ul {
-    padding: 0;
+    /* padding: 0; */
     list-style-type: decimal;
     margin: 0;
     text-transform: uppercase;
-    font-size: 16px;
+    font-size: 1.1em;
+    color: white;
+    line-height: 2;
 }
 
 .sidebar-wrapper ul li a:hover {
@@ -245,7 +247,7 @@ body {
 }
 
 .sidebar-wrapper .sidebar-menu ul li a {
-    display: inline-block;
+    display: block;
     width: 100%;
     text-decoration: none;
     position: relative;
@@ -476,6 +478,8 @@ body {
 
 .chiller-theme .sidebar-wrapper .sidebar-menu .header-menu span {
     color: #6c7b88;
+    margin-left: -40px;
+    font-size: 1em;
 }
 
 .chiller-theme .sidebar-footer>a:first-child {
