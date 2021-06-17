@@ -32,9 +32,8 @@ class AssessmentsController extends Controller
             ])->post('https://app.centraltest.com/customer/REST/assessment/paginate/completed/json');
         }
 
-        // echo json_decode($assessments);
         $assessments = json_decode($response, true);
-        // return $assessments;
+
         // тухайн assessment-тад data нэмэх
         foreach( $assessments['result']['data'] as $key => $value){
             // return $value['test_id'];

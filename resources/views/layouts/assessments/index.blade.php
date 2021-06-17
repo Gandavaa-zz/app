@@ -67,8 +67,9 @@
                                         {{ $item['assessment_end_date']}}
                                     </td>
                                     <td>
-                                        <a href="/reports/getHtml/{{$item['id']}}" class="btn btn-primary btn-sm">Харах</a>
-                                        <a href="/reports/getXml/{{$item['id']}}/{{$item['test']['id']}}" class="btn btn-warning btn-sm">Xml Татах</a>
+                                        <a target="_blank" href="/reports/getHtml/{{$item['id']}}" class="btn btn-primary btn-sm">Харах</a>
+                                        <a  href="/reports/getXml/{{$item['id']}}/{{$item['test']['id']}}" class="btn btn-warning btn-sm">Xml Татах</a>
+                                        <a target="_blank" href="{{$item['candidate_report_link']}}" class="btn btn-warning btn-sm">Тайлан харах</a>
                                     </td>
                                 </tr>
                                 @endforeach

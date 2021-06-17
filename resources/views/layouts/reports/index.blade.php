@@ -20,7 +20,9 @@
 
             <div class="sidebar-header">
                 <div class="user-pic">
-                    <img class="img-responsive img-rounded" src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg" alt="User picture">
+                    <img class="img-responsive img-rounded"
+                        src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg"
+                        alt="User picture">
                 </div>
                 <div class="user-info">
                     <span class="user-name">{{$data['general']['participant_name']}}
@@ -55,87 +57,253 @@
             <div class="main">
                 <div class="text-center">
                     <img src="{{$data['general']['logo']}}" alt="{{$data['general']['label']}} " class="img-responsive">
-                    <!-- <h2>Professional Profile 2 </h2> -->
                     <h6>Test taken on the 13th of September 2019 in 14 min 24 sec</h6>
                     <hr />
                 </div>
                 <div class="row">
-                    @foreach($data["parties"]["party"] as $menu)
-                    @if (str_contains($menu['type'], 'ancre'))
-                    <h2 class="card-title">{{$menu["params"]["menuNumber"]}} - {{$menu["content"]["title"]}} </h2>
+
+                    @if (str_contains($data["parties"]["party"][0]['type'], 'ancre'))
+                    <h2 class="card-title">{{ $data["parties"]["party"][0]["params"]["menuNumber"] }} -
+                        {{$data["parties"]["party"][0]["content"]["title"]}} </h2>
+                    @endif
                     <div class="col-md-12" id="comments">
                         <div class="card">
-                            <div class="card-header .bg-secondary">{{$menu["content"]["sub_title"]}}</div>
+                            <div class="card-header .bg-secondary">
+                                {{ $data["parties"]["party"][0]["content"]["sub_title"]}}</div>
                             <div class="card-body">
+
                                 <div class="group-header">
-                                    <h2 class="ec-title">BEHAVIOUR AND PERSONALITY</h2>
-                                    <h2 class="ec-title">Straightforwardness
-                                        <<>> Persuasiveness
-                                    </h2>
+                                    <h2 class="ec-title"> </h2>
                                 </div>
-                                <div class="score-bar-wrapper row">
-
+                                @for ($i=1; $i < 3; $i++) <div class="score-bar-wrapper row">
                                     <div class="col-xs-12 col-sm-3">
-                                        <h3 class="box-label"> Straightforwardness </h3>
+                                        <h3 class="box-label"> {{ $data["parties"]["party"][$i]["content"]["title"]}}
+                                        </h3>
                                         <div class="box-score" style="
-                                     color:#000000; background-color: #f1ffd6">
-                                            <div class="header">
-                                                Score<br>6.2 </div>
+                                        color:#000000; background-color: #1C3664">
+                                            <div class="header" style="color: #fff;">
+                                                {{ __('Score') }} <br>
+                                                @if (isset($data["parties"]["party"][$i]["params"]["moyenne_generale"]))
+                                                {{ $data["parties"]["party"][$i]["params"]["moyenne_generale"] }}
+                                                @endif
+                                                @if (isset($data["parties"]["party"][$i]["adequacy"]["pourcentage_score"]))
+                                                    {{ $data["parties"]["party"][$i]["adequacy"]["pourcentage_score"] }}
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div class="col-xs-12 col-sm-6">
+                                    <div class="col-xs-12 col-sm-9">
                                         <div class="progress score-bar">
-                                            <div class="progress-bar" style="width:62%;
-                                                             color:#000000; background-color: #f1ffd6   "></div>
-                                            <div class="progress-bar" style="width:38%;
-                                                             color:#000000; background-color: #C9E6AE"></div>
+                                            @if( isset($data["parties"]["party"][$i]["params"]["pourcentage_score"]))
+                                            <label for="0">0</label>
+                                            <div class="progress-bar"
+                                                style="width:{{ $data["parties"]["party"][$i]["params"]["pourcentage_score"]}}%; color:#000000; background-color: #1C3664">
+                                            </div>
+                                            <label for="10">10</label>
+                                            @endif
+                                            @if( isset($data["parties"]["party"][$i]["adequacy"]["pourcentage_score"]))
+                                            <label for="0">0</label>
+                                            <div class="progress-bar"
+                                                style="width:{{ $data["parties"]["party"][$i]["adequacy"]["pourcentage_score"]}}%; color:#000000; background-color: #1C3664">
+                                            </div>
+                                            <label for="10">10</label>
+                                            @endif
                                         </div>
                                     </div>
 
-
-                                    <div class="col-xs-12 col-sm-3">
-
-                                        <h3> Persuasiveness </h3>
-                                        <div class="box-score" style="
-                                         color:#000000; background-color: #C9E6AE					">
-                                            <div class="header">
-                                                Score<br>3.8 </div>
+                                    <div class="box mb-4">
+                                        <div class="box-header box-header-small">
+                                            <div class="title text-left"> <i class="fa fa-arrow-alt-circle-right"></i>
+                                                {{ __('Definition') }}</div>
+                                        </div>
+                                        <div class="box-desc">
+                                            <div>
+                                                {{ $data["parties"]["party"][$i]["content"]["description_courte"] }}
+                                            </div>
                                         </div>
                                     </div>
+                            </div>
 
-                                </div>
-                                <div class="box gray">
-                                    <div class="box-content ec-first-border-color" style="background-color: #EEEEEE">
-                                        Ichinkhorloo E is rather frank. She tends not to persuade or influence others and is likely to present information in an objective way. Fairly straightforward, Ichinkhorloo E generally says things in a direct manner. However, she may use persuasive arguments
-                                        on topics that she knows well and considers very important.<br><br>Environment and Roles: Organisations in which transparency and authenticity are appreciated suit
-                                        her best.<br><br>Interaction with others: Generally transparent and does not seek to influence others at all costs.<br><br>Strength: Can be counted upon to give an honest opinion.<br><br>Potential weakness:
-                                        May find it difficult when required to persuade others. </div>
-                                </div>
-                                <div class="box">
-                                    <div class="box-header box-header-small">
-                                        <div class="title text-left"> <i class="fa fa-arrow-alt-circle-right"></i> Definition</div>
-                                    </div>
-                                    <div class="box-desc">
-                                        <div>
-                                            "Persuasiveness" is defined as the ease with which an individual is convincing and influencing others by using tact and adapting their speech for an audience, while "Straightforwardness" refers to being authentic and direct in communication, with a need
-                                            to remain transparent. </div>
+                            @endfor
 
-                                    </div>
-                                </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- section 3 here -->
+                @if (str_contains($data["parties"]["party"][3]['type'], 'ancre'))
+                <h2 class="card-title">{{ $data["parties"]["party"][3]["params"]["menuNumber"] }} -
+                    {{$data["parties"]["party"][3]["content"]["title"]}} </h2>
+                @endif
+                <div class="col-md-12" id="comments">
+                    <div class="card">
+                        <div class="card-header .bg-secondary">{{ $data["parties"]["party"][3]["content"]["sub_title"]}}
+                        </div>
+                        <div class="card-body">
+                            <div class="group-header">
+                                <h2 class="ec-title">THE GRAPH</h2>
                             </div>
                         </div>
                     </div>
-                    @endif
-                    @endforeach
                 </div>
-            </div>
+                <!-- /end section -->
+                <!-- section 4 here -->
+                @if (str_contains($data["parties"]["party"][4]['type'], 'ancre'))
+                <h2 class="card-title">{{ $data["parties"]["party"][4]["params"]["menuNumber"] }} -
+                    {{$data["parties"]["party"][4]["content"]["title"]}} </h2>
+                @endif
+                <div class="col-md-12" id="comments">
+                    <div class="card">
+                        <div class="card-header .bg-secondary">{{ $data["parties"]["party"][4]["content"]["sub_title"]}}
+                        </div>
+                        <div class="card-body">
+                            <div class="group-header">
 
-            <footer class="text-center footer">
-                <div class="mb-2">
-                    CDC Copyright
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </footer>
+                <!-- /endsection 4 -->
+                <!-- section 5 -->
+                @if (str_contains($data["parties"]["party"][5]['type'], 'ancre'))
+                <h2 class="card-title">{{ $data["parties"]["party"][5]["params"]["menuNumber"] }} -
+                    {{$data["parties"]["party"][5]["content"]["title"]}} </h2>
+                @endif
+                <div class="col-md-12" id="comments">
+                    <div class="card">
+                        <div class="card-header .bg-secondary">{{ $data["parties"]["party"][5]["content"]["sub_title"]}}
+                        </div>
+                        <div class="card-body">
+                            <div class="group-header">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /endsection 5 -->
+
+                <!--  Personalised Analysis of the Report -->
+                @if (str_contains($data["parties"]["party"][7]['type'], 'ancre'))
+                <h2 class="card-title">{{ $data["parties"]["party"][7]["params"]["menuNumber"] }} -
+                    {{$data["parties"]["party"][7]["content"]["title"]}} </h2>
+                @endif
+                <div class="col-md-12" id="comments">
+                    <div class="card">
+                        <div class="card-header .bg-secondary">{{ $data["parties"]["party"][7]["content"]["sub_title"]}}
+                        </div>
+                        <div class="card-body">
+                            <div class="group-header">
+                                {!! $data["parties"]["party"][8]["content"]["introduction"]!!}
+                            </div>
+
+                            @foreach($data["parties"]["party"][8]["content"]["domain"] as $item)
+                            <div class="group-header mt-4">
+                                {{ $item['label']}}
+                            </div>
+                            @foreach ($item['contents'] as $content)
+                            <div class="box gray mb-2">
+                                <div class="box-content ec-first-border-color" style="background-color: #EEEEEE">
+                                    {{ $content['comment'] }}
+                                </div>
+                            </div>
+                            @endforeach
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                <!-- /endsection -->
+
+                <!-- the Comments  -->
+                @if (str_contains($data["parties"]["party"][9]['type'], 'ancre'))
+                <h2 class="card-title">{{ $data["parties"]["party"][9]["params"]["menuNumber"] }} -
+                    {{$data["parties"]["party"][9]["content"]["title"]}} </h2>
+                @endif
+                <!-- /the Comments  -->
+                <div class="col-md-12" id="comments">
+                    <div class="card">
+                        <div class="card-header .bg-secondary">
+                            {{ $data["parties"]["party"][9]["content"]["sub_title"]}}</div>
+                        <div class="card-body">
+                            <div class="group-header">
+                                <h3>{!! $data["parties"]["party"][10]["content"]["title"]!!}</h3>
+                                <hr>
+                            </div>
+                            <div class="score-bar-wrapper row">
+                                <div class="col-xs-12 col-sm-3">
+                                    <div class="box-score" style="
+                                     color:#000000; background-color:{!!$data["parties"]["party"][10]["params"]["couleur"]!!}">
+                                        <div class="header">
+                                        {{ __('Score') }} <br>
+                                        {{ $data["parties"]["party"][10]["params"]["pourcentage_score"]}}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="progress score-bar" style="width: 100%;">
+                                        <div class="progress-bar" style="width:{{$data["parties"]["party"][10]["params"]["pourcentage_score"]}}%;
+                                                             color:#000000; background-color: #{!!$data["parties"]["party"][10]["params"]["couleur"]!!} "></div>
+                                        <div class="progress-bar" style="width:38%;
+                                                             color:#000000; background-color: #C9E6AE"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box">
+                                <div class="box-header box-header-small">
+                                    <div class="title text-left"> <i class="fa fa-arrow-alt-circle-right"></i>
+                                    {{ __('Definition') }}</div>
+                                </div>
+                                <div class="box-content ec-first-border-color" style="background-color: #EEEEEE">
+                                    {{$data["parties"]["party"][10]["content"]["domain"]}}
+                                     </div>
+                            </div>
+
+                            <!-- facteur -->
+
+                            <div class="score-bar-wrapper row">
+                                <div class="col-xs-12 col-sm-3">
+                                    <div class="box-score" style="
+                                     color:#000000; background-color:{!!$data["parties"]["party"][10]["params"]["couleur"]!!}">
+                                        <div class="header">
+                                        {{ __('Score') }} <br>
+                                        {{ $data["parties"]["party"][10]["params"]["pourcentage_score"]}}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="progress score-bar" style="width: 100%;">
+                                        <div class="progress-bar" style="width:{{$data["parties"]["party"][10]["params"]["pourcentage_score"]}}%;
+                                                             color:#000000; background-color: #{!!$data["parties"]["party"][10]["params"]["couleur"]!!} "></div>
+                                        <div class="progress-bar" style="width:38%;
+                                                             color:#000000; background-color: #C9E6AE"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box">
+                                <div class="box-header box-header-small">
+                                    <div class="title text-left"> <i class="fa fa-arrow-alt-circle-right"></i>
+                                    {{ __('Definition') }}</div>
+                                </div>
+                                <div class="box-content ec-first-border-color" style="background-color: #EEEEEE">
+                                    {{$data["parties"]["party"][10]["content"]["domain"]}}
+                                     </div>
+                            </div>
+                            <!-- /endees ehelne -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+    </div>
+
+    <footer class="text-center footer">
+        <div class="mb-2">
+            CDC Copyright
+        </div>
+    </footer>
     </div>
     </main>
     <!-- page-content" -->
@@ -300,10 +468,12 @@
         }
 
     });
+
 </script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/esm/popper.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.js">
+</script>
 <script type="text/javascript" src="{{ asset('js/custom.js') }}"></script>
 
 

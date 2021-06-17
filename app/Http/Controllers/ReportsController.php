@@ -171,8 +171,11 @@ class ReportsController extends Controller
                         'introduction' => $this->getMNText(isset($value["contenus"]["contenu"]["introduction"]) ? $value["contenus"]["contenu"]["introduction"] : null),
                         'description_courte' => $this->getMNText(isset($value["contenus"]["contenu"]["description_courte"]) ? $value["contenus"]["contenu"]["description_courte"] : null),
                         'domain'  => $this->getMNText(isset($domain) ? $domain : [])
-                    )
+                    ),
+                    'adequacy' => array(
+                        'pourcentage_score' => isset($value["rapport_adequation_classes"]) ? ($this->getMNText($value["rapport_adequation_classes"]["rapport_adequation_classe"]["rapport_adequation_profils"]["rapport_adequation_profil"]["pourcentage_score"]) ?  $value["rapport_adequation_classes"]["rapport_adequation_classe"]["rapport_adequation_profils"]["rapport_adequation_profil"]["pourcentage_score"] : null) : null)
                 ];
+
             unset($domain);
             //setting all values to variable $data
             $data["parties"] = $party;
