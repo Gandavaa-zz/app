@@ -664,7 +664,7 @@ h3 {
 
 .progress-bar {
     background-color: #1C3664;
-    height: 20px!important;
+    /* height: 20px!important; */
 }
 
 .legend-match {

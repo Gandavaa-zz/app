@@ -157,6 +157,22 @@ class ReportsController extends Controller
                     unset($comments);
                 }
             }
+            $adequates = [];
+            if (isset($value['rapport_adequation_classes'])) {
+                foreach ($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil'] as $adequate) {
+              
+                    $adequates[] = array(
+                        'pourcentage_score' => isset($adequate['pourcentage_score']) ? $adequate['pourcentage_score'] : null,
+                        'score' => isset($adequate['score']) ? $adequate['score'] : null,
+                        'color' => isset($adequate['couleur_classe']) ? $adequate['couleur_classe'] : null,
+                    );
+                    // dd($adequates);
+                }
+            }
+            // dd($adequates);
+
+
+
             $party["party"][] =
                 [
                     'id' => $value["@attributes"]["id"],
@@ -166,14 +182,16 @@ class ReportsController extends Controller
                         'label' => $this->getMNText($value["contenus"]["contenu"]["libelle"]),
                         'title' => $this->getMNText($value["contenus"]["contenu"]["titre"]),
                         'sub_title' => $this->getMNText(isset($value["contenus"]["contenu"]["sous_titre"]) ? $value["contenus"]["contenu"]["sous_titre"] : null),
-                        'description_long' => $this->getMNText(isset($value["contenus"]["contenu"]["description_long"]) ? $value["contenus"]["contenu"]["description_long"] : null),
+                        'description_long' => $this->getMNText(isset($value["contenus"]["contenu"]["description_longue"]) ? $value["contenus"]["contenu"]["description_longue"] : null),
                         'description' => $this->getMNText(isset($value["contenus"]["contenu"]["description"]) ? $value["contenus"]["contenu"]["description"] : null),
                         'introduction' => $this->getMNText(isset($value["contenus"]["contenu"]["introduction"]) ? $value["contenus"]["contenu"]["introduction"] : null),
                         'description_courte' => $this->getMNText(isset($value["contenus"]["contenu"]["description_courte"]) ? $value["contenus"]["contenu"]["description_courte"] : null),
-                        'domain'  => $this->getMNText(isset($domain) ? $domain : [])
+                        'domain'  => $this->getMNText(isset($domain) ? $domain : []),
+                        'label_group'  => array_key_exists('libelle_groupe_opposition', $value["contenus"]["contenu"])
                     ),
-                    'adequacy' => array(
-                        'pourcentage_score' => isset($value["rapport_adequation_classes"]) ? ($this->getMNText($value["rapport_adequation_classes"]["rapport_adequation_classe"]["rapport_adequation_profils"]["rapport_adequation_profil"]["pourcentage_score"]) ?  $value["rapport_adequation_classes"]["rapport_adequation_classe"]["rapport_adequation_profils"]["rapport_adequation_profil"]["pourcentage_score"] : null) : null)
+                    // 'adequacy' => array(
+                    //     'pourcentage_score' => isset($value["rapport_adequation_classes"]) ? ($this->getMNText($value["rapport_adequation_classes"]["rapport_adequation_classe"]["rapport_adequation_profils"]["rapport_adequation_profil"]["pourcentage_score"]) ?  $value["rapport_adequation_classes"]["rapport_adequation_classe"]["rapport_adequation_profils"]["rapport_adequation_profil"]["pourcentage_score"] : null) : null
+                    // )
                 ];
 
             unset($domain);

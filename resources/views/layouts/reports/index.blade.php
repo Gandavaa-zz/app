@@ -98,14 +98,14 @@
                                             @if( isset($data["parties"]["party"][$i]["params"]["pourcentage_score"]))
                                             <label for="0">0</label>
                                             <div class="progress-bar"
-                                                style="width:{{ $data["parties"]["party"][$i]["params"]["pourcentage_score"]}}%; color:#000000; background-color: #1C3664">
+                                                style='width:{{ $data["parties"]["party"][$i]["params"]["pourcentage_score"]}}%; color:#000000; background-color: #1C3664'>
                                             </div>
                                             <label for="10">10</label>
                                             @endif
                                             @if( isset($data["parties"]["party"][$i]["adequacy"]["pourcentage_score"]))
                                             <label for="0">0</label>
                                             <div class="progress-bar"
-                                                style="width:{{ $data["parties"]["party"][$i]["adequacy"]["pourcentage_score"]}}%; color:#000000; background-color: #1C3664">
+                                                style='width:{{ $data["parties"]["party"][$i]["adequacy"]["pourcentage_score"]}}%; color:#000000; background-color: #1C3664'>
                                             </div>
                                             <label for="10">10</label>
                                             @endif
@@ -144,6 +144,9 @@
                         <div class="card-body">
                             <div class="group-header">
                                 <h2 class="ec-title">THE GRAPH</h2>
+                                <figure class="highcharts-figure">
+                                    <div id="chart"></div>
+                                </figure>
                             </div>
                         </div>
                     </div>
@@ -246,7 +249,7 @@
                                         <div class="progress-bar" style="width:{{$data["parties"]["party"][10]["params"]["pourcentage_score"]}}%;
                                                              color:#000000; background-color: #{!!$data["parties"]["party"][10]["params"]["couleur"]!!} "></div>
                                         <div class="progress-bar" style="width:38%;
-                                                             color:#000000; background-color: #C9E6AE"></div>
+                                                             color:#000000; background-color: #EEEEEE"></div>
                                     </div>
                                 </div>
                             </div>
@@ -256,29 +259,32 @@
                                     {{ __('Definition') }}</div>
                                 </div>
                                 <div class="box-content ec-first-border-color" style="background-color: #EEEEEE">
-                                    {{$data["parties"]["party"][10]["content"]["domain"]}}
+                                {{$data["parties"]["party"][10]["content"]["description_long"]}}
                                      </div>
                             </div>
 
                             <!-- facteur -->
-
+                            <div class="group-header">
+                                <h3>{!! $data["parties"]["party"][11]["content"]["title"]!!}</h3>
+                                <hr>
+                            </div>
                             <div class="score-bar-wrapper row">
                                 <div class="col-xs-12 col-sm-3">
                                     <div class="box-score" style="
                                      color:#000000; background-color:{!!$data["parties"]["party"][10]["params"]["couleur"]!!}">
                                         <div class="header">
                                         {{ __('Score') }} <br>
-                                        {{ $data["parties"]["party"][10]["params"]["pourcentage_score"]}}
+                                        {{ $data["parties"]["party"][11]["params"]["pourcentage_score"]}}
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="progress score-bar" style="width: 100%;">
-                                        <div class="progress-bar" style="width:{{$data["parties"]["party"][10]["params"]["pourcentage_score"]}}%;
-                                                             color:#000000; background-color: #{!!$data["parties"]["party"][10]["params"]["couleur"]!!} "></div>
+                                        <div class="progress-bar" style="width:{{$data["parties"]["party"][11]["params"]["pourcentage_score"]}}%;
+                                                             color:#000000; background-color: #{!!$data["parties"]["party"][11]["params"]["couleur"]!!} "></div>
                                         <div class="progress-bar" style="width:38%;
-                                                             color:#000000; background-color: #C9E6AE"></div>
+                                                             color:#000000; background-color: #EEEEEE"></div>
                                     </div>
                                 </div>
                             </div>
@@ -288,8 +294,8 @@
                                     {{ __('Definition') }}</div>
                                 </div>
                                 <div class="box-content ec-first-border-color" style="background-color: #EEEEEE">
-                                    {{$data["parties"]["party"][10]["content"]["domain"]}}
-                                     </div>
+                                    {{$data["parties"]["party"][11]["content"]["description_long"]}}
+                                </div>
                             </div>
                             <!-- /endees ehelne -->
                         </div>
@@ -317,157 +323,79 @@
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 <script>
+var categories = [];
+var data = [];
+var scores = [{}];
+var cats;
+var obj = {};
+var t = [];
+var index = 0;
+
+@foreach($data["parties"]["party"] as $key => $graph)
+    @if (str_contains($graph['type'], 'rapport_details_facteur'))
+    @switch($graph["id"])
+            @case(172)
+            scores = (@json($graph["params"]["score"]));
+            @case(173)
+            scores = (@json($graph["params"]["score"]));
+            @case(174)
+            scores = (@json($graph["params"]["score"]));
+        @endswitch
+            console.log("Scores 0" , scores);   
+        
+        @if (str_contains($graph["content"]["label"], 'Anchor'))
+            cats= @json($graph["content"]["title"]);
+            cats = cats + ' (' + @json($graph["params"]["score"]) + ')';
+            categories.push(cats);
+            // console.log(cats);
+        @endif
+    @endif
+    @if (str_contains($graph['type'], 'rapport_details_groupe'))
+        @if (str_contains($graph["content"]["label"], 'Anchor'))
+            obj["name"] = @json($graph["content"]["title"]);
+            obj["data"] = [5, 5, 4.3, 7.1];
+            obj["type"] = 'column';
+            data.push(obj);
+            obj = {};
+            // console.log("data - " , data);
+        @endif
+        @endif;
+@endforeach
+
     Highcharts.chart('chart', {
-
         chart: {
-            polar: true,
-            type: 'line'
+            renderTo: 'container',
+            polar: true
         },
-
-        // accessibility: {
-        //   description: 'A spiderweb chart compares the allocated budget against actual spending within an organization. The spider chart has six spokes. Each spoke represents one of the 6 departments within the organization: sales, marketing, development, customer support, information technology and administration. The chart is interactive, and each data point is displayed upon hovering. The chart clearly shows that 4 of the 6 departments have overspent their budget with Marketing responsible for the greatest overspend of $20,000. The allocated budget and actual spending data points for each department are as follows: Sales. Budget equals $43,000; spending equals $50,000. Marketing. Budget equals $19,000; spending equals $39,000. Development. Budget equals $60,000; spending equals $42,000. Customer support. Budget equals $35,000; spending equals $31,000. Information technology. Budget equals $17,000; spending equals $26,000. Administration. Budget equals $10,000; spending equals $14,000.'
-        // },
-
+        credits: { enabled: false },
+       tooltip: { enabled: false },
         title: {
-            text: 'Budget vs spending',
-            x: -80
-        },
-
-        pane: {
-            size: '80%'
-        },
-
-        xAxis: {
-            categories: ['Sales', 'Marketing', 'Development', 'Customer Support',
-                'Information Technology', 'Administration'
-            ],
-            tickmarkPlacement: 'on',
-            lineWidth: 0
-        },
-
-        yAxis: {
-            gridLineInterpolation: 'polygon',
-            lineWidth: 0,
-            min: 0
-        },
-
-        tooltip: {
-            shared: true,
-            pointFormat: '<span style="color:{series.color}">{series.name}: <b>${point.y:,.0f}</b><br/>'
-        },
-
-        legend: {
-            align: 'bottom',
-            verticalAlign: 'bottom',
-            x: 0,
-            y: 0
-        },
-
-        series: [{
-            name: 'Allocated Budget',
-            data: [43000, 19000, 60000, 35000, 17000, 10000],
-            pointPlacement: 'on'
-        }, {
-            name: 'Actual Spending',
-            data: [50000, 39000, 42000, 31000, 26000, 14000],
-            pointPlacement: 'on'
-        }],
-
-        responsive: {
-            rules: [{
-                condition: {
-                    maxWidth: 500
-                },
-                chartOptions: {
-                    legend: {
-                        align: 'center',
-                        verticalAlign: 'bottom',
-                        layout: 'horizontal'
-                    },
-                    pane: {
-                        size: '100%'
-                    }
-                }
-            }]
+            text: ''
+        },plotOptions: {
+    series: {
+        states: {
+            inactive: {
+                opacity: 1
+            }
         }
+    }
+},
+        xAxis: {
+                categories: categories,
+                // tickmarkPlacement: 'on',
+                gridLineWidth: 1,
+                lineWidth: 0
+            },
+        yAxis: {
+                // gridLineInterpolation: 'polygon',
+                lineWidth: 0,
+                gridLineWidth: 1,
+                min: 0
+            },
 
+        series: data
     });
 
-    Highcharts.chart('chart2', {
-
-        chart: {
-            polar: true,
-            type: 'line'
-        },
-
-        // accessibility: {
-        //   description: 'A spiderweb chart compares the allocated budget against actual spending within an organization. The spider chart has six spokes. Each spoke represents one of the 6 departments within the organization: sales, marketing, development, customer support, information technology and administration. The chart is interactive, and each data point is displayed upon hovering. The chart clearly shows that 4 of the 6 departments have overspent their budget with Marketing responsible for the greatest overspend of $20,000. The allocated budget and actual spending data points for each department are as follows: Sales. Budget equals $43,000; spending equals $50,000. Marketing. Budget equals $19,000; spending equals $39,000. Development. Budget equals $60,000; spending equals $42,000. Customer support. Budget equals $35,000; spending equals $31,000. Information technology. Budget equals $17,000; spending equals $26,000. Administration. Budget equals $10,000; spending equals $14,000.'
-        // },
-
-        title: {
-            text: 'Budget vs spending',
-            x: -80
-        },
-
-        pane: {
-            size: '80%'
-        },
-
-        xAxis: {
-            categories: ['Sales', 'Marketing', 'Development', 'Customer Support',
-                'Information Technology', 'Administration'
-            ],
-            tickmarkPlacement: 'on',
-            lineWidth: 0
-        },
-
-        yAxis: {
-            gridLineInterpolation: 'polygon',
-            lineWidth: 0,
-            min: 0
-        },
-
-        tooltip: {
-            shared: true,
-            pointFormat: '<span style="color:{series.color}">{series.name}: <b>${point.y:,.0f}</b><br/>'
-        },
-
-        legend: {
-            align: 'bottom',
-            verticalAlign: 'bottom',
-            x: 0,
-            y: 0
-        },
-
-        series: [{
-            name: 'Allocated Budget',
-            data: [43000, 19000, 60000, 35000, 17000, 10000],
-            pointPlacement: 'on'
-        }, {
-            name: 'Actual Spending',
-            data: [50000, 39000, 42000, 31000, 26000, 14000],
-            pointPlacement: 'on'
-        }],
-
-        responsive: {
-            rules: [{
-                condition: {
-                    maxWidth: 600
-                },
-                chartOptions: {
-                    legend: {
-                        align: 'center',
-                        verticalAlign: 'bottom',
-                        layout: 'horizontal'
-                    },
-                    pane: {
-                        size: '70%'
-                    }
-                }
-            }]
-        }
-
-    });
 
 </script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
