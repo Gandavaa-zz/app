@@ -550,8 +550,7 @@ h3 {
 
 .box-content {
     padding: 10px;
-    background-color: #ececec;
-    background-color: #ececec;
+    background-color: #fff;
 }
 
 .ec-title {
@@ -634,7 +633,7 @@ h3 {
 .box-tool-bottom {
     border-width: 0;
     border-radius: .25rem !important;
-    box-shadow: 0 0.46875rem 2.1875rem rgb(4 9 20 / 3%), 0 0.9375rem 1.40625rem rgb(4 9 20 / 3%), 0 0.25rem 0.53125rem rgb(4 9 20 / 5%), 0 0.125rem 0.1875rem rgb(4 9 20 / 3%);
+    /* box-shadow: 0 0.46875rem 2.1875rem rgb(4 9 20 / 3%), 0 0.9375rem 1.40625rem rgb(4 9 20 / 3%), 0 0.25rem 0.53125rem rgb(4 9 20 / 5%), 0 0.125rem 0.1875rem rgb(4 9 20 / 3%); */
 }
 
 .box-desc {
@@ -730,4 +729,27 @@ h3 {
     background-color: #D3D3D3;
     vertical-align: middle;
     width: 3%
+}
+
+.img-calibration .gausse {
+    margin: 0 auto;
+    background: url(/assets/img/bg-gausse-web.png) no-repeat;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-position: 0 0;
+    width: 500px;
+    height: 169px;
+    direction: initial !important;
+}
+
+.img-calibration .pointer-gausse {
+    position: relative;
+    background: url(/assets/img/pointer-gausse-web.png) no-repeat;
+    background-size: 100%;
+    background-position: 0 bottom;
+    background-repeat: no-repeat;
+    width: 15px;
+    height: 169px;
+    top: 0;
 }

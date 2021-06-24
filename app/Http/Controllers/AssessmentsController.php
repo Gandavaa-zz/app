@@ -18,7 +18,7 @@ class AssessmentsController extends Controller
     public function index(Request $request)
     {
         // return $request->test_id;
-        $tests = Test::all();
+        $tests = Test::where('priority', 1)->get();
         // Хэрвээ test_id шүүх болон candidate_id-р шүүнэ.
         if ($request->test_id){
             $response = Http::withHeaders([
