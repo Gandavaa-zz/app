@@ -24,7 +24,8 @@ class AssessmentsController extends Controller
             $response = Http::withHeaders([
                 'WWW-Authenticate'=> $this->token
             ])->get('https://app.centraltest.com/customer/REST/assessment/paginate/completed/json',  [
-                'test_id' => $request->test_id
+                'test_id' => $request->test_id,
+                'per_page' => 100
             ]);
         }else {
             $response = Http::withHeaders([

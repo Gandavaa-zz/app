@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Translation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ReportsController extends Controller
 {
+
+    protected $participant ='';
+
     protected $data = array();
 
     public function result($assessment_id = null)
@@ -107,6 +112,7 @@ class ReportsController extends Controller
         $comments = array();
         $xml = xml_decode($contents);
 
+        // return $xml;
         // general
         $data['general'] = [
             'test_id' => $xml["elements"]["test_tests"]["test_test"]["@attributes"]["id"],
@@ -118,7 +124,9 @@ class ReportsController extends Controller
             'passed_date' =>$xml['params']['date_passation_fin']
         ];
 
-                // test_facteur
+        $this->participant = $data['general']['participant_name'];
+
+        // test_facteur
         foreach ($xml['elements']['test_facteurs']['test_facteur'] as $value) {
             $data['test_factors'][] =
                 [
@@ -158,12 +166,16 @@ class ReportsController extends Controller
         ];
         // parties
         foreach ($xml['parties']['partie'] as $value) {
+
             if (isset($value["domaines"]["domaine"])) {
-                foreach ($value["domaines"]["domaine"] as $domains) {
+
+                foreach ($value["domaines"] as $domains) {
+
                     if (isset($domains["cibles_secondaires"]) && is_array($domains["cibles_secondaires"]["cibles_secondaire"])) {
-                        foreach ($domains["cibles_secondaires"]["cibles_secondaire"] as $secondary_target) {
-                            // dd($domains["cibles_secondaires"]["cibles_secondaire"]);
-                            $comments[]  = [
+
+                        foreach ($domains["cibles_secondaires"] as $secondary_target) {
+
+                            $comments  = [
                                 'color' => isset($secondary_target["color"]) ? $secondary_target["color"] : null,
                                 "score" =>  isset($secondary_target["score"]) ? $secondary_target["score"] : 0,
                                 "comment" =>  $this->getMNText(isset($secondary_target["contenus"]["contenu"]["commentaire_perso"]) ? $secondary_target["contenus"]["contenu"]["commentaire_perso"] : null),
@@ -171,7 +183,7 @@ class ReportsController extends Controller
                         }
                     }
                     if (isset( $domains["@attributes"])){
-                        $domain[] = [
+                        $domain = [
                             'id' => $domains["@attributes"]["id"],
                             'label' => $this->getMNText($domains["contenus"]["contenu"]["libelle"]),
                             "contents" =>  $comments
@@ -220,20 +232,42 @@ class ReportsController extends Controller
             //setting all values to variable $data
             $data["parties"] = $party;
         }
+        //return $data;
+        // return $data;
+
         // $data = $this->JSONMapper($data);
         return view('layouts.reports.'.$data['general']['test_id'], compact('data'));
     }
 
     public function getMNText($str)
     {
-        // dd($str);
-        $text = Translation::select('MN')->where('EN', '=', $str)->value("MN");
-        // dd($text);
-        if (!$text) {
+        // before find text replace user name by $participant
+
+         if(is_array($str)){
+
+            if(sizeof($str)>0)
+                $str = implode('', $str);
+            else
+                $str ='';
+         }
+            $var = "'s";
+            $string = Str::replaceFirst($this->participant, '$', $str);
+            $newparticipant = $this->participant .  $var;
+            $replaced = Str::replaceFirst($newparticipant, '$', $string);
+
+            $text = Translation::select('MN')->where('EN', '=', $replaced)->value("MN");
+
+            // dd($text);
+            if (!$text) {
+                return $text;
+            }
+
             return $str;
-        }
+        // }
+        // $position = strpos($str, $participant);
+        // echo $position;
         //db ruu duudaj hargalzah text-g bucaana
-        return $text;
+
     }
 
     // getdata
@@ -296,9 +330,9 @@ class ReportsController extends Controller
         // parties
         foreach ($xml['parties']['partie'] as $value) {
             if (isset($value["domaines"]["domaine"])) {
-                foreach ($value["domaines"]["domaine"] as $domains) {
+                foreach ($value["domaines"] as $domains) {
                     if (isset($domains["cibles_secondaires"]) && is_array($domains["cibles_secondaires"]["cibles_secondaire"])) {
-                        foreach ($domains["cibles_secondaires"]["cibles_secondaire"] as $secondary_target) {
+                        foreach ($domains["cibles_secondaires"] as $secondary_target) {
                             // dd($domains["cibles_secondaires"]["cibles_secondaire"]);
                             $comments[]  = [
                                 'color' => isset($secondary_target["color"]) ? $secondary_target["color"] : null,
