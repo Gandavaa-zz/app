@@ -249,18 +249,6 @@ class ReportsController extends Controller
 
     public function getMNText($str)
     {
-        // before find text replace user name by $participant
-        //  if(is_array($str)){
-        //     if(sizeof($str)>0)
-        //         $str = implode(' ', $str);
-        //     else
-        //         $str ='';
-        //  }
-        // $var = "'s";
-        // $string = Str::replaceFirst($this->participant, '$', $str);
-        // $newparticipant = $this->participant .  $var;
-        // $replaced = Str::replaceFirst($newparticipant, '$', $string);
-
         $text = Translation::select('MN')->where('EN', '=', $str)->value("MN");
         // dd($text);
         if (!$text) {

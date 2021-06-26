@@ -106,7 +106,7 @@ class TranslationsController extends Controller
                     'test_id' => $test_id,
                 ]);
         }
-        return redirect()->route('translations.add')->with('success', 'Монгол орчуулгыг амжилттай бүртгэлээ!');
+        return back()->with('success', 'Монгол орчуулгыг амжилттай бүртгэлээ!');
     }
 
     public function add(Request $request)
@@ -114,18 +114,14 @@ class TranslationsController extends Controller
         $test_id = $request->test_id;
         // dd($test_id);
         $inserted = $this->getJSON($test_id);
-        if ($inserted) {
-            // dd($inserted);
-            $data = Translation::where('MN', null)->limit(10)->get();
-            $test = Test::where('id', $test_id)->get();
-            return view('layouts.translation.addTranslations', compact('data'))->with(['test' => $test]);
-        }
-
-        return redirect()->back()->with('success', 'Орчуулга оруулах файл олдсонгүй');
+        $data = Translation::where('MN', null)->limit(10)->get();
+        $test = Test::where('id', $test_id)->get();
+        return view('layouts.translation.addTranslations', compact('data'))->with(['test' => $test]);
     }
 
     public function getJSON($test_id)
     {
+        // dd($test_id);
         // $isExist = Translation::where('test_id', '=', $test_id)->first();
         $contents = null;
         $tests = Storage::allFiles('/assets/tests/' . $test_id);
@@ -206,14 +202,14 @@ class TranslationsController extends Controller
                         $translation->save();
                     }
                 };
-                //moving inserted tests to the folder ->inserted_tests
-                // if (Storage::exists("/assets/inserted_tests/$test_id")) {
-                //     Storage::put("assets/inserted_tests/{$test_id}/" . $files[$i] . ".xml", $contents);
-                //     Storage::delete("assets/tests/{$test_id}/" . $files[$i] . ".xml");
-                // } else {
-                //     // dd("im called");
-                //     Storage::move("assets/tests/{$test_id}", "assets/inserted_tests/{$test_id}");
-                // }
+                // moving inserted tests to the folder ->inserted_tests
+                if (Storage::exists("/assets/inserted_tests/$test_id")) {
+                    Storage::put("assets/inserted_tests/{$test_id}/" . $files[$i] . ".xml", $contents);
+                    Storage::delete("assets/tests/{$test_id}/" . $files[$i] . ".xml");
+                } else {
+                    // dd("im called");
+                    Storage::move("assets/tests/{$test_id}", "assets/inserted_tests/{$test_id}");
+                }
             }
             return true;
         }
@@ -231,10 +227,9 @@ class TranslationsController extends Controller
     public function create()
     {
 
-
         $testIDs = array_map('basename', Storage::directories("/assets/tests/"));
         $files = array();
-        // dd($files);
+
         $assessments = Test::select("*")
             ->whereIn('id', $testIDs)
             ->get();
