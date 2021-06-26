@@ -167,8 +167,6 @@ class ReportsController extends Controller
 
                 foreach ($value["domaines"]["domaine"] as $domains) {
 
-                    // dd($domains);
-
                     if (isset($domains["cibles_secondaires"]) && is_array($domains["cibles_secondaires"]["cibles_secondaire"])) {
 
                         foreach ( $domains["cibles_secondaires"]["cibles_secondaire"] as $secondary_target) {
@@ -179,15 +177,25 @@ class ReportsController extends Controller
                                 "comment" =>  $this->getMNText(isset($secondary_target["contenus"]["contenu"]["commentaire_perso"]) ? $secondary_target["contenus"]["contenu"]["commentaire_perso"] : null),
                             ];
                         }
+                    }elseif(isset( $domains['cibles_secondaire'])){
+                        $comments[]  = [
+                            'color' => isset($domains["cibles_secondaire"]['color']) ? $domains["cibles_secondaire"]['color'] : null,
+                            "score" =>  isset($domains["cibles_secondaire"]["score"]) ? $domains["cibles_secondaire"]["score"] : 0,
+                            "comment" =>  $this->getMNText(isset($domains["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"]) ?
+                            $domains["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"] : null),
+                        ];
                     }
-                    if (isset( $domains["@attributes"])){
+
+                     if (isset($comments)){
                         $domain[] = [
-                            'id' => $domains["@attributes"]["id"],
-                            'label' => $this->getMNText($domains["contenus"]["contenu"]["libelle"]),
+                            'id' => isset($domains["@attributes"]["id"]) ? $domains["@attributes"]["id"] : null,
+                            'label' => isset($domains["contenus"]["contenu"]["libelle"]) ? $this->getMNText($domains["contenus"]["contenu"]["libelle"]) : null,
                             "contents" =>  $comments
                         ];
                         unset($comments);
-                    }
+                     }
+
+
                 }
             }
             $adequates = [];

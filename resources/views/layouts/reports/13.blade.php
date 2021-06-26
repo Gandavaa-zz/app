@@ -54,6 +54,8 @@
         <!-- sidebar-wrapper  -->
         <main class="page-content">
             <div class="main">
+
+
                 <div class="text-center">
                     <img src="{{$data['general']['logo']}}" alt="{{$data['general']['label']}} " class="img-responsive">
                     <hr />
@@ -87,7 +89,8 @@
                                     </div>
                                     <div class="box gray mb-2">
                                         <div class="box-content ec-first-border-color"      style="background-color: #EEEEEE">
-                                            {{ $item[1]["content"]["domain"]["contents"]["comment"]}}
+                                            {!! $item[1]["content"]["domain"][1]["contents"][0]["comment"] !!}
+
                                         </div>
 
                                     </div>
@@ -228,85 +231,7 @@
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 <script>
-    var categories = [];
-    var data = [];
-    var scores = [{}];
-    var cats;
-    var obj = {};
-    var t = [];
-    var index = 0;
 
-    @foreach($item as $key => $graph)
-    @if(str_contains($graph['type'], 'rapport_details_facteur'))
-    @switch($graph["id"])
-    @case(172)
-    scores = (@json($graph["params"]["score"]));
-    @case(173)
-    scores = (@json($graph["params"]["score"]));
-    @case(174)
-    scores = (@json($graph["params"]["score"]));
-    @endswitch
-
-    console.log("Scores 0", scores);
-
-    @if(str_contains($graph["content"]["label"], 'Anchor'))
-    cats = @json($graph["content"]["title"]);
-    cats = cats + ' (' + @json($graph["params"]["score"]) + ')';
-    categories.push(cats);
-    // console.log(cats);
-    @endif
-    @endif
-    @if(str_contains($graph['type'], 'rapport_details_groupe'))
-    @if(str_contains($graph["content"]["label"], 'Anchor'))
-    obj["name"] = @json($graph["content"]["title"]);
-    obj["data"] = [5, 5, 4.3, 7.1];
-    obj["type"] = 'column';
-    data.push(obj);
-    obj = {};
-    console.log("data - ", data);
-    @endif
-    @endif;
-    @endforeach
-
-    Highcharts.chart('chart', {
-        chart: {
-            renderTo: 'container',
-            polar: true
-        },
-
-        credits: {
-            enabled: false
-        },
-        tooltip: {
-            enabled: false
-        },
-        title: {
-            text: 'Test'
-        },
-        plotOptions: {
-            series: {
-                states: {
-                    inactive: {
-                        opacity: 1
-                    }
-                }
-            }
-        },
-        xAxis: {
-            categories: categories,
-            // tickmarkPlacement: 'on',
-            gridLineWidth: 1,
-            lineWidth: 0
-        },
-        yAxis: {
-            // gridLineInterpolation: 'polygon',
-            lineWidth: 0,
-            gridLineWidth: 1,
-            min: 0
-        },
-
-        series: data
-    });
 
 </script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
