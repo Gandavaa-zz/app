@@ -130,14 +130,14 @@ class TranslationsController extends Controller
         foreach ($tests as $file) {
             $files[] = basename($file, ".xml");
         }
-        $data = array();
         $texts = array();
+        $candidate_name = "";
         // 1 torliin test_id-tai buh testeer loop hiij DB ruu VALUES hiij baina
         for ($i = 0; $i < count($files); $i++) {
 
             $contents = Storage::get("assets/tests/{$test_id}/" . $files[$i] . ".xml");
             $xml = xml_decode($contents);
-
+            $candidate_name = $xml["noyau_utilisateur_info"]["nom"] . " " . $xml["noyau_utilisateur_info"]["prenom"];
             //TEST FACTORS - GRAPH
             foreach ($xml['elements']['test_facteurs']['test_facteur'] as $value) {
                 array_push($texts, $value["contenus"]["contenu"]["libelle"]);
@@ -178,6 +178,8 @@ class TranslationsController extends Controller
             $xml = preg_replace("/\r|\n/", "", $newArray);
             $xml = array_filter($xml);
             $xml = array_unique($xml);
+            $xml = $this->replace($candidate_name, $xml);
+            dd($xml);
             foreach ($xml as $row) {
                 $isExist = Translation::where('EN', '=', $row)->first();
                 if (!$isExist) {
@@ -197,6 +199,12 @@ class TranslationsController extends Controller
             }
         }
         return true;
+    }
+
+    public function replace($candidate_name, $content)
+    {
+        $replaced = str_replace($candidate_name, "$", $content);
+        return $replaced;
     }
 
     public function create()

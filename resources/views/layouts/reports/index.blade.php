@@ -323,6 +323,7 @@
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 <script>
+
 var categories = [];
 var data = [];
 var scores = [{}];
@@ -333,19 +334,11 @@ var index = 0;
 
 @foreach($data["parties"]["party"] as $key => $graph)
     @if (str_contains($graph['type'], 'rapport_details_facteur'))
-    @switch($graph["id"])
-            @case(172)
-            scores = (@json($graph["params"]["score"]));
-            @case(173)
-            scores = (@json($graph["params"]["score"]));
-            @case(174)
-            scores = (@json($graph["params"]["score"]));
-        @endswitch
             console.log("Scores 0" , scores);   
         
         @if (str_contains($graph["content"]["label"], 'Anchor'))
-            cats= @json($graph["content"]["title"]);
-            cats = cats + ' (' + @json($graph["params"]["score"]) + ')';
+            cats= @json($graph["content"]["title"]);i   
+            cats = cats + ' (' +  @json($graph["params "]["score"]) + ')';
             categories.push(cats);
             // console.log(cats);
         @endif
@@ -359,7 +352,7 @@ var index = 0;
             obj = {};
             // console.log("data - " , data);
         @endif
-        @endif;
+    @endif;
 @endforeach
 
     Highcharts.chart('chart', {
