@@ -1,0 +1,182 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+
+<body>
+    <div class="page-wrapper chiller-theme toggled">
+        <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+            <i class="fas fa-bars"></i>
+        </a>
+        <nav id="sidebar" class="sidebar-wrapper">
+            <div class="sidebar-brand">
+                <a href="#">United Management Consulting</a>
+                <div id="close-sidebar">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+
+            <div class="sidebar-header">
+                <div class="user-pic">
+                    <img class="img-responsive img-rounded"
+                        src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg"
+                        alt="User picture">
+                </div>
+                <div class="user-info">
+                    <span class="user-name">{{$data['general']['participant_name']}}
+                        <strong>E</strong>
+                    </span>
+                    <span class="user-role">Administrator</span>
+                </div>
+            </div>
+            <div class="sidebar-content">
+                <!-- sidebar-search  -->
+                <div class="sidebar-menu">
+                    <ul>
+                        <div class="header-menu">
+                            <span>Reports</span>
+                        </div>
+                        @foreach($data["parties"]["party"] as $menu)
+                        @if (str_contains($menu['type'], 'ancre'))
+                        <li>
+                            <a href="#{{$menu['content']['title']}}">
+                                <span> {{$menu["content"]["title"]}} </span>
+                            </a>
+                        </li>
+                        @endif
+                        @endforeach
+                    </ul>
+                </div>
+                <!-- sidebar-menu  -->
+            </div>
+        </nav>
+        <!-- sidebar-wrapper  -->
+        <main class="page-content">
+            <div class="main">
+                <div class="text-center">
+                    <img src="{{$data['general']['logo']}}" alt="{{$data['general']['label']}} " class="img-responsive">
+                    <h6>Test taken on the 13th of September 2019 in 14 min 24 sec</h6>
+                    <hr />
+                </div>
+                <div class="row">
+                   @php $isOpen=0 @endphp
+                    @foreach ($data["parties"]["party"] as $data)
+
+                        @if (str_contains($data['type'], 'ancre'))
+                        <h2 class="card-title">{{ $data["params"]["menuNumber"] }} - {{$data["content"]["title"]}}</h2>
+                        @endif
+
+                        @if( isset($data['params']['ordre']) && $data['params']['ordre'] ==1 )
+                        <div class="col-md-12" id="comments">
+                            <div class="card">
+                                <div class="card-header .bg-secondary">
+                                    {{ $data["content"]["sub_title"]}}
+                                </div>
+                                <div class="card-body">
+                                @endif
+
+
+                        @if( isset($data['params']['ordre']) && $data['params']['ordre'] >1 )
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12" id="comments">
+                            <div class="card">
+                            <div class="card-header .bg-secondary">
+                                {{ $data["content"]["sub_title"]}}
+                            </div>
+
+                        @endif
+                        <!-- indicators -->
+
+
+
+                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+
+                </div>
+
+            </div>
+    </div>
+
+    <footer class="text-center footer">
+        <div class="mb-2">
+            CDC Copyright
+        </div>
+    </footer>
+    </div>
+    </main>
+    <!-- page-content" -->
+    </div>
+    <!-- page-wrapper -->
+
+</body>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts-more.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script>
+    var categories = [];
+    var data = [];
+    var scores = [{}];
+    var cats;
+    var obj = {};
+    var t = [];
+    var index = 0;
+
+
+
+    Highcharts.chart('chart', {
+        chart: {
+            renderTo: 'container',
+            polar: true
+        },
+
+        credits: {
+            enabled: false
+        },
+        tooltip: {
+            enabled: false
+        },
+        title: {
+            text: 'Test'
+        },
+        plotOptions: {
+            series: {
+                states: {
+                    inactive: {
+                        opacity: 1
+                    }
+                }
+            }
+        },
+        xAxis: {
+            categories: categories,
+            // tickmarkPlacement: 'on',
+            gridLineWidth: 1,
+            lineWidth: 0
+        },
+        yAxis: {
+            // gridLineInterpolation: 'polygon',
+            lineWidth: 0,
+            gridLineWidth: 1,
+            min: 0
+        },
+
+        series: data
+    });
+
+</script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/esm/popper.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.js">
+</script>
+<script type="text/javascript" src="{{ asset('js/custom.js') }}"></script>
+
+
+</html>

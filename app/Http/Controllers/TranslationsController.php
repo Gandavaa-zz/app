@@ -115,10 +115,13 @@ class TranslationsController extends Controller
         // dd($test_id);
         $inserted = $this->getJSON($test_id);
         if ($inserted) {
+            // dd($inserted);
             $data = Translation::where('MN', null)->limit(10)->get();
             $test = Test::where('id', $test_id)->get();
             return view('layouts.translation.addTranslations', compact('data'))->with(['test' => $test]);
         }
+
+        return redirect()->back()->with('success', 'Орчуулга оруулах файл олдсонгүй');
     }
 
     public function getJSON($test_id)
@@ -133,76 +136,94 @@ class TranslationsController extends Controller
         $texts = array();
         $candidate_name = "";
         // 1 torliin test_id-tai buh testeer loop hiij DB ruu VALUES hiij baina
-        for ($i = 0; $i < count($files); $i++) {
+        if ($files) {
+            for ($i = 0; $i < count($files); $i++) {
 
-            $contents = Storage::get("assets/tests/{$test_id}/" . $files[$i] . ".xml");
-            $xml = xml_decode($contents);
-            $candidate_name = $xml["noyau_utilisateur_info"]["nom"] . " " . $xml["noyau_utilisateur_info"]["prenom"];
-            //TEST FACTORS - GRAPH
-            foreach ($xml['elements']['test_facteurs']['test_facteur'] as $value) {
-                array_push($texts, $value["contenus"]["contenu"]["libelle"]);
-            }
-
-            // TEST GROUP FACTORS
-            foreach ($xml['elements']['test_groupe_facteurs']['test_groupe_facteur'] as $value) {
-                array_push($texts, $value["contenus"]["contenu"]["libelle"]);
-            }
-
-            // test_ref_adequation_profil
-            foreach ($xml['elements']['test_ref_adequation_profils']['test_ref_adequation_profil'] as $value) {
-                array_push($texts, isset($value["contenus"]["contenu"]["libelle"]) ? $value["contenus"]["contenu"]["libelle"] : null);
-                array_push($texts, isset($value["contenus"]["contenu"]["description"]) ? $value["contenus"]["contenu"]["description"] : null);
-                // array_push($texts, isset($value["contenus"]["contenu"]["description_longue"]) ? $value["contenus"]["contenu"]["description_longue"] : null);
-            }
-
-            // PARTIES
-            foreach ($xml['parties']['partie'] as $value) {
-                array_push($texts, isset($value["contenus"]["contenu"]["introduction"]) ? $value["contenus"]["contenu"]["introduction"] : null);
-                array_push($texts, isset($value["contenus"]["contenu"]["description_courte"]) ? $value["contenus"]["contenu"]["description_courte"] : null);
-                array_push(
-                    $texts,
-                    $value["contenus"]["contenu"]["titre"],
-                    $value["contenus"]["contenu"]["libelle"],
-                    isset($value["contenus"]["contenu"]["sous_titre"]) ? $value["contenus"]["contenu"]["sous_titre"] : null,
-                    isset($value["domaines"]["domaine"]["contenus"]["contenu"]["libelle"]) ? $value["domaines"]["domaine"]["contenus"]["contenu"]["libelle"] : null
-                );
-
-                array_push($texts, isset($value["domaines"]["domaine"]["cibles_secondaires"]['cibles_secondaire']["contenus"]["contenu"]["commentaire_perso"]) ?
-                    $value["domaines"]["domaine"]["cibles_secondaires"]['cibles_secondaire']["contenus"]["contenu"]["commentaire_perso"] : null);
-            }
-
-            array_map('strip_tags', $texts);
-            $newArray = array_map(function ($v) {
-                return trim(strip_tags($v));
-            }, $texts);
-            $xml = preg_replace("/\r|\n/", "", $newArray);
-            $xml = array_filter($xml);
-            $xml = array_unique($xml);
-            $xml = $this->replace($candidate_name, $xml);
-            dd($xml);
-            foreach ($xml as $row) {
-                $isExist = Translation::where('EN', '=', $row)->first();
-                if (!$isExist) {
-                    $translation = new Translation();
-                    $translation->test_id = $test_id;
-                    $translation->EN = $row;
-                    $translation->save();
+                $contents = Storage::get("assets/tests/{$test_id}/" . $files[$i] . ".xml");
+                $xml = xml_decode($contents);
+                $candidate_name = $xml["noyau_utilisateur_info"]["prenom"] . " " . $xml["noyau_utilisateur_info"]["nom"];
+                // TEST FACTORS - GRAPH
+                foreach ($xml['elements']['test_facteurs']['test_facteur'] as $value) {
+                    array_push($texts, $value["contenus"]["contenu"]["libelle"]);
                 }
-            };
-            //moving inserted tests to the folder ->inserted_tests
-            if (Storage::exists("/assets/inserted_tests/$test_id")) {
-                Storage::put("assets/inserted_tests/{$test_id}/" . $files[$i] . ".xml", $contents);
-                Storage::delete("assets/tests/{$test_id}/" . $files[$i] . ".xml");
-            } else {
-                // dd("im called");
-                Storage::move("assets/tests/{$test_id}", "assets/inserted_tests/{$test_id}");
+
+                // TEST GROUP FACTORS
+                foreach ($xml['elements']['test_groupe_facteurs']['test_groupe_facteur'] as $value) {
+                    array_push($texts, $value["contenus"]["contenu"]["libelle"]);
+                }
+
+                // test_ref_adequation_profil
+                foreach ($xml['elements']['test_ref_adequation_profils']['test_ref_adequation_profil'] as $value) {
+                    array_push($texts, isset($value["contenus"]["contenu"]["libelle"]) ? $value["contenus"]["contenu"]["libelle"] : null);
+                    array_push($texts, isset($value["contenus"]["contenu"]["description"]) ? $value["contenus"]["contenu"]["description"] : null);
+                    // array_push($texts, isset($value["contenus"]["contenu"]["description_longue"]) ? $value["contenus"]["contenu"]["description_longue"] : null);
+                }
+                // PARTIES
+                foreach ($xml['parties']['partie'] as $value) {
+                    array_push($texts, isset($value["contenus"]["contenu"]["introduction"]) ? $value["contenus"]["contenu"]["introduction"] : null);
+                    array_push($texts, isset($value["contenus"]["contenu"]["description_courte"]) ? $value["contenus"]["contenu"]["description_courte"] : null);
+                    array_push(
+                        $texts,
+                        $value["contenus"]["contenu"]["titre"],
+                        $value["contenus"]["contenu"]["libelle"],
+                        isset($value["contenus"]["contenu"]["sous_titre"]) ? $value["contenus"]["contenu"]["sous_titre"] : null,
+                        isset($value["domaines"]["domaine"]["contenus"]["contenu"]["libelle"]) ? $value["domaines"]["domaine"]["contenus"]["contenu"]["libelle"] : null
+                    );
+
+                    if (isset($value["domaines"]["domaine"])) {
+                        foreach ($value["domaines"]["domaine"] as $domains) {
+                            if (isset($domains["cibles_secondaires"]) && is_array($domains["cibles_secondaires"]["cibles_secondaire"])) {
+                                foreach ($domains["cibles_secondaires"]["cibles_secondaire"] as $comments) {
+                                    array_push($texts, isset($comments["contenus"]["contenu"]["commentaire_perso"]) ?
+                                        $comments["contenus"]["contenu"]["commentaire_perso"] : null);
+                                }
+                            } else {
+                                array_push($texts, isset($value["domaines"]["domaine"]["cibles_secondaires"]['cibles_secondaire']["contenus"]["contenu"]["commentaire_perso"]) ?
+                                    $value["domaines"]["domaine"]["cibles_secondaires"]['cibles_secondaire']["contenus"]["contenu"]["commentaire_perso"] : null);
+                            }
+                        }
+                    }
+                }
+
+                // dd($texts);
+                array_map('strip_tags', $texts);
+                $newArray = array_map(function ($v) {
+                    return trim(strip_tags($v));
+                }, $texts);
+                $xml = preg_replace("/\r|\n/", "", $newArray);
+                $xml = array_filter($xml);
+                $xml = array_unique($xml);
+                $xml = $this->replaceName($candidate_name, $xml);
+                //pushing candidate name into array
+                array_push($xml, $candidate_name);
+                // dd($xml);
+                foreach ($xml as $row) {
+                    $isExist = Translation::where('EN', '=', $row)->first();
+                    if (!$isExist) {
+                        $translation = new Translation();
+                        $translation->test_id = $test_id;
+                        $translation->EN = $row;
+                        $translation->save();
+                    }
+                };
+                //moving inserted tests to the folder ->inserted_tests
+                // if (Storage::exists("/assets/inserted_tests/$test_id")) {
+                //     Storage::put("assets/inserted_tests/{$test_id}/" . $files[$i] . ".xml", $contents);
+                //     Storage::delete("assets/tests/{$test_id}/" . $files[$i] . ".xml");
+                // } else {
+                //     // dd("im called");
+                //     Storage::move("assets/tests/{$test_id}", "assets/inserted_tests/{$test_id}");
+                // }
             }
+            return true;
         }
-        return true;
+        return false;
     }
 
-    public function replace($candidate_name, $content)
+    public function replaceName($candidate_name, $content)
     {
+        // dd($candidate_name);
+        // dd($content);
         $replaced = str_replace($candidate_name, "$", $content);
         return $replaced;
     }

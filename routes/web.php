@@ -44,6 +44,8 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::get('reports/groups/{assessment_id}', 'ReportsController@groups');
     Route::get('reports/referential/{assessment_id}', 'ReportsController@referential');
 
+    Route::get('reports/data/{assessment_id}', 'ReportsController@getData');
+
     Route::get('assessment/salesProfile/{assessment_id}', 'AssessmentsController@salesProfile');
     Route::resource('assessment', 'AssessmentsController');
 

@@ -1,5 +1,5 @@
 <html>
-
+<!-- SALES PROFILE View -->
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
@@ -206,8 +206,9 @@
                             </div>
 
                             @foreach($item[8]["content"]["domain"] as $detail)
+
                             <div class="group-header mt-4">
-                                {{ $detail['label']}}
+                                <h2>{{ $detail['label']}}</h2>
                             </div>
                                 @foreach ($detail['contents'] as $content)
                                 <div class="box gray mb-2">
@@ -216,6 +217,7 @@
                                     </div>
                                 </div>
                                 @endforeach
+
                             @endforeach
                         </div>
                     </div>
@@ -334,7 +336,6 @@
                                 </div>
 
                                 <div class="box mb-5">
-
                                     @if(isset($item[$i]['content']['commentaire_perso']))
                                     <div class="box-content bg-white">
                                         {!! $item[$i]["content"]["commentaire_perso"] !!}
@@ -391,25 +392,6 @@
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 <script>
-<<<<<<< HEAD
-
-var categories = [];
-var data = [];
-var scores = [{}];
-var cats;
-var obj = {};
-var t = [];
-var index = 0;
-
-@foreach($data["parties"]["party"] as $key => $graph)
-    @if (str_contains($graph['type'], 'rapport_details_facteur'))
-            console.log("Scores 0" , scores);   
-        
-        @if (str_contains($graph["content"]["label"], 'Anchor'))
-            cats= @json($graph["content"]["title"]);i   
-            cats = cats + ' (' +  @json($graph["params "]["score"]) + ')';
-            categories.push(cats);
-=======
     var categories = [];
     var data = [];
     var scores = [{}];
@@ -435,7 +417,6 @@ var index = 0;
                 cats = @json($graph["content"]["title"]);
                 cats = cats + ' (' + @json($graph["params"]["score"]) + ')';
                 categories.push(cats);
->>>>>>> c2e3c64c172c895cb350af8ddf3e5f3457f55cda
             // console.log(cats);
             @endif
      @endif
@@ -446,17 +427,10 @@ var index = 0;
             obj["type"] = 'column';
             data.push(obj);
             obj = {};
-<<<<<<< HEAD
-            // console.log("data - " , data);
-        @endif
-    @endif;
-@endforeach
-=======
             console.log("data - " , data);
             @endif
         @endif;
     @endforeach
->>>>>>> c2e3c64c172c895cb350af8ddf3e5f3457f55cda
 
     Highcharts.chart('chart', {
         chart: {
