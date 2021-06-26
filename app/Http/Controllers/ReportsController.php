@@ -106,12 +106,8 @@ class ReportsController extends Controller
         }
 
         $contents = Storage::get("assets/assessments/{$assessment_id}.xml");
-        $content = array();
-        $domain = array();
-        $party = array();
-        $comments = array();
+        $content = $domain = $party = $comments = array();
         $xml = xml_decode($contents);
-
         // return $xml;
         // general
         $data['general'] = [
@@ -169,11 +165,13 @@ class ReportsController extends Controller
 
             if (isset($value["domaines"]["domaine"])) {
 
-                foreach ($value["domaines"] as $domains) {
+                foreach ($value["domaines"]["domaine"] as $domains) {
+
+                    // dd($domains);
 
                     if (isset($domains["cibles_secondaires"]) && is_array($domains["cibles_secondaires"]["cibles_secondaire"])) {
 
-                        foreach ($domains["cibles_secondaires"] as $secondary_target) {
+                        foreach ( $domains["cibles_secondaires"]["cibles_secondaire"] as $secondary_target) {
 
                             $comments  = [
                                 'color' => isset($secondary_target["color"]) ? $secondary_target["color"] : null,
@@ -183,7 +181,7 @@ class ReportsController extends Controller
                         }
                     }
                     if (isset( $domains["@attributes"])){
-                        $domain = [
+                        $domain[] = [
                             'id' => $domains["@attributes"]["id"],
                             'label' => $this->getMNText($domains["contenus"]["contenu"]["libelle"]),
                             "contents" =>  $comments
@@ -232,41 +230,33 @@ class ReportsController extends Controller
             //setting all values to variable $data
             $data["parties"] = $party;
         }
-        //return $data;
-        // return $data;
 
-        // $data = $this->JSONMapper($data);
+        return $data;
+
         return view('layouts.reports.'.$data['general']['test_id'], compact('data'));
     }
 
     public function getMNText($str)
     {
         // before find text replace user name by $participant
+        //  if(is_array($str)){
+        //     if(sizeof($str)>0)
+        //         $str = implode(' ', $str);
+        //     else
+        //         $str ='';
+        //  }
+        // $var = "'s";
+        // $string = Str::replaceFirst($this->participant, '$', $str);
+        // $newparticipant = $this->participant .  $var;
+        // $replaced = Str::replaceFirst($newparticipant, '$', $string);
 
-         if(is_array($str)){
-
-            if(sizeof($str)>0)
-                $str = implode('', $str);
-            else
-                $str ='';
-         }
-            $var = "'s";
-            $string = Str::replaceFirst($this->participant, '$', $str);
-            $newparticipant = $this->participant .  $var;
-            $replaced = Str::replaceFirst($newparticipant, '$', $string);
-
-            $text = Translation::select('MN')->where('EN', '=', $replaced)->value("MN");
-
-            // dd($text);
-            if (!$text) {
-                return $text;
-            }
-
+        $text = Translation::select('MN')->where('EN', '=', $str)->value("MN");
+        // dd($text);
+        if (!$text) {
             return $str;
-        // }
-        // $position = strpos($str, $participant);
-        // echo $position;
-        //db ruu duudaj hargalzah text-g bucaana
+        }
+
+        return $text;
 
     }
 
@@ -332,7 +322,7 @@ class ReportsController extends Controller
             if (isset($value["domaines"]["domaine"])) {
                 foreach ($value["domaines"] as $domains) {
                     if (isset($domains["cibles_secondaires"]) && is_array($domains["cibles_secondaires"]["cibles_secondaire"])) {
-                        foreach ($domains["cibles_secondaires"] as $secondary_target) {
+                        foreach ( $domains["cibles_secondaires"]["cibles_secondaire"] as $secondary_target) {
                             // dd($domains["cibles_secondaires"]["cibles_secondaire"]);
                             $comments[]  = [
                                 'color' => isset($secondary_target["color"]) ? $secondary_target["color"] : null,
