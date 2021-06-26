@@ -173,7 +173,7 @@ class ReportsController extends Controller
 
                         foreach ( $domains["cibles_secondaires"]["cibles_secondaire"] as $secondary_target) {
 
-                            $comments  = [
+                            $comments[]  = [
                                 'color' => isset($secondary_target["color"]) ? $secondary_target["color"] : null,
                                 "score" =>  isset($secondary_target["score"]) ? $secondary_target["score"] : 0,
                                 "comment" =>  $this->getMNText(isset($secondary_target["contenus"]["contenu"]["commentaire_perso"]) ? $secondary_target["contenus"]["contenu"]["commentaire_perso"] : null),
@@ -231,8 +231,7 @@ class ReportsController extends Controller
             $data["parties"] = $party;
         }
 
-        return $data;
-
+        // return $data;
         return view('layouts.reports.'.$data['general']['test_id'], compact('data'));
     }
 
