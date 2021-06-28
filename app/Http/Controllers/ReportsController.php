@@ -123,28 +123,51 @@ class ReportsController extends Controller
 
         $this->participant = $data['general']['participant_name'];
 
-        // test_facteur
-        foreach ($xml['elements']['test_facteurs']['test_facteur'] as $value) {
-            $data['test_factors'][] =
-                [
-                    'id' => $value["@attributes"]["id"],
-                    'score' => $value["@attributes"]["score_brut"],
-                    'score_calc' => $value["@attributes"]["score_calcule"],
-                    'color' => $value["couleur"],
-                    'label' => $this->getMNText($value["contenus"]["contenu"]["libelle"]),
-                ];
-        }
+
         // test_groupe_facteur
+        $factor = [];
+
         foreach ($xml['elements']['test_groupe_facteurs']['test_groupe_facteur'] as $value) {
-            $data["test_group_factors"][] =
-                [
-                    'id' => $value["@attributes"]["id"],
-                    'score' => $value["@attributes"]["score_brut"],
-                    'color' => $value["couleur"],
-                    'score_calc' => $value["@attributes"]["score_calcule"],
-                    'label' => $this->getMNText($value["contenus"]["contenu"]["libelle"]),
-                ];
+            // test_facteur
+            foreach ($xml['elements']['test_facteurs']['test_facteur'] as $factors) {
+                //     $data['test_factors'][] =
+                //         [
+                //             'id' => $factors["@attributes"]["id"],
+                //             'score' => $factors["@attributes"]["score_brut"],
+                //             'score_calc' => $factors["@attributes"]["score_calcule"],
+                //             'group_id' => $factors["@attributes"]["test_groupe_facteur_id"],
+                //             'color' => $factors["couleur"],
+                //             'label' => $this->getMNText($factors["contenus"]["contenu"]["libelle"]),
+                //         ];
+
+                // }
+
+                if ($factors["@attributes"]["test_groupe_facteur_id"] === $value["@attributes"]["id"]) {
+
+                    $factor['factor'][] = [
+                        'id' => $factors["@attributes"]["id"],
+                        'score' => $factors["@attributes"]["score_brut"],
+                        'score_calc' => $factors["@attributes"]["score_calcule"],
+                        'group_id' => $factors["@attributes"]["test_groupe_facteur_id"],
+                        'color' => $factors["couleur"],
+                        'label' => $this->getMNText($factors["contenus"]["contenu"]["libelle"]),
+                    ];
+                }
+            }
+            if (str_contains($value["contenus"]["contenu"]["libelle"], "Skill")) {
+                $data["group_factors"][] =
+                    [
+                        'id' => $value["@attributes"]["id"],
+                        'score' => $value["@attributes"]["score_brut"],
+                        'color' => $value["couleur"],
+                        // 'score_calc' => $value["@attributes"]["score_calcule"],
+                        'label' => $this->getMNText($value["contenus"]["contenu"]["libelle"]),
+                        'factors' => $factor
+                    ];
+                unset($factor);
+            }
         }
+        // dd($data["test_group_factors"]);
         // test_ref_adequation_profil
         foreach ($xml['elements']['test_ref_adequation_profils']['test_ref_adequation_profil'] as $value) {
             $data["test_group_factors"] =
@@ -242,7 +265,7 @@ class ReportsController extends Controller
             // dd($candidate_name);
             $data["parties"] = $this->replaceChar($candidate_name, $party);
         }
-        dd($data);
+        // dd($data);
         // return $data;
         return view('layouts.reports.' . $data['general']['test_id'], compact('data'));
     }

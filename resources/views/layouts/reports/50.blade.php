@@ -25,8 +25,8 @@
                         alt="User picture">
                 </div>
                 <div class="user-info">
-                    <span class="user-name">{{$data['general']['participant_name']}}
-                        <strong>E</strong>
+                    <span class="user-name">
+                        <strong>{{$data['general']['participant_name']}}</strong>
                     </span>
                     <span class="user-role">Administrator</span>
                 </div>
@@ -63,7 +63,7 @@
                 <div class="row">
 
                     @php $item = $data["parties"]["party"]; @endphp
-
+                    @php $group_factors = $data["group_factors"]; @endphp
                     @if (str_contains($item[0]['type'], 'ancre'))
                     <h2 class="card-title">{{ $item[0]["params"]["menuNumber"] }} -
                         {{$item[0]["content"]["title"]}} </h2>
@@ -184,7 +184,9 @@
                         </div>
                         <div class="card-body">
                             <div class="group-header">
-
+                            <figure class="highcharts-figure">
+                            <div id="barChart"></div>
+                            </figure>
                             </div>
                         </div>
                     </div>
@@ -393,46 +395,40 @@
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 <script>
     var categories = [];
-    var data = [];
-    var scores = [{}];
-    var cats;
-    var obj = {};
-    var t = [];
-    var index = 0;
+    var data = [
+    ];
+    var items = {
+        data: [],
+        label : "",
+    };
+    var barChart= [];
+    var obj= {};
+    @foreach($group_factors as $idx => $group)
+        obj.name = @json($group['label']) + " (" + @json($group['score']) + ")";
+        obj.y = parseFloat(@json($group['score']));
+        //obj.color = @json($group['color']);
+        barChart.push(obj);
+        obj = {};
+        items.label = @json($group['label']);
+        @foreach($group['factors']['factor'] as $idx => $factor)
+                categories.push(@json($factor['label']));
+                if (@json($group['id']) === @json($factor['group_id']))
+                {
 
-    @foreach($item as $key => $graph)
-        @if(str_contains($graph['type'], 'rapport_details_facteur'))
-            @switch($graph["id"])
-                @case(172)
-                    scores = (@json($graph["params"]["score"]));
-                @case(173)
-                    scores = (@json($graph["params"]["score"]));
-                @case(174)
-                    scores = (@json($graph["params"]["score"]));
-            @endswitch
+                    items.data.push(@json($factor['score']));
+                    data.push(items);
+                  items = {
+        data: [],
+        label : "",
+    };
+                }
 
-            console.log("Scores 0", scores);
-
-            @if(str_contains($graph["content"]["label"], 'Anchor'))
-                cats = @json($graph["content"]["title"]);
-                cats = cats + ' (' + @json($graph["params"]["score"]) + ')';
-                categories.push(cats);
-            // console.log(cats);
-            @endif
-     @endif
-        @if(str_contains($graph['type'], 'rapport_details_groupe'))
-            @if(str_contains($graph["content"]["label"], 'Anchor'))
-            obj["name"] = @json($graph["content"]["title"]);
-            obj["data"] = [5, 5, 4.3, 7.1];
-            obj["type"] = 'column';
-            data.push(obj);
-            obj = {};
-            console.log("data - " , data);
-            @endif
-        @endif;
+        
+        @endforeach
     @endforeach
-
-    Highcharts.chart('chart', {
+      console.log("data - ", data);
+               
+    Highcharts.chart('chart', { 
         chart: {
             renderTo: 'container',
             polar: true
@@ -458,21 +454,97 @@
         },
         xAxis: {
             categories: categories,
-            // tickmarkPlacement: 'on',
-            gridLineWidth: 1,
-            lineWidth: 0
         },
-        yAxis: {
-            // gridLineInterpolation: 'polygon',
-            lineWidth: 0,
-            gridLineWidth: 1,
-            min: 0
-        },
-
-        series: data
+ 
+        series: [{
+        type: 'column',
+        showInLegend : false,
+        fillOpacity: 0.3,
+        data: [80, 5, 25, 40, 41]
+    },{
+        type: 'column',
+        fillOpacity: 0.3,
+             showInLegend : false,
+        data: [55, , 30, 29, 32]
+    },{
+        type: 'column',
+        fillOpacity: 0.3,
+        data: [30, 56, 30, 40, 14],
+             showInLegend : false,
+    },{
+        type: 'column',
+        fillOpacity: 0.3,
+        data: [30, 56, 30, 40, 14]
+    },{
+        type: 'column',
+        fillOpacity: 0.3,
+        data: [30, 56, 30, 40, 14]
+    }],
     });
 
+
+
 </script>
+<script>
+// Create the chart
+Highcharts.chart('barChart', {
+  chart: {
+    renderTo: 'container',
+    type: 'column'
+  },
+
+  accessibility: {
+    announceNewData: {
+      enabled: true
+    }
+  },
+   yAxis: {
+        title: {
+            text: ''
+        },
+             labels: {
+                style: {
+                    fontSize:'15px'
+                }
+            }
+   },
+  xAxis: {
+    type: 'category',
+       labels: {
+                style: {
+                    fontSize:'15px'
+                }
+            }
+  },
+
+title: {
+            text: ''
+        },
+  legend: {
+    enabled: false,
+  },
+  plotOptions: {
+    series: {
+      borderWidth: 0,
+    },
+          stacking: 'normal',
+            dataLabels: {
+                enabled: true
+            }
+  },
+
+  tooltip: {
+    headerFormat: '<span style="font-size:14px">{series.name}: {point.y}</span><br>',
+    pointFormat: '<span style="font-size:16px;color:{point.color}">{point.name}</span>'
+  },
+
+  series: [
+    {
+      colorByPoint: true,
+      data: barChart
+    }
+  ],
+});</script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/esm/popper.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.js">
