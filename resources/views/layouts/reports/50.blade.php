@@ -415,7 +415,7 @@
   obj = {};
   items.name = @json($group['label']);
   @foreach($group['factors']['factor'] as $idx => $factor)
-  categories.push(@json($factor['label']) + " (" + @json($group['score']) + ")");
+  categories.push(@json($factor['label']) + " (" + @json($factor['score']) + ")");
   if (@json($group['id']) === @json($factor['group_id'])) {
   	items.data.push(parseFloat(@json($factor['score'])));
   	while (true) {
