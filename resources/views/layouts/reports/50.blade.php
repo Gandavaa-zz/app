@@ -145,9 +145,10 @@
                         </div>
                         <div class="card-body">
                             <div class="group-header">
-                                <h2 class="ec-title">THE GRAPH</h2>
+                                {{-- <h2 class="ec-title">THE GRAPH</h2> --}}
                                 <figure class="highcharts-figure">
-                                    <div id="chart"></div>
+                                    <div style="height: 600px; width: 700px; margin:0 auto" 
+                                    id="chart"></div>
                                 </figure>
                             </div>
                         </div>
@@ -394,118 +395,172 @@
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 <script>
-    var categories = [];
-    var data = [
-    ];
-    var items = {
-        data: [],
-        label : "",
-        type: 'column',
-    };
-    var barChart= [];
-    var obj= {};
-    @foreach($group_factors as $idx => $group)
-        obj.name = @json($group['label']) + " (" + @json($group['score']) + ")";
-        obj.y = parseFloat(@json($group['score']));
-        //obj.color = @json($group['color']);
-        barChart.push(obj);
-        obj = {};
-        items.label = @json($group['label']);
-        @foreach($group['factors']['factor'] as $idx => $factor)
-                categories.push(@json($factor['label']));
-                if (@json($group['id']) === @json($factor['group_id']))
-                {
-                  items.data.push(parseFloat(@json($factor['score'])));
-                }
-        
-        @endforeach
-                            data.push(items);
-                                              items = {
-                        data: [],
-                        label : "",
-                    };
-    @endforeach
-      console.log("data - ", data);
-               
-    Highcharts.chart('chart', { 
-        chart: {
-            renderTo: 'container',
-            polar: true
-        },
+  var categories = [];
+  var data = [];
+  var items = {
+  	data: [],
+  	name: "",
+  	color: "",
+  	pointPlacement: 'on',
+  	fillOpacity: 0.3
+  };
+  var barChart = [];
+  var obj = {};
+  @foreach($group_factors as $idx => $group)
+  console.log("group - ", @json($group));
+  obj.name = @json($group['label']) + " (" + @json($group['score']) + ")";
+  obj.y = parseFloat(@json($group['score']));
+  obj.color = '#' + @json($group['color']);
+  barChart.push(obj);
+  obj = {};
+  items.name = @json($group['label']);
+  @foreach($group['factors']['factor'] as $idx => $factor)
+  categories.push(@json($factor['label']) + " (" + @json($group['score']) + ")");
+  if (@json($group['id']) === @json($factor['group_id'])) {
+  	items.data.push(parseFloat(@json($factor['score'])));
+  	while (true) {
+  		if (items.data.length < categories.length) {
+  			items.data.push("");
+  		} else {
+  			break;
+  		}
 
-        tooltip: {
-            enabled: false
-        },
-        title: {
-            text: ''
-        },
-        xAxis: {
-            categories: categories,
-        },
- 
-        series: data
-    });
+  	}
+  	items.color = '#' + @json($factor['color']);
+  }
+  @endforeach
+  data.push(items);
+  items = {
+  	data: [],
+  	name: "",
+  	color: "",
+  	fillOpacity: 0.5
+
+  };
+  @endforeach
+  console.log("data - ", data);
+
+  Highcharts.chart('chart', {
+  	chart: {
+  		marginTop: 30,
+  		polar: true,
+  		type: 'area',
+  	},
+
+  	title: {
+  		text: ''
+  	},
+  	plotOptions: {
+  		series: {
+            states:
+            {
+                hover:
+                {
+                    enabled: false
+                },
+                inactive:
+                {
+                    opacity:1
+                }
+            },
+  			shadow: false,
+  			marker: {
+  				enabled: false
+  			}
+  		}
+
+  	},
+  	yAxis: {
+  		lineWidth: 0,
+  	},
+
+ 	tooltip: {
+         enabled: false
+	},
+	credits: {
+         enabled: false
+	},
+  	max: 12,
+  	min: 0,
+  	tickInterval: 1,
+  	xAxis: {
+  		categories: categories,
+  		lineWidth: 0,
+  		labels: {
+  			distance: 40,
+  			style: {
+  				fontSize: '12px'
+  			}
+  		}
+
+  	},
+  	legend: {
+  		enabled: true,
+  		itemMarginTop: 35
+  	},
+  	series: data,
+  });
 </script>
 <script>
-// Create the chart
+
+// Create the bar chart
 Highcharts.chart('barChart', {
-  chart: {
-    renderTo: 'container',
-    type: 'column'
-  },
+	chart: {
+		renderTo: 'container',
+		type: 'column'
+	},
 
-  accessibility: {
-    announceNewData: {
-      enabled: true
-    }
-  },
-   yAxis: {
-        title: {
-            text: ''
-        },
-             labels: {
-                style: {
-                    fontSize:'15px'
-                }
-            }
-   },
-  xAxis: {
-    type: 'category',
-       labels: {
-                style: {
-                    fontSize:'15px'
-                }
-            }
-  },
+	accessibility: {
+		announceNewData: {
+			enabled: true
+		}
+	},
+	yAxis: {
+		title: {
+			text: ''
+		},
+		labels: {
+			style: {
+				fontSize: '15px'
+			}
+		}
+	},
+	xAxis: {
+		type: 'category',
+		labels: {
+			style: {
+				fontSize: '15px'
+			}
+		}
+	},
 
-title: {
-            text: ''
-        },
-  legend: {
-    enabled: false,
-  },
-  plotOptions: {
-    series: {
-      borderWidth: 0,
-    },
-          stacking: 'normal',
-            dataLabels: {
-                enabled: true
-            }
-  },
+	title: {
+		text: ''
+	},
+	legend: {
+		enabled: false,
+	},
+	plotOptions: {
+		series: {
+			borderWidth: 0,
+		},
+		stacking: 'normal',
+		dataLabels: {
+			enabled: true
+		}
+	},
 
-  tooltip: {
-    headerFormat: '<span style="font-size:14px">{series.name}: {point.y}</span><br>',
-    pointFormat: '<span style="font-size:16px;color:{point.color}">{point.name}</span>'
-  },
+	tooltip: {
+		headerFormat: '<span style="font-size:14px">{series.name}: {point.y}</span><br>',
+		pointFormat: '<span style="font-size:16px;color:{point.color}">{point.name}</span>'
+	},
 
-  series: [
-    {
-      colorByPoint: true,
-      data: barChart
-    }
-  ],
-});</script>
+	series: [{
+		colorByPoint: true,
+		data: barChart
+	}],
+});
+</script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/esm/popper.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.js">
