@@ -400,6 +400,7 @@
     var items = {
         data: [],
         label : "",
+        type: 'column',
     };
     var barChart= [];
     var obj= {};
@@ -414,17 +415,15 @@
                 categories.push(@json($factor['label']));
                 if (@json($group['id']) === @json($factor['group_id']))
                 {
-
-                    items.data.push(@json($factor['score']));
-                    data.push(items);
-                  items = {
-        data: [],
-        label : "",
-    };
+                  items.data.push(parseFloat(@json($factor['score'])));
                 }
-
         
         @endforeach
+                            data.push(items);
+                                              items = {
+                        data: [],
+                        label : "",
+                    };
     @endforeach
       console.log("data - ", data);
                
@@ -434,56 +433,18 @@
             polar: true
         },
 
-        credits: {
-            enabled: false
-        },
         tooltip: {
             enabled: false
         },
         title: {
-            text: 'Test'
-        },
-        plotOptions: {
-            series: {
-                states: {
-                    inactive: {
-                        opacity: 1
-                    }
-                }
-            }
+            text: ''
         },
         xAxis: {
             categories: categories,
         },
  
-        series: [{
-        type: 'column',
-        showInLegend : false,
-        fillOpacity: 0.3,
-        data: [80, 5, 25, 40, 41]
-    },{
-        type: 'column',
-        fillOpacity: 0.3,
-             showInLegend : false,
-        data: [55, , 30, 29, 32]
-    },{
-        type: 'column',
-        fillOpacity: 0.3,
-        data: [30, 56, 30, 40, 14],
-             showInLegend : false,
-    },{
-        type: 'column',
-        fillOpacity: 0.3,
-        data: [30, 56, 30, 40, 14]
-    },{
-        type: 'column',
-        fillOpacity: 0.3,
-        data: [30, 56, 30, 40, 14]
-    }],
+        series: data
     });
-
-
-
 </script>
 <script>
 // Create the chart
