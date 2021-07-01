@@ -85,6 +85,13 @@ class ReportsController extends Controller
         return $response;
     }
 
+    // input domain array
+    // return domain array
+    protected function getDomain($domain)
+    {
+        return $domain;
+    }
+
     /*
         Report-г дуудаж харуулна.
     */
@@ -106,8 +113,9 @@ class ReportsController extends Controller
         }
 
         $contents = Storage::get("assets/assessments/{$assessment_id}.xml");
-        $content = $domain = $party = $comments = array();
+        $content = $domain = $party = $comments = $references = $classes = array();
         $xml = xml_decode($contents);
+
         $candidate_name = $xml["noyau_utilisateur_info"]["prenom"] . " " . $xml["noyau_utilisateur_info"]["nom"];
         // return $xml;
         // general
@@ -121,6 +129,28 @@ class ReportsController extends Controller
             'passed_date' => $xml['params']['date_passation_fin']
         ];
 
+        // $reference
+        foreach ($xml['elements']['test_ref_adequation_profils']['test_ref_adequation_profil'] as $ref) {
+            $references[$ref['@attributes']['id']] = array(
+                'label' => $ref['contenus']['contenu']['libelle'],
+                'description' => $ref['contenus']['contenu']['description_longue']
+            );
+        }
+
+        // class
+        foreach ($xml['elements']['test_ref_adequation_classes']['test_ref_adequation_classe'] as $class) {
+            $classes[$class['@attributes']['id']] = array(
+                'label' => $class['contenus']['contenu']['libelle'],
+                'description' => $class['contenus']['contenu']['description'],
+                'description_long' => $class['contenus']['contenu']['description_longue']
+            );
+        }
+
+        $data['references'] = $references;
+        $data['classes'] = $classes;
+        // class
+        // print_r($references);
+        // exit();
         $this->participant = $data['general']['participant_name'];
 
         // test_facteur
@@ -161,54 +191,111 @@ class ReportsController extends Controller
             'id' => $xml["elements"]["test_mini_tests"]["test_mini_test"]["@attributes"]["id"],
             'score' => $xml["elements"]["test_mini_tests"]["test_mini_test"]["@attributes"]["score_calcule"],
         ];
+
+        $j = 1;
         // parties
         foreach ($xml['parties']['partie'] as $value) {
 
             if (isset($value["domaines"]["domaine"])) {
 
-                foreach ($value["domaines"]["domaine"] as $domains) {
+                if (isset($value["domaines"]["domaine"]["@attributes"]))
 
-                    if (isset($domains["cibles_secondaires"]) && is_array($domains["cibles_secondaires"]["cibles_secondaire"])) {
+                    foreach ($value["domaines"] as $domains) {
 
-                        foreach ($domains["cibles_secondaires"]["cibles_secondaire"] as $secondary_target) {
+                        if (isset($domains["cibles_secondaires"]) && is_array($domains["cibles_secondaires"]["cibles_secondaire"])) {
 
-                            $comments[]  = [
-                                'color' => isset($secondary_target["color"]) ? $secondary_target["color"] : null,
-                                "score" =>  isset($secondary_target["score"]) ? $secondary_target["score"] : 0,
-                                "comment" =>  $this->getMNText(isset($secondary_target["contenus"]["contenu"]["commentaire_perso"]) ? $secondary_target["contenus"]["contenu"]["commentaire_perso"] : null),
-                            ];
+                            foreach ($domains["cibles_secondaires"]["cibles_secondaire"] as $secondary_target) {
+                                // dd($domains["cibles_secondaires"]["cibles_secondaire"]);
+
+                                $comments[]  = [
+                                    'color' => isset($secondary_target["color"]) ? $secondary_target["color"] : null,
+                                    "score" =>  isset($secondary_target["score"]) ? $secondary_target["score"] : 0,
+                                    "comment" =>  $this->getMNText(isset($secondary_target["contenus"]["contenu"]["commentaire_perso"]) ? $secondary_target["contenus"]["contenu"]["commentaire_perso"] : null),
+                                ];
+                            }
                         }
-                    } elseif (isset($domains['cibles_secondaire'])) {
-                        $comments[]  = [
-                            'color' => isset($domains["cibles_secondaire"]['color']) ? $domains["cibles_secondaire"]['color'] : null,
-                            "score" =>  isset($domains["cibles_secondaire"]["score"]) ? $domains["cibles_secondaire"]["score"] : 0,
-                            "comment" =>  $this->getMNText(isset($domains["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"]) ?
-                                $domains["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"] : null),
-                        ];
+                        if (isset($domains["@attributes"])) {
+                            $domain[] = [
+                                'id' => $domains["@attributes"]["id"],
+                                'label' => $this->getMNText($domains["contenus"]["contenu"]["libelle"]),
+                                "contents" =>  $comments
+                            ];
+                            unset($comments);
+                        }
                     }
-
-                    if (isset($comments)) {
-                        $domain[] = [
-                            'id' => isset($domains["@attributes"]["id"]) ? $domains["@attributes"]["id"] : null,
-                            'label' => isset($domains["contenus"]["contenu"]["libelle"]) ? $this->getMNText($domains["contenus"]["contenu"]["libelle"]) : null,
-                            "contents" =>  $comments
-                        ];
-                        unset($comments);
+                else
+                    foreach ($value["domaines"]['domaine'] as $domains) {
+                        if (isset($domains["cibles_secondaires"]) && is_array($domains["cibles_secondaires"]["cibles_secondaire"])) {
+                            foreach ($domains["cibles_secondaires"]["cibles_secondaire"] as $secondary_target) {
+                                $comments[]  = [
+                                    'color' => isset($secondary_target["color"]) ? $secondary_target["color"] : null,
+                                    "score" =>  isset($secondary_target["score"]) ? $secondary_target["score"] : 0,
+                                    "comment" =>  $this->getMNText(isset($secondary_target["contenus"]["contenu"]["commentaire_perso"]) ? $secondary_target["contenus"]["contenu"]["commentaire_perso"] : null),
+                                ];
+                            }
+                        }
+                        if (isset($domains["@attributes"])) {
+                            $domain[] = [
+                                'id' => $domains["@attributes"]["id"],
+                                'label' => $this->getMNText($domains["contenus"]["contenu"]["libelle"]),
+                                "contents" =>  $comments
+                            ];
+                            unset($comments);
+                        }
                     }
-                }
             }
             $adequates = [];
+
             if (
                 isset($value['rapport_adequation_classes'])
-                && isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil'])
             ) {
-                foreach ($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil'] as $adequate) {
-                    $adequates[] = array(
-                        'pourcentage_score' => isset($adequate['pourcentage_score']) ? $adequate['pourcentage_score'] : null,
-                        'score' => isset($adequate['score']) ? $adequate['score'] : null,
-                        'color' => isset($adequate['couleur_classe']) ? $adequate['couleur_classe'] : null,
-                    );
-                    // dd($adequates);
+
+                if (is_array($value['rapport_adequation_classes']['rapport_adequation_classe'])) {
+
+                    // print_r($value['rapport_adequation_classes']['rapport_adequation_classe']['@attributes']);
+                    // echo "</br>";
+                    // echo ++$j;
+                    // echo "</br>";
+
+                    if (isset($value['rapport_adequation_classes']['rapport_adequation_classe']['@attributes'])) {
+                        // $class_id = $value['rapport_adequation_classes']['rapport_adequation_classe']
+
+                        foreach ($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil'] as $adequate_ob) {
+                            $adequates[]  = [
+                                'id' => isset($adequate_ob['@attributes']) ? $adequate_ob['@attributes']['test_ref_adequation_profil_id'] : null,
+                                'pourcentage_score' => isset($adequate_ob['pourcentage_score']) ? $adequate_ob['pourcentage_score'] : null,
+                                'score' => isset($adequate_ob['score']) ? $adequate_ob['score'] : null,
+                                'color' => isset($adequate_ob['couleur_classe']) ? $adequate_ob['couleur_classe'] : null,
+                            ];
+                        }
+                    } else {
+                        foreach ($value['rapport_adequation_classes']['rapport_adequation_classe'] as $adequation_classes) {
+
+                            $class_id = $adequation_classes['@attributes']['test_ref_adequation_classe_id'];
+
+                            if (isset($adequation_classes['rapport_adequation_profils']['rapport_adequation_profil'])) {
+
+                                foreach ($adequation_classes['rapport_adequation_profils']['rapport_adequation_profil'] as $adequate) {
+
+                                    $adequates[$class_id][] = [
+                                        'id' => isset($adequate['@attributes']) ? $adequate['@attributes']['test_ref_adequation_profil_id'] : null,
+                                        'pourcentage_score' => isset($adequate['pourcentage_score']) ? $adequate['pourcentage_score'] : null,
+                                        'score' => isset($adequate['score']) ? $adequate['score'] : null,
+                                        'color' => isset($adequate['couleur_classe']) ? $adequate['couleur_classe'] : null,
+                                    ];
+                                }
+                            } else {
+                                // dd($value['rapport_adequation_classes']['rapport_adequation_classe']);
+                                $adequates   = [
+                                    'id' => isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['@attributes']['id']) ? $value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['@attributes']['id'] : null,
+                                    'pourcentage_score' => isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['pourcentage_score']) ? $value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['pourcentage_score'] : null,
+                                    'score' => isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['score']) ? $value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['score'] : null,
+                                    'color' => isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['couleur_classe']) ? $value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['couleur_classe'] : null,
+                                ];
+                                // unset($adequates);
+                            }
+                        }
+                    }
                 }
             }
             // dd($adequates);
@@ -232,51 +319,32 @@ class ReportsController extends Controller
                         ),
                         'commentaire_perso' => $this->getMNText(isset($value["contenus"]["contenu"]["commentaire_perso"]) ? $value["contenus"]["contenu"]["commentaire_perso"] : null),
                     ),
-                    // 'adequacy' => array(
-                    //     'pourcentage_score' => isset($value["rapport_adequation_classes"]) ? ($this->getMNText($value["rapport_adequation_classes"]["rapport_adequation_classe"]["rapport_adequation_profils"]["rapport_adequation_profil"]["pourcentage_score"]) ?  $value["rapport_adequation_classes"]["rapport_adequation_classe"]["rapport_adequation_profils"]["rapport_adequation_profil"]["pourcentage_score"] : null) : null
-                    // )
+                    'adequate' => isset($adequates) ? $adequates : null
                 ];
 
+            unset($adequates);
             unset($domain);
+
             //setting all values to variable $data
             // dd($candidate_name);
             $data["parties"] = $this->replaceChar($candidate_name, $party);
         }
-        dd($data);
+
         // return $data;
         return view('layouts.reports.' . $data['general']['test_id'], compact('data'));
     }
 
-    public function getMNText($str)
-    {
-        $text = Translation::select('MN')->where('EN', '=', $str)->value("MN");
-        // dd($text);
-        if (!$text) {
-            return $str;
-        }
-
-        return $text;
-    }
-
-    public function replaceChar($candidate_name, $content)
-    {
-        // dd($candidate_name);
-        // dd($content);
-        $replaced = str_replace("$", $candidate_name, $content);
-        return $replaced;
-    }
-
-
     // getdata
     public function getData($assessment_id)
     {
-
         $contents = Storage::get("assets/assessments/{$assessment_id}.xml");
         $content = array();
         $domain = array();
         $party = array();
         $comments = array();
         $xml = xml_decode($contents);
+
+        return $xml;
 
         // general
         $data['general'] = [
@@ -327,42 +395,68 @@ class ReportsController extends Controller
         ];
         // parties
         foreach ($xml['parties']['partie'] as $value) {
+
             if (isset($value["domaines"]["domaine"])) {
-                foreach ($value["domaines"] as $domains) {
-                    if (isset($domains["cibles_secondaires"]) && is_array($domains["cibles_secondaires"]["cibles_secondaire"])) {
-                        foreach ($domains["cibles_secondaires"]["cibles_secondaire"] as $secondary_target) {
-                            // dd($domains["cibles_secondaires"]["cibles_secondaire"]);
-                            $comments[]  = [
-                                'color' => isset($secondary_target["color"]) ? $secondary_target["color"] : null,
-                                "score" =>  isset($secondary_target["score"]) ? $secondary_target["score"] : 0,
-                                "comment" =>  $this->getMNText(isset($secondary_target["contenus"]["contenu"]["commentaire_perso"]) ? $secondary_target["contenus"]["contenu"]["commentaire_perso"] : null),
+
+                if (isset($value["domaines"]["domaine"]["@attributes"]))
+                    foreach ($value["domaines"] as $domains) {
+                        if (isset($domains["cibles_secondaires"]) && is_array($domains["cibles_secondaires"]["cibles_secondaire"])) {
+                            foreach ($domains["cibles_secondaires"]["cibles_secondaire"] as $secondary_target) {
+                                // dd($domains["cibles_secondaires"]["cibles_secondaire"]);
+                                $comments[]  = [
+                                    'color' => isset($secondary_target["color"]) ? $secondary_target["color"] : null,
+                                    "score" =>  isset($secondary_target["score"]) ? $secondary_target["score"] : 0,
+                                    "comment" =>  $this->getMNText(isset($secondary_target["contenus"]["contenu"]["commentaire_perso"]) ? $secondary_target["contenus"]["contenu"]["commentaire_perso"] : null),
+                                ];
+                            }
+                        }
+                        if (isset($domains["@attributes"])) {
+                            $domain[] = [
+                                'id' => $domains["@attributes"]["id"],
+                                'label' => $this->getMNText($domains["contenus"]["contenu"]["libelle"]),
+                                "contents" =>  $comments
                             ];
+                            unset($comments);
                         }
                     }
-                    if (isset($domains["@attributes"])) {
-                        $domain[] = [
-                            'id' => $domains["@attributes"]["id"],
-                            'label' => $this->getMNText($domains["contenus"]["contenu"]["libelle"]),
-                            "contents" =>  $comments
-                        ];
-                        unset($comments);
+                else
+                    foreach ($value["domaines"]['domaine'] as $domains) {
+                        if (isset($domains["cibles_secondaires"]) && is_array($domains["cibles_secondaires"]["cibles_secondaire"])) {
+                            foreach ($domains["cibles_secondaires"]["cibles_secondaire"] as $secondary_target) {
+                                $comments[]  = [
+                                    'color' => isset($secondary_target["color"]) ? $secondary_target["color"] : null,
+                                    "score" =>  isset($secondary_target["score"]) ? $secondary_target["score"] : 0,
+                                    "comment" =>  $this->getMNText(isset($secondary_target["contenus"]["contenu"]["commentaire_perso"]) ? $secondary_target["contenus"]["contenu"]["commentaire_perso"] : null),
+                                ];
+                            }
+                        }
+                        if (isset($domains["@attributes"])) {
+                            $domain[] = [
+                                'id' => $domains["@attributes"]["id"],
+                                'label' => $this->getMNText($domains["contenus"]["contenu"]["libelle"]),
+                                "contents" =>  $comments
+                            ];
+                            unset($comments);
+                        }
                     }
-                }
             }
             $adequates = [];
+
             if (
                 isset($value['rapport_adequation_classes'])
                 && isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil'])
             ) {
-                foreach ($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil'] as $adequate) {
-                    $adequates[] = array(
+                foreach ($value['rapport_adequation_classes']['rapport_adequation_classe'] as $adequate) {
+
+                    $adequates = array(
+                        'id' => isset($adequate['@attributes']) ? $adequate['@attributes']['test_ref_adequation_profil_id'] : null,
                         'pourcentage_score' => isset($adequate['pourcentage_score']) ? $adequate['pourcentage_score'] : null,
                         'score' => isset($adequate['score']) ? $adequate['score'] : null,
                         'color' => isset($adequate['couleur_classe']) ? $adequate['couleur_classe'] : null,
                     );
-                    // dd($adequates);
                 }
             }
+
             // dd($adequates);
             $party["party"][] =
                 [
@@ -381,14 +475,37 @@ class ReportsController extends Controller
                         'label_group'  => array_key_exists('libelle_groupe_opposition', $value["contenus"]["contenu"]),
                         'commentaire_perso' => $this->getMNText(isset($value["contenus"]["contenu"]["commentaire_perso"]) ? $value["contenus"]["contenu"]["commentaire_perso"] : null)
                     ),
+                    'adequate' => $adequates
                 ];
 
             unset($domain);
+            unset($adequates);
             //setting all values to variable $data
             $data["parties"] = $party;
         }
+
         return $data;
     }
+
+    public function getMNText($str)
+    {
+        $text = Translation::select('MN')->where('EN', '=', $str)->value("MN");
+        // dd($text);
+        if (!$text) {
+            return $str;
+        }
+
+        return $text;
+    }
+
+    public function replaceChar($candidate_name, $content)
+    {
+        // dd($candidate_name);
+        // dd($content);
+        $replaced = str_replace("$", $candidate_name, $content);
+        return $replaced;
+    }
+
 
     public function getXml($assessment_id = null, $test_id = null)
     {

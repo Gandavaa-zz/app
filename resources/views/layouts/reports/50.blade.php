@@ -77,9 +77,11 @@
                                 <div class="group-header">
                                     <h2 class="ec-title"> </h2>
                                 </div>
-                                @for ($i=1; $i < 3; $i++) <div class="score-bar-wrapper row">
+                                @for ($i=1; $i < 3; $i++)
+                                <div class="score-bar-wrapper row">
                                     <div class="col-xs-12 col-sm-3">
-                                        <h3 class="box-label"> {{ $item[$i]["content"]["title"]}}
+                                        <h3 class="box-label">
+                                            {{ $item[$i]["content"]["title"]}}
                                         </h3>
                                         <div class="box-score" style="
                                         color:#000000; background-color: #1C3664">
@@ -125,7 +127,7 @@
                                             </div>
                                         </div>
                                     </div>
-                            </div>
+                                </div>
 
                             @endfor
 
@@ -211,7 +213,7 @@
                                 <h2>{{ $detail['label']}}</h2>
                             </div>
                                 @foreach ($detail['contents'] as $content)
-                                <div class="box gray mb-2">
+                                <div class="box gray mb-4">
                                     <div class="box-content ec-first-border-color" style="background-color: #EEEEEE">
                                         {{ $content['comment'] }}
                                     </div>
