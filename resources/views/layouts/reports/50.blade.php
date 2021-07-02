@@ -98,18 +98,18 @@
                                     <div class="col-xs-12 col-sm-9">
                                         <div class="progress score-bar">
                                             @if( isset($item[$i]["params"]["pourcentage_score"]))
-                                            <label for="0">0</label>
+                                            <label for="0"  id="percent_start">0</label>
                                             <div class="progress-bar"
-                                                style='width:{{ $item[$i]["params"]["pourcentage_score"]}}%; color:#000000; background-color: #1C3664'>
+                                                style='width:{{ $item[$i]["params"]["pourcentage_score"]}}%;'>
                                             </div>
-                                            <label for="10">10</label>
+                                            <label for="10" id="percent_end">10</label>
                                             @endif
                                             @if( isset($item[$i]["adequacy"]["pourcentage_score"]))
-                                            <label for="0">0</label>
+                                            <label for="0" id="percent_start">0</label>
                                             <div class="progress-bar"
-                                                style='width:{{ $item[$i]["adequacy"]["pourcentage_score"]}}%; color:#000000; background-color: #1C3664'>
+                                                style='width:{{ $item[$i]["adequacy"]["pourcentage_score"]}}%;'>
                                             </div>
-                                            <label for="10">10</label>
+                                            <label for="10" id="percent_end">10</label>
                                             @endif
                                         </div>
                                     </div>
@@ -167,7 +167,7 @@
                         </div>
                         <div class="card-body">
                             <div class="group-header">
-
+                                
                             </div>
                         </div>
                     </div>
@@ -209,7 +209,6 @@
                             </div>
 
                             @foreach($item[8]["content"]["domain"] as $detail)
-
                             <div class="group-header mt-4">
                                 <h2>{{ $detail['label']}}</h2>
                             </div>
@@ -227,13 +226,13 @@
                 </div>
                 <!-- /endsection -->
 
-                <!-- the Comments  -->
+                <!-- 5 - the Comments  -->
                 @if (str_contains($item[9]['type'], 'ancre'))
                 <h2 class="card-title">{{ $item[9]["params"]["menuNumber"] }} -
                     {{$item[9]["content"]["title"]}} </h2>
                 @endif
 
-                <!-- /the Comments  -->
+                <!-- 5- the Comments  --> 
                 <div class="col-md-12" id="comments">
                     <div class="card">
                         <div class="card-header .bg-secondary">
@@ -241,7 +240,7 @@
                         <div class="card-body">
                             <div class="group-header">
                                 <h3>{!! $item[10]["content"]["title"]!!}</h3>
-                                <hr>
+                                <hr style="border: 1px solid #{!!$item[10]["params"]["couleur"]!!}">
                             </div>
                             <div class="score-bar-wrapper row">
                                 <div class="col-xs-12 col-sm-3">
@@ -249,16 +248,17 @@
                                      color:#000000; background-color:{!!$item[10]["params"]["couleur"]!!}">
                                         <div class="header">
                                             {{ __('Score') }} <br>
-                                            {{ $item[10]["params"]["pourcentage_score"]}}
+                                            {{ $item[10]["params"]["score"]}}
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="progress score-bar" style="width: 100%;">
-                                        <div class="progress-bar" style="width:{{$item[10]["params"]["pourcentage_score"]}}%;
+                                      <label for="0" id="percent_start">0</label>
+                                        <div class="progress-bar" style="width:{{$item[10]["params"]["score"]}}%;
                                             color:#000000; background-color: #{!!$item[10]["params"]["couleur"]!!} "></div>
-                                        <div class=" progress-bar" style="width:38%; color:#000000; background-color: #EEEEEE"></div>
+                                      <label for="10" id="percent_end">10</label>
                                     </div>
                                 </div>
                             </div>
@@ -286,16 +286,17 @@
                                      color:#000000; background-color:{!!$item[10]["params"]["couleur"]!!}">
                                         <div class="header">
                                             {{ __('Score') }} <br>
-                                            {{ $item[11]["params"]["pourcentage_score"]}}
+                                            {{ $item[11]["params"]["score"]}}
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="progress score-bar" style="width: 100%;">
-                                        <div class="progress-bar" style="width:{{$item[11]["params"]["pourcentage_score"]}}%;
+                                        <label for="0" id="percent_start">0</label>
+                                        <div class="progress-bar" style="width:{{$item[11]["params"]["score"]}}%;
                                             color:#000000; background-color: #{!!$item[11]["params"]["couleur"]!!} "></div>
-                                        <div class=" progress-bar" style="width:38%; color:#000000; background-color: #EEEEEE"></div>
+                                            <label for="10" id="percent_end">10</label>
                                     </div>
                                 </div>
                             </div>
@@ -324,16 +325,17 @@
                                         color:#000000; background-color:{!!$item[$i]["params"]["couleur"]!!}">
                                             <div class="header">
                                                 {{ __('Score') }} <br>
-                                                {{ $item[$i]["params"]["pourcentage_score"]}}
+                                                {{ $item[$i]["params"]["score"]}}
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="col-xs-12 col-sm-9">
                                         <div class="progress score-bar" style="width: 100%;">
-                                            <div class="progress-bar" style="width:{{$item[$i]["params"]["pourcentage_score"]}}%;
+                                        <label for="0" id="percent_start">0</label>
+                                            <div class="progress-bar" style="width:{{$item[$i]["params"]["score"]}}%;
                                                 color:#000000; background-color: #{!!$item[$i]["params"]["couleur"]!!} "></div>
-                                            <div class=" progress-bar" style="width:38%; color:#000000; background-color: #EEEEEE"></div>
+                                                <label for="10" id="percent_end">10</label>
                                         </div>
                                     </div>
                                 </div>
@@ -420,7 +422,7 @@
   	items.data.push(parseFloat(@json($factor['score'])));
   	while (true) {
   		if (items.data.length < categories.length) {
-  			items.data.push("");
+  			items.data.push(null);
   		} else {
   			break;
   		}

@@ -191,22 +191,20 @@ class ReportsController extends Controller
 
                 foreach ($value["domaines"]["domaine"] as $domains) {
 
-                    if (isset($domains["cibles_secondaires"]) && is_array($domains["cibles_secondaires"]["cibles_secondaire"])) {
-
+                    if (isset($domains["cibles_secondaires"]) && !isset($domains["cibles_secondaires"]["cibles_secondaire"]['@attributes'])) {
                         foreach ($domains["cibles_secondaires"]["cibles_secondaire"] as $secondary_target) {
-
                             $comments[]  = [
                                 'color' => isset($secondary_target["color"]) ? $secondary_target["color"] : null,
                                 "score" =>  isset($secondary_target["score"]) ? $secondary_target["score"] : 0,
                                 "comment" =>  $this->getMNText(isset($secondary_target["contenus"]["contenu"]["commentaire_perso"]) ? $secondary_target["contenus"]["contenu"]["commentaire_perso"] : null),
                             ];
                         }
-                    } elseif (isset($domains['cibles_secondaire'])) {
+                    } else {
                         $comments[]  = [
-                            'color' => isset($domains["cibles_secondaire"]['color']) ? $domains["cibles_secondaire"]['color'] : null,
-                            "score" =>  isset($domains["cibles_secondaire"]["score"]) ? $domains["cibles_secondaire"]["score"] : 0,
-                            "comment" =>  $this->getMNText(isset($domains["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"]) ?
-                                $domains["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"] : null),
+                            'color' => isset($domains["cibles_secondaires"]["cibles_secondaire"]['color']) ? $domains["cibles_secondaires"]["cibles_secondaire"]['color'] : null,
+                            "score" =>  isset($domains["cibles_secondaires"]["cibles_secondaire"]["score"]) ? $domains["cibles_secondaires"]["cibles_secondaire"]["score"] : 0,
+                            "comment" =>  $this->getMNText(isset($domains["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"]) ?
+                                $domains["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"] : null),
                         ];
                     }
 
@@ -221,10 +219,9 @@ class ReportsController extends Controller
                 }
             }
             $adequates = [];
-            if (
-                isset($value['rapport_adequation_classes'])
-                && isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil'])
-            ) {
+            if (isset($value['rapport_adequation_classes'])) {
+                if (isset($value["rapport_adequation_classes"]) && !isset($value["rapport_adequation_classes"]["rapport_adequation_classe"])) {
+                }
                 foreach ($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil'] as $adequate) {
                     $adequates[] = array(
                         'pourcentage_score' => isset($adequate['pourcentage_score']) ? $adequate['pourcentage_score'] : null,
@@ -255,9 +252,7 @@ class ReportsController extends Controller
                         ),
                         'commentaire_perso' => $this->getMNText(isset($value["contenus"]["contenu"]["commentaire_perso"]) ? $value["contenus"]["contenu"]["commentaire_perso"] : null),
                     ),
-                    // 'adequacy' => array(
-                    //     'pourcentage_score' => isset($value["rapport_adequation_classes"]) ? ($this->getMNText($value["rapport_adequation_classes"]["rapport_adequation_classe"]["rapport_adequation_profils"]["rapport_adequation_profil"]["pourcentage_score"]) ?  $value["rapport_adequation_classes"]["rapport_adequation_classe"]["rapport_adequation_profils"]["rapport_adequation_profil"]["pourcentage_score"] : null) : null
-                    // )
+                    'adequacy' => $adequates,
                 ];
 
             unset($domain);

@@ -543,6 +543,7 @@ h3 {
 }
 
 .box {
+    min-width: 100%;
     border-width: 0;
     border-radius: .25rem !important;
     margin-top: 15px;
@@ -663,6 +664,9 @@ h3 {
 }
 
 .progress-bar {
+    width: 1.5%;
+    max-width: 94%!important;
+    color: #000000;
     background-color: #1C3664;
     /* height: 20px!important; */
 }
@@ -753,4 +757,22 @@ h3 {
     width: 15px;
     height: 169px;
     top: 0;
+}
+
+.score-bar {
+    position: relative;
+}
+
+#percent_end {
+    position: absolute;
+    right: 10;
+    color: #343a40;
+    font-weight: bold;
+}
+
+#percent_start {
+    left: 0;
+    width: 14px;
+    font-weight: bold;
+    color: #343a40;
 }
