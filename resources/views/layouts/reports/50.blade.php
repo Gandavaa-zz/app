@@ -12,7 +12,7 @@
         </a>
         <nav id="sidebar" class="sidebar-wrapper">
             <div class="sidebar-brand">
-                <a href="#">United Management Consulting</a>
+                <a href="#">{{$data['general']['client']}}</a>
                 <div id="close-sidebar">
                     <i class="fas fa-times"></i>
                 </div>
@@ -28,7 +28,7 @@
                     <span class="user-name">
                         <strong>{{$data['general']['participant_name']}}</strong>
                     </span>
-                    <span class="user-role">Administrator</span>
+                    {{-- <a href="#"><span class="user-role"> </span></a> --}}
                 </div>
             </div>
             <div class="sidebar-content">
@@ -36,7 +36,7 @@
                 <div class="sidebar-menu">
                     <ul>
                         <div class="header-menu">
-                            <span>Reports</span>
+                            <span>Тайлан</span>
                         </div>
                         @foreach($data["parties"]["party"] as $menu)
                         @if (str_contains($menu['type'], 'ancre'))
@@ -51,14 +51,20 @@
                 </div>
                 <!-- sidebar-menu  -->
             </div>
+        
         </nav>
         <!-- sidebar-wrapper  -->
         <main class="page-content">
             <div class="main">
                 <div class="text-center">
                     <img src="{{$data['general']['logo']}}" alt="{{$data['general']['label']}} " class="img-responsive">
-                    <h6>Test taken on the 13th of September 2019 in 14 min 24 sec</h6>
+                    <h6>{{$data['general']['completed_at']}}</h6>
                     <hr />
+                    <div>
+                    <a href="#" id="pdf_export"><img class="img-responsive img-rounded"
+                        src="../../assets/img/pdf_icon.png" width="50px
+                        alt="pdf download"></a>
+                    </div>
                 </div>
                 <div class="row">
 
@@ -109,7 +115,7 @@
                                             <div class="progress-bar"
                                                 style='width:{{ $item[$i]["adequacy"]["pourcentage_score"]}}%;'>
                                             </div>
-                                            <label for="10" id="percent_end">10</label>
+                                            <label for="10" id="percent_end">10</label>=
                                             @endif
                                         </div>
                                     </div>
@@ -122,6 +128,13 @@
                                         <div class="box-desc">
                                             <div>
                                                 {{ $item[$i]["content"]["description_courte"] }}
+                                                    @if(isset($item[$i]["adequacy"]))
+                                                    @foreach($item[$i]["adequacy"] as $index => $value)
+                                                        {{$value['test_ref_adequation']['description']}}
+                                                    @endforeach
+                                                        
+                                                    @endif
+                                        
                                             </div>
                                         </div>
                                     </div>
@@ -156,23 +169,6 @@
                 </div>
                 <!-- /end section -->
 
-                <!-- section 4 here -->
-                @if (str_contains($item[4]['type'], 'ancre'))
-                <h2 class="card-title">{{ $item[4]["params"]["menuNumber"] }} -
-                    {{$item[4]["content"]["title"]}} </h2>
-                @endif
-                <div class="col-md-12" id="comments">
-                    <div class="card">
-                        <div class="card-header .bg-secondary">{{ $item[4]["content"]["sub_title"]}}
-                        </div>
-                        <div class="card-body">
-                            <div class="group-header">
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- /endsection 4 -->
 
                 <!-- section 5 -->
                 @if (str_contains($item[5]['type'], 'ancre'))
@@ -214,7 +210,7 @@
                             </div>
                                 @foreach ($detail['contents'] as $content)
                                 <div class="box gray mb-2">
-                                    <div class="box-content ec-first-border-color" style="background-color: #EEEEEE">
+                                    <div class="box-content ec-first-border-color" >
                                         {{ $content['comment'] }}
                                     </div>
                                 </div>
@@ -268,7 +264,7 @@
                                     <div class="title text-left"> <i class="fa fa-arrow-alt-circle-right"></i>
                                         {{ __('Definition') }}</div>
                                 </div>
-                                <div class="box-content ec-first-border-color" style="background-color: #EEEEEE">
+                                <div class="box-content ec-first-border-color" >
                                     {!!$item[10]["content"]["description_long"]!!}
                                 </div>
                             </div>
@@ -306,7 +302,7 @@
                                     <div class="title text-left"> <i class="fa fa-arrow-alt-circle-right"></i>
                                         {{ __('Definition') }}</div>
                                 </div>
-                                <div class="box-content ec-first-border-color" style="background-color: #EEEEEE">
+                                <div class="box-content ec-first-border-color" >
                                     {!! $item[11]["content"]["description_long"] !!}
                                 </div>
                             </div>
@@ -353,7 +349,7 @@
                                     </div>
 
 
-                                    <div class="box-content ec-first-border-color" style="background-color: #EEEEEE">
+                                    <div class="box-content ec-first-border-color" >
                                         {!! $item[$i]["content"]["description_long"] !!}
                                     </div>
                                 </div>
@@ -403,13 +399,12 @@
   	data: [],
   	name: "",
   	color: "",
-  	pointPlacement: 'on',
   	fillOpacity: 0.3
   };
   var barChart = [];
   var obj = {};
   @foreach($group_factors as $idx => $group)
-  console.log("group - ", @json($group));
+  //console.log("group - ", @json($group));
   obj.name = @json($group['label']) + " (" + @json($group['score']) + ")";
   obj.y = parseFloat(@json($group['score']));
   obj.color = '#' + @json($group['color']);
@@ -420,14 +415,17 @@
   categories.push(@json($factor['label']) + " (" + @json($factor['score']) + ")");
   if (@json($group['id']) === @json($factor['group_id'])) {
   	items.data.push(parseFloat(@json($factor['score'])));
-  	while (true) {
-  		if (items.data.length < categories.length) {
-  			items.data.push(null);
-  		} else {
-  			break;
-  		}
 
-  	}
+
+  	if (items.data.length < categories.length) {
+          console.log("length: " , categories.length);
+     for (let i = 1; i < categories.length; i++) {
+  		items.data.push(null);
+      }
+    }
+
+
+
   	items.color = '#' + @json($factor['color']);
   }
   @endforeach
@@ -436,7 +434,7 @@
   	data: [],
   	name: "",
   	color: "",
-  	fillOpacity: 0.5
+  	fillOpacity: 0.3
 
   };
   @endforeach
@@ -454,6 +452,7 @@
   	},
   	plotOptions: {
   		series: {
+            stacking: 'normal',
             states:
             {
                 hover:
@@ -468,7 +467,7 @@
   			shadow: false,
   			marker: {
   				enabled: false
-  			}
+  			},
   		}
 
   	},
@@ -483,7 +482,7 @@
          enabled: false
 	},
   	max: 12,
-  	min: 0,
+  	min: 1,
   	tickInterval: 1,
   	xAxis: {
   		categories: categories,

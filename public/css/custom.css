@@ -208,6 +208,7 @@ body {
 
 .sidebar-wrapper .sidebar-header .user-info>span {
     display: block;
+    padding-top: 20px;
 }
 
 .sidebar-wrapper .sidebar-header .user-info .user-role {
@@ -493,7 +494,8 @@ body {
 .footer {
     right: 0;
     bottom: 0;
-    left: 250;
+    left: 0;
+    right: 0;
     padding: 1rem;
     position: fixed;
     color: white;
@@ -775,4 +777,10 @@ h3 {
     width: 14px;
     font-weight: bold;
     color: #343a40;
+}
+
+#pdf_export {
+    position: absolute;
+    right: 10px;
+    top: 20;
 }
