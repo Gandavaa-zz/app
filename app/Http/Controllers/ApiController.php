@@ -11,7 +11,7 @@ use App\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
-use Yajra\DataTables\Facades\DataTables ;
+use Yajra\DataTables\Facades\DataTables;
 
 class ApiController extends Controller
 {
@@ -20,17 +20,17 @@ class ApiController extends Controller
      *
      * @return $groups
      */
-    protected function groupToArray($groups){
+    protected function groupToArray($groups)
+    {
 
         $group_ids = array();
 
-        if(Str::contains($groups, ',')){
-            foreach(explode(",", $groups) as $name)
-            {
+        if (Str::contains($groups, ',')) {
+            foreach (explode(",", $groups) as $name) {
                 $group = Group::where('name', $name)->first();
                 $group_ids[] = $group->id;
             }
-        }else{
+        } else {
             $group = Group::where('name', $groups)->first();
             $group_ids[] = $group->id;
         }
@@ -43,10 +43,11 @@ class ApiController extends Controller
      *
      * @return result
      */
-    private function header($url, $format){
+    private function header($url, $format)
+    {
         $result = Http::withHeaders([
-            'WWW-Authenticate'=> $this->token
-        ])->get($url.'/'.$format);
+            'WWW-Authenticate' => $this->token
+        ])->get($url . '/' . $format);
 
         return $result;
     }
@@ -56,15 +57,16 @@ class ApiController extends Controller
      * Jira ajax
      * @return Resoureces/view
      */
-    function index(Request $request){
+    function index(Request $request)
+    {
 
         $candidates = User::role(['candidate'])->get();
 
         if ($request->ajax()) {
 
             return DataTables::of($candidates)
-            ->addIndexColumn()
-            ->addColumn('action', function($candidate){
+                ->addIndexColumn()
+                ->addColumn('action', function ($candidate) {
                     $action = '
                     <a class="btn btn-pill btn-light btn-sm"><i class="cil-send"></i> Урих</a>
                     <a class="btn btn-pill btn-light btn-sm"><i class="cil-chart"></i> Тайлан</a>
@@ -73,7 +75,7 @@ class ApiController extends Controller
                             <i class="cil-cog"> Бусад...</i>
                         </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item edit" href="' .route("candidate.edit", $candidate->id) . '" data-toggle="tooltip"  data-id="' . $candidate->id . '" data-original-title="Edit"><i class="cil-pencil">&nbsp;</i> Засах</a>
+                        <a class="dropdown-item edit" href="' . route("candidate.edit", $candidate->id) . '" data-toggle="tooltip"  data-id="' . $candidate->id . '" data-original-title="Edit"><i class="cil-pencil">&nbsp;</i> Засах</a>
                         <a class="dropdown-item" href="javascript:void(0)"><i class="cil-vertical-align-bottom1">&nbsp;</i> Assessment</a>
                         <a class="dropdown-item addToGroup" data-toggle="modal"  data-id="' . $candidate->id . '"  href=""><i class="cil-user-follow">&nbsp;</i>Add to the group</a>
                         <a class="dropdown-item archive" data-toggle="modal"  href="javascript:void(0)" data-id=""  href=""><i class="cil-user-unfollow">&nbsp;</i>Archive</a>
@@ -81,11 +83,11 @@ class ApiController extends Controller
                     </div>
                     </div>
                 <input type="checkbox" id="' . $candidate->id . '"';
-                return $action;
-            })
-            ->addColumn('checkbox', '<input type="checkbox" id="chkboxes" name="candidate_checkbox[]" class="participant_checkbox" value="{{$id}}" />')
-            ->rawColumns(['action'])
-            ->make(true);
+                    return $action;
+                })
+                ->addColumn('checkbox', '<input type="checkbox" id="chkboxes" name="candidate_checkbox[]" class="participant_checkbox" value="{{$id}}" />')
+                ->rawColumns(['action'])
+                ->make(true);
         }
 
         return view('layouts.candidate.index', compact('candidates'));
@@ -96,7 +98,8 @@ class ApiController extends Controller
      *
      * @return Views
      */
-    function create(){
+    function create()
+    {
         $groups = Group::all();
         return view('layouts.candidate.create', compact('groups'));
     }
@@ -124,8 +127,8 @@ class ApiController extends Controller
 
         $data['groups'] = $this->groupToArray($request->groups);
 
-        if ($user){
-            for ($i = 0;$i < count( $data['groups']);$i++){
+        if ($user) {
+            for ($i = 0; $i < count($data['groups']); $i++) {
                 $array[] = array(
                     'group_id' => $data['groups'][$i],
                     'user_id' => $user->id
@@ -133,7 +136,7 @@ class ApiController extends Controller
             }
             Group_User::insert($array);
             $user->assignRole('candidate');
-        }else{
+        } else {
             abort(500, 'Error');
         }
         // candidate create in cdc.centraltest.com
@@ -143,52 +146,61 @@ class ApiController extends Controller
     /*
      * Validation user function
     */
-    public function validateUser($id=null)
+    public function validateUser($id = null)
     {
         return request()->validate(
-            ['firstname' => ['required', ['string']],
-            'lastname' => ['required', ['string']],
-            'email' => 'required|email|unique:users,email,' . $id . ',id',
-            'phone' => ['required', 'numeric'],
-            'dob' => ['required', 'date', 'max:10'],
-            'gender' => ['required']
-        ]);
+            [
+                'firstname' => ['required', ['string']],
+                'lastname' => ['required', ['string']],
+                'email' => 'required|email|unique:users,email,' . $id . ',id',
+                'phone' => ['required', 'numeric'],
+                'dob' => ['required', 'date', 'max:10'],
+                'gender' => ['required']
+            ]
+        );
     }
 
     // Candiates by Group
-    function group(Request $request){
+    function group(Request $request)
+    {
         // return $results;
         $group = $this->header('https://app.centraltest.com/customer/REST/list/group', 'json');
         $groups = json_decode($group);
 
-        if($request->group_id){
+        if ($request->group_id) {
             $results = Http::withHeaders([
-                'WWW-Authenticate'=> $this->token
-            ])->get('https://app.centraltest.com/customer/REST/retrieve/group/json',
-            [
-                'id' => $request->group_id
-            ]);
+                'WWW-Authenticate' => $this->token
+            ])->get(
+                'https://app.centraltest.com/customer/REST/retrieve/group/json',
+                [
+                    'id' => $request->group_id
+                ]
+            );
 
             $group_id = $request->group_id;
-        }else
+        } else
             $group_id = null;
 
 
         $canditateList = array();
 
-        if(isset($results) && $results['candidates']){
-            foreach($results['candidates'] as $candidate){
-                $candidates = Http::withHeaders(['WWW-Authenticate'=> $this->token])->get('https://app.centraltest.com/customer/REST/retrieve/candidate/json',
+        if (isset($results) && $results['candidates']) {
+            foreach ($results['candidates'] as $candidate) {
+                $candidates = Http::withHeaders(['WWW-Authenticate' => $this->token])->get(
+                    'https://app.centraltest.com/customer/REST/retrieve/candidate/json',
                     [
                         'id' =>  $candidate['id']
-                    ]);
+                    ]
+                );
                 $canditateList[] = json_decode($candidates);
             }
-        }elseif(isset($request->email)){
-            $candidates = Http::withHeaders(['WWW-Authenticate'=> $this->token])->get('https://app.centraltest.com/customer/REST/retrieve/candidate/json',
+        } elseif (isset($request->email)) {
+            $candidates = Http::withHeaders(['WWW-Authenticate' => $this->token])->get(
+                'https://app.centraltest.com/customer/REST/retrieve/candidate/json',
                 [
                     'email' =>  $request->email
-                ]);
+                ]
+            );
             $canditateList[] = json_decode($candidates);
         }
 
@@ -199,13 +211,15 @@ class ApiController extends Controller
     }
 
     // get list title
-    function show(){
+    function show()
+    {
         $results = $this->header('https://app.centraltest.com/customer/REST/list/title', 'json');
         $data = json_decode($results);
         // return view('layouts.candidate.group', compact('data'));
     }
 
-    public function getToken(){
+    public function getToken()
+    {
         return $this->token;
     }
 
@@ -213,11 +227,13 @@ class ApiController extends Controller
     {
         // https://app.centraltest.com/customer/REST/assessment/paginate/completed/
         $response = Http::withHeaders([
-            'WWW-Authenticate'=> $this->token
-        ])->GET('https://app.centraltest.com/customer/REST/assessment/completed/json',
-        [
-            'candidate_id' => $candidate_id
-        ]);
+            'WWW-Authenticate' => $this->token
+        ])->GET(
+            'https://app.centraltest.com/customer/REST/assessment/completed/json',
+            [
+                'candidate_id' => $candidate_id
+            ]
+        );
 
         $assessments = json_decode($response);
 
@@ -232,31 +248,37 @@ class ApiController extends Controller
         return view('layouts.candidate.assessments', compact('assessments'));
     }
 
-    public function import(){
+    public function import()
+    {
         $response = Http::withHeaders([
-            'WWW-Authenticate'=> $this->token
-        ])->post('https://app.centraltest.com/customer/REST/candidate/import/json',
-        [
-            'candidates' => [array("id"=>817042) ]
-        ]);
+            'WWW-Authenticate' => $this->token
+        ])->post(
+            'https://app.centraltest.com/customer/REST/candidate/import/json',
+            [
+                'candidates' => [array("id" => 817042)]
+            ]
+        );
 
         return $response;
     }
 
-    public function retrieve(){
+    public function retrieve()
+    {
         $response = Http::withHeaders([
-            'WWW-Authenticate'=> $this->token
-        ])->get('https://app.centraltest.com/customer/REST/retrieve/candidate/json',
-        [
-            'id' => 817042
-        ]);
+            'WWW-Authenticate' => $this->token
+        ])->get(
+            'https://app.centraltest.com/customer/REST/retrieve/candidate/json',
+            [
+                'id' => 817042
+            ]
+        );
         return $response;
     }
 
     public function contract()
     {
         $response = Http::withHeaders([
-            'WWW-Authenticate'=> $this->token
+            'WWW-Authenticate' => $this->token
         ])->post('https://app.centraltest.com/customer/REST/list/contract/json');
 
         return $response;
@@ -271,7 +293,8 @@ class ApiController extends Controller
     //     return view('layouts.candidate.group', compact('data'));
     // }
 
-    function getCompany(){
+    function getCompany()
+    {
         $result = $this->header('https://app.centraltest.com/customer/REST/company/giveCredits/', 'json');
         return $result;
     }
@@ -280,23 +303,26 @@ class ApiController extends Controller
     public function getTest()
     {
         $response = Http::withHeaders([
-            'WWW-Authenticate'=> $this->token
-        ])->get('https://app.centraltest.com/customer/REST/assessment/test_factors/json',
-        [
-            'test_id' => 13
-        ]);
+            'WWW-Authenticate' => $this->token
+        ])->get(
+            'https://app.centraltest.com/customer/REST/assessment/test_factors/json',
+            [
+                'test_id' => 13
+            ]
+        );
 
         return $response;
     }
 
     // get Test info
-    public function testList(){
+    public function testList()
+    {
         $response = Http::withHeaders([
-            'WWW-Authenticate'=> $this->token
-        ])->get('https://app.centraltest.com/customer/REST/list/test/json',
-        [
-        ]);
+            'WWW-Authenticate' => $this->token
+        ])->get(
+            'https://app.centraltest.com/customer/REST/list/test/json',
+            []
+        );
         return $response;
     }
-
 }

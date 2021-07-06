@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Candidate;
+use App\Group;
 use App\Test;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -18,25 +19,45 @@ class AssessmentsController extends Controller
     public function index(Request $request)
     {
         // return $request->test_id;
+        $groups = Group::all();
+
         $tests = Test::where('priority', 1)->get();
         // Хэрвээ test_id шүүх болон candidate_id-р шүүнэ.
-        if ($request->test_id){
+        $from_date =  ($request->from_date) ? $request->from_date . ' 00:00:00' : null;
+        $to_date =  ($request->to_date) ? $request->to_date . ' 00:00:00' : null;
+        $current_page_count = ($request->current_page_count) ? $request->current_page_count : 10;
+        if ($request->page) $page = $request->page;
+        else $page = 1;
+
+        $group_id = ($request->group_id) ? $request->group_id : null;
+
+        // request-д утга байгаа бол доорх url-с шүүлт хийнэ.
+        if ($request->test_id) {
             $response = Http::withHeaders([
-                'WWW-Authenticate'=> $this->token
+                'WWW-Authenticate' => $this->token
             ])->get('https://app.centraltest.com/customer/REST/assessment/paginate/completed/json',  [
+                'order_asc' => 0,
                 'test_id' => $request->test_id,
-                'per_page' => 100
+                'group_id' => $request->group_id,
+                'due_date_from' => $from_date,
+                'due_date_to' => $to_date,
+                'per_page' => $current_page_count,
+                'page' => $page
             ]);
-        }else {
+        } else {
             $response = Http::withHeaders([
-                'WWW-Authenticate'=> $this->token
-            ])->post('https://app.centraltest.com/customer/REST/assessment/paginate/completed/json');
+                'WWW-Authenticate' => $this->token
+            ])->get('https://app.centraltest.com/customer/REST/assessment/paginate/completed/json', [
+                'order_asc' => 0,
+                'per_page' => $current_page_count,
+                'page' => $page
+            ]);
         }
 
         $assessments = json_decode($response, true);
 
         // тухайн assessment-тад data нэмэх
-        foreach( $assessments['result']['data'] as $key => $value){
+        foreach ($assessments['result']['data'] as $key => $value) {
             // return $value['test_id'];
             $candidate = Candidate::find($value['candidate_id']);
             $assessments['result']['data'][$key]['candidate'] = $candidate;
@@ -44,12 +65,16 @@ class AssessmentsController extends Controller
             $test = Test::find($value['test_id']);
             $assessments['result']['data'][$key]['test'] = $test;
         }
+
         // return $assessments;
+        $pagination = $assessments['result']['pagination'];
+
+        // return $pagination;
         // $candidate= retrieve https://app.centraltest.com/customer/REST/retrieve/candidate/ [FORMAT ]
         // foreach хийж тухайн id-р хэрэглэгчтэй тестийг холбоно
         // test_id -mай холбох
         // candidate_id тай холбох
-        return view('layouts.assessments.index', compact('assessments', 'tests'));
+        return view('layouts.assessments.index', compact('assessments', 'tests', 'groups', 'pagination'));
     }
 
     public function test()
@@ -61,7 +86,7 @@ class AssessmentsController extends Controller
     /**
      * Sales Profile fix
      */
-    public function salesProfile($assessment_id =null)
+    public function salesProfile($assessment_id = null)
     {
         if (!Storage::exists("/assets/assessments/{$assessment_id}.xml")) {
             $response = Http::withHeaders([
@@ -87,14 +112,14 @@ class AssessmentsController extends Controller
 
         $salesProfile = array();
 
-        foreach($xml['parties']['partie'] as $part ){
+        foreach ($xml['parties']['partie'] as $part) {
             $salesProfile[] = $part['params']['ordre'];
 
             // if ordre 1 content -s title avna
-            switch($part['params']['ordre']){
+            switch ($part['params']['ordre']) {
                 case 1:
                     $salesProfile[1] = array();
-                    $salesProfile[1]['title']=  $part['contenus']['contenu']['titre'];
+                    $salesProfile[1]['title'] =  $part['contenus']['contenu']['titre'];
                     $salesProfile[1]['subtitle'] = $part['contenus']['contenu']['sous_titre'];
                     break;
                 case 2:
@@ -108,34 +133,32 @@ class AssessmentsController extends Controller
                 case 3:
                     $salesProfile[3] = array();
                     $salesProfile[3]['title'] =  $part['contenus']['contenu']['titre'];
-                    $salesProfile[3]['introduction'] = $part['contenus']['contenu']
-                    ['introduction'];
-                    $salesProfile[3]['percentage_score'] = $part['rapport_adequation_classes']['rapport_adequation_classe']
-                    ['rapport_adequation_profils']['rapport_adequation_profil']['pourcentage_score'];
-                break;
+                    $salesProfile[3]['introduction'] = $part['contenus']['contenu']['introduction'];
+                    $salesProfile[3]['percentage_score'] = $part['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['pourcentage_score'];
+                    break;
 
                 case 4:
                     $salesProfile[4] = array();
                     $salesProfile[4]['type'] = 'text';
                     $salesProfile[4]['title'] =  $part['contenus']['contenu']['titre'];
-                break;
+                    break;
 
                 case 5:
                     $salesProfile[5] = array();
-                    if ( $part['@attributes']['type'] =='rapport_graphique'){
+                    if ($part['@attributes']['type'] == 'rapport_graphique') {
                         $salesProfile[5]['type'] = 'graphic';
                         $salesProfile[5]['label'] =  $part['contenus']['contenu']['libelle'];
                         $salesProfile[5]['title'] =  $part['contenus']['contenu']['titre'];
                     }
-                break;
+                    break;
 
                 case 6:
                     $salesProfile[6] = array();
-                    if ( $part['@attributes']['type'] =='rapport_ancre'){
+                    if ($part['@attributes']['type'] == 'rapport_ancre') {
                         $salesProfile[6]['title'] =  $part['contenus']['contenu']['titre'];
                         $salesProfile[6]['sub_title'] =  $part['contenus']['contenu']['sous_titre'];
                     }
-                break;
+                    break;
             }
         }
 

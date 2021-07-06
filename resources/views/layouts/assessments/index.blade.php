@@ -19,63 +19,134 @@
                         @include('layouts.shared.alert')
 
                         <form action="/assessment" method="GET">
-                            <div class="form-group row">
-                                <label class="col-md-1 col-form-label" for="test">Тест:</label>
-                                <div class="col-md-4">
-                                    <select name="test_id" id="test" class="form-control" onchange="this.form.submit()">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label for="ccmonth">Групп:</label>
+                                        <select name="group_id" id="group_id" class="form-control" type="input">
+                                            <option value="0">Нэг утгийг сонго</option>
+                                            @foreach ($groups as $group)
+                                            <option @if( $group->id == request()->get('group_id')) selected @endif value="{{ $group->id}}" >{{ $group->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-3">
+                                    <label for="ccmonth">Тест:</label>
+                                    <select name="test_id" id="test" class="form-control" type="input" onchange="this.form.submit()">
                                         <option value="0">Нэг утгийг сонго</option>
                                         @foreach ($tests as $test)
                                         <option @if( $test->id == request()->get('test_id')) selected @endif value="{{ $test->id}}" >{{ $test->label}}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                            </div>
+                                <div class="form-group col-sm-2">
+                                    <label for="ccyear">Тест өгсөн эхэлсэн огноо:</label>
+                                    <input id="from_date" name="from_date" placeholder="Огноо сонгоно уу..." type="date" class="form-control @error('dob') is-invalid @enderror" autofocus>
+                                </div>
+                                <div class="form-group col-sm-2">
+                                    <label for="ccyear">Тест өгч дууссан огноо:</label>
+                                    <input id="to_date" name="to_date" placeholder="Огноо сонгоно уу..." type="date" class="form-control @error('dob') is-invalid @enderror" autofocus>
+                                </div>
+
+                                <div class="col-sm-2 d-flex">
+                                    <button class="btn btn-primary align-self-center mt-2" type="submit">Шүүх</button>
+                                </div>
+
+
+                                <table class="table table-bordered yajra-datatable user_table " id="user_table" style="width: 100%; font-size:13.5px;">
+                                    <thead>
+                                        <tr>
+                                            <th width="3px">
+                                                #
+                                            </th>
+                                            <th>Оролцогч</th>
+                                            <th>Тест</th>
+                                            <th>Эхэлсэн.огноо</th>
+                                            <th>Дуусгасан.огноо</th>
+                                            <th width="250px">Үйлдэл</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach( $assessments['result']['data'] as $item )
+                                        <tr>
+                                            <td>
+                                                {{ $item['candidate_id'] }}
+                                            </td>
+                                            <td> @if(isset($item->candidate ))
+                                                {{ $item->candidate->full_name }}
+                                                @else
+                                                Холбогдоогүй байна
+                                                @endif
+                                            </td>
+                                            <td>
+                                                {{ $item['test']['label'] }}
+                                            </td>
+                                            <td>
+                                                {{ $item['assessment_start_date']}}
+                                            </td>
+                                            <td>
+                                                {{ $item['assessment_end_date']}}
+                                            </td>
+                                            <td>
+                                                <a target="_blank" href="/reports/getHtml/{{$item['id']}}" class="btn btn-primary btn-sm">Харах</a>
+                                                <a href="/reports/getXml/{{$item['id']}}/{{$item['test']['id']}}" class="btn btn-warning btn-sm">Xml Татах</a>
+                                                <a target="_blank" href="{{$item['candidate_report_link']}}" class="btn btn-warning btn-sm">Тайлан харах</a>
+                                                <a target="_blank" href="/reports/data/{{$item['id']}}" class="btn btn-warning btn-sm">Data харах</a>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+
+
+                                <div class="container-fluid">
+                                    <div class="form-group row">
+                                        <label class="offset-md-4 col-md-1 col-form-label text-right" for="text-input">
+                                            Хуудас:
+                                        </label>
+                                        @php $pages = array(10, 15, 20, 25, 40, 50); @endphp
+                                        <select name="current_page_count" id="current_page_count" class="col-sm-4 col-md-1 form-control mr-3" type="input" onchange="this.form.submit()">
+                                            @foreach ($pages as $page)
+                                            <option @if($page==$pagination['current_page_count']) selected @endif value="{{$page}}">{{ $page}}</option>
+                                            @endforeach
+                                        </select>
+
+                                        @php
+                                        $previous_page = $pagination['previous_page'];
+                                        $current_page = $pagination['current_page'];
+                                        $next_page = $pagination['next_page'];
+                                        $last_page = $pagination['last_page'];
+                                        $page = $pagination['current_page'];
+                                        @endphp
+                                        <nav aria-label="Page navigation example" class="offset-md-4">
+                                            <ul class="pagination">
+                                                @if($previous_page)
+                                                <li class="page-item @if($previous_page == $page) active @endif"><button name="page" class="page-link" value="0" onclick="this.form.submit()">{{$pagination['previous_page']}}</button></li>
+                                                @endif
+
+                                                @if($current_page && $current_page !==$last_page)
+                                                <li class="page-item @if($current_page == $page) active @endif"><button name="page" class="page-link" onclick="this.form.submit()">{{ $current_page}}</button>
+                                                </li>
+                                                @endif
+
+                                                @if($next_page)
+                                                <li class="page-item @if($next_page == $page) active @endif"><button class="page-link" name="page" value="{{$next_page}}" onclick="this.form.submit()">{{ $next_page}}</button></li>
+                                                @endif
+
+                                                @if($page !== $last_page)
+                                                <li class="page-item"><button class="page-link">...</button></li>
+                                                @endif
+
+                                                @if($last_page)
+                                                <li class="page-item @if($last_page == $page) active @endif"><button class="page-link" name="page" value="{{ $pagination['last_page']}}" onclick="this.form.submit()">Сүүлд</button></li>
+                                                @endif
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
                         </form>
 
-                        <table class="table table-bordered yajra-datatable user_table " id="user_table" style="width: 100%; font-size:13.5px;">
-                            <thead>
-                                <tr>
-                                    <th width="3px">
-                                        #
-                                    </th>
-                                    <th>Оролцогч</th>
-                                    <th>Тест</th>
-                                    <th>Эхэлсэн.огноо</th>
-                                    <th>Дуусгасан.огноо</th>
-                                    <th width="250px">Үйлдэл</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach( $assessments['result']['data'] as $item )
-                                <tr>
-                                    <td>
-                                        {{ $item['candidate_id'] }}
-                                    </td>
-                                    <td> @if(isset($item->candidate ))
-                                        {{ $item->candidate->full_name }}
-                                        @else
-                                        Холбогдоогүй байна
-                                        @endif
-                                    </td>
-                                    <td>
-                                        {{ $item['test']['label'] }}
-                                    </td>
-                                    <td>
-                                        {{ $item['assessment_start_date']}}
-                                    </td>
-                                    <td>
-                                        {{ $item['assessment_end_date']}}
-                                    </td>
-                                    <td>
-                                        <a target="_blank" href="/reports/getHtml/{{$item['id']}}" class="btn btn-primary btn-sm">Харах</a>
-                                        <a  href="/reports/getXml/{{$item['id']}}/{{$item['test']['id']}}" class="btn btn-warning btn-sm">Xml Татах</a>
-                                        <a target="_blank" href="{{$item['candidate_report_link']}}" class="btn btn-warning btn-sm">Тайлан харах</a>
-                                        <a target="_blank" href="/reports/data/{{$item['id']}}" class="btn btn-warning btn-sm">Data харах</a>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
                         <div class="modal fade" id="groupModal" tabindex="-1" aria-hidden="true">
                             <div class="modal-dialog .modal-dialog-centered" role="document">
                                 <div class="modal-content">
