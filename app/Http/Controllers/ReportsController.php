@@ -239,57 +239,48 @@ class ReportsController extends Controller
                 }
             }
             $adequates = [];
-            $test_ref_adequation = [];
+
             if (isset($value['rapport_adequation_classes'])) {
 
-                if (isset($value['rapport_adequation_classes']['rapport_adequation_classe']['@test_ref_adequation_classe_id'])) {
-                    // dd($value['rapport_adequation_classes']['rapport_adequation_classe']);
-                    // $class_id = $value['rapport_adequation_classes']['rapport_adequation_classe']
-                    foreach ($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil'] as $adequate_ob) {
+                if (isset($value['rapport_adequation_classes']['rapport_adequation_classe'])) {
 
-                        if (isset($xml['elements']['test_ref_adequation_profils'])) {
-                            foreach ($xml['elements']['test_ref_adequation_profils']['test_ref_adequation_profil'] as $test_ref) {
-                                // dd($test_ref);
-                                $id = isset($adequate_ob['test_ref_adequation_profil_id']) ? $adequate_ob['test_ref_adequation_profil_id'] : 0;
-                                if ($id == $test_ref["@attributes"]["id"]) {
+                    if (isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['@attributes'])) {
+                        foreach ($xml['elements']['test_ref_adequation_profils']['test_ref_adequation_profil'] as $test_ref) {
+                            $id = isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']) ? $value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['@attributes']['test_ref_adequation_profil_id'] : 0;
+                            if ($id == $test_ref["@attributes"]["id"]) {
 
-                                    $test_ref_adequation =
-                                        [
-                                            'id' => $test_ref["@attributes"]["id"],
-                                            'label' => $test_ref["contenus"]["contenu"]["libelle"],
-                                            'description' => $this->getMNText(isset($test_ref["contenus"]["contenu"]["description"]) ? $test_ref["contenus"]["contenu"]["description"] : null),
-                                            'description_long' => $this->getMNText(isset($vatest_reflue["contenus"]["contenu"]["description_long"]) ? $test_ref["contenus"]["contenu"]["description_longue"] : null),
+                                $test_ref_adequation =
+                                    [
+                                        'id' => $test_ref["@attributes"]["id"],
+                                        'label' => $test_ref["contenus"]["contenu"]["libelle"],
+                                        'description' => $this->getMNText(isset($test_ref["contenus"]["contenu"]["description"]) ? $test_ref["contenus"]["contenu"]["description"] : null),
+                                        'description_long' => $this->getMNText(isset($vatest_reflue["contenus"]["contenu"]["description_long"]) ? $test_ref["contenus"]["contenu"]["description_longue"] : null),
 
-                                        ];
-                                }
+                                    ];
                             }
                         }
-                        dd($adequate_ob);
 
-                        $adequates  = [
-                            'id' => isset($adequate_ob['test_ref_adequation_profil_id']) ? $adequate_ob['test_ref_adequation_profil_id'] : null,
-                            'pourcentage_score' => isset($adequate_ob['pourcentage_score']) ? $adequate_ob['pourcentage_score'] : null,
-                            'score' => isset($adequate_ob['score']) ? $adequate_ob['score'] : null,
-                            'color' => isset($adequate_ob['couleur_classe']) ? $adequate_ob['couleur_classe'] : null,
-                            'test_ref_adequation' => isset($test_ref_adequation) ? $test_ref_adequation : null
+                        $adequates   = [
+                            'id' => isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['@attributes']['id']) ? $value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['@attributes']['id'] : null,
+                            'pourcentage_score' => isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['pourcentage_score']) ? $value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['pourcentage_score'] : null,
+                            'score' => isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['score']) ? $value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['score'] : null,
+                            'color' => isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['couleur_classe']) ? $value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['couleur_classe'] : null,
+                            'test_ref_adequation' => $test_ref_adequation,
                         ];
-                        unset($test_ref_adequation);
-                        // dd($adequates);
+                    } else {
+                        // dd("array");
+                        foreach ($value['rapport_adequation_classes'] as $adequation_classes) {
+                            // dd($adequation_classes);
+                            $class_id = $adequation_classes['@attributes']['test_ref_adequation_classe_id'];
 
-                    }
-                } else {
-                    // dd('2');
-                    foreach ($value['rapport_adequation_classes']['rapport_adequation_classe'] as $adequation_classes) {
-                        if (isset($adequation_classes['rapport_adequation_profils']['rapport_adequation_profil'])) {
+                            if (isset($adequation_classes['rapport_adequation_profils']['rapport_adequation_profil'])) {
 
-                            foreach ($adequation_classes['rapport_adequation_profils']['rapport_adequation_profil'] as $adequate) {
-                                if (isset($xml['elements']['test_ref_adequation_profils'])) {
+                                foreach ($adequation_classes['rapport_adequation_profils']['rapport_adequation_profil'] as $adequate) {
                                     foreach ($xml['elements']['test_ref_adequation_profils']['test_ref_adequation_profil'] as $test_ref) {
-                                        // dd($test_ref);
-                                        $id = isset($adequate_ob['adequate']) ? $adequate['test_ref_adequation_profil_id'] : 0;
+                                        $id = isset($adequate['@attributes']['test_ref_adequation_profil_id']) ? $adequate['@attributes']['test_ref_adequation_profil_id'] : 0;
                                         if ($id == $test_ref["@attributes"]["id"]) {
 
-                                            $test_ref_adequation =
+                                            $test_ref_adequation[] =
                                                 [
                                                     'id' => $test_ref["@attributes"]["id"],
                                                     'label' => $test_ref["contenus"]["contenu"]["libelle"],
@@ -299,30 +290,31 @@ class ReportsController extends Controller
                                                 ];
                                         }
                                     }
-                                }
 
-                                $adequates[] = [
-                                    'id' => isset($adequate['@attributes']) ? $adequate['@attributes']['test_ref_adequation_profil_id'] : null,
-                                    'pourcentage_score' => isset($adequate['pourcentage_score']) ? $adequate['pourcentage_score'] : null,
-                                    'score' => isset($adequate['score']) ? $adequate['score'] : null,
-                                    'color' => isset($adequate['couleur_classe']) ? $adequate['couleur_classe'] : null,
-                                    'test_ref_adequation' => isset($test_ref_adequation) ? $test_ref_adequation : null
+
+                                    $adequates[$class_id][] = [
+                                        'id' => isset($adequate['@attributes']) ? $adequate['@attributes']['test_ref_adequation_profil_id'] : null,
+                                        'pourcentage_score' => isset($adequate['pourcentage_score']) ? $adequate['pourcentage_score'] : null,
+                                        'score' => isset($adequate['score']) ? $adequate['score'] : null,
+                                        'color' => isset($adequate['couleur_classe']) ? $adequate['couleur_classe'] : null,
+                                        'test_ref_adequation' => $test_ref_adequation,
+                                    ];
+                                    unset($test_ref_adequation);
+                                }
+                            } else {
+                                $adequates   = [
+                                    'id' => isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['@attributes']['id']) ? $value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['@attributes']['id'] : null,
+                                    'pourcentage_score' => isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['pourcentage_score']) ? $value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['pourcentage_score'] : null,
+                                    'score' => isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['score']) ? $value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['score'] : null,
+                                    'color' => isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['couleur_classe']) ? $value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['couleur_classe'] : null,
                                 ];
+                                // unset($adequates);
                             }
-                        } else {
-                            // dd('3');
-                            // dd($value['rapport_adequation_classes']['rapport_adequation_classe']);
-                            $adequates   = [
-                                'id' => isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['@attributes']['id']) ? $value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['@attributes']['id'] : null,
-                                'pourcentage_score' => isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['pourcentage_score']) ? $value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['pourcentage_score'] : null,
-                                'score' => isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['score']) ? $value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['score'] : null,
-                                'color' => isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['couleur_classe']) ? $value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['couleur_classe'] : null,
-                            ];
-                            // unset($adequates);
                         }
                     }
                 }
             }
+
             // dd($adequates);
             $party["party"][] =
                 [
@@ -352,7 +344,7 @@ class ReportsController extends Controller
             // dd($candidate_name);
             $data["parties"] = $this->replaceChar($candidate_name, $party);
         }
-        dd($data);
+        // dd($data);
         // return $data;
         return view('layouts.reports.' . $data['general']['test_id'], compact('data'));
     }

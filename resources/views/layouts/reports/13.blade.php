@@ -88,11 +88,11 @@
                                         </h3>
                                     </div>
                                     <div class="box gray mb-2">
-                                        <div class="box-content ec-first-border-color"      style="background-color: #EEEEEE">
-                                            {!! $item[1]["content"]["domain"][1]["contents"][0]["comment"] !!}
-
+                                        <div class="box-content ec-first-border-color" style="background-color: #EEEEEE">
+                                            @if(isset($item[1]["content"]["domain"][1]["contents"][0]["comment"]))
+                                                {{ $item[1]["content"]["domain"][1]["contents"][0]["comment"]}}
+                                            @endif
                                         </div>
-
                                     </div>
                                 </div>
 

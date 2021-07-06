@@ -766,6 +766,7 @@ h3 {
 }
 
 #percent_end {
+    content: 100;
     position: absolute;
     right: 10;
     color: #343a40;

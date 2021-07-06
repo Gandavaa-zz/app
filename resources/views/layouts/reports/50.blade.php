@@ -83,9 +83,11 @@
                                 <div class="group-header">
                                     <h2 class="ec-title"> </h2>
                                 </div>
-                                @for ($i=1; $i < 3; $i++) <div class="score-bar-wrapper row">
+                                @for ($i=1; $i < 3; $i++)
+                                <div class="score-bar-wrapper row">
                                     <div class="col-xs-12 col-sm-3">
-                                        <h3 class="box-label"> {{ $item[$i]["content"]["title"]}}
+                                        <h3 class="box-label">
+                                            {{ $item[$i]["content"]["title"]}}
                                         </h3>
                                         <div class="box-score" style="
                                         color:#000000; background-color: #1C3664">
@@ -115,7 +117,7 @@
                                             <div class="progress-bar"
                                                 style='width:{{ $item[$i]["adequacy"]["pourcentage_score"]}}%;'>
                                             </div>
-                                            <label for="10" id="percent_end">10</label>=
+                                            <label for="100" id="percent_end">100</label>
                                             @endif
                                         </div>
                                     </div>
@@ -128,17 +130,14 @@
                                         <div class="box-desc">
                                             <div>
                                                 {{ $item[$i]["content"]["description_courte"] }}
-                                                    @if(isset($item[$i]["adequacy"]))
-                                                    @foreach($item[$i]["adequacy"] as $index => $value)
-                                                        {{$value['test_ref_adequation']['description']}}
-                                                    @endforeach
-                                                        
+                                                    @if(isset($item[$i]["adequacy"]["test_ref_adequation"]))
+                                                     {{$item[$i]["adequacy"]["test_ref_adequation"]['description']}}
                                                     @endif
                                         
                                             </div>
                                         </div>
                                     </div>
-                            </div>
+                                </div>
 
                             @endfor
 
