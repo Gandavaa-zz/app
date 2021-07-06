@@ -59,7 +59,7 @@
                 <div class="text-center">
                     <img src="{{$data['general']['logo']}}" alt="{{$data['general']['label']}} " class="img-responsive">
                     <h6>{{$data['general']['completed_at']}}</h6>
-                    <hr />
+                    <hr  />
                     <div>
                     <a href="#" id="pdf_export"><img class="img-responsive img-rounded"
                         src="../../assets/img/pdf_icon.png" width="50px
@@ -71,10 +71,10 @@
                     @php $item = $data["parties"]["party"]; @endphp
                     @php $group_factors = $data["group_factors"]; @endphp
                     @if (str_contains($item[0]['type'], 'ancre'))
-                    <h2 class="card-title">{{ $item[0]["params"]["menuNumber"] }} -
-                        {{$item[0]["content"]["title"]}} </h2>
+                    <h2 class="card-title">{{ $item[0]["params"]["menuNumber"] }} - {{$item[0]["content"]["title"]}} </h2>
                     @endif
-                    <div class="col-md-12" id="comments">
+
+                    <div class="col-md-12" id='{{ $item[0]["content"]["title"]}}'>
                         <div class="card">
                             <div class="card-header .bg-secondary">
                                 {{ $item[0]["content"]["sub_title"]}}</div>
@@ -117,7 +117,7 @@
                                             <div class="progress-bar"
                                                 style='width:{{ $item[$i]["adequacy"]["pourcentage_score"]}}%;'>
                                             </div>
-                                            <label for="100" id="percent_end">100</label>
+                                            <label for="10" id="percent_end">100</label>
                                             @endif
                                         </div>
                                     </div>
@@ -151,7 +151,7 @@
                 <h2 class="card-title">{{ $item[3]["params"]["menuNumber"] }} -
                     {{$item[3]["content"]["title"]}} </h2>
                 @endif
-                <div class="col-md-12" id="comments">
+                <div class="col-md-12" id="{{ $item[3]["content"]["title"]}}">
                     <div class="card">
                         <div class="card-header .bg-secondary">{{ $item[3]["content"]["sub_title"]}}
                         </div>
@@ -174,7 +174,7 @@
                 <h2 class="card-title">{{ $item[5]["params"]["menuNumber"] }} -
                     {{$item[5]["content"]["title"]}} </h2>
                 @endif
-                <div class="col-md-12" id="comments">
+                <div class="col-md-12" id="{{ $item[5]["content"]["title"]}}">
                     <div class="card">
                         <div class="card-header .bg-secondary">{{ $item[5]["content"]["sub_title"]}}
                         </div>
@@ -194,7 +194,7 @@
                 <h2 class="card-title">{{ $item[7]["params"]["menuNumber"] }} -
                     {{$item[7]["content"]["title"]}} </h2>
                 @endif
-                <div class="col-md-12" id="comments">
+                <div class="col-md-12" id="{{ $item[7]["content"]["title"]}}">
                     <div class="card">
                         <div class="card-header .bg-secondary">{{ $item[7]["content"]["sub_title"]}}
                         </div>
@@ -228,14 +228,14 @@
                 @endif
 
                 <!-- 5- the Comments  --> 
-                <div class="col-md-12" id="comments">
+                <div class="col-md-12" id="{{ $item[9]["content"]["title"]}}">
                     <div class="card">
                         <div class="card-header .bg-secondary">
                             {{ $item[9]["content"]["sub_title"]}}</div>
                         <div class="card-body">
                             <div class="group-header">
                                 <h3>{!! $item[10]["content"]["title"]!!}</h3>
-                                <hr style="border: 1px solid #{!!$item[10]["params"]["couleur"]!!}">
+                             <hr style="border-color: {!!$item[10]["params"]["couleur"]!!}">
                             </div>
                             <div class="score-bar-wrapper row">
                                 <div class="col-xs-12 col-sm-3">
@@ -271,7 +271,7 @@
                             <!-- facteur -->
                             <div class="group-header">
                                 <h3>{!! $item[11]["content"]["title"]!!}</h3>
-                                <hr>
+                              <hr style="border-color: {!!$item[11]["params"]["couleur"]!!}">
                             </div>
 
                             <div class="score-bar-wrapper row">
@@ -310,9 +310,9 @@
                                 <!-- start -->
                                 <div class="group-header">
                                     <h3>{!! $item[$i]["content"]["title"]!!}</h3>
-                                    <hr>
+                               <hr style="border-color: {!!$item[$i]["params"]["couleur"]!!}">
                                 </div>
-
+    
                                 <div class="score-bar-wrapper row">
                                     <div class="col-xs-12 col-sm-3">
 
@@ -337,7 +337,7 @@
 
                                 <div class="box mb-5">
                                     @if(isset($item[$i]['content']['commentaire_perso']))
-                                    <div class="box-content bg-white">
+                                    <div class="box-content bg-grey">
                                         {!! $item[$i]["content"]["commentaire_perso"] !!}
                                     </div>
                                     @endif
@@ -346,7 +346,6 @@
                                         <div class="title text-left"> <i class="fa fa-arrow-alt-circle-right"></i>
                                             {{ __('Definition') }}</div>
                                     </div>
-
 
                                     <div class="box-content ec-first-border-color" >
                                         {!! $item[$i]["content"]["description_long"] !!}
@@ -363,16 +362,57 @@
                 <h2 class="card-title">{{ $item[26]["params"]["menuNumber"] }} -
                     {{$item[26]["content"]["title"]}} </h2>
                 @endif
-                <div class="col-md-12" id="comments">
+                <div class="col-md-12" id="{{ $item[26]["content"]["title"]}}">
                     <div class="card">
                         <div class="card-header .bg-secondary">
-                            {{ $item[26]["content"]["sub_title"]}}</div>
+                            {{ $item[26]["content"]["sub_title"]}}
                         </div>
+                        <div id="table_header">
+                            @if($item[27]['content']["introduction"])
+                            {!! $item[27]['content']["introduction"] !!}
+                            @endif
+                            <h3>{!! $item[27]['content']["label"]!!}</h3>
+                        </div>
+                        @if(isset($item[27]["adequacy"]))
+                        <table class="b-table table table-hovered">
+                            <tbody>
+                                @for ($i=0; $i < count($item[27]["adequacy"]); $i++)
+
+                                <tr>
+                                    <td style="width: 6%">{{$i+1}}</td>
+                                    <td style="width: 40%">{{$item[27]["adequacy"][$i]['test_ref_adequation']['label']}}</td>
+                                    <td style="width: 25%">
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:{{$item[27]["adequacy"][$i]['pourcentage_score']}}">
+                                            </div>
+                                        </div>
+                                        <span class="percentage">{{$item[27]["adequacy"][$i]['pourcentage_score']}}%</span>
+                                    </td>
+                                    <td style="width: 8%;" data-toggle="collapse" data-target="#{{$i}}" class="accordion-toggle">
+                                        <p class="t-right">{{ __('Details') }}</p>
+                                    </td>
+                                </tr>
+                                <td colspan="12" class="hiddenRow">
+                                    <div class="accordian-body collapse hiddenRow" id="{{$i}}">
+                                    @if($item[27]["adequacy"][$i]['test_ref_adequation']['description'])
+                                    {{$item[27]["adequacy"][$i]['test_ref_adequation']['description']}}
+                                    @endif
+                                    </div>
+                                </td>
+                                @endfor
+                            </tbody>
+                        </table>
+                        @endif
                     </div>
+                <br>
+                <br>
+                <br>
                 </div>
 
-            </div>
-    </div>
+                </div>
+                </div>
+                </div>
+
 
     <footer class="text-center footer">
         <div class="mb-2">
@@ -397,12 +437,16 @@
   var items = {
   	data: [],
   	name: "",
+    type: "area",
+    pointStart: 0,
   	color: "",
   	fillOpacity: 0.3
   };
   var barChart = [];
   var obj = {};
+  var point_start = -15;
   @foreach($group_factors as $idx => $group)
+  point_start = point_start + 80;
   //console.log("group - ", @json($group));
   obj.name = @json($group['label']) + " (" + @json($group['score']) + ")";
   obj.y = parseFloat(@json($group['score']));
@@ -410,31 +454,30 @@
   barChart.push(obj);
   obj = {};
   items.name = @json($group['label']);
+  items.data.pointStart = point_start;
   @foreach($group['factors']['factor'] as $idx => $factor)
   categories.push(@json($factor['label']) + " (" + @json($factor['score']) + ")");
   if (@json($group['id']) === @json($factor['group_id'])) {
   	items.data.push(parseFloat(@json($factor['score'])));
-
-
   	if (items.data.length < categories.length) {
           console.log("length: " , categories.length);
      for (let i = 1; i < categories.length; i++) {
   		items.data.push(null);
       }
     }
-
-
-
   	items.color = '#' + @json($factor['color']);
   }
   @endforeach
   data.push(items);
+
+  console.log("data", data);
   items = {
   	data: [],
   	name: "",
+    type: "area",
+    pointStart: point_start,
   	color: "",
   	fillOpacity: 0.3
-
   };
   @endforeach
   console.log("data - ", data);
@@ -443,62 +486,134 @@
   	chart: {
   		marginTop: 30,
   		polar: true,
-  		type: 'area',
+  		type: '',
   	},
-
-  	title: {
-  		text: ''
-  	},
-  	plotOptions: {
-  		series: {
-            stacking: 'normal',
-            states:
-            {
-                hover:
-                {
-                    enabled: false
-                },
-                inactive:
-                {
-                    opacity:1
+    "title": {
+                "text": ""
+            },
+            "credits": {
+                "enabled": false
+            },
+                   "tooltip": {
+                "enabled": false
+            },
+            "yAxis": {
+                "max": 10,
+                "lineColor": "#FFFFFF",
+                "tickInterval": 2,
+                "gridLineWidth": 1,
+                "gridLineColor": "#EEEEEE",
+                "plotLines": [{
+                    "color": "#AAAAAA",
+                    "dashStyle": "LongDash",
+                    "value": 5,
+                    "width": 1
+                }, {
+                    "color": "#EEEEEE",
+                    "dashStyle": "Dash",
+                    "value": 1,
+                    "width": 1
+                }, {
+                    "color": "#EEEEEE",
+                    "dashStyle": "Dash",
+                    "value": 3,
+                    "width": 1
+                }, {
+                    "color": "#EEEEEE",
+                    "dashStyle": "Dash",
+                    "value": 7,
+                    "width": 1
+                }, {
+                    "color": "#EEEEEE",
+                    "dashStyle": "Dash",
+                    "value": 9,
+                    "width": 1
+                }],
+                "labels": {
+                    "enabled": false
                 }
             },
-  			shadow: false,
-  			marker: {
-  				enabled: false
-  			},
-  		}
+            "plotOptions": {
+                "series": {
+                    "animation": false,
+                    "showInLegend": true,
+                    "marker": {
+                        "enabled": false,
+                        "states": {
+                            "hover": {
+                                "enabled": false
+                            }
+                        }
+                    },
+                    "connectNulls": true,
+                    "pointPlacement": "on",
+                    "pointInterval": 15
+                },
+                "area": {
+                    "lineWidth": 1
+                }
+            },
 
-  	},
-  	yAxis: {
-  		lineWidth: 0,
-  	},
+           "xAxis": {
+                "max": 12,
+                "startOnTick": true,
+                "endOnTick": true,
+                "lineWidth": 0,
+                "gridLineWidth": 1,
+                "labels": {
+                    "distance": 15,
+                    "style": {
+                        "width": "140px",
+                        "color": "#000000",
+                        "fontSize": "14px",
+                        "fontWeight": "normal",
+                        "fontFamily": "\"roboto\", \"Arial\", sans-serif"
+                    },
+                    "formatter": function () {
+                        var sReturn = '',
+                            iIndex = this.value / 30,
+                            oCategories = categories;
 
- 	tooltip: {
-         enabled: false
-	},
-	credits: {
-         enabled: false
-	},
-  	max: 12,
-  	min: 1,
-  	tickInterval: 1,
-  	xAxis: {
-  		categories: categories,
-  		lineWidth: 0,
-  		labels: {
-  			distance: 40,
-  			style: {
-  				fontSize: '12px'
-  			}
-  		}
+                        if (oCategories[iIndex] !=
+                            undefined) {
+                            sReturn += oCategories[iIndex];
+                        }
 
-  	},
-  	legend: {
-  		enabled: true,
-  		itemMarginTop: 35
-  	},
-  	series: data,
+
+                        return sReturn;
+                    }
+                },
+                "tickPositions": [0, 30, 60, 90, 120, 150, 180,
+                    210, 240, 270, 300, 330, 360
+                ]
+            },
+            "series": [{
+                "color": "#F781BE",
+                "name": "Client Acquisition Skills",
+                "type": "area",
+                "pointStart": -15,
+                "data": [4, 5, null, 4.3, null, 7.1, 6, 0]
+            }, {
+                "color": "#D0A9F5",
+                "name": "Business Development Skills",
+                "type": "area",
+                "pointStart": 75,
+                "data": [6, 5, null, 5.8, null, 1.7, 2, 0]
+            }, {
+                "color": "#A9F5A9",
+                "name": "Negotiation Skills",
+                "type": "area",
+                "pointStart": 165,
+                "data": [2, 3.3, null, 5, null, 2.9, 3, 0]
+            }, {
+                "color": "#81BEF7",
+                "name": "Selling Skills",
+                "type": "area",
+                "pointStart": 255,
+                "data": [3, 4.2, null, 1.7, null, 3.3, 4,0
+                ]
+            }],
+
   });
 </script>
 <script>

@@ -595,6 +595,7 @@ h3 {
 }
 
 .score-bar {
+    width: 100%!important;
     height: 30px;
     padding: 5px;
     margin-top: 10px;
@@ -646,9 +647,24 @@ h3 {
 }
 
 .b-table td {
-    /* padding: 0.2rem!important; */
+    padding: 0.5rem!important;
     vertical-align: top!important;
     border: none!important;
+}
+
+.b-table {
+    margin-top: 25px;
+}
+
+#table_header {
+    padding: 20px;
+}
+
+#table_header>h3 {
+    color: #1C3664;
+    font-size: 24.5px;
+    font-weight: 400;
+    margin-bottom: -20px;
 }
 
 .b-table td:hover {
@@ -784,4 +800,8 @@ h3 {
     position: absolute;
     right: 10px;
     top: 20;
+}
+
+.bg-grey {
+    background-color: #cccccc;
 }

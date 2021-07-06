@@ -137,7 +137,25 @@ class ReportsController extends Controller
         ];
 
         $this->participant = $data['general']['participant_name'];
+        // $reference
+        foreach ($xml['elements']['test_ref_adequation_profils']['test_ref_adequation_profil'] as $ref) {
+            $references[$ref['@attributes']['id']] = array(
+                'label' => $ref['contenus']['contenu']['libelle'],
+                'description' => $ref['contenus']['contenu']['description_longue']
+            );
+        }
 
+        // class
+        foreach ($xml['elements']['test_ref_adequation_classes']['test_ref_adequation_classe'] as $class) {
+            $classes[$class['@attributes']['id']] = array(
+                'label' => $class['contenus']['contenu']['libelle'],
+                'description' => $class['contenus']['contenu']['description'],
+                'description_long' => $class['contenus']['contenu']['description_longue']
+            );
+        }
+
+        $data['references'] = $references;
+        $data['classes'] = $classes;
 
         // test_groupe_facteur
         $factor = [];
@@ -204,6 +222,8 @@ class ReportsController extends Controller
             'id' => $xml["elements"]["test_mini_tests"]["test_mini_test"]["@attributes"]["id"],
             'score' => $xml["elements"]["test_mini_tests"]["test_mini_test"]["@attributes"]["score_calcule"],
         ];
+
+
         // parties
         foreach ($xml['parties']['partie'] as $value) {
 
@@ -243,7 +263,6 @@ class ReportsController extends Controller
             if (isset($value['rapport_adequation_classes'])) {
 
                 if (isset($value['rapport_adequation_classes']['rapport_adequation_classe'])) {
-
                     if (isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['@attributes'])) {
                         foreach ($xml['elements']['test_ref_adequation_profils']['test_ref_adequation_profil'] as $test_ref) {
                             $id = isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']) ? $value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['@attributes']['test_ref_adequation_profil_id'] : 0;
@@ -267,11 +286,12 @@ class ReportsController extends Controller
                             'color' => isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['couleur_classe']) ? $value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['couleur_classe'] : null,
                             'test_ref_adequation' => $test_ref_adequation,
                         ];
+                        unset($test_ref_adequation);
                     } else {
                         // dd("array");
                         foreach ($value['rapport_adequation_classes'] as $adequation_classes) {
                             // dd($adequation_classes);
-                            $class_id = $adequation_classes['@attributes']['test_ref_adequation_classe_id'];
+                            // $class_id = $adequation_classes['@attributes']['test_ref_adequation_classe_id'];
 
                             if (isset($adequation_classes['rapport_adequation_profils']['rapport_adequation_profil'])) {
 
@@ -280,7 +300,7 @@ class ReportsController extends Controller
                                         $id = isset($adequate['@attributes']['test_ref_adequation_profil_id']) ? $adequate['@attributes']['test_ref_adequation_profil_id'] : 0;
                                         if ($id == $test_ref["@attributes"]["id"]) {
 
-                                            $test_ref_adequation[] =
+                                            $test_ref_adequation =
                                                 [
                                                     'id' => $test_ref["@attributes"]["id"],
                                                     'label' => $test_ref["contenus"]["contenu"]["libelle"],
@@ -292,7 +312,7 @@ class ReportsController extends Controller
                                     }
 
 
-                                    $adequates[$class_id][] = [
+                                    $adequates[] = [
                                         'id' => isset($adequate['@attributes']) ? $adequate['@attributes']['test_ref_adequation_profil_id'] : null,
                                         'pourcentage_score' => isset($adequate['pourcentage_score']) ? $adequate['pourcentage_score'] : null,
                                         'score' => isset($adequate['score']) ? $adequate['score'] : null,

@@ -11,9 +11,9 @@
         <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
             <i class="fas fa-bars"></i>
         </a>
-        <nav id="sidebar" class="sidebar-wrapper">
+      <nav id="sidebar" class="sidebar-wrapper">
             <div class="sidebar-brand">
-                <a href="#">United Management Consulting</a>
+                <a href="#">{{$data['general']['client']}}</a>
                 <div id="close-sidebar">
                     <i class="fas fa-times"></i>
                 </div>
@@ -21,13 +21,15 @@
 
             <div class="sidebar-header">
                 <div class="user-pic">
-                    <img class="img-responsive img-rounded" src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg" alt="User picture">
+                    <img class="img-responsive img-rounded"
+                        src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg"
+                        alt="User picture">
                 </div>
                 <div class="user-info">
-                    <span class="user-name">{{$data['general']['participant_name']}}
-                        <strong>E</strong>
+                    <span class="user-name">
+                        <strong>{{$data['general']['participant_name']}}</strong>
                     </span>
-                    <span class="user-role">Administrator</span>
+                    {{-- <a href="#"><span class="user-role"> </span></a> --}}
                 </div>
             </div>
             <div class="sidebar-content">
@@ -35,7 +37,7 @@
                 <div class="sidebar-menu">
                     <ul>
                         <div class="header-menu">
-                            <span>Reports</span>
+                            <span>Тайлан</span>
                         </div>
                         @foreach($data["parties"]["party"] as $menu)
                         @if (str_contains($menu['type'], 'ancre'))
@@ -50,14 +52,20 @@
                 </div>
                 <!-- sidebar-menu  -->
             </div>
+        
         </nav>
         <!-- sidebar-wrapper  -->
         <main class="page-content">
             <div class="main">
                 <div class="text-center">
                     <img src="{{$data['general']['logo']}}" alt="{{$data['general']['label']}} " class="img-responsive">
-                    <h6>Test taken on the 13th of September 2019 in 14 min 24 sec</h6>
-                    <hr />
+                    <h6>{{$data['general']['completed_at']}}</h6>
+                    <hr  />
+                    <div>
+                    <a href="#" id="pdf_export"><img class="img-responsive img-rounded"
+                        src="../../assets/img/pdf_icon.png" width="50px
+                        alt="pdf download"></a>
+                    </div>
                 </div>
 
                 <!-- begin row -->
@@ -89,8 +97,8 @@
                                             color:#000000; background-color: #1C3664">
                                             <div class="header" style="color: #fff;">
                                                 {{ __('Score') }} <br>
-                                                @if (isset($item[2]["adequate"]["pourcentage_score"]))
-                                                {{ $item[2]["adequate"]["pourcentage_score"] }}
+                                                @if (isset($item[2]["adequacy"]["pourcentage_score"]))
+                                                {{ $item[2]["adequacy"]["pourcentage_score"] }}
                                                 @endif
                                             </div>
                                         </div>
@@ -99,11 +107,11 @@
                                     <div class="col-xs-12 col-sm-9">
                                         <div class="progress score-bar">
 
-                                            @if( isset($item[2]["adequate"]["pourcentage_score"]))
-                                            <label for="0">0</label>
-                                            <div class="progress-bar" style='width:{{ $item[2]["adequate"]["pourcentage_score"]}}%; color:#000000; background-color: #1C3664'>
+                                            @if( isset($item[2]["adequacy"]["pourcentage_score"]))
+                                            <label for="0" id="percent_start">0</label>
+                                            <div class="progress-bar" style='width:{{ $item[2]["adequacy"]["pourcentage_score"]}}%; color:#000000; background-color: #1C3664'>
                                             </div>
-                                            <label for="10">10</label>
+                                            <label for="10" id="percent_end">100</label>
                                             @endif
                                         </div>
                                     </div>
@@ -116,8 +124,8 @@
                                         </div>
                                         <div class="box-desc">
                                             <div>
-                                                @if( isset($item[2]["adequate"]["description"]))
-                                                {!! $item[2]["adequate"]["description"] !!}
+                                                @if( isset($item[2]["adequacy"]['test_ref_adequation']["description"]))
+                                                {!! $item[2]["adequacy"]['test_ref_adequation']["description"] !!}
                                                 @endif
                                             </div>
                                         </div>
@@ -167,16 +175,17 @@
                                 <div>
                                     {!! $item[6]["content"]["introduction"] !!}
                                 </div>
-
+                
                                 @foreach($item[6]["content"]["domain"] as $detail)
 
                                 <div class="group-header mt-4">
-                                    <h2>{{ $detail['label']}}</h2>
+                                    <h4>{!! $detail['label']!!}</h4>
                                 </div>
                                 @foreach ($detail['contents'] as $content)
                                 <div class="box gray mb-2">
+                           
                                     <div class="box-content ec-first-border-color" style="background-color: #EEEEEE">
-                                        {{ $content['comment'] }}
+                                        {!! $content['comment'] !!}
                                     </div>
                                 </div>
                                 @endforeach
@@ -185,7 +194,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- /end PERSONALISED ANALYSIS" -->
+                    <!-- /END PERSONALISED ANALYSIS" -->
 
                     <!-- Comment" -->
                     @if (str_contains($item[9]['type'], 'ancre'))
@@ -198,12 +207,13 @@
                             <div class="card-body">
 
                                 @for($i = 10; $i < 33; $i++) @if(str_contains($item[$i]['type'], 'rapport_details_groupe' )) <div class="group-header">
-                                    <h3>{{ $item[$i]["content"]["label"] }}</h3>
+                                    <h3>{{ $item[$i]["content"]["title"] }}</h3>
                             </div>
                             @endif
                             @if(str_contains($item[$i]['type'], 'rapport_details_facteur'))
                             <div class="group-header clearfix">
-                                {{ $item[$i]["content"]["label"] }}
+                                <h5>{{ $item[$i]["content"]["title"] }}
+                                    <h5>
                             </div>
                             <div class="score-bar-wrapper row">
 
@@ -225,26 +235,26 @@
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="progress score-bar">
                                         @if( isset($item[$i]["params"]["pourcentage_score"]))
-                                        <label for="0">0</label>
+                                        <label for="0" id="percent_start">0</label>
                                         <div class="progress-bar" style='width:{{ $item[$i]["params"]["pourcentage_score"]}}%;
                                                                 color:#000000;
                                                                 background-color: #{{$item[$i]['params']['couleur']}}'>
                                         </div>
-                                        <label for="10">10</label>
+                                        <label for="10" id="percent_end">10</label>
                                         @endif
                                         @if( isset($item[$i]["adequacy"]["pourcentage_score"]))
-                                        <label for="0">0</label>
+                                        <label for="0" id="percent_start">0</label>
                                         <div class="progress-bar" style='width:{{ $item[$i]["adequacy"]["pourcentage_score"]}}%; color:#000000; background-color: #1C3664'>
                                         </div>
-                                        <label for="10">10</label>
+                                        <label for="10" id="percent_end">10</label>
                                         @endif
                                     </div>
                                 </div>
 
                                 <div class="box mb">
-                                    <div class="box-desc">
+                                    <div class="box-desc bg-grey">
                                         <div>
-                                            {{ $item[$i]["content"]["commentaire_perso"] }}
+                                            {!! $item[$i]["content"]["commentaire_perso"] !!}
                                         </div>
                                     </div>
                                 </div>
@@ -257,7 +267,7 @@
                                     </div>
                                     <div class="box-desc">
                                         <div>
-                                            {{ $item[$i]["content"]["description_long"] }}
+                                            {!! $item[$i]["content"]["description_long"] !!}
                                         </div>
                                     </div>
                                 </div>
@@ -285,20 +295,21 @@
                                 @php $references = $data['references'] @endphp
                                 @php $classes = $data['classes'] @endphp
 
-                                @if (isset($item[34]['adequate']))
+                                @if (isset($item[34]['adequacy']))
 
                                 @php $i = 1; @endphp
 
-                                @foreach ($item[34]['adequate'] as $key => $adequate)
-
-                                <div class="mt-3 mb-3">
+                                @foreach ($item[36]['adequacy'] as $key => $adequacy)
+                    
+                                {{-- <div class="mt-3 mb-3">
                                     <h5>{{ $classes[$key]['label'] }}</h5>
                                     <div>
                                         {{ $classes[$key]['description'] }}
                                     </div>
-                                </div>
-
-                                @foreach($adequate as $value)
+                                </div> --}}
+                                @if(isset($adequacy))
+                                {{dd($item)}}
+                                @foreach($adequacy as $value)
                                 <div class="row">
                                     <div class="col-xs-1 col-md-1 col-sm-1">{{$i++}}</div>
                                     <div class="col-xs-11 col-md-6 col-sm-5 word-break">
@@ -315,7 +326,7 @@
                                 </div>
                                 @endforeach
 
-                                @foreach($adequate as $value)
+                                @foreach($adequacy as $value)
                                 <div class="page-breaker-inside" style="margin-top:20px;">
                                     <div class="row">
                                         <div class="col-xs-12">
@@ -335,7 +346,7 @@
                                     </div>
                                 </div>
                                 @endforeach
-
+                                @endif
                                 @endforeach
 
                                 @endif
@@ -345,67 +356,6 @@
                     </div>
                 </div>
                 <!-- / end General -->
-
-                <!-- 7. GENERAL PROFILE -->
-                @if (str_contains($item[35]['type'], 'ancre'))
-                <h2 class="card-title">7 - {{$item[35]["content"]["title"]}} </h2>
-                @endif
-
-                <div class="col-md-12" id="comments">
-                    <div class="card">
-                        <div class="card-header .bg-secondary">
-                            {{ $item[35]["content"]["sub_title"]}}
-                        </div>
-
-                        <div class="card-body">
-                            {!! $item[36]["content"]["introduction"] !!}
-                            <div class="adoquetion">
-
-                                @foreach ($item[36]['adequate'] as $profile)
-
-                                <div class="row">
-                                    <div class="col-xs-1 col-md-1 col-sm-1">{{$i++}}</div>
-                                    <div class="col-xs-11 col-md-6 col-sm-5 word-break">
-                                        {{$references[$profile['id']]['label']}}
-                                    </div>
-                                    <div class="col-xs-7 col-md-3 col-sm-5 add-md-print">
-                                        <div class="progress">
-                                            <div class="progress-bar ec-first-bg-color ec-first-text-color" style="width: {{$profile['pourcentage_score']}}%;"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-2 col-md-1 col-sm-1 remove-md-print">
-                                        {{$profile['pourcentage_score']}}%
-                                    </div>
-                                </div>
-                                @endforeach
-
-                                @foreach ($item[36]['adequate'] as $profile)
-                                <div class="page-breaker-inside" style="margin-top:20px;">
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                                            <h3>
-                                                {{$references[$profile['id']]['label']}}
-                                                <span class="badge badge-pill badge-secondary">
-                                                    {{$profile['pourcentage_score']}}%</span>
-                                            </h3>
-
-                                        </div>
-                                    </div>
-                                    <hr class="hr-normal">
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                                            {!! $references[$profile['id']]['description'] !!}
-                                        </div>
-                                    </div>
-                                </div>
-                                @endforeach
-
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <!-- /End General  -->
 
                 <!-- end row-->
             </div>
@@ -470,20 +420,20 @@
 
     Highcharts.chart('chart', {
         chart: {
-            renderTo: 'container',
-            polar: true
+            renderTo: 'container'
+            , polar: true
         },
 
         credits: {
             enabled: false
-        },
-        tooltip: {
+        }
+        , tooltip: {
             enabled: false
-        },
-        title: {
+        }
+        , title: {
             text: 'Test'
-        },
-        plotOptions: {
+        }
+        , plotOptions: {
             series: {
                 states: {
                     inactive: {
@@ -491,22 +441,23 @@
                     }
                 }
             }
-        },
-        xAxis: {
+        }
+        , xAxis: {
             categories: categories,
             // tickmarkPlacement: 'on',
-            gridLineWidth: 1,
-            lineWidth: 0
-        },
-        yAxis: {
+            gridLineWidth: 1
+            , lineWidth: 0
+        }
+        , yAxis: {
             // gridLineInterpolation: 'polygon',
-            lineWidth: 0,
-            gridLineWidth: 1,
-            min: 0
+            lineWidth: 0
+            , gridLineWidth: 1
+            , min: 0
         },
 
         series: data
     });
+
 </script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/esm/popper.js"></script>
