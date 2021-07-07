@@ -24,37 +24,23 @@ class AssessmentsController extends Controller
 
         $tests = Test::where('priority', 1)->get();
         // Хэрвээ test_id шүүх болон candidate_id-р шүүнэ.
-        $from_date =  ($request->from_date) ? $request->from_date . ' 00:00:00' : null;
-        $to_date =  ($request->to_date) ? $request->to_date . ' 00:00:00' : null;
         $current_page_count = ($request->current_page_count) ? $request->current_page_count : 10;
         if ($request->page) $page = $request->page;
         else $page = 1;
 
-        $group_id = ($request->group_id) ? $request->group_id : null;
+        $filter = array(
+            'order_asc' => 0,
+            'page' => $page,
+            'per_page' => $current_page_count
+        );
+        if ($request->test_id != 0) $filter['test_id'] = $request->test_id;
+        if ($request->group_id != 0) $filter['group_id'] = $request->group_id;
+        if ($request->from_date != 0) $filter['due_date_from'] = $request->from_date . ' 00:00:00';
+        if ($request->to_date != 0) $filter['due_date_to'] = $request->to_date . ' 00:00:00';
 
-        // request-д утга байгаа бол доорх url-с шүүлт хийнэ.
-        if ($request->test_id) {
-            $response = Http::withHeaders([
-                'WWW-Authenticate' => $this->token
-            ])->get('https://app.centraltest.com/customer/REST/assessment/paginate/completed/json',  [
-                'order_asc' => 0,
-                'test_id' => $request->test_id,
-                'group_id' => $request->group_id,
-                'due_date_from' => $from_date,
-                'due_date_to' => $to_date,
-                'per_page' => $current_page_count,
-                'page' => $page
-            ]);
-        } else {
-            $response = Http::withHeaders([
-                'WWW-Authenticate' => $this->token
-            ])->get('https://app.centraltest.com/customer/REST/assessment/paginate/completed/json', [
-                'order_asc' => 0,
-                'per_page' => $current_page_count,
-                'page' => $page
-            ]);
-        }
-
+        $response = Http::withHeaders([
+            'WWW-Authenticate' => $this->token
+        ])->get('https://app.centraltest.com/customer/REST/assessment/paginate/completed/json',  $filter);
         $assessments = json_decode($response, true);
 
         // тухайн assessment-тад data нэмэх
@@ -92,10 +78,9 @@ class AssessmentsController extends Controller
             $assessments['result']['data'][$key]['test'] = $test;
         }
 
-        // return $assessments;
         $pagination = $assessments['result']['pagination'];
 
-        // return $pagination;
+        // return $assessments;
         // $candidate= retrieve https://app.centraltest.com/customer/REST/retrieve/candidate/ [FORMAT ]
         // foreach хийж тухайн id-р хэрэглэгчтэй тестийг холбоно
         // test_id -mай холбох

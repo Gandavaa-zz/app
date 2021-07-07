@@ -21,7 +21,7 @@ class CreateCandidatesTable extends Migration
             $table->string('login')->nullable();
             $table->string('firstname');
             $table->string('lastname');
-            $table->string('last_connection_date');
+            $table->string('last_connection_date')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->timestamps();
         });
