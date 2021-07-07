@@ -165,7 +165,7 @@
                     </div>
                     <!-- end Graph -->
 
-                    <!-- Detailed  -->
+                    <!-- Detailed  -->dasdsa
                     @if (str_contains($item[6]['type'], 'ancre'))
                     <h2 class="card-title">{{ $item[6]["params"]["menuNumber"] }} -
                         {{$item[6]["content"]["title"]}} </h2>

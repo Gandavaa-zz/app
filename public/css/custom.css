@@ -208,6 +208,7 @@ body {
 
 .sidebar-wrapper .sidebar-header .user-info>span {
     display: block;
+    padding-top: 20px;
 }
 
 .sidebar-wrapper .sidebar-header .user-info .user-role {
@@ -493,7 +494,8 @@ body {
 .footer {
     right: 0;
     bottom: 0;
-    left: 250;
+    left: 0;
+    right: 0;
     padding: 1rem;
     position: fixed;
     color: white;
@@ -593,6 +595,7 @@ h3 {
 }
 
 .score-bar {
+    width: 100%!important;
     height: 30px;
     padding: 5px;
     margin-top: 10px;
@@ -644,9 +647,24 @@ h3 {
 }
 
 .b-table td {
-    /* padding: 0.2rem!important; */
+    padding: 0.5rem!important;
     vertical-align: top!important;
     border: none!important;
+}
+
+.b-table {
+    margin-top: 25px;
+}
+
+#table_header {
+    padding: 20px;
+}
+
+#table_header>h3 {
+    color: #1C3664;
+    font-size: 24.5px;
+    font-weight: 400;
+    margin-bottom: -20px;
 }
 
 .b-table td:hover {
@@ -764,6 +782,7 @@ h3 {
 }
 
 #percent_end {
+    content: 100;
     position: absolute;
     right: 10;
     color: #343a40;
@@ -775,4 +794,14 @@ h3 {
     width: 14px;
     font-weight: bold;
     color: #343a40;
+}
+
+#pdf_export {
+    position: absolute;
+    right: 10px;
+    top: 20;
+}
+
+.bg-grey {
+    background-color: #cccccc;
 }
