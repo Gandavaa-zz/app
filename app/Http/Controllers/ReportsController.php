@@ -153,7 +153,6 @@ class ReportsController extends Controller
         // exit();
         $this->participant = $data['general']['participant_name'];
 
-
         // test_groupe_facteur
         $factor = [];
 

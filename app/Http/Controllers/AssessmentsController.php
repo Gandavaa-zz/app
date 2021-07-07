@@ -6,6 +6,7 @@ use App\Candidate;
 use App\Group;
 use App\Test;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
@@ -60,7 +61,32 @@ class AssessmentsController extends Controller
         foreach ($assessments['result']['data'] as $key => $value) {
             // return $value['test_id'];
             $candidate = Candidate::find($value['candidate_id']);
-            $assessments['result']['data'][$key]['candidate'] = $candidate;
+
+            if ($candidate && isset($candidate)) {
+                $assessments['result']['data'][$key]['candidate'] = $candidate;
+            } else {
+                // get candidate from API
+                $candidateJson = Http::withHeaders([
+                    'WWW-Authenticate' => $this->token,
+                ])->get(
+                    'https://app.centraltest.com/customer/REST/retrieve/candidate/json',
+                    [
+                        'id' => $value['candidate_id']
+                    ]
+                );
+                $newCandidate = json_decode($candidateJson, true);
+
+                Candidate::create([
+                    'id' => $newCandidate['id'],
+                    'title_id' => $newCandidate['title_id'],
+                    'country_code' => $newCandidate['country_code'],
+                    'email' => $newCandidate['email'],
+                    'lastname' => $newCandidate['lastname'],
+                    'firstname' => $newCandidate['firstname'],
+                    'last_connection_date' => $newCandidate['last_connection_date']
+                ]);
+                $assessments['result']['data'][$key]['candidate'] = $newCandidate;
+            }
 
             $test = Test::find($value['test_id']);
             $assessments['result']['data'][$key]['test'] = $test;

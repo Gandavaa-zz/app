@@ -41,11 +41,11 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-sm-2">
-                                    <label for="ccyear">Тест өгсөн эхэлсэн огноо:</label>
+                                    <label for="ccyear">Тест эхэлсэн огноо:</label>
                                     <input id="from_date" name="from_date" placeholder="Огноо сонгоно уу..." type="date" class="form-control @error('dob') is-invalid @enderror" autofocus>
                                 </div>
                                 <div class="form-group col-sm-2">
-                                    <label for="ccyear">Тест өгч дууссан огноо:</label>
+                                    <label for="ccyear">Тест дууссан огноо:</label>
                                     <input id="to_date" name="to_date" placeholder="Огноо сонгоно уу..." type="date" class="form-control @error('dob') is-invalid @enderror" autofocus>
                                 </div>
 
@@ -73,8 +73,8 @@
                                             <td>
                                                 {{ $item['candidate_id'] }}
                                             </td>
-                                            <td> @if(isset($item->candidate ))
-                                                {{ $item->candidate->full_name }}
+                                            <td> @if(isset($item['candidate'] ))
+                                                {{ $item['candidate']['firstname'] }}, {{ $item['candidate']['lastname']}}
                                                 @else
                                                 Холбогдоогүй байна
                                                 @endif
@@ -119,7 +119,7 @@
                                         $last_page = $pagination['last_page'];
                                         $page = $pagination['current_page'];
                                         @endphp
-                                        <nav aria-label="Page navigation example" class="offset-md-4">
+                                        <nav aria-label="Page navigation example" class="offset-md-3">
                                             <ul class="pagination">
                                                 @if($previous_page)
                                                 <li class="page-item @if($previous_page == $page) active @endif"><button name="page" class="page-link" value="0" onclick="this.form.submit()">{{$pagination['previous_page']}}</button></li>
