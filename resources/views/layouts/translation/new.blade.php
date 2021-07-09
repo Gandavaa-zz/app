@@ -14,21 +14,18 @@
                                 <div class="col-md-10 mx-auto">
                                     <form>
                                         <div class="form-group row">
-                                        <div class="form-group col-sm-12">
-                                            {!! Form::Label('test_id', 'Тест') !!}
-                                            <select class="form-control" name="test_id">
-                                                @foreach($assessments as $item)
-                                                <option value="{{$item->id}}">{{$item->label}}</option>
-                                                @endforeach
-                                             </select>
+                                            <div class="form-group col-sm-12">
+                                                {!! Form::Label('test_id', 'Тест') !!}
+                                                <select class="form-control" name="test_id">
+                                                    <option value="0">Нэг тестийг сонго...</option>
+                                                    @foreach($assessments as $item)
+                                                    <option value="{{$item->id}}">{{$item->label}}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                             <div class="col-sm-6">
-                                                <label for="en">Англи: <img src="{{url('/icons/en.png')}}" class="flag" alt="Image"/></label>
-                                                <input
-                                                    placeholder="Текст оруулна уу..."
-                                                    type="text"
-                                                    class="form-control @error('en') is-invalid @enderror"
-                                                    name="en" value="{{ old('en') }}" autocomplete="en" autofocus>
+                                                <label for="en">Англи: <img src="{{url('/icons/en.png')}}" class="flag" alt="Image" /></label>
+                                                <input placeholder="Текст оруулна уу..." type="text" class="form-control @error('en') is-invalid @enderror" name="en" value="{{ old('en') }}" autocomplete="en" autofocus>
                                                 @error('en')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -36,12 +33,8 @@
                                                 @enderror
                                             </div>
                                             <div class="col-sm-6">
-                                                <label for="firstname">Монгол: <img src="{{url('/icons/mn.png')}}" class="flag" alt="Image"/></label>
-                                                <input placeholder="Текст оруулна уу..." type="text"
-                                                    class="form-control @error('mn') is-invalid @enderror"
-                                                    name="mn"
-                                                    value="{{ old('mn') }}"
-                                                    autocomplete="mn" autofocus>
+                                                <label for="firstname">Монгол: <img src="{{url('/icons/mn.png')}}" class="flag" alt="Image" /></label>
+                                                <input placeholder="Текст оруулна уу..." type="text" class="form-control @error('mn') is-invalid @enderror" name="mn" value="{{ old('mn') }}" autocomplete="mn" autofocus>
                                                 @error('mn')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>

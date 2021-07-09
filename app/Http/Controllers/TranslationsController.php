@@ -83,8 +83,7 @@ class TranslationsController extends Controller
 
     function new(Request $request)
     {
-
-        $assessments = Test::all(['id', 'label']);
+        $assessments = Test::where('priority', 1)->get();
         return view('layouts.translation.new', compact('assessments'));
     }
 
