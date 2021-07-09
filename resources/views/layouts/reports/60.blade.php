@@ -1,5 +1,5 @@
 <html>
-<!-- SALES PROFILE View -->
+<!-- CTPI_R View -->
 
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">
@@ -124,8 +124,8 @@
                                         </div>
                                         <div class="box-desc">
                                             <div>
-                                                @if( isset($item[2]["adequacy"]['test_ref_adequation']["description"]))
-                                                {!! $item[2]["adequacy"]['test_ref_adequation']["description"] !!}
+                                                @if( isset($item[2]["adequacy"]['adequation_profile'][0]['test_ref_adequation']['description']))
+                                                 {!!$item[2]["adequacy"]['adequation_profile'][0]['test_ref_adequation']['description']!!}
                                                 @endif
                                             </div>
                                         </div>
@@ -160,7 +160,7 @@
                     </div>
                     <!-- /end Graph -->
 
-                    <!-- PERSONALISED ANALYSIS" -->
+                    <!-- 3- PERSONALISED ANALYSIS" -->
                     @if (str_contains($item[5]['type'], 'ancre'))
                     <h2 class="card-title">{{ $item[5]["params"]["menuNumber"] }} -
                         {{$item[5]["content"]["title"]}}
@@ -177,13 +177,13 @@
                                 </div>
                 
                                 @foreach($item[6]["content"]["domain"] as $detail)
-
+                         
                                 <div class="group-header mt-4">
                                     <h4>{!! $detail['label']!!}</h4>
                                 </div>
                                 @foreach ($detail['contents'] as $content)
+                                <h5 class="p-1">{!! $content['title']!!}</h5>
                                 <div class="box gray mb-2">
-                           
                                     <div class="box-content ec-first-border-color" style="background-color: #EEEEEE">
                                         {!! $content['comment'] !!}
                                     </div>
@@ -196,7 +196,12 @@
                     </div>
                     <!-- /END PERSONALISED ANALYSIS" -->
 
-                    <!-- Comment" -->
+                    <!-- 4- Detailed table starts" -->
+
+                    
+                    <!-- 4- Detailed table ends" -->
+
+                    <!-- 5- Comment" -->
                     @if (str_contains($item[9]['type'], 'ancre'))
                     <h2 class="card-title">4 - {{$item[9]["content"]["title"]}} </h2>
                     @endif
@@ -292,48 +297,43 @@
                             {!! $item[34]["content"]["introduction"] !!}
                             <div class="adoquetion">
 
-                                @php $references = $data['references'] @endphp
-                                @php $classes = $data['classes'] @endphp
-
                                 @if (isset($item[34]['adequacy']))
+                                {{-- {{dd($item[34])}} --}}
+                                @foreach ($item[34]['adequacy'] as $key => $adequacy)
 
-                                @php $i = 1; @endphp
-
-                                @foreach ($item[36]['adequacy'] as $key => $adequacy)
-                    
-                                {{-- <div class="mt-3 mb-3">
-                                    <h5>{{ $classes[$key]['label'] }}</h5>
+                                <div class="mt-3 mb-3">
+                                    <h5>{!! $adequacy['adequation_profile']['label'] !!}</h5>
                                     <div>
-                                        {{ $classes[$key]['description'] }}
+                                        {!! $adequacy['adequation_profile']['description'] !!}
                                     </div>
-                                </div> --}}
+                                </div>
                                 @if(isset($adequacy))
-                                {{dd($item)}}
-                                @foreach($adequacy as $value)
+                                  {{-- {{dd($adequacy)}} --}}
+                                @foreach($adequacy['adequation_profile']['test_ref_adequation'] as $index=> $profile)
                                 <div class="row">
-                                    <div class="col-xs-1 col-md-1 col-sm-1">{{$i++}}</div>
+                                    <div class="col-xs-1 col-md-1 col-sm-1">{{$index+1}}</div>
                                     <div class="col-xs-11 col-md-6 col-sm-5 word-break">
-                                        {{$references[$value['id']]['label']}}
+                                        {{$profile['label']}}
                                     </div>
                                     <div class="col-xs-7 col-md-3 col-sm-5 add-md-print">
                                         <div class="progress">
-                                            <div class="progress-bar ec-first-bg-color ec-first-text-color" style="width: {{$value['pourcentage_score']}}%;"></div>
+                                            <div class="progress-bar ec-first-bg-color ec-first-text-color" style="width: {{$profile['pourcentage_score']}}%;"></div>
                                         </div>
                                     </div>
                                     <div class="col-xs-2 col-md-1 col-sm-1 remove-md-print">
-                                        {{$value['pourcentage_score']}}%
+                                        {{$profile['pourcentage_score']}}%
                                     </div>
                                 </div>
                                 @endforeach
 
-                                @foreach($adequacy as $value)
+                                @foreach($adequacy['adequation_profile']['test_ref_adequation'] as $profile2)
                                 <div class="page-breaker-inside" style="margin-top:20px;">
                                     <div class="row">
                                         <div class="col-xs-12">
                                             <h3>
-                                                {{$references[$value['id']]['label']}}
+                                               {{$profile2['label']}}
                                                 <span class="badge badge-pill badge-secondary">
-                                                    {{$value['pourcentage_score']}}%</span>
+                                                    {{$profile2['pourcentage_score']}}%</span>
                                             </h3>
 
                                         </div>
@@ -341,7 +341,7 @@
                                     <hr class="hr-normal">
                                     <div class="row">
                                         <div class="col-xs-12">
-                                            {!! $references[$value['id']]['description'] !!}
+                                            {!! $profile2['description_long'] !!}
                                         </div>
                                     </div>
                                 </div>
@@ -355,6 +355,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- / end General -->
 
                 <!-- end row-->

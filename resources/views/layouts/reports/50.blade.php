@@ -69,7 +69,8 @@
                     @php $item = $data["parties"]["party"]; @endphp
                     @php $group_factors = $data["group_factors"]; @endphp
                     @if (str_contains($item[0]['type'], 'ancre'))
-                    <h2 class="card-title">{{ $item[0]["params"]["menuNumber"] }} - {{$item[0]["content"]["title"]}} </h2>
+                    <h2 class="card-title">{{ $item[0]["params"]["menuNumber"] }} - {{$item[0]["content"]["title"]}}
+                    </h2>
                     @endif
 
                     <div class="col-md-12" id='{{ $item[0]["content"]["title"]}}'>
@@ -126,11 +127,7 @@
                                         </div>
                                         <div class="box-desc">
                                             <div>
-                                                {{ $item[$i]["content"]["description_courte"] }}
-                                                @if(isset($item[$i]["adequacy"]["test_ref_adequation"]))
-                                                {{$item[$i]["adequacy"]["test_ref_adequation"]['description']}}
-                                                @endif
-
+                                                <<<<<<< HEAD {{ $item[$i]["content"]["description_courte"] }} @if(isset($item[$i]["adequacy"]["test_ref_adequation"])) {{$item[$i]["adequacy"]["test_ref_adequation"]['description']}} @endif======={{ $item[$i]["content"]["description_courte"] }} @if(isset($item[$i]["adequacy"]['adequation_profile'][0]["test_ref_adequation"])) {{$item[$i]["adequacy"]['adequation_profile'][0]["test_ref_adequation"]['description']}} @endif>>>>>>> bf651fa6bfc3d158f7f1ff7944fefa699c8d7fd5
                                             </div>
                                         </div>
                                     </div>
@@ -187,12 +184,13 @@
                 </div>
                 <!-- /endsection 5 -->
 
-                <!--  Personalised Analysis of the Report -->
+                <!--  PERSONALISED ANALYSIS -->
                 @if (str_contains($item[7]['type'], 'ancre'))
                 <h2 class="card-title">{{ $item[7]["params"]["menuNumber"] }} -
                     {{$item[7]["content"]["title"]}}
                 </h2>
                 @endif
+                {{-- {{dd($item[8])}} --}}
                 <div class="col-md-12" id="{{ $item[7]["content"]["title"]}}">
                     <div class="card">
                         <div class="card-header .bg-secondary">{{ $item[7]["content"]["sub_title"]}}
@@ -201,10 +199,9 @@
                             <div class="group-header">
                                 {!! $item[8]["content"]["introduction"]!!}
                             </div>
-
                             @foreach($item[8]["content"]["domain"] as $detail)
                             <div class="group-header mt-4">
-                                <h2>{{ $detail['label']}}</h2>
+                                <h4>{{ $detail['label']}}</h4>
                             </div>
                             @foreach ($detail['contents'] as $content)
                             <div class="box gray mb-2">
@@ -337,91 +334,106 @@
                                                 </div>
                                             </div>
 
-                                            <div class="box mb-5">
-                                                @if(isset($item[$i]['content']['commentaire_perso']))
-                                                <div class="box-content bg-grey">
-                                                    {!! $item[$i]["content"]["commentaire_perso"] !!}
-                                                </div>
-                                                @endif
-
-                                                <div class="box-header box-header-small">
-                                                    <div class="title text-left"> <i class="fa fa-arrow-alt-circle-right"></i>
-                                                        {{ __('Definition') }}
+                                            @if (str_contains($item[26]['type'], 'ancre'))
+                                            <h2 class="card-title">{{ $item[26]["params"]["menuNumber"] }} -
+                                                {{$item[26]["content"]["title"]}}
+                                            </h2>
+                                            @endif
+                                            <div class="col-md-12" id="{{ $item[26]["content"]["title"]}}">
+                                                <div class="card">
+                                                    <div class="card-header .bg-secondary">
+                                                        {{ $item[26]["content"]["sub_title"]}}
                                                     </div>
-                                                </div>
+                                                    <div id="table_header">
+                                                        @if($item[27]['content']["introduction"])
+                                                        {!! $item[27]['content']["introduction"] !!}
+                                                        @endif
+                                                        <h3>{!! $item[27]['content']["label"]!!}</h3>
+                                                    </div>
+                                                    @if(isset($item[27]["adequacy"]))
+                                                    <table class="b-table table table-hovered">
+                                                        <tbody>
+                                                            {{-- {{dd($item[27])}} --}}
+                                                            @for ($i=0; $i < count($item[27]["adequacy"]); $i++) <tr>
+                                                                <td style="width: 6%">{{$i+1}}</td>
+                                                                <td style="width: 40%">
+                                                                    {{$item[27]["adequacy"][$i]['adequation_profile'][0]['test_ref_adequation']['label']}}
+                                                                </td>
+                                                                <td style="width: 25%">
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:{{$item[27]["adequacy"][$i]['pourcentage_score']}}">
+                                                                        </div>
+                                                                        <!-- /end  -->
+                                                                        @endfor
 
-                                                <div class="box-content ec-first-border-color">
-                                                    {!! $item[$i]["content"]["description_long"] !!}
+                                                                    </div>
+                                                                    <span class="percentage">{{$item[27]["adequacy"][$i]['pourcentage_score']}}%</span>
+                                                                </td>
+                                                                <td style="width: 8%;" data-toggle="collapse" data-target="#{{$i}}" class="accordion-toggle">
+                                                                    <p class="t-right">{{ __('Details') }}</p>
+                                                                </td>
+                                                                </tr>
+                                                                <td colspan="12" class="hiddenRow">
+                                                                    <div class="accordian-body collapse hiddenRow" id="{{$i}}">
+                                                                        @if($item[27]["adequacy"][$i]['adequation_profile'][0]['test_ref_adequation']['description'])
+                                                                        {{$item[27]["adequacy"][$i]['adequation_profile'][0]['test_ref_adequation']['description']}}
+                                                                        @endif
+                                                                    </div>
+                                                                    <div id="table_header">
+                                                                        @if($item[27]['content']["introduction"])
+                                                                        {!! $item[27]['content']["introduction"] !!}
+                                                                        @endif
+                                                                        <h3>{!! $item[27]['content']["label"]!!}</h3>
+                                                                    </div>
+                                                                    @if(isset($item[27]["adequacy"]))
+                                                                    <table class="b-table table table-hovered">
+                                                                        <tbody>
+                                                                            @for ($i=0; $i < count($item[27]["adequacy"]); $i++) <tr>
+                                                                                <td style="width: 6%">{{$i+1}}</td>
+                                                                                <td style="width: 40%">
+                                                                                    {{$item[27]["adequacy"][$i]['test_ref_adequation']['label']}}
+                                                                                </td>
+                                                                                <td style="width: 25%">
+                                                                                    <div class="progress">
+                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:{{$item[27]["adequacy"][$i]['pourcentage_score']}}">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <span class="percentage">{{$item[27]["adequacy"][$i]['pourcentage_score']}}%</span>
+                                                                                </td>
+                                                                                <td style="width: 8%;" data-toggle="collapse" data-target="#{{$i}}" class="accordion-toggle">
+                                                                                    <p class="t-right">
+                                                                                        {{ __('Details') }}
+                                                                                    </p>
+                                                                                </td>
+                                                                                </tr>
+                                                                                <td colspan="12" class="hiddenRow">
+                                                                                    <div class="accordian-body collapse hiddenRow" id="{{$i}}">
+                                                                                        @if($item[27]["adequacy"][$i]['test_ref_adequation']['description'])
+                                                                                        {{$item[27]["adequacy"][$i]['test_ref_adequation']['description']}}
+                                                                                        @endif
+                                                                                    </div>
+                                                                                </td>
+                                                                                @endfor
+                                                                        </tbody>
+                                                                    </table>
+                                                                    @endif
                                                 </div>
+                                                <br>
+                                                <br>
+                                                <br>
                                             </div>
-                                            <!-- /end  -->
-                                            @endfor
 
                                         </div>
                                 </div>
                             </div>
 
-                            @if (str_contains($item[26]['type'], 'ancre'))
-                            <h2 class="card-title">{{ $item[26]["params"]["menuNumber"] }} -
-                                {{$item[26]["content"]["title"]}}
-                            </h2>
-                            @endif
-                            <div class="col-md-12" id="{{ $item[26]["content"]["title"]}}">
-                                <div class="card">
-                                    <div class="card-header .bg-secondary">
-                                        {{ $item[26]["content"]["sub_title"]}}
-                                    </div>
-                                    <div id="table_header">
-                                        @if($item[27]['content']["introduction"])
-                                        {!! $item[27]['content']["introduction"] !!}
-                                        @endif
-                                        <h3>{!! $item[27]['content']["label"]!!}</h3>
-                                    </div>
-                                    @if(isset($item[27]["adequacy"]))
-                                    <table class="b-table table table-hovered">
-                                        <tbody>
-                                            @for ($i=0; $i < count($item[27]["adequacy"]); $i++) <tr>
-                                                <td style="width: 6%">{{$i+1}}</td>
-                                                <td style="width: 40%">{{$item[27]["adequacy"][$i]['test_ref_adequation']['label']}}</td>
-                                                <td style="width: 25%">
-                                                    <div class="progress">
-                                                        <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:{{$item[27]["adequacy"][$i]['pourcentage_score']}}">
-                                                        </div>
-                                                    </div>
-                                                    <span class="percentage">{{$item[27]["adequacy"][$i]['pourcentage_score']}}%</span>
-                                                </td>
-                                                <td style="width: 8%;" data-toggle="collapse" data-target="#{{$i}}" class="accordion-toggle">
-                                                    <p class="t-right">{{ __('Details') }}</p>
-                                                </td>
-                                                </tr>
-                                                <td colspan="12" class="hiddenRow">
-                                                    <div class="accordian-body collapse hiddenRow" id="{{$i}}">
-                                                        @if($item[27]["adequacy"][$i]['test_ref_adequation']['description'])
-                                                        {{$item[27]["adequacy"][$i]['test_ref_adequation']['description']}}
-                                                        @endif
-                                                    </div>
-                                                </td>
-                                                @endfor
-                                        </tbody>
-                                    </table>
-                                    @endif
+
+                            <footer class="text-center footer">
+                                <div class="mb-2">
+                                    CDC Copyright
                                 </div>
-                                <br>
-                                <br>
-                                <br>
-                            </div>
-
+                            </footer>
                         </div>
-                    </div>
-                </div>
-
-
-                <footer class="text-center footer">
-                    <div class="mb-2">
-                        CDC Copyright
-                    </div>
-                </footer>
-            </div>
         </main>
         <!-- page-content" -->
     </div>
