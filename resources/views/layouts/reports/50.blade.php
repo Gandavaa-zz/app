@@ -49,8 +49,8 @@
 
                 <li class="dropdown">
                     <a href="#" data-toggle="dropdown" class="dropdown-toggle">
-                        <img class=" img-responsive" width="23" height="23" src="/images/assessment/avatar-woman.png" alt="Ariuntuyaa&nbsp;Erdenebaatar">
-                        <span class="user-name" style="color: #14191A;">Ariuntuyaa&nbsp;Erdenebaatar</span>
+                        <img class=" img-responsive" width="23" height="23" src="/images/assessment/avatar-woman.png" alt="{{$data['general']['participant_name']}}">
+                        <span class="user-name" style="color: #14191A;">{{$data['general']['participant_name']}}</span>
                     </a>
                     <ul class="dropdown-menu">
                     </ul>
@@ -163,7 +163,7 @@
                             <div class="group-header">
                                 {{-- <h2 class="ec-title">THE GRAPH</h2> --}}
                                 <figure class="highcharts-figure">
-                                    <div style="height: 600px; width: 700px; margin:0 auto" 
+                                    <div style="height: 600px; width: 1308px; margin:0 auto" 
                                     id="chart"></div>
                                 </figure>
                             </div>
@@ -383,11 +383,11 @@
                             {{-- {{dd($item[27])}} --}}
                                        @for ($i=0; $i < count($item[27]["adequacy"]); $i++)
                                 <tr>
-                                    <td style="width: 6%">{{$i+1}}</td>
+                                    <td class="left-p">{{$i+1}}</td>
                                     <td style="width: 40%">{{$item[27]["adequacy"][$i]['adequation_profile'][0]['test_ref_adequation']['label']}}</td>
                                     <td style="width: 25%">
                                         <div class="progress">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:{{$item[27]["adequacy"][$i]['pourcentage_score']}}">
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:{{$item[27]["adequacy"][$i]['pourcentage_score']}}%">
                                             </div>
                                         </div>
                                         <span class="percentage">{{$item[27]["adequacy"][$i]['pourcentage_score']}}%</span>
