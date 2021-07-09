@@ -65,21 +65,18 @@
                     </div>
                 </div>
                 <div class="row">
-
                     @php $item = $data["parties"]["party"]; @endphp
                     @php $group_factors = $data["group_factors"]; @endphp
-                    @if (str_contains($item[0]['type'], 'ancre'))
-                    <h2 class="card-title">{{ $item[0]["params"]["menuNumber"] }} - {{$item[0]["content"]["title"]}}
-                    </h2>
-                    @endif
 
+                    @if (str_contains($item[0]['type'], 'ancre'))
+                    <h2 class="card-title">{{ $item[0]["params"]["menuNumber"] }} - {{$item[0]["content"]["title"]}} </h2>
+                    @endif
                     <div class="col-md-12" id='{{ $item[0]["content"]["title"]}}'>
                         <div class="card">
                             <div class="card-header .bg-secondary">
                                 {{ $item[0]["content"]["sub_title"]}}
                             </div>
                             <div class="card-body">
-
                                 <div class="group-header">
                                     <h2 class="ec-title"> </h2>
                                 </div>
@@ -101,7 +98,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="col-xs-12 col-sm-9">
                                         <div class="progress score-bar">
                                             @if( isset($item[$i]["params"]["pourcentage_score"]))
@@ -118,7 +114,6 @@
                                             @endif
                                         </div>
                                     </div>
-
                                     <div class="box mb-4">
                                         <div class="box-header box-header-small">
                                             <div class="title text-left"> <i class="fa fa-arrow-alt-circle-right"></i>
@@ -127,19 +122,20 @@
                                         </div>
                                         <div class="box-desc">
                                             <div>
-                                                <<<<<<< HEAD {{ $item[$i]["content"]["description_courte"] }} @if(isset($item[$i]["adequacy"]["test_ref_adequation"])) {{$item[$i]["adequacy"]["test_ref_adequation"]['description']}} @endif======={{ $item[$i]["content"]["description_courte"] }} @if(isset($item[$i]["adequacy"]['adequation_profile'][0]["test_ref_adequation"])) {{$item[$i]["adequacy"]['adequation_profile'][0]["test_ref_adequation"]['description']}} @endif>>>>>>> bf651fa6bfc3d158f7f1ff7944fefa699c8d7fd5
+
+                                                {{ $item[$i]["content"]["description_courte"] }}
+                                                @if(isset($item[$i]["adequacy"]['adequation_profile'][0]["test_ref_adequation"]))
+                                                {{$item[$i]["adequacy"]['adequation_profile'][0]["test_ref_adequation"]['description']}}
+                                                @endif
+
                                             </div>
                                         </div>
                                     </div>
                             </div>
-
                             @endfor
-
-
                         </div>
                     </div>
                 </div>
-
                 <!-- section 3 here -->
                 @if (str_contains($item[3]['type'], 'ancre'))
                 <h2 class="card-title">{{ $item[3]["params"]["menuNumber"] }} -
@@ -161,8 +157,6 @@
                     </div>
                 </div>
                 <!-- /end section -->
-
-
                 <!-- section 5 -->
                 @if (str_contains($item[5]['type'], 'ancre'))
                 <h2 class="card-title">{{ $item[5]["params"]["menuNumber"] }} -
@@ -183,7 +177,6 @@
                     </div>
                 </div>
                 <!-- /endsection 5 -->
-
                 <!--  PERSONALISED ANALYSIS -->
                 @if (str_contains($item[7]['type'], 'ancre'))
                 <h2 class="card-title">{{ $item[7]["params"]["menuNumber"] }} -
@@ -210,13 +203,11 @@
                                 </div>
                             </div>
                             @endforeach
-
                             @endforeach
                         </div>
                     </div>
                 </div>
                 <!-- /endsection -->
-
                 <!-- 5 - the Comments  -->
                 @if (str_contains($item[9]['type'], 'ancre'))
                 <h2 class="card-title">{{ $item[9]["params"]["menuNumber"] }} -
@@ -233,209 +224,181 @@
                         <div class="card-body">
                             <div class="group-header">
                                 <h3>{!! $item[10]["content"]["title"]!!}</h3>
-                                <hr style="border-color: {!!$item[10][" params"]["couleur"]!!}">
+                                <hr style="border-color: {!!$item[10]['params']['couleur']!!}">
                             </div>
                             <div class="score-bar-wrapper row">
                                 <div class="col-xs-12 col-sm-3">
                                     <div class="box-score" style="
-                                     color:#000000; background-color:{!!$item[10][" params"]["couleur"]!!}">
+                                     color:#000000; background-color:{!!$item[10]['params']['couleur']!!}">
                                         <div class="header">
                                             {{ __('Score') }} <br>
                                             {{ $item[10]["params"]["score"]}}
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="progress score-bar" style="width: 100%;">
                                         <label for="0" id="percent_start">0</label>
+                                        @php $color = $item[10]["params"]["couleur"] @endphp
                                         <div class="progress-bar" style="width:{{$item[10]["params"]["score"]}}%;
-                                            color:#000000; background-color: #{!!$item[10][" params"]["couleur"]!!} "></div>
-                                      <label for=" 10" id="percent_end">10</label>
+                                            color:#000000; background-color:#{{$color}}"></div>
+                                        <label for=" 10" id="percent_end">10</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box mb-5">
+                                <div class="box-header box-header-small">
+                                    <div class="title text-left"> <i class="fa fa-arrow-alt-circle-right"></i>
+                                        {{ __('Definition') }}
+                                    </div>
+                                </div>
+                                <div class="box-content ec-first-border-color">
+                                    {!!$item[10]["content"]["description_long"]!!}
+                                </div>
+                            </div>
+
+                            <!-- facteur -->
+                            <div class="group-header">
+                                <h3>{!! $item[11]["content"]["title"]!!}</h3>
+                                <hr style="border-color: {!!$item[11]['params']['couleur']!!}">
+                            </div>
+                            <div class="score-bar-wrapper row">
+                                <div class="col-xs-12 col-sm-3">
+                                    <div class="box-score" style="
+                                     color:#000000; background-color:{!!$item[10]['params']['couleur']!!}">
+                                        <div class="header">
+                                            {{ __('Score') }} <br>
+                                            {{ $item[11]["params"]["score"]}}
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="progress score-bar" style="width: 100%;">
+                                        <label for="0" id="percent_start">0</label>
+                                        <div class="progress-bar" style="width:{{$item[11]['params']['score']}}%;
+                                            color:#000000; background-color: #{!!$item[11]['params']['couleur']!!} "></div>
+                                        <label for=" 10" id="percent_end">10</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box mb-5">
+                                <div class="box-header box-header-small">
+                                    <div class="title text-left"> <i class="fa fa-arrow-alt-circle-right"></i>
+                                        {{ __('Definition') }}
+                                    </div>
+                                </div>
+                                <div class="box-content ec-first-border-color">
+                                    {!! $item[11]["content"]["description_long"] !!}
+                                </div>
+                            </div>
+                            <!-- /endees  -->
+                            @for ($i=12; $i < 26; $i++) <!-- start -->
 
+                                <div class="group-header">
+                                    <h3>{!! $item[$i]["content"]["title"]!!}</h3>
+                                    <hr style="border-color: {!!$item[$i]['params']['couleur']!!}">
+                                </div>
+
+                                <div class="score-bar-wrapper row">
+                                    <div class="col-xs-12 col-sm-3">
+                                        <div class="box-score" style="
+                                        color:#000000; background-color:{!!$item[$i]['params']['couleur']!!}">
+                                            <div class="header">
+                                                {{ __('Score') }} <br>
+                                                {{ $item[$i]["params"]["score"]}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-9">
+                                        <div class="progress score-bar" style="width: 100%;">
+                                            <label for="0" id="percent_start">0</label>
+                                            <div class="progress-bar" style="width:{{$item[$i]["params"]["score"]}}%;
+                                                color:#000000; background-color: #{!!$item[$i]['params']['couleur']!!} "></div>
+                                            <label for=" 10" id="percent_end">10</label>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="box mb-5">
+                                    @if(isset($item[$i]['content']['commentaire_perso']))
+                                    <div class="box-content bg-grey">
+                                        {!! $item[$i]["content"]["commentaire_perso"] !!}
+                                    </div>
+                                    @endif
                                     <div class="box-header box-header-small">
                                         <div class="title text-left"> <i class="fa fa-arrow-alt-circle-right"></i>
                                             {{ __('Definition') }}
                                         </div>
                                     </div>
                                     <div class="box-content ec-first-border-color">
-                                        {!!$item[10]["content"]["description_long"]!!}
+                                        {!! $item[$i]["content"]["description_long"] !!}
                                     </div>
                                 </div>
-
-                                <!-- facteur -->
-                                <div class="group-header">
-                                    <h3>{!! $item[11]["content"]["title"]!!}</h3>
-                                    <hr style="border-color: {!!$item[11][" params"]["couleur"]!!}">
-                                </div>
-
-                                <div class="score-bar-wrapper row">
-                                    <div class="col-xs-12 col-sm-3">
-
-                                        <div class="box-score" style="
-                                     color:#000000; background-color:{!!$item[10][" params"]["couleur"]!!}">
-                                            <div class="header">
-                                                {{ __('Score') }} <br>
-                                                {{ $item[11]["params"]["score"]}}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-xs-12 col-sm-9">
-                                        <div class="progress score-bar" style="width: 100%;">
-                                            <label for="0" id="percent_start">0</label>
-                                            <div class="progress-bar" style="width:{{$item[11]["params"]["score"]}}%;
-                                            color:#000000; background-color: #{!!$item[11][" params"]["couleur"]!!} "></div>
-                                            <label for=" 10" id="percent_end">10</label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="box mb-5">
-                                        <div class="box-header box-header-small">
-                                            <div class="title text-left"> <i class="fa fa-arrow-alt-circle-right"></i>
-                                                {{ __('Definition') }}
-                                            </div>
-                                        </div>
-                                        <div class="box-content ec-first-border-color">
-                                            {!! $item[11]["content"]["description_long"] !!}
-                                        </div>
-                                    </div>
-                                    <!-- /endees  -->
-                                    @for ($i=12; $i < 26; $i++) <!-- start -->
-                                        <div class="group-header">
-                                            <h3>{!! $item[$i]["content"]["title"]!!}</h3>
-                                            <hr style="border-color: {!!$item[$i][" params"]["couleur"]!!}">
-                                        </div>
-
-                                        <div class="score-bar-wrapper row">
-                                            <div class="col-xs-12 col-sm-3">
-
-                                                <div class="box-score" style="
-                                        color:#000000; background-color:{!!$item[$i][" params"]["couleur"]!!}">
-                                                    <div class="header">
-                                                        {{ __('Score') }} <br>
-                                                        {{ $item[$i]["params"]["score"]}}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-xs-12 col-sm-9">
-                                                <div class="progress score-bar" style="width: 100%;">
-                                                    <label for="0" id="percent_start">0</label>
-                                                    <div class="progress-bar" style="width:{{$item[$i]["params"]["score"]}}%;
-                                                color:#000000; background-color: #{!!$item[$i][" params"]["couleur"]!!} "></div>
-                                                <label for=" 10" id="percent_end">10</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            @if (str_contains($item[26]['type'], 'ancre'))
-                                            <h2 class="card-title">{{ $item[26]["params"]["menuNumber"] }} -
-                                                {{$item[26]["content"]["title"]}}
-                                            </h2>
-                                            @endif
-                                            <div class="col-md-12" id="{{ $item[26]["content"]["title"]}}">
-                                                <div class="card">
-                                                    <div class="card-header .bg-secondary">
-                                                        {{ $item[26]["content"]["sub_title"]}}
-                                                    </div>
-                                                    <div id="table_header">
-                                                        @if($item[27]['content']["introduction"])
-                                                        {!! $item[27]['content']["introduction"] !!}
-                                                        @endif
-                                                        <h3>{!! $item[27]['content']["label"]!!}</h3>
-                                                    </div>
-                                                    @if(isset($item[27]["adequacy"]))
-                                                    <table class="b-table table table-hovered">
-                                                        <tbody>
-                                                            {{-- {{dd($item[27])}} --}}
-                                                            @for ($i=0; $i < count($item[27]["adequacy"]); $i++) <tr>
-                                                                <td style="width: 6%">{{$i+1}}</td>
-                                                                <td style="width: 40%">
-                                                                    {{$item[27]["adequacy"][$i]['adequation_profile'][0]['test_ref_adequation']['label']}}
-                                                                </td>
-                                                                <td style="width: 25%">
-                                                                    <div class="progress">
-                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:{{$item[27]["adequacy"][$i]['pourcentage_score']}}">
-                                                                        </div>
-                                                                        <!-- /end  -->
-                                                                        @endfor
-
-                                                                    </div>
-                                                                    <span class="percentage">{{$item[27]["adequacy"][$i]['pourcentage_score']}}%</span>
-                                                                </td>
-                                                                <td style="width: 8%;" data-toggle="collapse" data-target="#{{$i}}" class="accordion-toggle">
-                                                                    <p class="t-right">{{ __('Details') }}</p>
-                                                                </td>
-                                                                </tr>
-                                                                <td colspan="12" class="hiddenRow">
-                                                                    <div class="accordian-body collapse hiddenRow" id="{{$i}}">
-                                                                        @if($item[27]["adequacy"][$i]['adequation_profile'][0]['test_ref_adequation']['description'])
-                                                                        {{$item[27]["adequacy"][$i]['adequation_profile'][0]['test_ref_adequation']['description']}}
-                                                                        @endif
-                                                                    </div>
-                                                                    <div id="table_header">
-                                                                        @if($item[27]['content']["introduction"])
-                                                                        {!! $item[27]['content']["introduction"] !!}
-                                                                        @endif
-                                                                        <h3>{!! $item[27]['content']["label"]!!}</h3>
-                                                                    </div>
-                                                                    @if(isset($item[27]["adequacy"]))
-                                                                    <table class="b-table table table-hovered">
-                                                                        <tbody>
-                                                                            @for ($i=0; $i < count($item[27]["adequacy"]); $i++) <tr>
-                                                                                <td style="width: 6%">{{$i+1}}</td>
-                                                                                <td style="width: 40%">
-                                                                                    {{$item[27]["adequacy"][$i]['test_ref_adequation']['label']}}
-                                                                                </td>
-                                                                                <td style="width: 25%">
-                                                                                    <div class="progress">
-                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:{{$item[27]["adequacy"][$i]['pourcentage_score']}}">
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <span class="percentage">{{$item[27]["adequacy"][$i]['pourcentage_score']}}%</span>
-                                                                                </td>
-                                                                                <td style="width: 8%;" data-toggle="collapse" data-target="#{{$i}}" class="accordion-toggle">
-                                                                                    <p class="t-right">
-                                                                                        {{ __('Details') }}
-                                                                                    </p>
-                                                                                </td>
-                                                                                </tr>
-                                                                                <td colspan="12" class="hiddenRow">
-                                                                                    <div class="accordian-body collapse hiddenRow" id="{{$i}}">
-                                                                                        @if($item[27]["adequacy"][$i]['test_ref_adequation']['description'])
-                                                                                        {{$item[27]["adequacy"][$i]['test_ref_adequation']['description']}}
-                                                                                        @endif
-                                                                                    </div>
-                                                                                </td>
-                                                                                @endfor
-                                                                        </tbody>
-                                                                    </table>
-                                                                    @endif
-                                                </div>
-                                                <br>
-                                                <br>
-                                                <br>
-                                            </div>
-
-                                        </div>
-                                </div>
-                            </div>
-
-
-                            <footer class="text-center footer">
-                                <div class="mb-2">
-                                    CDC Copyright
-                                </div>
-                            </footer>
+                                <!-- /end  -->
+                                @endfor
                         </div>
-        </main>
-        <!-- page-content" -->
+                    </div>
+                </div>
+                @if (str_contains($item[26]['type'], 'ancre'))
+                <h2 class="card-title">{{ $item[26]["params"]["menuNumber"] }} -
+                    {{$item[26]["content"]["title"]}}
+                </h2>
+                @endif
+                <div class="col-md-12" id="{{ $item[26]["content"]["title"]}}">
+                    <div class="card">
+                        <div class="card-header .bg-secondary">
+                            {{ $item[26]["content"]["sub_title"]}}
+                        </div>
+                        <div id="table_header">
+                            @if($item[27]['content']["introduction"])
+                            {!! $item[27]['content']["introduction"] !!}
+                            @endif
+                            <h3>{!! $item[27]['content']["label"]!!}</h3>
+                        </div>
+                        @if(isset($item[27]["adequacy"]))
+                        <table class="b-table table table-hovered">
+                            <tbody>
+                                {{-- {{dd($item[27])}} --}}
+                                @for ($i=0; $i < count($item[27]["adequacy"]); $i++) <tr>
+                                    <td style="width: 6%">{{$i+1}}</td>
+                                    <td style="width: 40%">{{$item[27]["adequacy"][$i]['adequation_profile'][0]['test_ref_adequation']['label']}}</td>
+                                    <td style="width: 25%">
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:{{$item[27]["adequacy"][$i]['pourcentage_score']}}">
+                                            </div>
+                                        </div>
+                                        <span class="percentage">{{$item[27]["adequacy"][$i]['pourcentage_score']}}%</span>
+                                    </td>
+                                    <td style="width: 8%;" data-toggle="collapse" data-target="#{{$i}}" class="accordion-toggle">
+                                        <p class="t-right">{{ __('Details') }}</p>
+                                    </td>
+                                    </tr>
+                                    <td colspan="12" class="hiddenRow">
+                                        <div class="accordian-body collapse hiddenRow" id="{{$i}}">
+                                            @if($item[27]["adequacy"][$i]['adequation_profile'][0]['test_ref_adequation']['description'])
+                                            {{$item[27]["adequacy"][$i]['adequation_profile'][0]['test_ref_adequation']['description']}}
+                                            @endif
+                                        </div>
+                                    </td>
+                                    @endfor
+                            </tbody>
+                        </table>
+                        @endif
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                </div>
+            </div>
+    </div>
+    </div>
+    <footer class="text-center footer">
+        <div class="mb-2">
+            CDC Copyright
+        </div>
+    </footer>
+    </div>
+    </main>
+    <!-- page-content" -->
     </div>
     <!-- page-wrapper -->
 
@@ -483,7 +446,6 @@
     }
     @endforeach
     data.push(items);
-
     console.log("data", data);
     items = {
         data: [],
@@ -495,7 +457,6 @@
     };
     @endforeach
     console.log("data - ", data);
-
     Highcharts.chart('chart', {
         chart: {
             marginTop: 30,
@@ -567,7 +528,6 @@
                 "lineWidth": 1
             }
         },
-
         "xAxis": {
             "max": 12,
             "startOnTick": true,
@@ -587,13 +547,10 @@
                     var sReturn = '',
                         iIndex = this.value / 30,
                         oCategories = categories;
-
                     if (oCategories[iIndex] !=
                         undefined) {
                         sReturn += oCategories[iIndex];
                     }
-
-
                     return sReturn;
                 }
             },
@@ -626,7 +583,6 @@
             "pointStart": 255,
             "data": [3, 4.2, null, 1.7, null, 3.3, 4, 0]
         }],
-
     });
 </script>
 <script>
@@ -636,7 +592,6 @@
             renderTo: 'container',
             type: 'column'
         },
-
         accessibility: {
             announceNewData: {
                 enabled: true
@@ -660,7 +615,6 @@
                 }
             }
         },
-
         title: {
             text: ''
         },
@@ -676,12 +630,10 @@
                 enabled: true
             }
         },
-
         tooltip: {
             headerFormat: '<span style="font-size:14px">{series.name}: {point.y}</span><br>',
             pointFormat: '<span style="font-size:16px;color:{point.color}">{point.name}</span>'
         },
-
         series: [{
             colorByPoint: true,
             data: barChart
