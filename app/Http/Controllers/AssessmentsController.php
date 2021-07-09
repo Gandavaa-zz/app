@@ -79,12 +79,7 @@ class AssessmentsController extends Controller
         }
 
         $pagination = $assessments['result']['pagination'];
-
         // return $assessments;
-        // $candidate= retrieve https://app.centraltest.com/customer/REST/retrieve/candidate/ [FORMAT ]
-        // foreach хийж тухайн id-р хэрэглэгчтэй тестийг холбоно
-        // test_id -mай холбох
-        // candidate_id тай холбох
         return view('layouts.assessments.index', compact('assessments', 'tests', 'groups', 'pagination'));
     }
 

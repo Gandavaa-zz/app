@@ -54,8 +54,8 @@
 
                                 <div class="col-sm-2 d-flex">
                                     <button class="btn btn-primary align-self-center mt-2" type="submit">Шүүх</button>
+                                    <button class="btn btn-warning align-self-center ml-1 mt-2" type="button" id="clearFilter">Цэвэрлэх</button>
                                 </div>
-
 
                                 <table class="table table-bordered yajra-datatable user_table " id="user_table" style="width: 100%; font-size:13.5px;">
                                     <thead>
@@ -101,7 +101,6 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-
 
                                 <div class="container-fluid">
                                     <div class="form-group row">
@@ -206,6 +205,13 @@
             $('#group_id').change(function() {
                 $('#test option[value="0"]').prop('selected', true);
             });
+
+            $('#clearFilter').click(function() {
+                $('#group_id option[value="0"]').prop('selected', true);
+                $('#test option[value="0"]').prop('selected', true);
+                $('#from_date').val("");
+                $('#to_date').val("");
+            })
         });
     </script>
 
