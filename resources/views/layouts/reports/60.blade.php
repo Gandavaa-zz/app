@@ -243,50 +243,42 @@
                                                     <th class="title">Main factor</th>
                                                 </tr>
                                             </thead>
-
-                                            @foreach($group_factors as $key => $group_factor)
-                                            {{dd($group_factors)}}
                                             <tbody class="">
-                                                <tr class="group">
-                                                    <td colspan="13" class="text-center left-label" style="background: #{{$group_factor['color']}};padding: 5px;">
-                                                        <h3 class="f-title">
-                                                            {{$group_factor['label']}}<br>
-                                                            <span style="font-size: 0.7em; font-weight: 100"></span>
-                                                        </h3>
-                                                    </td>
-                                                </tr>
-
+                                                @foreach ($item as $val)
+                         
+                                                @if($val['type']=='rapport_details_facteur')
+                                                {{-- {{dd($val)}} --}}
                                                 <tr class="factor">
 
-                                                    <td class="left-label">
-                                                        <h3>
-                                                            Straightforwardness<br>
-                                                            <span class="behaviour"><span>Genuine, Needs objectivity, Transparent</span></span>
+                                                    <td class="left-label" style="border-left:10px solid #{{$val['params']['score_couleur']}};">
+                                                        <h3 style="">{{ $val["content"]["label"]}}<br>
+                                                            <span class="hidden-xs show-on-pdf" style="font-size: 0.7em; font-weight: 100">
+                                                                {{ $val["content"]["description_courte"] }}</span>
                                                         </h3>
                                                     </td>
-                                                    <!-- Factor scores -->
-                                                    <td class="text-center factor-score"></td>
-                                                    <td class="text-center factor-score"></td>
-                                                    <td class="text-center factor-score"></td>
-                                                    <td class="text-center factor-score">x</td>
-                                                    <td class="text-center factor-score-grey"></td>
-                                                    <td class="text-center factor-score-grey"></td>
-                                                    <td class="text-center factor-score-grey"></td>
-                                                    <td class="text-center factor-score"></td>
-                                                    <td class="text-center factor-score"></td>
-                                                    <td class="text-center factor-score"></td>
-                                                    <td class="text-center factor-score"></td>
-                                                    <td style="text-align:right;">
-                                                        <h3>
-                                                            Persuasiveness<br>
-                                                            <span class="behaviour">Convincing, Influential, Strategic</span>
-                                                        </h3>
-                                                    </td>
+                                                    @for($n=0; $n<11; $n++) <td class="text-center" style="@if($n>3 && $n<7) background-color:#D3D3D3;  @else background-color:#EEEEEE; @endif; vertical-align: middle;width:3%">
+                                                        @if ($n<5 && (float)$n+0.1 <=(float)$val["params"]["score_calculated"] && (float)$val["params"]["score_calculated"] <=(float)$n+0.9) <img class="check-img img-responsive" src="/assets/img/checkbox.png" alt="OK">
+                                                            @endif
+                                                            @if ($n>=5 && (float)$n+0.1 <=(float)$val["params"]["score_calculated"]+1 && (float)$val["params"]["score_calculated"]+1 <=(float)$n+0.9) <img class="check-img img-responsive" src="/assets/img/checkbox.png" alt="OK">
+                                                                @endif
+                                                                </td>
+                                                                @endfor
+                                                                <!-- Factor scores -->
 
+                                                                <!-- Right label of group -->
+                                                                <!-- <td class="text-center disabled" style="text-align:right;border-right:10px solid #F781BE;">-->
+                                                                <td style="text-align:right;border-right:10px solid #{{$val['params']['score_couleur']}};">
+                                                                    <h3 style="">{{ $val["content"]["label"]}}<br>
+                                                                        <span class="hidden-xs show-on-pdf" style="font-size: 0.7em; font-weight: 100">
+                                                                            {{ $val["content"]["description_courte"] }}</span>
+                                                                    </h3>
+                                                                </td>
                                                 </tr>
+                                                @endif
+                                                @endforeach
 
                                             </tbody>
-                                            @endforeach
+
 
                                         </table>
                                     </div>

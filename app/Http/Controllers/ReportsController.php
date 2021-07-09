@@ -347,7 +347,7 @@ class ReportsController extends Controller
             if (isset($value['rapport_adequation_classes'])) {
                 if (isset($value['rapport_adequation_classes']['rapport_adequation_classe']['@attributes'])) {
                     if (isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['@attributes'])) {
-                        print_r("rapport_adequation_classes >  profile object");
+                        // print_r("rapport_adequation_classes >  profile object");
                         if (isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['@attributes'])) {
                             $adequates   = [
                                 'id' => isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['@attributes']['id']) ? $value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['@attributes']['id'] : null,
@@ -435,7 +435,7 @@ class ReportsController extends Controller
                         unset($test_ref_adequation);
                         unset($rapport_class);
                     } else {
-                        print_r(" classess object {} profile array");
+                        // print_r(" classess object {} profile array");
                         $class_id = isset($value['rapport_adequation_classes']['rapport_adequation_classe']['@attributes']['test_ref_adequation_classe_id']) ? $value['rapport_adequation_classes']['rapport_adequation_classe']['@attributes']['test_ref_adequation_classe_id'] : 0;
                         foreach ($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils'] as $adequate_profiles) {
                             foreach ($adequate_profiles as $key => $adequate_profile) {
@@ -481,11 +481,11 @@ class ReportsController extends Controller
                         }
                     }
                 } else {
-                    print_r("class array");
+                    // print_r("class array");
                     foreach ($value['rapport_adequation_classes'] as $adequation_classes) {
 
                         if (isset($adequation_classes['rapport_adequation_profils']['rapport_adequation_profil']['@attributes'])) {
-                            print_r("profile object");
+                            // print_r("profile object");
                             $adequates   = [
                                 'id' => isset($adequation_classes['rapport_adequation_profils']['rapport_adequation_profil']['@attributes']['id']) ? $adequation_classes['rapport_adequation_profils']['rapport_adequation_profil']['@attributes']['id'] : null,
                                 'pourcentage_score' => isset($adequation_classes['rapport_adequation_profils']['rapport_adequation_profil']['pourcentage_score']) ? $adequation_classes['rapport_adequation_profils']['rapport_adequation_profil']['pourcentage_score'] : null,
@@ -495,7 +495,7 @@ class ReportsController extends Controller
                             ];
                             unset($test_ref_adequation);
                         } else {
-                            print_r("profile array");
+                            // print_r("profile array");
 
                             foreach ($adequation_classes as $adequate_classe) {
                                 $class_id = isset($adequate_classe['@attributes']['test_ref_adequation_classe_id']) ? $adequate_classe['@attributes']['test_ref_adequation_classe_id'] : 0;

@@ -42,9 +42,12 @@
 }
 
 body {
-    font-family: "Poppins", "Arial", sans-serif;
+    font-family: "Open Sans", "Arial", sans-serif;
     font-size: 14px;
     line-height: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .page-wrapper .sidebar-wrapper,
@@ -89,11 +92,12 @@ body {
 
 .page-wrapper.toggled .sidebar-wrapper {
     left: 0px;
+    margin-top: 70px;
 }
 
 @media screen and (min-width: 768px) {
     .page-wrapper.toggled .page-content {
-        padding-left: 300px;
+        padding-left: 280px;
     }
 }
 
@@ -126,19 +130,25 @@ body {
     z-index: 999;
 }
 
+#menu_title {
+    position: relative;
+    left: -17px;
+}
+
 .sidebar-wrapper ul {
-    /* padding: 0; */
+    padding-left: 30px;
     list-style-type: decimal;
     margin: 0;
     text-transform: uppercase;
     font-size: 1.1em;
-    color: white;
+    /* color: white; */
     line-height: 2;
 }
 
 .sidebar-wrapper ul li a:hover {
     margin-left: 7px;
     transition: transform 0.1 ease;
+    color: black;
 }
 
 .sidebar-wrapper a {
@@ -152,6 +162,7 @@ body {
     max-height: calc(100% - 30px);
     height: calc(100% - 30px);
     overflow-y: auto;
+    box-shadow: 0 4px 10px rgb(0 0 0 / 15%);
     position: relative;
 }
 
@@ -367,7 +378,8 @@ body {
 }
 
 .page-wrapper .page-content>div {
-    padding: 20px 40px;
+    padding: 10px;
+    margin-top: 70px;
 }
 
 .page-wrapper .page-content {
@@ -423,7 +435,7 @@ body {
 /*-----------------------------chiller-theme-------------------------------------------------*/
 
 .chiller-theme .sidebar-wrapper {
-    background: #31353d;
+    /* background: #31353d; */
 }
 
 .sidebar-header {
@@ -443,15 +455,7 @@ body {
 .chiller-theme .sidebar-wrapper .sidebar-brand>a,
 .chiller-theme .sidebar-wrapper .sidebar-menu ul li a,
 .chiller-theme .sidebar-footer>a {
-    color: #efefef;
-}
-
-.chiller-theme .sidebar-wrapper .sidebar-menu ul li:hover>a,
-.chiller-theme .sidebar-wrapper .sidebar-menu .sidebar-dropdown.active>a,
-.chiller-theme .sidebar-wrapper .sidebar-header .user-info,
-.chiller-theme .sidebar-wrapper .sidebar-brand>a:hover,
-.chiller-theme .sidebar-footer>a:hover i {
-    color: #b8bfce;
+    color: #373737;
 }
 
 .page-wrapper.chiller-theme.toggled #close-sidebar {
@@ -495,11 +499,12 @@ body {
     right: 0;
     bottom: 0;
     left: 0;
+    margin-top: auto;
     right: 0;
     padding: 1rem;
     position: fixed;
     color: white;
-    background-color: #373b44;
+    background-color: #14191A;
 }
 
 h1,
@@ -804,4 +809,97 @@ h3 {
 
 .bg-grey {
     background-color: #ececec;
+}
+
+header {
+    /*Strictly Necessary */
+    position: fixed;
+    width: 100%;
+    height: 70px;
+    padding: 0;
+    display: flex;
+    float: right;
+    background-color: white;
+    z-index: 1;
+    display: flex;
+    border-bottom: 1px solid #eee;
+    box-shadow: 2px 0px 4px rgb(51 51 51);
+}
+
+header #menu-toggle {
+    width: 80px;
+    /* height: 69px; */
+    background: white;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    box-shadow: none;
+}
+
+header #menu-toggle div span {
+    width: 22px;
+    height: 4px;
+    border-radius: 10px;
+    background-color: #6134C4;
+    margin-top: 3px;
+}
+
+#menu-toggle {
+    -webkit-transition: all 0.15s ease-in-out;
+    transition: all 0.15s ease-in-out;
+}
+
+header #menu-toggle div span:nth-child(2) {
+    -webkit-transform: translateX(-5px);
+    /* transform: translateX(-5px); */
+}
+
+header #menu-toggle div:hover span {
+    width: 27px;
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    transition: all 0.15s ease-in-out;
+}
+
+header #menu-toggle div:hover span {
+    width: 27px;
+    /* -webkit-transform: translateX(0); */
+    /* transform: translateX(0); */
+}
+
+header #menu-toggle div {
+    height: 100%;
+    padding: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    /* -webkit-box-align: center; */
+    -ms-flex-align: center;
+    align-items: center;
+    /* -webkit-box-pack: center; */
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+.fa-file-pdf-o:before {
+    content: "\f1c1";
+    color: #6134C4;
+    font-size: 36px;
+}
+
+.pdf-icon {
+    left: -30px;
+    position: relative;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+header .dropdown-toggle {
+    padding: 0 15px;
 }
