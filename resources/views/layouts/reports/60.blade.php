@@ -11,7 +11,7 @@
         <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
             <i class="fas fa-bars"></i>
         </a>
-      <nav id="sidebar" class="sidebar-wrapper">
+        <nav id="sidebar" class="sidebar-wrapper">
             <div class="sidebar-brand">
                 <a href="#">{{$data['general']['client']}}</a>
                 <div id="close-sidebar">
@@ -21,9 +21,7 @@
 
             <div class="sidebar-header">
                 <div class="user-pic">
-                    <img class="img-responsive img-rounded"
-                        src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg"
-                        alt="User picture">
+                    <img class="img-responsive img-rounded" src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg" alt="User picture">
                 </div>
                 <div class="user-info">
                     <span class="user-name">
@@ -52,7 +50,7 @@
                 </div>
                 <!-- sidebar-menu  -->
             </div>
-        
+
         </nav>
         <!-- sidebar-wrapper  -->
         <main class="page-content">
@@ -60,11 +58,10 @@
                 <div class="text-center">
                     <img src="{{$data['general']['logo']}}" alt="{{$data['general']['label']}} " class="img-responsive">
                     <h6>{{$data['general']['completed_at']}}</h6>
-                    <hr  />
+                    <hr />
                     <div>
-                    <a href="#" id="pdf_export"><img class="img-responsive img-rounded"
-                        src="../../assets/img/pdf_icon.png" width="50px
-                        alt="pdf download"></a>
+                        <a href="#" id="pdf_export"><img class="img-responsive img-rounded" src="../../assets/img/pdf_icon.png" width="50px
+                        alt=" pdf download"></a>
                     </div>
                 </div>
 
@@ -72,7 +69,7 @@
                 <div class="row">
 
                     @php $item = $data["parties"]["party"]; @endphp
-
+                    @php $group_factors = $data["group_factors"]; @endphp
                     @if (str_contains($item[0]['type'], 'ancre'))
                     @php $before_type = 'ancre' @endphp
                     <h2 class="card-title">{{ $item[0]["params"]["menuNumber"] }} -
@@ -125,7 +122,7 @@
                                         <div class="box-desc">
                                             <div>
                                                 @if( isset($item[2]["adequacy"]['adequation_profile'][0]['test_ref_adequation']['description']))
-                                                 {!!$item[2]["adequacy"]['adequation_profile'][0]['test_ref_adequation']['description']!!}
+                                                {!!$item[2]["adequacy"]['adequation_profile'][0]['test_ref_adequation']['description']!!}
                                                 @endif
                                             </div>
                                         </div>
@@ -175,9 +172,9 @@
                                 <div>
                                     {!! $item[6]["content"]["introduction"] !!}
                                 </div>
-                
+
                                 @foreach($item[6]["content"]["domain"] as $detail)
-                         
+
                                 <div class="group-header mt-4">
                                     <h4>{!! $detail['label']!!}</h4>
                                 </div>
@@ -197,11 +194,110 @@
                     <!-- /END PERSONALISED ANALYSIS" -->
 
                     <!-- 4- Detailed table starts" -->
+                    {{-- {{dd($group_factors)}} --}}
+                    <h2 class="card-title">4 - {!! $item[7]["content"]["title"] !!} </h2>
+                    <div class="col-md-12" id="detailed_table">
+                        <div class="card">
+                            <div class="card-header .bg-secondary">{!! $item[7]["content"]["sub_title"] !!}</div>
+                            <div class="card-body">
+                                <div class="card-content">
+                                    {!! $item[8]["content"]["introduction"] !!}
+                                    <div class="responsive-table">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th class="title">Opposing factor</th>
 
-                    
+                                                    <th style="background-color:#EEEEEE">
+                                                        A </th>
+
+                                                    <th style="background-color:#EEEEEE">
+                                                        B </th>
+
+                                                    <th style="background-color:#EEEEEE">
+                                                        C </th>
+
+                                                    <th style="background-color:#EEEEEE">
+                                                        D </th>
+
+                                                    <th style="background-color:#D3D3D3">
+                                                        E </th>
+
+                                                    <th style="background-color:#D3D3D3">
+                                                        F </th>
+
+                                                    <th style="background-color:#D3D3D3">
+                                                        G </th>
+
+                                                    <th style="background-color:#EEEEEE">
+                                                        H </th>
+
+                                                    <th style="background-color:#EEEEEE">
+                                                        I </th>
+
+                                                    <th style="background-color:#EEEEEE">
+                                                        J </th>
+
+                                                    <th style="background-color:#EEEEEE">
+                                                        K </th>
+                                                    <th class="title">Main factor</th>
+                                                </tr>
+                                            </thead>
+
+                                            @foreach($group_factors as $key => $group_factor)
+                                            {{dd($group_factors)}}
+                                            <tbody class="">
+                                                <tr class="group">
+                                                    <td colspan="13" class="text-center left-label" style="background: #{{$group_factor['color']}};padding: 5px;">
+                                                        <h3 class="f-title">
+                                                            {{$group_factor['label']}}<br>
+                                                            <span style="font-size: 0.7em; font-weight: 100"></span>
+                                                        </h3>
+                                                    </td>
+                                                </tr>
+
+                                                <tr class="factor">
+
+                                                    <td class="left-label">
+                                                        <h3>
+                                                            Straightforwardness<br>
+                                                            <span class="behaviour"><span>Genuine, Needs objectivity, Transparent</span></span>
+                                                        </h3>
+                                                    </td>
+                                                    <!-- Factor scores -->
+                                                    <td class="text-center factor-score"></td>
+                                                    <td class="text-center factor-score"></td>
+                                                    <td class="text-center factor-score"></td>
+                                                    <td class="text-center factor-score">x</td>
+                                                    <td class="text-center factor-score-grey"></td>
+                                                    <td class="text-center factor-score-grey"></td>
+                                                    <td class="text-center factor-score-grey"></td>
+                                                    <td class="text-center factor-score"></td>
+                                                    <td class="text-center factor-score"></td>
+                                                    <td class="text-center factor-score"></td>
+                                                    <td class="text-center factor-score"></td>
+                                                    <td style="text-align:right;">
+                                                        <h3>
+                                                            Persuasiveness<br>
+                                                            <span class="behaviour">Convincing, Influential, Strategic</span>
+                                                        </h3>
+                                                    </td>
+
+                                                </tr>
+
+                                            </tbody>
+                                            @endforeach
+
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <!-- 4- Detailed table ends" -->
 
                     <!-- 5- Comment" -->
+
                     @if (str_contains($item[9]['type'], 'ancre'))
                     <h2 class="card-title">4 - {{$item[9]["content"]["title"]}} </h2>
                     @endif
@@ -308,7 +404,7 @@
                                     </div>
                                 </div>
                                 @if(isset($adequacy))
-                                  {{-- {{dd($adequacy)}} --}}
+                                {{-- {{dd($adequacy)}} --}}
                                 @foreach($adequacy['adequation_profile']['test_ref_adequation'] as $index=> $profile)
                                 <div class="row">
                                     <div class="col-xs-1 col-md-1 col-sm-1">{{$index+1}}</div>
@@ -331,7 +427,7 @@
                                     <div class="row">
                                         <div class="col-xs-12">
                                             <h3>
-                                               {{$profile2['label']}}
+                                                {{$profile2['label']}}
                                                 <span class="badge badge-pill badge-secondary">
                                                     {{$profile2['pourcentage_score']}}%</span>
                                             </h3>
@@ -468,3 +564,4 @@
 
 
 </html>
+

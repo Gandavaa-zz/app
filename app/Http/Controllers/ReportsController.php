@@ -146,38 +146,52 @@ class ReportsController extends Controller
                 $data['test_factors'][] =
                     [
                         'id' => $factors["@attributes"]["id"],
+                        'label' => $this->getMNText($factors["contenus"]["contenu"]["libelle"]),
                         'score' => $factors["@attributes"]["score_brut"],
                         'score_calc' => $factors["@attributes"]["score_calcule"],
                         'group_id' => $factors["@attributes"]["test_groupe_facteur_id"],
                         'color' => $factors["couleur"],
-                        'label' => $this->getMNText($factors["contenus"]["contenu"]["libelle"]),
+
                     ];
 
 
-                if ($factors["@attributes"]["test_groupe_facteur_id"] === $value["@attributes"]["id"]) {
+                if ($factors["@attributes"]["test_groupe_facteur_id"] == $value["@attributes"]["id"]) {
 
-                    $factor['factor'][] = [
+                    $description = "";
+                    $description_courte_opposition = "";
+                    foreach ($xml['parties']['partie'] as $row) {
+
+                        if ($row['@attributes']['type'] == 'rapport_details_facteur' && $row['contenus']['contenu']['titre'] == $factors["contenus"]["contenu"]["libelle"]) {
+                            $description = $row['contenus']['contenu']['description_courte'];
+                            $description_courte_opposition = $row['contenus']['contenu']['description_courte_opposition'];
+                        }
+                    }
+                    // dd($description);
+                    $factor[] = [
                         'id' => $factors["@attributes"]["id"],
                         'score' => $factors["@attributes"]["score_brut"],
                         'score_calc' => $factors["@attributes"]["score_calcule"],
+                        'description' => $this->getMNText($description),
+                        'description_opposite' => $this->getMNText($description_courte_opposition),
                         'group_id' => $factors["@attributes"]["test_groupe_facteur_id"],
+                        'opposed_id' => $factors["@attributes"]["test_facteur_oppose_id"],
                         'color' => $factors["couleur"],
                         'label' => $this->getMNText($factors["contenus"]["contenu"]["libelle"]),
                     ];
+                    $description = "";
                 }
             }
-            if (str_contains($value["contenus"]["contenu"]["libelle"], "Skill")) {
-                $data["group_factors"][] =
-                    [
-                        'id' => $value["@attributes"]["id"],
-                        'score' => $value["@attributes"]["score_brut"],
-                        'color' => $value["couleur"],
-                        // 'score_calc' => $value["@attributes"]["score_calcule"],
-                        'label' => $this->getMNText($value["contenus"]["contenu"]["libelle"]),
-                        'factors' => $factor
-                    ];
-                unset($factor);
-            }
+
+            $data["group_factors"][] =
+                [
+                    'id' => $value["@attributes"]["id"],
+                    'score' => $value["@attributes"]["score_brut"],
+                    'color' => $value["couleur"],
+                    // 'score_calc' => $value["@attributes"]["score_calcule"],
+                    'label' => $this->getMNText($value["contenus"]["contenu"]["libelle"]),
+                    'factors' => $factor
+                ];
+            unset($factor);
         }
         // dd($data);
         // test_mini_tests
@@ -535,6 +549,7 @@ class ReportsController extends Controller
             $party["party"][] =
                 [
                     'id' => $value["@attributes"]["id"],
+                    'test_group_factor_id' => isset($value['@attributes']['id']) ? $value['@attributes']['id'] : null,
                     'type' =>  $value["@attributes"]["type"],
                     'params' =>  $value['params'],
                     'content' => array(
