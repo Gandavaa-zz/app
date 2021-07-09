@@ -212,8 +212,8 @@
                                 <h4>{{ $detail['label']}}</h4>
                             </div>
                                 @foreach ($detail['contents'] as $content)
-                                <div class="box gray mb-2">
-                                    <div class="box-content ec-first-border-color" >
+                                <div class="box mb-2">
+                                    <div class="bg-grey box-content" >
                                         {{ $content['comment'] }}
                                     </div>
                                 </div>
@@ -441,7 +441,6 @@
   	data: [],
   	name: "",
     type: "area",
-    pointStart: 0,
   	color: "",
   	fillOpacity: 0.3
   };
@@ -449,22 +448,20 @@
   var obj = {};
   var point_start = -15;
   @foreach($group_factors as $idx => $group)
-  point_start = point_start + 80;
-  //console.log("group - ", @json($group));
+  @if(str_contains($group['label'], "Skill"))
   obj.name = @json($group['label']) + " (" + @json($group['score']) + ")";
   obj.y = parseFloat(@json($group['score']));
   obj.color = '#' + @json($group['color']);
   barChart.push(obj);
   obj = {};
   items.name = @json($group['label']);
-  items.data.pointStart = point_start;
   @foreach($group['factors'] as $idx => $factor)
   categories.push(@json($factor['label']) + " (" + @json($factor['score']) + ")");
   if (@json($group['id']) === @json($factor['group_id'])) {
   	items.data.push(parseFloat(@json($factor['score'])));
-  	if (items.data.length < categories.length) {
+  	if (items.data.length < 7) {
           console.log("length: " , categories.length);
-     for (let i = 1; i < categories.length; i++) {
+     for (let i = 1; i < 7; i++) {
   		items.data.push(null);
       }
     }
@@ -478,11 +475,12 @@
   	data: [],
   	name: "",
     type: "area",
-    pointStart: point_start,
   	color: "",
   	fillOpacity: 0.3
   };
+  @endif
   @endforeach
+
   console.log("data - ", data);
 
   Highcharts.chart('chart', {
@@ -590,7 +588,7 @@
                     210, 240, 270, 300, 330, 360
                 ]
             },
-            "series": [{
+          "series": [{
                 "color": "#F781BE",
                 "name": "Client Acquisition Skills",
                 "type": "area",
@@ -613,8 +611,7 @@
                 "name": "Selling Skills",
                 "type": "area",
                 "pointStart": 255,
-                "data": [3, 4.2, null, 1.7, null, 3.3, 4,0
-                ]
+                "data": [3, 4.2, null, 1.7, null, 3.3, 4, 0]
             }],
 
   });
