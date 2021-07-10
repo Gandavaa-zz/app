@@ -210,7 +210,7 @@
                                         <h3>
                                             {{ $factor['label'] }}<br>
                                             {{-- {{dd($previous)}} --}}
-                                            <span class="behaviour"><span>{{ $previous['description_opposite'] }}</span></span>
+                                            <span class="behaviour">{{ $previous['description_opposite'] }}</span>
                                         </h3>
                                     </td>
                                     @for($n=0; $n<11; $n++) <td class="text-center" style="@if($n>3 && $n<7) background-color:#D3D3D3;  @else background-color:#EEEEEE; @endif; vertical-align: middle;width:3%">
@@ -239,12 +239,12 @@
             </div>
         </div>
     </div>
+     <!-- 4- Detailed table ends" -->
     <!-- 5- Comment" -->
 
     @if (str_contains($item[9]['type'], 'ancre'))
     <h2 class="card-title">4 - {{$item[9]["content"]["title"]}} </h2>
     @endif
-
     <div class="col-md-12" id="{{$item[9]["content"]["title"]}}">
         <div class="card">
             <div class="card-header .bg-secondary">{{ $item[9]["content"]["sub_title"]}}</div>

@@ -623,7 +623,12 @@ h3 {
 }
 
 .box-label {
-    text-align: center;
+    margin-top: 10px;
+    padding: 5px;
+    font-size: 22px;
+    word-wrap: break-word;
+    margin-left: -12;
+    color: #1C3664;
 }
 
 .box .box-header.box-header-small {
@@ -639,7 +644,7 @@ h3 {
 .box-tool-bottom {
     border-width: 0;
     border-radius: .25rem !important;
-    /* box-shadow: 0 0.46875rem 2.1875rem rgb(4 9 20 / 3%), 0 0.9375rem 1.40625rem rgb(4 9 20 / 3%), 0 0.25rem 0.53125rem rgb(4 9 20 / 5%), 0 0.125rem 0.1875rem rgb(4 9 20 / 3%); */
+    box-shadow: 0 0.46875rem 2.1875rem rgb(4 9 20 / 3%), 0 0.9375rem 1.40625rem rgb(4 9 20 / 3%), 0 0.25rem 0.53125rem rgb(4 9 20 / 5%), 0 0.125rem 0.1875rem rgb(4 9 20 / 3%);
 }
 
 .box-desc {
@@ -908,4 +913,20 @@ header .dropdown-toggle {
 
 .user-name {
     font-weight: bold;
+}
+
+.group-header {
+    margin-top: 10px;
+    padding: 5px;
+    font-size: 22px;
+    color: #1C3664;
+    word-wrap: break-word;
+}
+
+.factor-header {
+    text-align: center;
+}
+
+.remove-md-print p:hover {
+    cursor: pointer;
 }

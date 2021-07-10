@@ -159,9 +159,9 @@ class ReportsController extends Controller
                     $description = "";
                     $description_courte_opposition = "";
                     foreach ($xml['parties']['partie'] as $row) {
-
-                        if ($row['@attributes']['type'] == 'rapport_details_facteur' && ($row['contenus']['contenu']['titre'] == $factors["contenus"]["contenu"]["libelle"])) {
-                            // dd($row, $factors);
+                        // dd($row, $factors);
+                        if ($row['@attributes']['type'] == 'rapport_details_facteur' && ($row['contenus']['contenu']['titre'] == $factors["contenus"]["contenu"]["libelle"] || $row['contenus']['contenu']['libelle_facteur'] == $factors["contenus"]["contenu"]["libelle"])) {
+                         
                             $description = $row['contenus']['contenu']['description_courte'];
                             $description_courte_opposition = $row['contenus']['contenu']['description_courte_opposition'];
                         }
@@ -209,21 +209,21 @@ class ReportsController extends Controller
                 //   dd($value["domaines"]);
 
                 if (isset($value["domaines"]["domaine"]['@attributes'])) {
-                    //  dd($domains['cibles_secondaires']['cibles_secondaire']);
-                    if (isset($domains['cibles_secondaires']['cibles_secondaire']['@attributes'])) {
-
+                    
+             
+                    if (isset($value["domaines"]["domaine"]['cibles_secondaires']['cibles_secondaire']['@attributes'])) {
                         $comments[] = [
-                            'color' => isset($domains["cibles_secondaires"]["cibles_secondaire"]['color']) ? $domains["cibles_secondaires"]["cibles_secondaire"]['color'] : null,
-                            "score" =>  isset($domains["cibles_secondaires"]["cibles_secondaire"]["score"]) ? $domains["cibles_secondaires"]["cibles_secondaire"]["score"] : 0,
-                            "title" =>  $this->getMNText(isset($domains["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["libelle"]) ?
-                                $domains["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["libelle"] : null),
-                            "comment" =>  $this->getMNText(isset($domains["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"]) ?
-                                $domains["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"] : null),
+                            'color' => isset($value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]['color']) ? $value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]['color'] : null,
+                            "score" =>  isset($value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["score"]) ? $value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["score"] : 0,
+                            "title" =>  $this->getMNText(isset($value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["libelle"]) ?
+                                $value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["libelle"] : null),
+                            "comment" =>  $this->getMNText(isset($value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"]) ?
+                                $value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"] : null),
                         ];
                         if (isset($comments)) {
                             $domain[] = [
-                                'id' => isset($domains["@attributes"]["id"]) ? $domains["@attributes"]["id"] : null,
-                                'label' => isset($domains["contenus"]["contenu"]["libelle"]) ? $this->getMNText($domains["contenus"]["contenu"]["libelle"]) : null,
+                                'id' => isset($value["domaines"]["domaine"]["@attributes"]["id"]) ? $value["domaines"]["domaine"]["@attributes"]["id"] : null,
+                                'label' => isset($value["domaines"]["domaine"]["contenus"]["contenu"]["libelle"]) ? $this->getMNText($value["domaines"]["domaine"]["contenus"]["contenu"]["libelle"]) : null,
                                 "contents" =>  $comments
                             ];
 
@@ -257,21 +257,21 @@ class ReportsController extends Controller
                     }
                 } else {
 
-                    if (isset($domains['cibles_secondaires']['cibles_secondaire']['@attributes'])) {
+                    if (isset($value["domaines"]["domaine"]['cibles_secondaires']['cibles_secondaire']['@attributes'])) {
 
                         $comments[]  = [
-                            'target_id' => isset($domains['cibles_secondaires']['cibles_secondaire']['@attributes']["target_id"]) ? $domains['cibles_secondaires']['cibles_secondaire']['@attributes']["target_id"] : 0,
-                            'color' => isset($domains["cibles_secondaires"]["cibles_secondaire"]['color']) ? $domains["cibles_secondaires"]["cibles_secondaire"]['color'] : null,
-                            "score" =>  isset($domains["cibles_secondaires"]["cibles_secondaire"]["score"]) ? $domains["cibles_secondaires"]["cibles_secondaire"]["score"] : 0,
-                            "title" =>  $this->getMNText(isset($domains["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["libelle"]) ?
-                                $domains["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["libelle"] : null),
-                            "comment" =>  $this->getMNText(isset($domains["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"]) ?
-                                $domains["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"] : null),
+                            'target_id' => isset($value["domaines"]["domaine"]['cibles_secondaires']['cibles_secondaire']['@attributes']["target_id"]) ? $value["domaines"]["domaine"]['cibles_secondaires']['cibles_secondaire']['@attributes']["target_id"] : 0,
+                            'color' => isset($value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]['color']) ? $value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]['color'] : null,
+                            "score" =>  isset($value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["score"]) ? $value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["score"] : 0,
+                            "title" =>  $this->getMNText(isset($value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["libelle"]) ?
+                                $value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["libelle"] : null),
+                            "comment" =>  $this->getMNText(isset($value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"]) ?
+                                $value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"] : null),
                         ];
                         if (isset($comments)) {
                             $domain[] = [
-                                'id' => isset($domains["@attributes"]["id"]) ? $domains["@attributes"]["id"] : null,
-                                'label' => isset($domains["contenus"]["contenu"]["libelle"]) ? $this->getMNText($domains["contenus"]["contenu"]["libelle"]) : null,
+                                'id' => isset($value["domaines"]["domaine"]["@attributes"]["id"]) ? $value["domaines"]["domaine"]["@attributes"]["id"] : null,
+                                'label' => isset($value["domaines"]["domaine"]["contenus"]["contenu"]["libelle"]) ? $this->getMNText($value["domaines"]["domaine"]["contenus"]["contenu"]["libelle"]) : null,
                                 "contents" =>  $comments
                             ];
 
@@ -360,7 +360,7 @@ class ReportsController extends Controller
                         } else {
                             $class_id = isset($value['rapport_adequation_classes']['rapport_adequation_classe']['@attributes']['test_ref_adequation_classe_id']) ? $value['rapport_adequation_classes']['rapport_adequation_classe']['@attributes']['test_ref_adequation_classe_id'] : 0;
                             // print_r("rapport_adequation_classes object and profile array");
-                            // dd($value['rapport_adequation_classes']['rapport_adequation_classe']);
+                            dd($value['rapport_adequation_classes']['rapport_adequation_classe']);
                             foreach ($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil'] as $adequate) {
                                 foreach ($xml['elements']['test_ref_adequation_profils']['test_ref_adequation_profil'] as $test_ref) {
                                     $id = isset($adequate['@attributes']['test_ref_adequation_profil_id']) ? $adequate['@attributes']['test_ref_adequation_profil_id'] : 0;
@@ -560,6 +560,9 @@ class ReportsController extends Controller
                         'description' => $this->getMNText(isset($value["contenus"]["contenu"]["description"]) ? $value["contenus"]["contenu"]["description"] : null),
                         'introduction' => $this->getMNText(isset($value["contenus"]["contenu"]["introduction"]) ? $value["contenus"]["contenu"]["introduction"] : null),
                         'description_courte' => $this->getMNText(isset($value["contenus"]["contenu"]["description_courte"]) ? $value["contenus"]["contenu"]["description_courte"] : null),
+                        'description_courte_opposition' => $this->getMNText(isset($value["contenus"]["contenu"]["description_courte_opposition"]) ? $value["contenus"]["contenu"]["description_courte_opposition"] : null),
+                        'libelle_facteur' => $this->getMNText(isset($value["contenus"]["contenu"]["libelle_facteur"]) ? $value["contenus"]["contenu"]["libelle_facteur"] : null),
+                        'libelle_facteur_opposition' => $this->getMNText(isset($value["contenus"]["contenu"]["libelle_facteur_opposition"]) ? $value["contenus"]["contenu"]["libelle_facteur_opposition"] : null),
                         'domain'  => $this->getMNText(isset($domain) ? $domain : []),
                         'label_group'  => array_key_exists(
                             'libelle_groupe_opposition',

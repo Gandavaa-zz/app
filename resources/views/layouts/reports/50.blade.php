@@ -113,7 +113,7 @@
                 <!-- /end section -->
 
 
-                <!-- section 5 -->
+                <!-- section 5 Graph -->
                 @if (str_contains($item[5]['type'], 'ancre'))
                 <h2 class="card-title">{{ $item[5]["params"]["menuNumber"] }} -
                     {{$item[5]["content"]["title"]}} </h2>
@@ -131,7 +131,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- /endsection 5 -->
+                <!-- /endsection 5  -->
 
                 <!--  PERSONALISED ANALYSIS -->
                 @if (str_contains($item[7]['type'], 'ancre'))
