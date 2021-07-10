@@ -220,7 +220,7 @@
                                                                     @for($n=0; $n<11; $n++) <td class="text-center" style="@if($n>3 && $n<7) background-color:#D3D3D3;  @else background-color:#EEEEEE; @endif; vertical-align: middle;width:3%">
                                                                         @if ($n<5 && (float)$n+0.1 <=(float)$val["params"]["score_calculated"] && (float)$val["params"]["score_calculated"] <=(float)$n+0.9) <img class="check-img img-responsive" src="/assets/img/checkbox.png" alt="OK">
                                                                             @endif
-                                                                            @if ($n>=5 && (float)$n+0.1 <=(float)$val["params"]["score_calculated"]+1 && (float)$val["params"]["score_calculated"]+1 <=(float)$n+0.9) <img class="check-img img-responsive" src="/assets/img/checkbox.png" alt="OK">
+                                                                            @if ($n>5 && (float)$n+0.1 <=(float)$val["params"]["score_calculated"]+1 && (float)$val["params"]["score_calculated"]+1 <=(float)$n+0.9) <img class="check-img img-responsive" src="/assets/img/checkbox.png" alt="OK">
                                                                                 @endif
                                                                                 </td>
                                                                                 @endfor
@@ -239,131 +239,7 @@
                                                                 @endforeach
                                                                 <!-- Group description -->
 
-                                                                <tr class="factor">
-                                                                    <!-- <td class="text-center " style="border-left:10px solid #A9F5A9;"> -->
-                                                                    <td class="left-label" style="border-left:10px solid #A9F5A9;">
-                                                                        <h3 style="">Competitiveness- REAL<br>
-                                                                            <span class="hidden-xs show-on-pdf" style="font-size: 0.7em; font-weight: 100">Demanding, Fighting spirit, Uncompromising, Cynical, Sometimes lacking in sensitivity</span>
-                                                                        </h3>
-                                                                    </td>
-                                                                    <!-- Factor scores -->
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%">
-                                                                        <img class="check-img img-responsive" src="/assets/img/checkbox.png" alt="OK">
-                                                                    </td>
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#D3D3D3; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#D3D3D3; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#D3D3D3; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td> <!-- Right label of group -->
-                                                                    <!-- <td class="text-center disabled" style="text-align:right;border-right:10px solid #A9F5A9;">-->
-                                                                    <td style="text-align:right;border-right:10px solid #A9F5A9;">
-                                                                        <h3 style="">
-                                                                            Consciousness of others<br>
-                                                                            <span class="hidden-xs show-on-pdf" style="font-size: 0.7em; font-weight: 100">Sensitive, Empathic, Altruistic, Cooperative, Agreeable, Sentimental, Consensual</span>
-                                                                        </h3>
-                                                                    </td>
-                                                                </tr>
 
-
-                                                                <!-- Group description -->
-                                                                <!-- Factors display -->
-                                                                <tr class="factor">
-                                                                    <!-- <td class="text-center disabled" style="border-left:10px solid #81BEF7;"> -->
-                                                                    <td class="left-label" style="border-left:10px solid #81BEF7;">
-                                                                        <h3 style="">
-                                                                            Emotional sensitivity<br>
-                                                                            <span class="hidden-xs show-on-pdf" style="font-size: 0.7em; font-weight: 100">Inconsistent, Reactive, Sensitive to criticism, Tends to be anxious or even depressed, Neurotic</span>
-                                                                        </h3>
-                                                                    </td>
-                                                                    <!-- Factor scores -->
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#D3D3D3; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#D3D3D3; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#D3D3D3; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"><img class="check-img img-responsive" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyFpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQyIDc5LjE2MDkyNCwgMjAxNy8wNy8xMy0wMTowNjozOSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpFMENDNTMxM0UxNzkxMUU3ODY3Q0Y0RjExMThDNERGRCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpFMENDNTMxNEUxNzkxMUU3ODY3Q0Y0RjExMThDNERGRCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkUwQ0M1MzExRTE3OTExRTc4NjdDRjRGMTExOEM0REZEIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkUwQ0M1MzEyRTE3OTExRTc4NjdDRjRGMTExOEM0REZEIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+wtOBHwAAAaxJREFUeNpi/P//PwM5gImBTMDS1tbG8OzZM4afP38ycHNzM/z584fBxcWFwcTEhOHbt28MzMzMDBwcHAxnz57l6+jomH/9+vXvfn5+6Sz4TGVlZWVgZ2dn2Lt3r1R5efma58+fW4LET5w4IcLCyMgIVvD3718GJiaIy0FiIL9//PiR4dChQ0r19fUbPnz4oAszEOg6XiagIsajR4/27dmzZ8P379/FWFhYGNjY2MCaKysrtYF4J7ImGRmZ3QEBAb7M7969WwJ0fxqQ1nj8+LG7srLy7vdAsG3bNtvNQAD0pxxMk4qKynoHB4dwHh6eTyy/f/+WgEm8fPlSb+PGjVtkZWUnnzlzphUoJACT09bWnm9jY5MODLzfIG8xrwWCmzdvagJt0wQp+Pr1qwgwlL2BTA6YJiMjox6gphygv/+BQh0UykzCwsJfp0yZEuHo6LgIW8iam5s3WFhYlII0/Pv3D5EAoPH3q7+/PwHo6UlwCSamf3Z2dgXA+GwEaUJPYcwZGRlgQVCUuLq67gCG4N8HDx5IA51WAPTXnF+/fqFoANkKcioj3dMqQIABAK8HyVwimG3bAAAAAElFTkSuQmCC" alt="OK"></td>
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td> <!-- Right label of group -->
-                                                                    <!-- <td class="text-center " style="text-align:right;border-right:10px solid #81BEF7;">-->
-                                                                    <td style="text-align:right;border-right:10px solid #81BEF7;">
-                                                                        <h3 style="">
-                                                                            Emotional balance<br>
-                                                                            <span class="hidden-xs show-on-pdf" style="font-size: 0.7em; font-weight: 100">Lethargic, Even-tempered, Faces situations with confidence, Thoughtful</span>
-                                                                        </h3>
-                                                                    </td>
-                                                                </tr>
-
-
-                                                                <!-- Group description -->
-                                                                <!-- Factors display -->
-                                                                <tr class="factor">
-                                                                    <!-- <td class="text-center disabled" style="border-left:10px solid #F0E68C;"> -->
-                                                                    <td class="left-label" style="border-left:10px solid #F0E68C;">
-                                                                        <h3 style="">
-                                                                            Intuition<br>
-                                                                            <span class="hidden-xs show-on-pdf" style="font-size: 0.7em; font-weight: 100">Impulsive, Follows instincts, Improvises, A little messy</span>
-                                                                        </h3>
-                                                                    </td>
-                                                                    <!-- Factor scores -->
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#D3D3D3; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#D3D3D3; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#D3D3D3; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"><img class="check-img img-responsive" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyFpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQyIDc5LjE2MDkyNCwgMjAxNy8wNy8xMy0wMTowNjozOSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpFMENDNTMxM0UxNzkxMUU3ODY3Q0Y0RjExMThDNERGRCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpFMENDNTMxNEUxNzkxMUU3ODY3Q0Y0RjExMThDNERGRCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkUwQ0M1MzExRTE3OTExRTc4NjdDRjRGMTExOEM0REZEIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkUwQ0M1MzEyRTE3OTExRTc4NjdDRjRGMTExOEM0REZEIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+wtOBHwAAAaxJREFUeNpi/P//PwM5gImBTMDS1tbG8OzZM4afP38ycHNzM/z584fBxcWFwcTEhOHbt28MzMzMDBwcHAxnz57l6+jomH/9+vXvfn5+6Sz4TGVlZWVgZ2dn2Lt3r1R5efma58+fW4LET5w4IcLCyMgIVvD3718GJiaIy0FiIL9//PiR4dChQ0r19fUbPnz4oAszEOg6XiagIsajR4/27dmzZ8P379/FWFhYGNjY2MCaKysrtYF4J7ImGRmZ3QEBAb7M7969WwJ0fxqQ1nj8+LG7srLy7vdAsG3bNtvNQAD0pxxMk4qKynoHB4dwHh6eTyy/f/+WgEm8fPlSb+PGjVtkZWUnnzlzphUoJACT09bWnm9jY5MODLzfIG8xrwWCmzdvagJt0wQp+Pr1qwgwlL2BTA6YJiMjox6gphygv/+BQh0UykzCwsJfp0yZEuHo6LgIW8iam5s3WFhYlII0/Pv3D5EAoPH3q7+/PwHo6UlwCSamf3Z2dgXA+GwEaUJPYcwZGRlgQVCUuLq67gCG4N8HDx5IA51WAPTXnF+/fqFoANkKcioj3dMqQIABAK8HyVwimG3bAAAAAElFTkSuQmCC" alt="OK"></td> <!-- Right label of group -->
-                                                                    <!-- <td class="text-center " style="text-align:right;border-right:10px solid #F0E68C;">-->
-                                                                    <td style="text-align:right;border-right:10px solid #F0E68C;">
-                                                                        <h3 style="">
-                                                                            Meticulousness<br>
-                                                                            <span class="hidden-xs show-on-pdf" style="font-size: 0.7em; font-weight: 100">Rigorous, Reliable, Avoids the unexpected, Methodical, Persevering, Critical, Self-disciplined, Will to succeed</span>
-                                                                        </h3>
-                                                                    </td>
-                                                                </tr>
-
-
-                                                                <!-- Group description -->
-                                                                <!-- Factors display -->
-                                                                <tr class="factor">
-                                                                    <!-- <td class="text-center disabled" style="border-left:10px solid #D0A9F5;"> -->
-                                                                    <td class="left-label" style="border-left:10px solid #D0A9F5;">
-                                                                        <h3 style="">
-                                                                            Conservatism-Realism<br>
-                                                                            <span class="hidden-xs show-on-pdf" style="font-size: 0.7em; font-weight: 100">Likes what is established and familiar, Needs stability, Keeps one's feet firmly on the ground</span>
-                                                                        </h3>
-                                                                    </td>
-                                                                    <!-- Factor scores -->
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#D3D3D3; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#D3D3D3; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#D3D3D3; vertical-align: middle;width:3%"><img class="check-img img-responsive" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyFpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQyIDc5LjE2MDkyNCwgMjAxNy8wNy8xMy0wMTowNjozOSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpFMENDNTMxM0UxNzkxMUU3ODY3Q0Y0RjExMThDNERGRCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpFMENDNTMxNEUxNzkxMUU3ODY3Q0Y0RjExMThDNERGRCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkUwQ0M1MzExRTE3OTExRTc4NjdDRjRGMTExOEM0REZEIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkUwQ0M1MzEyRTE3OTExRTc4NjdDRjRGMTExOEM0REZEIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+wtOBHwAAAaxJREFUeNpi/P//PwM5gImBTMDS1tbG8OzZM4afP38ycHNzM/z584fBxcWFwcTEhOHbt28MzMzMDBwcHAxnz57l6+jomH/9+vXvfn5+6Sz4TGVlZWVgZ2dn2Lt3r1R5efma58+fW4LET5w4IcLCyMgIVvD3718GJiaIy0FiIL9//PiR4dChQ0r19fUbPnz4oAszEOg6XiagIsajR4/27dmzZ8P379/FWFhYGNjY2MCaKysrtYF4J7ImGRmZ3QEBAb7M7969WwJ0fxqQ1nj8+LG7srLy7vdAsG3bNtvNQAD0pxxMk4qKynoHB4dwHh6eTyy/f/+WgEm8fPlSb+PGjVtkZWUnnzlzphUoJACT09bWnm9jY5MODLzfIG8xrwWCmzdvagJt0wQp+Pr1qwgwlL2BTA6YJiMjox6gphygv/+BQh0UykzCwsJfp0yZEuHo6LgIW8iam5s3WFhYlII0/Pv3D5EAoPH3q7+/PwHo6UlwCSamf3Z2dgXA+GwEaUJPYcwZGRlgQVCUuLq67gCG4N8HDx5IA51WAPTXnF+/fqFoANkKcioj3dMqQIABAK8HyVwimG3bAAAAAElFTkSuQmCC" alt="OK"></td>
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td>
-                                                                    <td class="text-center" style="background-color:#EEEEEE; vertical-align: middle;width:3%"></td> <!-- Right label of group -->
-                                                                    <!-- <td class="text-center " style="text-align:right;border-right:10px solid #D0A9F5;">-->
-                                                                    <td style="text-align:right;border-right:10px solid #D0A9F5;">
-                                                                        <h3 style="">
-                                                                            Openness-Imagination<br>
-                                                                            <span class="hidden-xs show-on-pdf" style="font-size: 0.7em; font-weight: 100">Looks for what is new, Imaginative, Dreamer, Sensitive to aesthetics, Likes to keep several alternatives available</span>
-                                                                        </h3>
-                                                                    </td>
-                                                                </tr>
                                                             </tbody>
                                                         </table>
                                                     </div>

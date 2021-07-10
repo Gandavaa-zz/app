@@ -194,7 +194,7 @@
                     <!-- /END PERSONALISED ANALYSIS" -->
 
                     <!-- 4- Detailed table starts" -->
-                    {{-- {{dd($group_factors)}} --}}
+
                     <h2 class="card-title">4 - {!! $item[7]["content"]["title"] !!} </h2>
                     <div class="col-md-12" id="detailed_table">
                         <div class="card">
@@ -245,7 +245,6 @@
                                             </thead>
 
                                             @foreach($group_factors as $key => $group_factor)
-                                            {{dd($group_factors)}}
                                             <tbody class="">
                                                 <tr class="group">
                                                     <td colspan="13" class="text-center left-label" style="background: #{{$group_factor['color']}};padding: 5px;">
@@ -255,38 +254,43 @@
                                                         </h3>
                                                     </td>
                                                 </tr>
+                                                @php $sub_factor = array(); $previous = null; $i = 1; @endphp
+
+                                                @foreach($group_factor['factors'] as $factor)
 
                                                 <tr class="factor">
 
+                                                    @if($i%2!==0)
+                                                    @php $previous = $factor; @endphp
+                                                    @else
                                                     <td class="left-label">
                                                         <h3>
-                                                            Straightforwardness<br>
-                                                            <span class="behaviour"><span>Genuine, Needs objectivity, Transparent</span></span>
+                                                            {{ $factor['label'] }}<br>
+                                                            <span class="behaviour"><span>{{ $factor['description'] }}</span></span>
                                                         </h3>
                                                     </td>
-                                                    <!-- Factor scores -->
-                                                    <td class="text-center factor-score"></td>
-                                                    <td class="text-center factor-score"></td>
-                                                    <td class="text-center factor-score"></td>
-                                                    <td class="text-center factor-score">x</td>
-                                                    <td class="text-center factor-score-grey"></td>
-                                                    <td class="text-center factor-score-grey"></td>
-                                                    <td class="text-center factor-score-grey"></td>
-                                                    <td class="text-center factor-score"></td>
-                                                    <td class="text-center factor-score"></td>
-                                                    <td class="text-center factor-score"></td>
-                                                    <td class="text-center factor-score"></td>
-                                                    <td style="text-align:right;">
-                                                        <h3>
-                                                            Persuasiveness<br>
-                                                            <span class="behaviour">Convincing, Influential, Strategic</span>
-                                                        </h3>
-                                                    </td>
-
+                                                    @for($n=0; $n<11; $n++) <td class="text-center" style="@if($n>3 && $n<7) background-color:#D3D3D3;  @else background-color:#EEEEEE; @endif; vertical-align: middle;width:3%">
+                                                        @if ($n<5 && (float)$n+0.1 <=(float)$previous["score"] && (float)$previous["score"]<=(float)$n+0.9) <img class="check-img img-responsive" src="/assets/img/checkbox.png" alt="OK">
+                                                            @elseif ($n>5 && (float)$n+0.1 <=(float)$previous["score"]+1 && (float)$previous["score"]+1 <=(float)$n+1) <img class="check-img img-responsive" src="/assets/img/checkbox.png" alt="OK">
+                                                                @endif
+                                                                </td>
+                                                                @endfor
+                                                                <!-- Factor scores -->
+                                                                <td style="text-align:right;">
+                                                                    <h3>
+                                                                        {{ $previous['label'] }}<br>
+                                                                        <span class="behaviour"><span>{{ $previous['description'] }}</span></span>
+                                                                    </h3>
+                                                                </td>
+                                                                @endif
                                                 </tr>
+                                                @php $i++; @endphp
+                                                @endforeach
 
                                             </tbody>
                                             @endforeach
+
+
 
                                         </table>
                                     </div>
@@ -517,20 +521,20 @@
 
     Highcharts.chart('chart', {
         chart: {
-            renderTo: 'container'
-            , polar: true
+            renderTo: 'container',
+            polar: true
         },
 
         credits: {
             enabled: false
-        }
-        , tooltip: {
+        },
+        tooltip: {
             enabled: false
-        }
-        , title: {
+        },
+        title: {
             text: 'Test'
-        }
-        , plotOptions: {
+        },
+        plotOptions: {
             series: {
                 states: {
                     inactive: {
@@ -538,23 +542,22 @@
                     }
                 }
             }
-        }
-        , xAxis: {
+        },
+        xAxis: {
             categories: categories,
             // tickmarkPlacement: 'on',
-            gridLineWidth: 1
-            , lineWidth: 0
-        }
-        , yAxis: {
-            // gridLineInterpolation: 'polygon',
+            gridLineWidth: 1,
             lineWidth: 0
-            , gridLineWidth: 1
-            , min: 0
+        },
+        yAxis: {
+            // gridLineInterpolation: 'polygon',
+            lineWidth: 0,
+            gridLineWidth: 1,
+            min: 0
         },
 
         series: data
     });
-
 </script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/esm/popper.js"></script>
@@ -564,4 +567,3 @@
 
 
 </html>
-
