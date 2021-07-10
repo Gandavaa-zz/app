@@ -67,8 +67,7 @@
                     <img src="{{$data['general']['logo']}}" alt="{{$data['general']['label']}} " class="img-responsive">
                     <h6>{{$data['general']['completed_at']}}</h6>
                     <hr  />
-                    <div>
-                </div> </div>
+                </div>
                 <div class="row">
 
                     @php $item = $data["parties"]["party"]; @endphp
@@ -413,11 +412,9 @@
                 <br>
                 </div>
 
-                </div>
-                </div>
-                </div>
 
-    </div>
+
+
     </main>
         <!-- page-content" -->
         <footer class="text-center">
