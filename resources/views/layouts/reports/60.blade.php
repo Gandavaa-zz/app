@@ -528,20 +528,20 @@
 
     Highcharts.chart('chart', {
         chart: {
-            renderTo: 'container'
-            , polar: true
+            renderTo: 'container',
+            polar: true
         },
 
         credits: {
             enabled: false
-        }
-        , tooltip: {
+        },
+        tooltip: {
             enabled: false
-        }
-        , title: {
+        },
+        title: {
             text: 'Test'
-        }
-        , plotOptions: {
+        },
+        plotOptions: {
             series: {
                 states: {
                     inactive: {
@@ -549,23 +549,22 @@
                     }
                 }
             }
-        }
-        , xAxis: {
+        },
+        xAxis: {
             categories: categories,
             // tickmarkPlacement: 'on',
-            gridLineWidth: 1
-            , lineWidth: 0
-        }
-        , yAxis: {
-            // gridLineInterpolation: 'polygon',
+            gridLineWidth: 1,
             lineWidth: 0
-            , gridLineWidth: 1
-            , min: 0
+        },
+        yAxis: {
+            // gridLineInterpolation: 'polygon',
+            lineWidth: 0,
+            gridLineWidth: 1,
+            min: 0
         },
 
         series: data
     });
-
 </script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/esm/popper.js"></script>
@@ -575,4 +574,3 @@
 
 
 </html>
-
