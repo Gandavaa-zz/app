@@ -2,24 +2,21 @@
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
 <body>
     <div class="page-wrapper chiller-theme toggled">
-      
         <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
             <i class="fas fa-bars"></i>
         </a>
-
         @yield('nav')
-  
+
         <main class="page-content">
             <div class="main">
-
                 @yield('content')
-
-                @include('layouts.reports.footer')
+            </div>
         </main>
-        
+        @include('layouts.reports.components.footer')
     </div>
     <!-- page-wrapper -->
 </body>
