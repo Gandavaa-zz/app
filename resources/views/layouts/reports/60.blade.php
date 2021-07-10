@@ -12,36 +12,15 @@
             <i class="fas fa-bars"></i>
         </a>
         <nav id="sidebar" class="sidebar-wrapper">
-            <div class="sidebar-brand">
-                <a href="#">{{$data['general']['client']}}</a>
-                <div id="close-sidebar">
-                    <i class="fas fa-times"></i>
-                </div>
-            </div>
-
-            <div class="sidebar-header">
-                <div class="user-pic">
-                    <img class="img-responsive img-rounded" src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg" alt="User picture">
-                </div>
-                <div class="user-info">
-                    <span class="user-name">
-                        <strong>{{$data['general']['participant_name']}}</strong>
-                    </span>
-                    {{-- <a href="#"><span class="user-role"> </span></a> --}}
-                </div>
-            </div>
             <div class="sidebar-content">
                 <!-- sidebar-search  -->
                 <div class="sidebar-menu">
                     <ul>
-                        <div class="header-menu">
-                            <span>Тайлан</span>
-                        </div>
                         @foreach($data["parties"]["party"] as $menu)
                         @if (str_contains($menu['type'], 'ancre'))
                         <li>
                             <a href="#{{$menu['content']['title']}}">
-                                <span> {{$menu["content"]["title"]}} </span>
+                                <span id="menu_title"> {{$menu["content"]["title"]}} </span>
                             </a>
                         </li>
                         @endif
@@ -52,6 +31,39 @@
             </div>
 
         </nav>
+        {{-- header starts --}}
+                <header>
+                    <span class="navbar-brand ">
+                        <img src="../../assets/brand/umc_logo.png">
+                    </span>
+                    <button id="menu-toggle" class="toggle-nav pull-left" aria-label="Open side menu">
+                        <div>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </button>
+
+                    <ul class="nav" style="display: flex;margin: 0 0 0 auto;align-items: center">
+
+                        <li class="pdf-icon">
+                            <i class="fa fa-file-pdf-o fa-3x" aria-hidden="true"><a id="pdfExport" href="" target=""></a></i>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+                                <img class=" img-responsive" width="23" height="23" src="/images/assessment/avatar-woman.png" alt="{{$data['general']['participant_name']}}">
+                                <span class="user-name" style="color: #14191A;">{{$data['general']['participant_name']}}</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                            </ul>
+                        </li>
+                    </ul>
+
+
+                </header>
+                {{-- header ends --}}
+
         <!-- sidebar-wrapper  -->
         <main class="page-content">
             <div class="main">
@@ -194,100 +206,108 @@
                     <!-- /END PERSONALISED ANALYSIS" -->
 
                     <!-- 4- Detailed table starts" -->
-                    {{-- {{dd($group_factors)}} --}}
-                    <h2 class="card-title">4 - {!! $item[7]["content"]["title"] !!} </h2>
-                    <div class="col-md-12" id="detailed_table">
-                        <div class="card">
-                            <div class="card-header .bg-secondary">{!! $item[7]["content"]["sub_title"] !!}</div>
-                            <div class="card-body">
-                                <div class="card-content">
-                                    {!! $item[8]["content"]["introduction"] !!}
-                                    <div class="responsive-table">
-                                        <table class="table table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th class="title">Opposing factor</th>
+       <h2 class="card-title">4 - {!! $item[7]["content"]["title"] !!} </h2>
+       <div class="col-md-12" id="detailed_table">
+           <div class="card">
+               <div class="card-header .bg-secondary">{!! $item[7]["content"]["sub_title"] !!}</div>
+               <div class="card-body">
+                   <div class="card-content">
+                       {!! $item[8]["content"]["introduction"] !!}
+                       <div class="responsive-table">
+                           <table class="table table-bordered">
+                               <thead>
+                                   <tr>
+                                       <th class="title">Opposing factor</th>
 
-                                                    <th style="background-color:#EEEEEE">
-                                                        A </th>
+                                       <th style="background-color:#EEEEEE">
+                                           A </th>
 
-                                                    <th style="background-color:#EEEEEE">
-                                                        B </th>
+                                       <th style="background-color:#EEEEEE">
+                                           B </th>
 
-                                                    <th style="background-color:#EEEEEE">
-                                                        C </th>
+                                       <th style="background-color:#EEEEEE">
+                                           C </th>
 
-                                                    <th style="background-color:#EEEEEE">
-                                                        D </th>
+                                       <th style="background-color:#EEEEEE">
+                                           D </th>
 
-                                                    <th style="background-color:#D3D3D3">
-                                                        E </th>
+                                       <th style="background-color:#D3D3D3">
+                                           E </th>
 
-                                                    <th style="background-color:#D3D3D3">
-                                                        F </th>
+                                       <th style="background-color:#D3D3D3">
+                                           F </th>
 
-                                                    <th style="background-color:#D3D3D3">
-                                                        G </th>
+                                       <th style="background-color:#D3D3D3">
+                                           G </th>
 
-                                                    <th style="background-color:#EEEEEE">
-                                                        H </th>
+                                       <th style="background-color:#EEEEEE">
+                                           H </th>
 
-                                                    <th style="background-color:#EEEEEE">
-                                                        I </th>
+                                       <th style="background-color:#EEEEEE">
+                                           I </th>
 
-                                                    <th style="background-color:#EEEEEE">
-                                                        J </th>
+                                       <th style="background-color:#EEEEEE">
+                                           J </th>
 
-                                                    <th style="background-color:#EEEEEE">
-                                                        K </th>
-                                                    <th class="title">Main factor</th>
-                                                </tr>
-                                            </thead>
+                                       <th style="background-color:#EEEEEE">
+                                           K </th>
+                                       <th class="title">Main factor</th>
+                                   </tr>
+                               </thead>
+
+                                 @foreach($group_factors as $key => $group_factor)
+                                    @if(!str_contains($group_factor['label'], "Indicateurs"))
+                                 {{-- {{dd($group_factor)}} --}}
                                             <tbody class="">
-                                                @foreach ($item as $val)
-                         
-                                                @if($val['type']=='rapport_details_facteur')
-                                                {{-- {{dd($val)}} --}}
+                                                <tr class="group">
+                                                    <td colspan="13" class="text-center left-label" style="background: #{{$group_factor['color']}};padding: 5px;">
+                                                        <h3 class="f-title">
+                                                            {{$group_factor['label']}}<br>
+                                                            <span style="font-size: 0.7em; font-weight: 100"></span>
+                                                        </h3>
+                                                    </td>
+                                                </tr>
+                                                @php $sub_factor = array(); $previous = null; $i = 1; @endphp
+
+                                                @foreach($group_factor['factors'] as $factor)
                                                 <tr class="factor">
 
-                                                    <td class="left-label" style="border-left:10px solid #{{$val['params']['score_couleur']}};">
-                                                        <h3 style="">{{ $val["content"]["label"]}}<br>
-                                                            <span class="hidden-xs show-on-pdf" style="font-size: 0.7em; font-weight: 100">
-                                                                {{ $val["content"]["description_courte"] }}</span>
+                                                    @if($i%2!==0)
+                                                    @php $previous = $factor; @endphp
+                                                    @else
+                                                    <td class="left-label">
+                                                        <h3>
+                                                            {{ $factor['label'] }}<br>
+                                                                 {{-- {{dd($previous)}} --}}
+                                                            <span class="behaviour"><span>{{ $previous['description_opposite'] }}</span></span>
                                                         </h3>
                                                     </td>
                                                     @for($n=0; $n<11; $n++) <td class="text-center" style="@if($n>3 && $n<7) background-color:#D3D3D3;  @else background-color:#EEEEEE; @endif; vertical-align: middle;width:3%">
-                                                        @if ($n<5 && (float)$n+0.1 <=(float)$val["params"]["score_calculated"] && (float)$val["params"]["score_calculated"] <=(float)$n+0.9) <img class="check-img img-responsive" src="/assets/img/checkbox.png" alt="OK">
-                                                            @endif
-                                                            @if ($n>=5 && (float)$n+0.1 <=(float)$val["params"]["score_calculated"]+1 && (float)$val["params"]["score_calculated"]+1 <=(float)$n+0.9) <img class="check-img img-responsive" src="/assets/img/checkbox.png" alt="OK">
+                                                        @if ($n<5 && (float)$n+0.1 <=(float)$previous["score"] && (float)$previous["score"]<=(float)$n+0.9) <img class="check-img img-responsive" src="/assets/img/checkbox.png" alt="OK">
+                                                            @elseif ($n>5 && (float)$n+0.1 <=(float)$previous["score"]+1 && (float)$previous["score"]+1 <=(float)$n+1) <img class="check-img img-responsive" src="/assets/img/checkbox.png" alt="OK">
                                                                 @endif
                                                                 </td>
                                                                 @endfor
                                                                 <!-- Factor scores -->
-
-                                                                <!-- Right label of group -->
-                                                                <!-- <td class="text-center disabled" style="text-align:right;border-right:10px solid #F781BE;">-->
-                                                                <td style="text-align:right;border-right:10px solid #{{$val['params']['score_couleur']}};">
-                                                                    <h3 style="">{{ $val["content"]["label"]}}<br>
-                                                                        <span class="hidden-xs show-on-pdf" style="font-size: 0.7em; font-weight: 100">
-                                                                            {{ $val["content"]["description_courte"] }}</span>
+                                                                <td style="text-align:right;">
+                                                                    <h3>
+                                                                        {{ $previous['label'] }}<br>
+                                                                        <span class="behaviour"><span>{{ $previous['description'] }}</span></span>
                                                                     </h3>
                                                                 </td>
+                                                                @endif
                                                 </tr>
-                                                @endif
+                                                @php $i++; @endphp
                                                 @endforeach
-
                                             </tbody>
-
-
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 4- Detailed table ends" -->
-
+                                              @endif
+                                            @endforeach
+                           </table>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
                     <!-- 5- Comment" -->
 
                     @if (str_contains($item[9]['type'], 'ancre'))
@@ -443,20 +463,19 @@
                         </div>
                     </div>
                 </div>
-
                 <!-- / end General -->
-
                 <!-- end row-->
             </div>
 
     </div>
     </main>
 
-    <footer class="text-center footer">
-        <div class="mb-2">
-            CDC Copyright
-        </div>
-    </footer>
+        <!-- page-content" -->
+        <footer class="text-center">
+            <div class="footer">
+                <img src="../../assets/brand/central_test_logo.svg" alt="Central Test" class="img-responsive" width="150px">
+            </div>
+        </footer>
     </div>
 
 

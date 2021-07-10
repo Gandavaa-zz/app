@@ -498,7 +498,7 @@ body {
     margin-top: auto;
     right: 0;
     padding: 1rem;
-    position: fixed;
+    /* position: fixed; */
     color: white;
     background-color: #14191A;
 }

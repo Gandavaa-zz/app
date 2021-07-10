@@ -139,7 +139,6 @@ class ReportsController extends Controller
         $this->participant = $data['general']['participant_name'];
         // test_groupe_facteur
         $factor = [];
-
         foreach ($xml['elements']['test_groupe_facteurs']['test_groupe_facteur'] as $value) {
             // test_facteur
             foreach ($xml['elements']['test_facteurs']['test_facteur'] as $factors) {
@@ -161,7 +160,8 @@ class ReportsController extends Controller
                     $description_courte_opposition = "";
                     foreach ($xml['parties']['partie'] as $row) {
 
-                        if ($row['@attributes']['type'] == 'rapport_details_facteur' && $row['contenus']['contenu']['titre'] == $factors["contenus"]["contenu"]["libelle"]) {
+                        if ($row['@attributes']['type'] == 'rapport_details_facteur' && ($row['contenus']['contenu']['titre'] == $factors["contenus"]["contenu"]["libelle"])) {
+                            // dd($row, $factors);
                             $description = $row['contenus']['contenu']['description_courte'];
                             $description_courte_opposition = $row['contenus']['contenu']['description_courte_opposition'];
                         }
@@ -187,7 +187,7 @@ class ReportsController extends Controller
                     'id' => $value["@attributes"]["id"],
                     'score' => $value["@attributes"]["score_brut"],
                     'color' => $value["couleur"],
-                    // 'score_calc' => $value["@attributes"]["score_calcule"],
+                    'score_calc' => $value["@attributes"]["score_calcule"],
                     'label' => $this->getMNText($value["contenus"]["contenu"]["libelle"]),
                     'factors' => $factor
                 ];
