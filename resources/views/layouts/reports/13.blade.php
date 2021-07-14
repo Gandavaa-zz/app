@@ -202,7 +202,7 @@
                 @foreach ($item as $val)
 
                 @if($val['type']=='rapport_details_facteur')
-                                {{-- {{Dd($val)}} --}}
+                    {{-- {{Dd($val)}} --}}
                     <div class="group-header">
                         <h4 class="c-title-text-color">
                             {{ $val["content"]["title"] }}
