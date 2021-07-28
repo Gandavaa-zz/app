@@ -19,9 +19,16 @@ class TranslationsController extends Controller
     {
         $translations = Translation::get();
 
+        $tests = Test::where('priority', 1)->get();
+        
         if ($request->ajax()) {
             // $data = Translation::all();
-            $data = Translation::join('tests', 'translations.test_id', '=', 'tests.id')
+            if($request->test_id)
+                $data = Translation::join('tests', 'translations.test_id', '=', 'tests.id')
+                ->where('translations.test_id', $request->test_id)
+                ->get(['translations.*', 'tests.label']);
+            else 
+                $data = Translation::join('tests', 'translations.test_id', '=', 'tests.id')                
                 ->get(['translations.*', 'tests.label']);
 
             return DataTables::of($data)
@@ -58,7 +65,7 @@ class TranslationsController extends Controller
                 ->make(true);
         }
 
-        return view('layouts.translation.index', compact("translations"));
+        return view('layouts.translation.index', compact("translations", "tests"));
     }
 
     /**

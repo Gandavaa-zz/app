@@ -14,6 +14,7 @@ trait RecordsActivity{
             static::created(function ($model) use ($event) {
                 $model->recordActivity($event);
             });
+            
             elseif($event == 'updated')
             static::updated(function ($model) use ($event) {
                 $model->recordActivity($event);

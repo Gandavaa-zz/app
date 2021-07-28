@@ -92,7 +92,6 @@ class ReportsController extends Controller
     public function getHtml($assessment_id)
     {
         if (!Storage::exists("/assets/assessments/{$assessment_id}.xml")) {
-
             $response = Http::withHeaders([
                 'WWW-Authenticate' => $this->token,
             ])->get(
@@ -112,7 +111,6 @@ class ReportsController extends Controller
         $candidate_name = $xml["noyau_utilisateur_info"]["prenom"] . " " . $xml["noyau_utilisateur_info"]["nom"];
         // return $xml;
         // general
-
         $started_at = new DateTime($xml['params']['date_passation_debut']);
         $completed_at = new DateTime($xml['params']['date_passation_fin']);
         $passed_dt = $started_at->diff($completed_at);
@@ -298,22 +296,22 @@ class ReportsController extends Controller
                             } else {
                                 // print_r("2, ");
                                 // dd($item['cibles_secondaires']['cibles_secondaire']);
-                                foreach ($item['cibles_secondaires']['cibles_secondaire'] as $row) {
-
-                                    if (isset($row['@attributes']["target_id"])) {
-                                        foreach ($data['test_factors'] as $test_factor) {
-                                            if ($row['@attributes']["target_id"] == $test_factor['id'])
-                                                $label = $test_factor['label'];
+                                if(isset($item['cibles_secondaires']['cibles_secondaire']))
+                                    foreach ($item['cibles_secondaires']['cibles_secondaire'] as $row) {
+                                        if (isset($row['@attributes']["target_id"])) {
+                                            foreach ($data['test_factors'] as $test_factor) {
+                                                if ($row['@attributes']["target_id"] == $test_factor['id'])
+                                                    $label = $test_factor['label'];
+                                            }
                                         }
-                                    }
 
-                                    $comments[]  = [
-                                        'color' => isset($row["color"]) ? $row["color"] : null,
-                                        "score" =>  isset($row["score"]) ? $row["score"] : 0,
-                                        "title" => $label,
-                                        "comment" =>  $this->getMNText(isset($row["contenus"]["contenu"]["commentaire_perso"]) ? $row["contenus"]["contenu"]["commentaire_perso"] : null),
-                                    ];
-                                }
+                                        $comments[]  = [
+                                            'color' => isset($row["color"]) ? $row["color"] : null,
+                                            "score" =>  isset($row["score"]) ? $row["score"] : 0,
+                                            "title" => $label,
+                                            "comment" =>  $this->getMNText(isset($row["contenus"]["contenu"]["commentaire_perso"]) ? $row["contenus"]["contenu"]["commentaire_perso"] : null),
+                                        ];
+                                    }
                             }
                             if (isset($comments)) {
                                 $domain[] = [
@@ -598,7 +596,6 @@ class ReportsController extends Controller
     // getdata
     public function getData($assessment_id)
     {
-
         $contents = Storage::get("assets/assessments/{$assessment_id}.xml");
         $content = array();
         $domain = array();

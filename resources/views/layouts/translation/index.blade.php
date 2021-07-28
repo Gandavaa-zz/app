@@ -18,6 +18,23 @@
                     </div>
 
                     <div class="card-body">
+                        <div class="col-md-6">
+                            <form action="/translations" class="form-horizontal">
+                            <div class="form-group row">                                                            
+                                <label class="col-md-3" for="ccmonth">Тест:</label>
+                                <div class="col-md-9">
+                                    <select name="test_id" id="test_id" class="form-control" type="input" onchange="this.form.submit();">
+                                        <option value="0">Нэг утгийг сонго</option>
+                                        @foreach ($tests as $test)
+                                        <option @if( $test->id == request()->get('test_id')) selected @endif
+                                            @if ( old('test_id') == $test->id ) selected @endif value="{{ $test->id}}" >{{ $test->label}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+
                         @include('layouts.shared.alert')
                         <table class="table table-bordered yajra-datatable translation_table " id="translation_table" style="width: 100%; font-size:13.5px;">
                             <thead>
@@ -33,7 +50,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-
                             </tbody>
                         </table>
                     </div>
@@ -56,8 +72,13 @@
             var table = $('.yajra-datatable').DataTable({
                 responsive: true,
                 processing: true,
-                serverSide: true,
-                ajax: "{{ route('translations.index') }}",
+                serverSide: true,                
+                ajax: {
+                    url: "{{ route('translations.index') }}",
+                    data: function (d) {
+                        d.test_id = $('#test_id').val()
+                    }
+                },
                 columns: [
                     {
                         data: 'id',

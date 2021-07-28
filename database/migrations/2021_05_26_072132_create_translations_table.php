@@ -16,8 +16,8 @@ class CreateTranslationsTable extends Migration
         Schema::create('translations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('test_id');
-            $table->text('EN');
-            $table->text('MN');
+            $table->longText('EN');
+            $table->longText('MN');
             $table->timestamps();
         });
     }

@@ -5,7 +5,7 @@
 <div class="container">
 
     <div class="row justify-content-left">
-        <div class="col-md-4 col-lg-4 col-xl-4">
+        <div class="col-md-12 col-lg-12 col-xl-12">
             <div class="card">
                
                 <div class="card-body">
@@ -23,6 +23,7 @@
                                         <!-- <button class="btn btn-sm btn-primary" @click="editing = true">Засах</button>      -->
                                         @can ('update', $user)
                                             <a class="btn btn-sm btn-primary" href="{{ route('edit.profile', $user->id) }}">Засах</a>
+                                            <a class="ml-2 btn btn-sm btn-warning" href="{{route('dashboard')}}">Болих</a>  
                                         @endcan
                                     </div>
                             </div>
@@ -50,7 +51,7 @@
             </div>
         </div>
  
-        <div class="col-md-8 col-lg-8 col-xl-8">
+        <!-- <div class="col-md-8 col-lg-8 col-xl-8">
             <div class="card">
                 <div class="card-header"> <strong>Үйл явдал</strong> </div>
                 <div class="card-body">
@@ -100,7 +101,7 @@
                 </div>
             </div>                  
 
-        </div>
+        </div> -->
     </div>
 </div>
 @endsection

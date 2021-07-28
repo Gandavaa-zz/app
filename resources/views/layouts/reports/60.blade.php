@@ -16,14 +16,14 @@
     @if (str_contains($item[0]['type'], 'ancre'))
     @php $before_type = 'ancre' @endphp
     <h2 class="card-title">{{ $item[0]["params"]["menuNumber"] }} -
-        {{$item[0]["content"]["title"]}}
+        {{ __($item[0]["content"]["title"]) }}
     </h2>
     @endif
 
     <div class="col-md-12" id='{{ $item[0]["content"]["title"]}}'>
         <div class="card">
             <div class="card-header .bg-secondary">
-                {{ $item[0]["content"]["sub_title"]}}
+                {{__($item[0]["content"]["sub_title"]) }}
             </div>
 
             <div class="card-body">
@@ -80,17 +80,18 @@
     <!-- Graph -->
     @if (str_contains($item[3]['type'], 'ancre'))
     <h2 class="card-title">{{ $item[3]["params"]["menuNumber"] }} -
-        {{$item[3]["content"]["title"]}}
+        {{ __($item[3]["content"]["title"]) }}
     </h2>
     @endif
 
     <div class="col-md-12" id="{{$item[3]["content"]["title"]}}">
         <div class="card">
-            <div class="card-header .bg-secondary">{{ $item[3]["content"]["sub_title"]}}
+            <div class="card-header .bg-secondary">
+                {{ __($item[3]["content"]["sub_title"]) }}
             </div>
             <div class="card-body">
                 <div class="group-header">
-                    <h2 class="ec-title">THE GRAPH</h2>
+                    <h2 class="ec-title">{{__('THE GRAPH')}}</h2>
                     <figure class="highcharts-figure">
                         <div id="chart"></div>
                     </figure>
@@ -103,13 +104,14 @@
     <!-- 3- PERSONALISED ANALYSIS" -->
     @if (str_contains($item[5]['type'], 'ancre'))
     <h2 class="card-title">{{ $item[5]["params"]["menuNumber"] }} -
-        {{$item[5]["content"]["title"]}}
+        {{ __($item[5]["content"]["title"]) }}
     </h2>
     @endif
 
     <div class="col-md-12" id="{{$item[5]["content"]["title"]}}">
         <div class="card">
-            <div class="card-header .bg-secondary">{{ $item[5]["content"]["sub_title"]}}
+            <div class="card-header .bg-secondary">
+                {{ __($item[5]["content"]["sub_title"]) }}
             </div>
             <div class="card-body">
                 <div>
@@ -137,10 +139,16 @@
     <!-- /END PERSONALISED ANALYSIS" -->
 
     <!-- 4- Detailed table starts" -->
-    <h2 class="card-title">4 - {!! $item[7]["content"]["title"] !!} </h2>
+    @if (str_contains($item[7]['type'], 'ancre'))
+    <h2 class="card-title">{{ $item[7]["params"]["menuNumber"] }} -
+        {{ __($item[7]["content"]["title"]) }}
+    </h2>
+    @endif    
     <div class="col-md-12" id="{{ $item[7]["content"]["title"] }}">
         <div class="card">
-            <div class="card-header .bg-secondary">{!! $item[7]["content"]["sub_title"] !!}</div>
+            <div class="card-header .bg-secondary">
+                {{ __($item[7]["content"]["sub_title"]) }}
+            </div>
             <div class="card-body">
                 <div class="card-content">
                     {!! $item[8]["content"]["introduction"] !!}
@@ -241,13 +249,17 @@
     </div>
      <!-- 4- Detailed table ends" -->
     <!-- 5- Comment" -->
-
     @if (str_contains($item[9]['type'], 'ancre'))
-    <h2 class="card-title">4 - {{$item[9]["content"]["title"]}} </h2>
-    @endif
+    <h2 class="card-title">{{ $item[9]["params"]["menuNumber"] }} -
+        {{ __($item[9]["content"]["title"]) }}
+    </h2>
+    @endif 
+
     <div class="col-md-12" id="{{$item[9]["content"]["title"]}}">
         <div class="card">
-            <div class="card-header .bg-secondary">{{ $item[9]["content"]["sub_title"]}}</div>
+            <div class="card-header .bg-secondary">
+                {{ __($item[9]["content"]["sub_title"]) }}
+            </div>
             <div class="card-body">
 
                 @for($i = 10; $i < 33; $i++) @if(str_contains($item[$i]['type'], 'rapport_details_groupe' )) <div class="group-header">
@@ -256,7 +268,8 @@
             @endif
             @if(str_contains($item[$i]['type'], 'rapport_details_facteur'))
             <div class="group-header clearfix">
-                <h5>{{ $item[$i]["content"]["title"] }}
+                <h5>
+                    {{ $item[$i]["content"]["title"] }}
                     <h5>
             </div>
             <div class="score-bar-wrapper row">
@@ -325,14 +338,16 @@
 <!-- /end Comment -->
 
     <!-- 6 - GENERAL PROFILE -->
-
     @if (str_contains($item[33]['type'], 'ancre'))
-    <h2 class="card-title">6 - {{$item[33]["content"]["title"]}} </h2>
-    @endif
-
+    <h2 class="card-title">{{ $item[33]["params"]["menuNumber"] }} -
+        {{ __($item[33]["content"]["title"]) }}
+    </h2>
+    @endif 
+    
     <div class="col-md-12" id="{{$item[33]["content"]["title"]}}">
         <div class="card">
-            <div class="card-header .bg-secondary">{{ $item[33]["content"]["sub_title"]}}</div>
+            <div class="card-header .bg-secondary">
+                {{ __($item[33]["content"]["sub_title"]) }}</div>
             <div class="card-body">
                 {!! $item[34]["content"]["introduction"] !!}
                 <div class="adoquetion">
@@ -396,16 +411,16 @@
         </div>
     </div>
     <!-- / end General -->
-
-    {{-- 7 - WORKPLACE COMPETENCIES --}}
-    {{-- {{dd($item)}} --}}
+    
     @if (str_contains($item[35]['type'], 'ancre'))
-    <h2 class="card-title">7 - {{$item[35]["content"]["title"]}} </h2>
-    @endif
-
+    <h2 class="card-title">{{ $item[35]["params"]["menuNumber"] }} -
+        {{ __($item[35]["content"]["title"]) }}
+    </h2>
+    @endif 
     <div class="col-md-12" id="{{ $item[35]["content"]["title"]}}">
         <div class="card">
-            <div class="card-header .bg-secondary">{{ $item[35]["content"]["sub_title"]}}</div>
+            <div class="card-header .bg-secondary">
+                {{ __($item[35]["content"]["sub_title"]) }}</div>
             <div class="card-body">
                 {!! $item[35]["content"]["introduction"] !!}
                 <div class="adoquetion">
@@ -482,81 +497,251 @@
 <!-- end row-->
 </div>
 @endsection
+
 @section('script')
 <script>
+
+    function findPoint(a, b){                    
+        let d = ((a*b) * 1/2 ) / ((a+b) * 0.25);
+        return parseFloat(d.toFixed(2));
+    }
+    
     var categories = [];
     var data = [];
-    var scores = [{}];
-    var cats;
+    var items = {
+        data: [],
+        name: "",
+        type: "area",
+        color: "",
+        fillOpacity: 0.3
+    };
+    var barChart = [];
     var obj = {};
-    var t = [];
-    var index = 0;
-    @foreach($item as $key => $graph)
-    @if(str_contains($graph['type'], 'rapport_details_facteur'))
-    @switch($graph["id"])
-    @case(172)
-    scores = (@json($graph["params"]["score"]));
-    @case(173)
-    scores = (@json($graph["params"]["score"]));
-    @case(174)
-    scores = (@json($graph["params"]["score"]));
-    @endswitch
-    console.log("Scores 0", scores);
-    @if(str_contains($graph["content"]["label"], 'Anchor'))
-    cats = @json($graph["content"]["title"]);
-    cats = cats + ' (' + @json($graph["params"]["score"]) + ')';
-    categories.push(cats);
-    // console.log(cats);
-    @endif
-    @endif
-    @if(str_contains($graph['type'], 'rapport_details_groupe'))
-    @if(str_contains($graph["content"]["label"], 'Anchor'))
-    obj["name"] = @json($graph["content"]["title"]);
-    obj["data"] = [5, 5, 4.3, 7.1];
-    obj["type"] = 'column';
-    data.push(obj);
-    obj = {};
-    console.log("data - ", data);
-    @endif
-    @endif;
-    @endforeach
-    Highcharts.chart('chart', {
-        chart: {
-            renderTo: 'container'
-            , polar: true
-        }
-        , credits: {
-            enabled: false
-        }
-        , tooltip: {
-            enabled: false
-        }
-        , title: {
-            text: 'Test'
-        }
-        , plotOptions: {
-            series: {
-                states: {
-                    inactive: {
-                        opacity: 1
+
+    var point_start = -15;
+    @foreach($group_factors as $idx => $group)
+        @if(str_contains($group['label'], "Skill"))
+        obj.name = @json($group['label']) + " (" + @json($group['score']) + ")";
+        obj.y = parseFloat(@json($group['score']));
+        obj.color = '#' + @json($group['color']);                    
+        barChart.push(obj);
+        obj = {};
+        items.name = @json($group['label']);
+
+            @foreach($group['factors'] as $idx => $factor)
+            categories.push(@json($factor['label']) + " (" + @json($factor['score']) + ")");
+            
+            if (@json($group['id']) === @json($factor['group_id'])) {
+                items.data.push(parseFloat(@json($factor['score'])));
+                if (items.data.length < 7) {
+                    console.log("length: ", categories.length);
+                    for (let i = 1; i < 7; i++) {
+                        items.data.push(null);
                     }
                 }
+                items.color = '#' + @json($factor['color']);
             }
-        }
-        , xAxis: {
-            categories: categories,
-            // tickmarkPlacement: 'on',
-            gridLineWidth: 1
-            , lineWidth: 0
-        }
-        , yAxis: {
-            // gridLineInterpolation: 'polygon',
-            lineWidth: 0
-            , gridLineWidth: 1
-            , min: 0
-        }
-        , series: data
-    });
+            @endforeach
+        data.push(items);
 
+        // console.log("data", data);
+        items = {
+            data: [],
+            name: "",
+            type: "area",
+            color: "",
+            fillOpacity: 0.3
+        };
+        @endif
+    @endforeach
+
+    console.log("data - ", data);
+
+    // эхний утгийг нь 
+    var new_data = [], previous = [];
+    var matrix = [],n =0, m = 0;
+
+    for (const [key, value] of Object.entries(data)) {  
+        if(key == 0) data[key].pointStart= -15;
+        else if(key == 1) data[key].pointStart= 75;
+        else if(key == 2) data[key].pointStart= 165;
+        else if(key == 3) data[key].pointStart= 255;
+        matrix[n] = [];
+        value.data.map((el, index) => {                        
+            if(el !==null ){ 
+                matrix[n][m] = el;
+                m ++;
+            }                         
+        });
+        n++;
+        m = 0;                                                            
+    }
+                                    
+    for (const [key, value] of Object.entries(data)) {
+        // first value-g avna
+        var first, second, third;                     
+        value.data.map((el, index) => {                                                
+            if(index===0) first = el;                            
+            else if(index === 7) second = el;
+            else if(index === 8) third = el                                                
+        });
+        
+        for(let i=0; i<8; i++){                        
+            if( i==0){
+                if(key==0) new_data[i] = findPoint(first, matrix[parseInt(3-key)][2]);                                
+                else new_data[i] = previous[6];                                                                         
+            }else if(i==1) new_data[i] = first;
+            else if(i==3) new_data[i] = second;
+            else if(i==5) new_data[i] = third;
+            else if(i==6){                            
+                if(key == 0) new_data[i] = findPoint(matrix[1][0], third);
+                else if(key == 1) new_data[i] = findPoint(matrix[2][0], third);
+                else if(key == 2) new_data[i] = findPoint(matrix[3][0], third);
+                else if(key ==3)  new_data[i] = findPoint(matrix[0][0], third);                            
+            }
+            else if(i==7) new_data[i] = 0;                        
+            else new_data.push(null);
+            previous = new_data; 
+        }                                                           
+        value.data = new_data;
+        new_data = [];                    
+    }
+
+    console.log("data - ", data);
+
+    Highcharts.chart('chart', {
+        chart: {
+            marginTop: 30,
+            polar: true,
+            type: '',
+        },
+        "title": {
+            "text": ""
+        },
+        "credits": {
+            "enabled": false
+        },
+        "tooltip": {
+            "enabled": false
+        },
+        "yAxis": {
+            "max": 10,
+            "lineColor": "#FFFFFF",
+            "tickInterval": 2,
+            "gridLineWidth": 1,
+            "gridLineColor": "#EEEEEE",
+            "plotLines": [{
+                "color": "#AAAAAA",
+                "dashStyle": "LongDash",
+                "value": 10,
+                "width": 1
+            }, {
+                "color": "#EEEEEE",
+                "dashStyle": "Dash",
+                "value": 1,
+                "width": 1
+            }, {
+                "color": "#EEEEEE",
+                "dashStyle": "Dash",
+                "value": 3,
+                "width": 1
+            }, {
+                "color": "#EEEEEE",
+                "dashStyle": "Dash",
+                "value": 7,
+                "width": 1
+            }, {
+                "color": "#EEEEEE",
+                "dashStyle": "Dash",
+                "value": 9,
+                "width": 1
+            }],
+            "labels": {
+                "enabled": false
+            }
+        },
+        "plotOptions": {
+            "series": {
+                "animation": false,
+                "showInLegend": true,
+                "marker": {
+                    "enabled": false,
+                    "states": {
+                        "hover": {
+                            "enabled": false
+                        }
+                    }
+                },
+                "connectNulls": true,
+                "pointPlacement": "on",
+                "pointInterval": 15
+            },
+            "area": {
+                "lineWidth": 1
+            }
+        },
+
+        "xAxis": {
+            "max": 12,
+            "startOnTick": true,
+            "endOnTick": true,
+            "lineWidth": 0,
+            "gridLineWidth": 1,
+            "labels": {
+                "distance": 15,
+                "style": {
+                    "width": "140px",
+                    "color": "#000000",
+                    "fontSize": "14px",
+                    "fontWeight": "normal",
+                    "fontFamily": "\"roboto\", \"Arial\", sans-serif"
+                },
+                "formatter": function () {
+                    var sReturn = '',
+                        iIndex = this.value / 30,
+                        oCategories = categories;
+
+                    if (oCategories[iIndex] !=
+                        undefined) {
+                        sReturn += oCategories[iIndex];
+                    }
+                    return sReturn;
+                }
+            },
+            "tickPositions": [0, 30, 60, 90, 120, 150, 180,
+                210, 240, 270, 300, 330, 360
+            ]
+        },
+        
+        "series": [{
+            "color": "#F781BE",
+            "name": "Client Acquisition Skills",
+            "type": "area",
+            "pointStart": -15,
+             "data": [2.2, 1.7, null, 1.4, null, 1.4, null, 0]   
+                                
+        
+        }, {
+            "color": "#D0A9F5",
+            "name": "Business Development Skills",
+            "type": "area",
+            "pointStart": 75,
+            "data": [6, 5, null, 5.8, null, 1.7, 2, 0]            
+
+        }, {
+            "color": "#A9F5A9",
+            "name": "Negotiation Skills",
+            "type": "area",
+            "pointStart": 165,
+            "data": [2, 3.3, null, 3.3, null, 4.3, 3.7, 0]
+        }, {
+            "color": "#81BEF7",
+            "name": "Selling Skills",
+            "type": "area",
+            "pointStart": 255,
+            "data": [3.7, 3.3, null, 6.7, null, 3.3, 2.2, 0]
+        }], 
+
+    });
 </script>
 @endsection

@@ -12,11 +12,14 @@
                         <p class="text-muted"></p>
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
+                          
+                            @if(@errors)
                             <ul>
                                 @foreach($errors as $error)
                                 <li>{{ $error }} </li>
                                 @endforeach
                             </ul>
+                            @endif
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">

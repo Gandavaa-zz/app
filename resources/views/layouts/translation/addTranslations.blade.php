@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @section('content')
 
 <div class="container">
@@ -21,11 +22,21 @@
                                         <label for="en"></label>
                                         <input type="hidden" value="{{ $row->id }}" name="id[]">
                                         <input type="hidden" value="{{ $row->test_id }}" name="test_id">
-                                        <textarea placeholder="Текст оруулна уу..." class="form-control" name="en[]" value="{{ $row->EN }}">{{ $row->EN }}</textarea>
+                                        <textarea 
+                                            placeholder="Текст оруулна уу..." 
+                                            class="form-control" 
+                                            name="en[]" 
+                                            id="en"
+                                            value="{{ $row->EN }}">{{ $row->EN }}</textarea>
                                     </div>
                                     <div class="col-sm-6">
                                         <label for="mn"></label>
-                                        <textarea placeholder="Монгол орчуулга оруулна уу..." type="text" class="form-control @error('mn') is-invalid @enderror" name="mn[]" autocomplete="mn" autofocus></textarea>
+                                        <textarea 
+                                            placeholder="Монгол орчуулга оруулна уу..." 
+                                            type="text" 
+                                            class="form-control @error('mn') is-invalid @enderror" name="mn[]" autocomplete="mn" 
+                                            id="mn"
+                                            autofocus></textarea>
                                         @error('mn')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -54,4 +65,10 @@
     </div>
 
 </div>
+@endsection
+
+@section('javascript')
+<script>
+    CKEDITOR.replace('en');
+</script>
 @endsection

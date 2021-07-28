@@ -16,14 +16,14 @@
     <!-- start -->
     @if (str_contains($item[0]['type'], 'ancre'))
     <h2 class="card-title">{{ $item[0]["params"]["menuNumber"] }} -
-        {{$item[0]["content"]["title"]}}
+        {{ __($item[0]["content"]["title"]) }}
     </h2>
     @endif
 
     <div class="col-md-12" id="{{$item[0]["content"]["title"]}}">
         <div class="card">
             <div class="card-header .bg-secondary">
-                {{ $item[0]["content"]["sub_title"]}}
+                {{ __($item[0]["content"]["sub_title"]) }}
             </div>
 
             <div class="card-body">
@@ -53,11 +53,13 @@
         @if (str_contains($item[2]['type'], 'ancre'))
         {{-- {{dd($item)}} --}}
         <h2 class="card-title">{{ $item[2]["params"]["menuNumber"] }} -
-            {{$item[2]["content"]["title"]}} </h2>
+            {{ __($item[2]["content"]["title"]) }} 
+        </h2>
         @endif
         <div class="col-md-12" id="{{ $item[2]["content"]["title"]}}">
             <div class="card">
-                <div class="card-header .bg-secondary">{{ $item[2]["content"]["sub_title"]}}
+                <div class="card-header .bg-secondary">
+                    {{ __($item[2]["content"]["sub_title"]) }}
                 </div>
                 <div class="card-body">
                     <div class="">
@@ -73,14 +75,14 @@
     <!-- Table -->
     @if (str_contains($item[4]['type'], 'ancre'))
     <h2 class="card-title">{{ $item[4]["params"]["menuNumber"] }} -
-        {{$item[4]["content"]["title"]}}
+        {{ __($item[4]["content"]["title"]) }}
     </h2>
     @endif
  
     <div class="col-md-12" id="{{$item[4]["content"]["title"]}}">
         <div class="card">
             <div class="card-header .bg-secondary">
-                {{ $item["4"]["content"]["sub_title"]}}
+                {{ __($item["4"]["content"]["sub_title"]) }}
             </div>
 
             <div class="card-body">
@@ -190,13 +192,13 @@
 
     <!-- Comments -->
     @if (str_contains($item[6]['type'], 'ancre'))
-    <h2 class="card-title">{{ $item[6]["params"]["menuNumber"] }} - {{$item[6]["content"]["title"]}} </h2>
+    <h2 class="card-title">{{ $item[6]["params"]["menuNumber"] }} - {{ __($item[6]["content"]["title"]) }} </h2>
     @endif
 
     <div class="col-md-12" id="{{$item[6]["content"]["title"]}}">
         <div class="card">
             <div class="card-header .bg-secondary">
-                {{ $item[6]["content"]["sub_title"]}}
+                {{ __($item[6]["content"]["sub_title"]) }}
             </div>
             <div class="card-body">
                 @foreach ($item as $val)

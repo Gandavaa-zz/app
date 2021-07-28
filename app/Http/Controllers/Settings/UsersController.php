@@ -60,7 +60,7 @@ class UsersController extends Controller
         $user = User::create( $data );
         $user->assignRole($this->rolesToArray(request('roles')));
         $user->groups()->attach($this->groupToArray(request('groups')));
-
+        
         return redirect()->route('users.index')->with('success', 'Хэрэглэгчийг амжилттай бүртгэлээ!');
     }
 
@@ -82,17 +82,21 @@ class UsersController extends Controller
      * Update the specified resource in storage.
      */
 
-    public function update(User $user)
+    public function update(User $user, Request $request)
     {
-
+        
         $user->update(request()->validate([
             'firstname' => ['required', ['string']],
             'lastname' => ['required', ['string']],
             'email' => ['required', 'string', 'email', 'max:255'],
             'roles' => ['required', ['string']],
-            'groups' => ['required', ['string']]
+            'groups' => ['required', ['string']]            
         ]));
 
+        if($request->hasfile('filename')){            
+            $user->avatar_path = $request->filename->store('filename', 'public');
+        }
+        
         $user->syncRoles($this->rolesToArray(request('roles')));
 
         $user->groups()->detach();

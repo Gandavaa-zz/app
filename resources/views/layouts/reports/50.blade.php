@@ -14,7 +14,8 @@
     @php $item = $data["parties"]["party"]; @endphp
     @php $group_factors = $data["group_factors"]; @endphp
     @if (str_contains($item[0]['type'], 'ancre'))
-    <h2 class="card-title">{{ $item[0]["params"]["menuNumber"] }} - {{$item[0]["content"]["title"]}} </h2>
+    <h2 class="card-title">{{ $item[0]["params"]["menuNumber"] }} - 
+        {{ __($item[0]["content"]["title"]) }} </h2>
     @endif
 
     <div class="col-md-12" id='{{ $item[0]["content"]["title"]}}'>
@@ -90,15 +91,16 @@
 <!-- section 3 here -->
 @if (str_contains($item[3]['type'], 'ancre'))
 <h2 class="card-title">{{ $item[3]["params"]["menuNumber"] }} -
-    {{$item[3]["content"]["title"]}} </h2>
+    {{ __($item[3]["content"]["title"]) }} 
+</h2>
 @endif
 <div class="col-md-12" id="{{ $item[3]["content"]["title"]}}">
     <div class="card">
-        <div class="card-header .bg-secondary">{{ $item[3]["content"]["sub_title"]}}
+        <div class="card-header .bg-secondary">
+            {{ __($item[3]["content"]["sub_title"]) }}
         </div>
         <div class="card-body">
-            <div class="group-header">
-                {{-- <h2 class="ec-title">THE GRAPH</h2> --}}
+            <div class="group-header">                
                 <figure class="highcharts-figure">
                     <div style="height: 600px; width: 1308px; margin:0 auto" id="chart"></div>
                 </figure>
@@ -112,11 +114,12 @@
 <!-- section 5 Graph -->
 @if (str_contains($item[5]['type'], 'ancre'))
 <h2 class="card-title">{{ $item[5]["params"]["menuNumber"] }} -
-    {{$item[5]["content"]["title"]}} </h2>
+    {{ __($item[5]["content"]["title"]) }} </h2>
 @endif
 <div class="col-md-12" id="{{ $item[5]["content"]["title"]}}">
     <div class="card">
-        <div class="card-header .bg-secondary">{{ $item[5]["content"]["sub_title"]}}
+        <div class="card-header .bg-secondary">
+            {{ __($item[5]["content"]["sub_title"]) }}
         </div>
         <div class="card-body">
             <div class="group-header">
@@ -132,12 +135,13 @@
 <!--  PERSONALISED ANALYSIS -->
 @if (str_contains($item[7]['type'], 'ancre'))
 <h2 class="card-title">{{ $item[7]["params"]["menuNumber"] }} -
-    {{$item[7]["content"]["title"]}} </h2>
+    {{ __($item[7]["content"]["title"]) }} </h2>
 @endif
 {{-- {{dd($item[8])}} --}}
 <div class="col-md-12" id="{{ $item[7]["content"]["title"]}}">
     <div class="card">
-        <div class="card-header .bg-secondary">{{ $item[7]["content"]["sub_title"]}}
+        <div class="card-header .bg-secondary">
+            {{ __($item[7]["content"]["sub_title"]) }}
         </div>
         <div class="card-body">
             <div class="group-header">
@@ -164,14 +168,15 @@
 <!-- 5 - the Comments  -->
 @if (str_contains($item[9]['type'], 'ancre'))
 <h2 class="card-title">{{ $item[9]["params"]["menuNumber"] }} -
-    {{$item[9]["content"]["title"]}} </h2>
+    {{ __($item[9]["content"]["title"]) }} </h2>
 @endif
 
 <!-- 5- the Comments  -->
 <div class="col-md-12" id="{{ $item[9]["content"]["title"]}}">
     <div class="card">
         <div class="card-header .bg-secondary">
-            {{ $item[9]["content"]["sub_title"]}}</div>
+            {{ __($item[9]["content"]["sub_title"]) }}
+        </div>
         <div class="card-body">
             <div class="group-header">
                 <h3>{!! $item[10]["content"]["title"]!!}</h3>
@@ -300,12 +305,12 @@
 
             @if (str_contains($item[26]['type'], 'ancre'))
             <h2 class="card-title">{{ $item[26]["params"]["menuNumber"] }} -
-                {{$item[26]["content"]["title"]}} </h2>
+                {{ __($item[26]["content"]["title"]) }} </h2>
             @endif
             <div class="col-md-12" id="{{ $item[26]["content"]["title"]}}">
                 <div class="card">
                     <div class="card-header .bg-secondary">
-                        {{ $item[26]["content"]["sub_title"]}}
+                        {{ __($item[26]["content"]["sub_title"]) }}
                     </div>
                     <div id="table_header">
                         @if($item[27]['content']["introduction"])
@@ -356,6 +361,12 @@
 
             @section('script')
             <script>
+
+                function findPoint(a, b){                    
+                    let d = ((a*b) * 1/2 ) / ((a+b) * 0.25);
+                    return parseFloat(d.toFixed(2));
+                }
+                
                 var categories = [];
                 var data = [];
                 var items = {
@@ -369,38 +380,92 @@
                 var obj = {};
                 var point_start = -15;
                 @foreach($group_factors as $idx => $group)
-                @if(str_contains($group['label'], "Skill"))
-                obj.name = @json($group['label']) + " (" + @json($group['score']) + ")";
-                obj.y = parseFloat(@json($group['score']));
-                obj.color = '#' + @json($group['color']);
-                barChart.push(obj);
-                obj = {};
-                items.name = @json($group['label']);
-                @foreach($group['factors'] as $idx => $factor)
-                categories.push(@json($factor['label']) + " (" + @json($factor['score']) + ")");
-                if (@json($group['id']) === @json($factor['group_id'])) {
-                    items.data.push(parseFloat(@json($factor['score'])));
-                    if (items.data.length < 7) {
-                        console.log("length: ", categories.length);
-                        for (let i = 1; i < 7; i++) {
-                            items.data.push(null);
-                        }
-                    }
-                    items.color = '#' + @json($factor['color']);
-                }
-                @endforeach
-                data.push(items);
+                    @if(str_contains($group['label'], "Skill"))
+                    obj.name = @json($group['label']) + " (" + @json($group['score']) + ")";
+                    obj.y = parseFloat(@json($group['score']));
+                    obj.color = '#' + @json($group['color']);                    
+                    barChart.push(obj);
+                    obj = {};
+                    items.name = @json($group['label']);
 
-                console.log("data", data);
-                items = {
-                    data: [],
-                    name: "",
-                    type: "area",
-                    color: "",
-                    fillOpacity: 0.3
-                };
-                @endif
+                        @foreach($group['factors'] as $idx => $factor)
+                        categories.push(@json($factor['label']) + " (" + @json($factor['score']) + ")");
+                        
+                        if (@json($group['id']) === @json($factor['group_id'])) {
+                            items.data.push(parseFloat(@json($factor['score'])));
+                            if (items.data.length < 7) {
+                                console.log("length: ", categories.length);
+                                for (let i = 1; i < 7; i++) {
+                                    items.data.push(null);
+                                }
+                            }
+                            items.color = '#' + @json($factor['color']);
+                        }
+                        @endforeach
+                    data.push(items);
+
+                    // console.log("data", data);
+                    items = {
+                        data: [],
+                        name: "",
+                        type: "area",
+                        color: "",
+                        fillOpacity: 0.3
+                    };
+                    @endif
                 @endforeach
+
+                console.log("data - ", data);
+
+                // эхний утгийг нь 
+                var new_data = [], previous = [];
+                var matrix = [],n =0, m = 0;
+
+                for (const [key, value] of Object.entries(data)) {  
+                    if(key == 0) data[key].pointStart= -15;
+                    else if(key == 1) data[key].pointStart= 75;
+                    else if(key == 2) data[key].pointStart= 165;
+                    else if(key == 3) data[key].pointStart= 255;
+                    matrix[n] = [];
+                    value.data.map((el, index) => {                        
+                        if(el !==null ){ 
+                            matrix[n][m] = el;
+                            m ++;
+                        }                         
+                    });
+                    n++;
+                    m = 0;                                                            
+                }
+                                               
+                for (const [key, value] of Object.entries(data)) {
+                    // first value-g avna
+                    var first, second, third;                     
+                    value.data.map((el, index) => {                                                
+                        if(index===0) first = el;                            
+                        else if(index === 7) second = el;
+                        else if(index === 8) third = el                                                
+                    });
+                  
+                    for(let i=0; i<8; i++){                        
+                        if( i==0){
+                            if(key==0) new_data[i] = findPoint(first, matrix[parseInt(3-key)][2]);                                
+                            else new_data[i] = previous[6];                                                                         
+                        }else if(i==1) new_data[i] = first;
+                        else if(i==3) new_data[i] = second;
+                        else if(i==5) new_data[i] = third;
+                        else if(i==6){                            
+                            if(key == 0) new_data[i] = findPoint(matrix[1][0], third);
+                            else if(key == 1) new_data[i] = findPoint(matrix[2][0], third);
+                            else if(key == 2) new_data[i] = findPoint(matrix[3][0], third);
+                            else if(key ==3)  new_data[i] = findPoint(matrix[0][0], third);                            
+                        }
+                        else if(i==7) new_data[i] = 0;                        
+                        else new_data.push(null);
+                        previous = new_data; 
+                    }                                                           
+                    value.data = new_data;
+                    new_data = [];                    
+                }
 
                 console.log("data - ", data);
 
@@ -500,8 +565,6 @@
                                     undefined) {
                                     sReturn += oCategories[iIndex];
                                 }
-
-
                                 return sReturn;
                             }
                         },
@@ -509,35 +572,42 @@
                             210, 240, 270, 300, 330, 360
                         ]
                     },
-                    "series": [{
-                        "color": "#F781BE",
-                        "name": "Client Acquisition Skills",
-                        "type": "area",
-                        "pointStart": -15,
-                        "data": [2.3, 1.7, null, 1.4, null, 1.4, 3, 0]
-                    }, {
-                        "color": "#D0A9F5",
-                        "name": "Business Development Skills",
-                        "type": "area",
-                        "pointStart": 75,
-                        "data": [6, 5, null, 5.8, null, 1.7, 2, 0]
-                    }, {
-                        "color": "#A9F5A9",
-                        "name": "Negotiation Skills",
-                        "type": "area",
-                        "pointStart": 165,
-                        "data": [2, 3.3, null, 5, null, 2.9, 3, 0]
-                    }, {
-                        "color": "#81BEF7",
-                        "name": "Selling Skills",
-                        "type": "area",
-                        "pointStart": 255,
-                        "data": [4, 3.3, null, 6.7, null, 3.3, 2.3, 0]
-                    }],
+                    "series": data
+                    // "series": [{
+                    //     "color": "#F781BE",
+                    //     "name": "Client Acquisition Skills",
+                    //     "type": "area",
+                    //     "pointStart": -15,
+                    //      "data": [2.2, 1.7, null, 1.4, null, 1.4, null, 0]   
+                            //  "data":[2.24, 1.7, null, 1.4, null, 1.4, 2.1, 0]                        
+                    
+                    // }, {
+                    //     "color": "#D0A9F5",
+                    //     "name": "Business Development Skills",
+                    //     "type": "area",
+                    //     "pointStart": 75,
+                    //     "data": [6, 5, null, 5.8, null, 1.7, 2, 0]
+                        // 2.42, 4.2, null, 5.8, null, 3.3, 3.98, 0]
+
+                    // }, {
+                    //     "color": "#A9F5A9",
+                    //     "name": "Negotiation Skills",
+                    //     "type": "area",
+                    //     "pointStart": 165,
+                    //     "data": [2, 3.3, null, 3.3, null, 4.3, 3.7, 0]
+                    // }, {
+                    //     "color": "#81BEF7",
+                    //     "name": "Selling Skills",
+                    //     "type": "area",
+                    //     "pointStart": 255,
+                    //     "data": [3.7, 3.3, null, 6.7, null, 3.3, 2.2, 0]
+                    // }], 
 
                 });
 
             </script>
+
+            
             <script>
                 // Create the bar chart
                 Highcharts.chart('barChart', {
@@ -596,6 +666,7 @@
                         data: barChart
                     }],
                 });
+                
 
             </script>
             @endsection

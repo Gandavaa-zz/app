@@ -12,15 +12,18 @@
 <div class="row">
     @php $item = $data["parties"]["party"]; @endphp
 
+    @php $group_factors = $data["group_factors"]; @endphp
+
     @if (str_contains($item[0]['type'], 'ancre'))
+    
     <h2 class="card-title">{{ $item[0]["params"]["menuNumber"] }} -
-        {{$item[0]["content"]["title"]}} </h2>
+        {{ __($item[0]["content"]["title"]) }} </h2>
     @endif
 
     <div class="col-md-12" id="comments">
         <div class="card">
             <div class="card-header .bg-secondary">
-                {{ $item[0]["content"]["sub_title"]}}
+            {{ __($item[0]["content"]["sub_title"]) }}
             </div>
 
             <div class="card-body">
@@ -79,13 +82,14 @@
     <!-- GENERAL DESCRIPTION -->
     @if (str_contains($item[2]['type'], 'ancre'))
     <h2 class="card-title">{{ $item[2]["params"]["menuNumber"] }} -
-        {{$item[2]["content"]["title"]}} </h2>
+        {{ __($item[2]["content"]["title"]) }} 
+    </h2>
     @endif
 
     <div class="col-md-12" id="comments">
         <div class="card">
             <div class="card-header .bg-secondary">
-                {{ $item[2]["content"]["sub_title"]}}
+                {{ __($item[2]["content"]["sub_title"]) }}
             </div>
             <div class="card-body">
                 <div class="group-header">
@@ -98,18 +102,23 @@
 
     <!-- Graph  -->
     @if (str_contains($item[4]['type'], 'ancre'))
-    <h2 class="card-title">{{ $item[4]["params"]["menuNumber"] }} -
-        {{$item[4]["content"]["title"]}} </h2>
+    <h2 class="card-title">{{ $item[4]["params"]["menuNumber"] }} -        
+        {{ __($item[4]["content"]["title"]) }} 
+    </h2>
     @endif
 
     <div class="col-md-12" id="comments">
         <div class="card">
+            
             <div class="card-header .bg-secondary">
-                {{ $item[4]["content"]["sub_title"]}}
+                {{ __($item[4]["content"]["sub_title"]) }}
             </div>
             <div class="card-body">
                 <div class="group-header">
                     <!-- Graphic here -->
+                    <figure class="highcharts-figure">
+                    <div style="height: 600px; width: 1308px; margin:0 auto" id="chart"></div>
+                    </figure>
                 </div>
             </div>
         </div>
@@ -119,13 +128,13 @@
     <!-- Detailed  -->
     @if (str_contains($item[6]['type'], 'ancre'))
     <h2 class="card-title">{{ $item[6]["params"]["menuNumber"] }} -
-        {{$item[6]["content"]["title"]}} </h2>
+        {{ __($item[6]["content"]["title"]) }} </h2>
     @endif
 
     <div class="col-md-12" id="comments">
         <div class="card">
             <div class="card-header .bg-secondary">
-                {{ $item[6]["content"]["sub_title"]}}
+                {{ __($item[6]["content"]["sub_title"]) }}
             </div>
             <div class="card-body">
                 <!-- loop here -->
@@ -196,4 +205,245 @@
                 </div>
             </div>
         </div>
+@endsection
+
+@section('script')
+
+<script>
+
+        function calcPoint(a, b){                    
+            let d = Math.abs(  (a*b) * 0.58 ) / Math.abs(  (a+b) * -0.3  );
+            c = d.toFixed(2)/1.4
+            return parseFloat(c.toFixed(2));
+        }
+        
+        var categories = [];
+        var data = [];
+        var items = {
+            data: [],
+            name: "",
+            type: "area",
+            color: "",
+            fillOpacity: 0.3
+        };
+        var barChart = [];
+
+        var obj = {};
+        var point_start = -15;
+        @foreach($group_factors as $idx => $group)
+           
+            @if(str_contains($group['label'], "Intelligence"))
+            obj.name = @json($group['label']) + " (" + @json($group['score']) + ")";
+            obj.y = parseFloat(@json($group['score']));
+            obj.color = '#' + @json($group['color']);                    
+           
+            barChart.push(obj);
+            obj = {};
+            items.name = @json($group['label']);
+
+                @foreach($group['factors'] as $idx => $factor)
+                categories.push(@json($factor['label']) + " (" + @json($factor['score']) + ")");
+                
+                if (@json($group['id']) === @json($factor['group_id'])) {
+                    items.data.push(parseFloat(@json($factor['score'])));
+                    if (items.data.length < 7) {
+                        console.log("length: ", categories.length);
+                        for (let i = 1; i < 7; i++) {
+                            items.data.push(null);
+                        }
+                    }
+                    items.color = '#' + @json($factor['color']);
+                }
+                @endforeach
+            data.push(items);
+
+            // console.log("data", data);
+            items = {
+                data: [],
+                name: "",
+                type: "area",
+                color: "",
+                fillOpacity: 0.3
+            };
+            @endif
+        @endforeach
+
+        console.log("data1 - ", data);
+        console.log("categories - ", categories);
+
+        // // эхний утгийг нь 
+        var new_data = [], previous, matrix = [],n =0, m = 0;
+
+        for (const [key, value] of Object.entries(data)) {  
+            if(key == 0) data[key].pointStart= 300;
+            else if(key == 1) data[key].pointStart= 60;
+            else if(key == 2) data[key].pointStart= 180;            
+
+            value.data.map((el, index) => {                        
+                if(el !==null ) matrix[n++] = el;                                                        
+            });                
+        }
+        console.log("matrix - ", matrix);                      
+        for (const [key, value] of Object.entries(data)) {
+            // first value-g avna
+            var first;    
+            value.data.map((el, index) => {                                                
+                if(index===0) first = el;    
+            });
+            console.log('key'+key);
+
+            for(let i=0; i<10; i++){                        
+                if( i==0){
+                    if(key==0) new_data[i] = calcPoint(first, matrix[2]);                                
+                    else if(key==2) new_data[i] = calcPoint(first, matrix[1]);                                
+                    else if(key==1)  new_data[i] = calcPoint(first, matrix[0]);   
+                }else if(i==4) new_data[i] = first;                
+                else if(i==8){                            
+                    if(key == 0) new_data[i] = calcPoint(first, matrix[1]);
+                    else if(key == 1) new_data[i] = calcPoint(first, matrix[2]);
+                    else if(key == 2) new_data[i] = calcPoint(first, matrix[0]);                    
+                } 
+                else if(i==9) new_data[i] =0;  
+                else new_data.push(null);
+                previous = new_data[i]; 
+            }                                                           
+            value.data = new_data;
+            new_data = [];                    
+        }
+        Highcharts.chart('chart', {
+            chart: {
+                marginTop: 30,
+                polar: true,
+                type: '',
+            },
+            "title": {
+                "text": ""
+            },
+            "credits": {
+                "enabled": false
+            },
+            "tooltip": {
+                "enabled": false
+            },
+            "yAxis": {
+                "max": 10,
+                "lineColor": "#FFFFFF",
+                "tickInterval": 2,
+                "gridLineWidth": 1,
+                "gridLineColor": "#EEEEEE",
+                "plotLines": [{
+                    "color": "#AAAAAA",
+                    "dashStyle": "LongDash",
+                    "value": 10,
+                    "width": 1
+                }, {
+                    "color": "#EEEEEE",
+                    "dashStyle": "Dash",
+                    "value": 1,
+                    "width": 1
+                }, {
+                    "color": "#EEEEEE",
+                    "dashStyle": "Dash",
+                    "value": 3,
+                    "width": 1
+                }, {
+                    "color": "#EEEEEE",
+                    "dashStyle": "Dash",
+                    "value": 7,
+                    "width": 1
+                }, {
+                    "color": "#EEEEEE",
+                    "dashStyle": "Dash",
+                    "value": 9,
+                    "width": 1
+                }],
+                "labels": {
+                    "enabled": false
+                }
+            },
+            "plotOptions": {
+                "series": {
+                    "animation": false,
+                    "showInLegend": true,
+                    "marker": {
+                        "enabled": false,
+                        "states": {
+                            "hover": {
+                                "enabled": false
+                            }
+                        }
+                    },
+                    "connectNulls": true,
+                    "pointPlacement": "on",
+                    "pointInterval": 15
+                },
+                "area": {
+                    "lineWidth": 1
+                }
+            },
+
+            "xAxis": {
+                "max": 12,
+                "startOnTick": true,
+                "endOnTick": true,
+                "lineWidth": 0,
+                "gridLineWidth": 1,
+                "labels": {
+                    "distance": 20,
+                    "style": {
+                        "width": "140px",
+                        "color": "#000000",
+                        "fontSize": "14px",
+                        "fontWeight": "normal",
+                        "fontFamily": "\"roboto\", \"Arial\", sans-serif"
+                    },
+                    "formatter": function () {
+                        var sReturn = '',
+                            iIndex = this.value / 120,
+                            oCategories = categories;
+
+                        if (oCategories[iIndex] !=
+                            undefined) {
+                            sReturn += oCategories[iIndex];
+                        }
+                        return sReturn;
+                    }
+                },
+                "tickPositions": [0, 120, 240, 360]
+            },
+            // "series": data
+            // [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 360
+            // [-45 -30 -15  0, 15, 30, 45]
+            // [calc -75 -60 -45 -30 -15 [set 0], 15, 30, 45 60 [c75] 0 ]
+            // 4.73, null, null, null, null, null, 4, null, null, null, null, null, 4.73
+            // [4, null, null, null, null, null, 5.8, null, null, null, null, null, 5.54]
+            // [5.8, null, null, null, null, null, 5.3, null, null, null, null, null, 5.54
+
+            "series":  data
+            // [{
+            //     "color": "#F781BE",
+            //     "name": "fdsfdsfd",
+            //     "type": "area",
+            //     "pointStart": 300,            
+            //      "data": [4.73, null, null, null, 4, null, null, null, 3, 0]               
+            // }, {
+            //     "color": "#D0A9F5",
+            //     "name": "Business Development Skills",
+            //     "type": "area",
+            //     "pointStart": 60,                
+            //     "data": [3, null, null, null, 5.8, null, null, null, 5.54, 0]                 
+
+            // }, {
+            //     "color": "#A9F5A9",
+            //     "name": "Negotiation Skills",
+            //     "type": "area",
+            //     "pointStart": 180,
+            //     "data": [5.07, null, null, null, 5.8, null, null, null, 5.54, 0]                       
+            // }], 
+
+        });
+
+        console.log(calcPoint(5.8, 5,3));
+</script>
+
 @endsection

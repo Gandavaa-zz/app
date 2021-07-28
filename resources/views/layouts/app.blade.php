@@ -78,6 +78,8 @@
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
+    <script src="{{ asset('assets/ckeditor/ckeditor.js') }}"></script>
+
     @yield('javascript')
 
   </body>

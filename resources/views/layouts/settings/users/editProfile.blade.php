@@ -5,14 +5,26 @@
 <div class="container">
 
     <div class="row justify-content-center">
-        <div class="col-md-4">
+        <div class="col-md-8">
             <div class="card">
                
                 <div class="card-body">
+      
+                    @if($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>                        
+                    @endif
                     <profile inline-template>
-                        <form action="">
-                            <div class="text-center mt-4">                         
-                                <img class="rounded-circle" src="{{ env('APP_URL', '') }}/assets/img/avatars/8.jpg" width="150" alt="{{ $user->email }}">
+                        <form method="POST" action="{{ route('update.profile', $user->id) }}" enctype="multipart/form-data" >
+                            @csrf                            
+                            <div class="text-center mt-4">        
+                            <img class="rounded-circle"
+                                    src="{{ $user->avatar() }}" width="150" height="160" alt="{{ $user->email }}">                                                 
                                     <input type="file" id="avatar" name="filename">
                                     <h4 class="card-title mt-2">
                                         <input type="text" name="firstname" value="{{ $user->firstname }}" placeholder="Өөрийн нэр" required>,
@@ -53,16 +65,17 @@
                                 <small class="text-muted pt-4 db">Хаяг:</small>
                                 <h6>{{ $user->address }}</h6>                             
                             </div>
-                            <div class="row text-center justify-content-md-center pt-2">
-                                        <!-- <button class="btn btn-sm btn-primary" @click="editing = true">Засах</button>                                 -->
-                                        <a class="btn btn-sm btn-primary" href="{{ route('edit.profile', $user->id) }}">Хадгалах</a>
+                            <div class="row text-right justify-content-md-center pt-2">
+                                <button class="btn btn-sm btn-primary" type="submit">Хадгалах</button>
+
+                                <a class="ml-2 btn btn-sm btn-warning" href="{{route('user.profile', $user->id)}}">Буцах</a>                                
                             </div>
                         </form>
                     </profile>
                 </div>
             </div>
         </div>
- 
+<!--  
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header"> <strong>Үйл явдал</strong> </div>
@@ -113,7 +126,7 @@
                 </div>
             </div>                  
 
-        </div>
+        </div> -->
     </div>
 </div>
 @endsection

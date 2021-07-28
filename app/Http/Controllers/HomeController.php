@@ -22,7 +22,12 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
-    {
-        return view('layouts.home');
+    {        
+        $user = auth()->user();
+
+        if($user->hasRole(['admin', 'super-admin']))
+            return redirect('/assessment');
+        else
+            return view('layouts.home');
     }
 }

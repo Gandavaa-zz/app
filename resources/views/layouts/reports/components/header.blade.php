@@ -8,7 +8,7 @@
                         @if (str_contains($menu['type'], 'ancre'))
                         <li>
                             <a href="#{{$menu['content']['title']}}">
-                                <span id="menu_title"> {{$menu["content"]["title"]}} </span>
+                                <span id="menu_title"> {{ __($menu["content"]["title"]) }} </span>
                             </a>
                         </li>
                         @endif
