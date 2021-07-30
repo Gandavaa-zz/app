@@ -239,8 +239,8 @@ class ReportsController extends Controller
                             ];
                             if (isset($comments)) {
                                 $domain[] = [
-                                    'id' => isset($item["@attributes"]["id"]) ? $item["@attributes"]["id"] : null,
-                                    'label' => isset($item["contenus"]["contenu"]["libelle"]) ? $this->getMNText($item["contenus"]["contenu"]["libelle"]) : null,
+                                    'id' => isset($value["domaines"]["domaine"]["@attributes"]["id"]) ? $value["domaines"]["domaine"]["@attributes"]["id"] : null,
+                                    'label' => isset($value["domaines"]["domaine"]["contenus"]["contenu"]["libelle"]) ? $this->getMNText($value["domaines"]["domaine"]["contenus"]["contenu"]["libelle"]) : null,
                                     "contents" =>  $comments
                                 ];
 
@@ -546,7 +546,7 @@ class ReportsController extends Controller
                     'params' =>  $value['params'],
                     'content' => array(
                         'label' => $this->getMNText($value["contenus"]["contenu"]["libelle"]),
-                        'title' => $this->getMNText($value["contenus"]["contenu"]["titre"]),
+                        'title' => $this->getMNText(isset($value["contenus"]["contenu"]["titre"]) ? $value["contenus"]["contenu"]["titre"] : null),
                         'sub_title' => $this->getMNText(isset($value["contenus"]["contenu"]["sous_titre"]) ? $value["contenus"]["contenu"]["sous_titre"] : null),
                         'description_long' => $this->getMNText(isset($value["contenus"]["contenu"]["description_longue"]) ? $value["contenus"]["contenu"]["description_longue"] : null),
                         'description' => $this->getMNText(isset($value["contenus"]["contenu"]["description"]) ? $value["contenus"]["contenu"]["description"] : null),
