@@ -395,12 +395,14 @@
             // first value-g avna
             var first, second, third;
             value.data.map((el, index) => {
+                console.log("index",index);
                 if (index === 0) first = el;
-                else if (index === 7) second = el;
-                else if (index === 8) third = el
+                else if (index === 6) second = el;
+                else if (index === 7) third = el
             });
 
-            for (let i = 0; i < 8; i++) {
+            console.log(first, "| ", second, " | ", third);
+            for (let i = 0; i <= 7; i++) {
                 if (i == 0) {
                     if (key == 0) new_data[i] = findPoint(first, matrix[parseInt(3 - key)][2]);
                     else new_data[i] = previous[6];
@@ -416,12 +418,13 @@
                 else new_data.push(null);
                 previous = new_data;
             }
+            console.log("new_data - ", new_data);
             value.data = new_data;
             new_data = [];
         }
 
         console.log("data - ", data);
-
+ 
         Highcharts.chart('chart', {
             chart: {
                 marginTop: 30
@@ -521,9 +524,7 @@
                         return sReturn;
                     }
                 }
-                , "tickPositions": [0, 30, 60, 90, 120, 150, 180
-                    , 210, 240, 270, 300, 330, 360
-                ]
+                , "tickPositions": [0,30,60,90,120,150,180,210,240,270,300,330,360]
             }
             , "series": data
             // "series": [{

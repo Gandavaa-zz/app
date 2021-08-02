@@ -12,7 +12,7 @@
                         <p class="text-muted"></p>
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
-                          
+
                             @if(@errors)
                             <ul>
                                 @foreach($errors as $error)
@@ -26,8 +26,7 @@
                                         <i class="cil-user"></i>
                                     </span>
                                 </div>
-                                <input class="form-control" type="text" placeholder="{{ __('Имэйл хаяг') }}"
-                                    name="email" value="{{ old('email') }}" required autofocus>
+                                <input class="form-control" type="text" placeholder="{{ __('Имэйл хаяг') }}" name="email" value="{{ old('email') }}" required autofocus>
                                 @error('email')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -40,8 +39,7 @@
                                         <i class="cil-lock-locked"></i>
                                     </span>
                                 </div>
-                                <input class="form-control" type="password" placeholder="{{ __('Нууц үг') }}"
-                                    name="password" required>
+                                <input class="form-control" type="password" placeholder="{{ __('Нууц үг') }}" name="password" required>
                                 @error('password')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -50,8 +48,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-6">
-                                    <input class="" type="checkbox" placeholder="{{ __('Нууц үг') }}" name="remember_me"
-                                        id="remember_me">
+                                    <input class="" type="checkbox" placeholder="{{ __('Нууц үг') }}" name="remember_me" id="remember_me">
                                     <label for="remember_me">Намайг сана</label>
                                 </div>
                             </div>
@@ -60,8 +57,7 @@
                                     <button class="btn btn-primary px-4" type="submit">{{ __('Нэвтрэх') }}</button>
                                 </div>
                                 <div class="col-6 text-right">
-                                    <a href="{{ route('password.request') }}"
-                                        class="btn btn-link px-0">{{ __('Нууц үгээ мартсан?') }}</a>
+                                    <a href="{{ route('password.request') }}" class="btn btn-link px-0">{{ __('Нууц үгээ мартсан?') }}</a>
                                 </div>
                             </div>
                         </form>
