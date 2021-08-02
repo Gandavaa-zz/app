@@ -12,7 +12,9 @@
 <div class="row">
 
     @php $item = $data["parties"]["party"]; @endphp
+    
     @php $group_factors = $data["group_factors"]; @endphp
+
     @if (str_contains($item[0]['type'], 'ancre'))
     <h2 class="card-title">{{ $item[0]["params"]["menuNumber"] }} - 
         {{ __($item[0]["content"]["title"]) }} </h2>
@@ -307,6 +309,7 @@
             <h2 class="card-title">{{ $item[26]["params"]["menuNumber"] }} -
                 {{ __($item[26]["content"]["title"]) }} </h2>
             @endif
+
             <div class="col-md-12" id="{{ $item[26]["content"]["title"]}}">
                 <div class="card">
                     <div class="card-header .bg-secondary">
@@ -318,6 +321,7 @@
                         @endif
                         <h3>{!! $item[27]['content']["label"]!!}</h3>
                     </div>
+                    
                     @if(isset($item[27]["adequacy"]))
                     <table class="b-table table table-hovered">
                         <tbody>
@@ -579,16 +583,13 @@
                     //     "type": "area",
                     //     "pointStart": -15,
                     //      "data": [2.2, 1.7, null, 1.4, null, 1.4, null, 0]   
-                            //  "data":[2.24, 1.7, null, 1.4, null, 1.4, 2.1, 0]                        
-                    
+                   
                     // }, {
                     //     "color": "#D0A9F5",
                     //     "name": "Business Development Skills",
                     //     "type": "area",
                     //     "pointStart": 75,
                     //     "data": [6, 5, null, 5.8, null, 1.7, 2, 0]
-                        // 2.42, 4.2, null, 5.8, null, 3.3, 3.98, 0]
-
                     // }, {
                     //     "color": "#A9F5A9",
                     //     "name": "Negotiation Skills",
