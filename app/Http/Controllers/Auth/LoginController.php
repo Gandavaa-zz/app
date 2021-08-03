@@ -42,7 +42,6 @@ class LoginController extends Controller
 
     public function authenticate(Request $request)
     {
-        dd("xaxa");
         $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
