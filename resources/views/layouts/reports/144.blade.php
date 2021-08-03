@@ -193,9 +193,10 @@
         </div>
     </div>
      <!-- 4- Detailed table ends" -->
- {{-- 5- Comment starts --}}
+
+   {{-- 5- Comment starts --}}
    @if (str_contains($item[8]['type'], 'ancre'))
-    <h2 class="card-title">5 - {{$item[8]["content"]["title"]}} </h2>
+    <h2 class="card-title">{{ $item[8]["params"]["menuNumber"] }} - {{ __($item[8]["content"]["title"]) }} </h2>
     @endif
     <div class="col-md-12" id="{{$item[8]["content"]["title"]}}">
         <div class="card">
@@ -208,6 +209,7 @@
             </div>
             @endif
             @if(str_contains($item[$i]['type'], 'rapport_details_facteur'))
+
             <div class="group-header clearfix">
                 <h5>{{ $item[$i]["content"]["title"] }}<h5>
             </div>
@@ -219,8 +221,6 @@
                          {{ $item[$i]["content"]["libelle_facteur_opposition"] }}
                         </h5>
                         </div>
-
-             
                     <div class="box-score" style=" color:#000000; background-color: #{{$item[$i]['params']['couleur']}}">
                         <div class="header" style="color:#000;">
                             {{ __('Score') }} <br>
@@ -299,26 +299,28 @@
     </div>
  {{-- 5-Comment ends --}}
 
-
-
  {{-- 6 - GENERAL PROFILE starts--}}
 @if (str_contains($item[25]['type'], 'ancre'))
-<h2 class="card-title">{{ $item[25]["params"]["menuNumber"] }} - {{$item[25]["content"]["title"]}} </h2>
+<h2 class="card-title">
+    {{ $item[25]["params"]["menuNumber"] }} - 
+    {{ __($item[25]["content"]["title"]) }} 
+</h2>
 @endif
 
 <div class="col-md-12" id="{{$item[25]["content"]["title"]}}">
     <div class="card">
-        <div class="card-header .bg-secondary">{{ $item[25]["content"]["sub_title"]}}</div>
+        <div class="card-header .bg-secondary">
+            {{ __($item[25]["content"]["sub_title"]) }}
+        </div>
         <div class="card-body">
             {!! $item[26]["content"]["introduction"] !!}
             <div class="adoquetion">
 
                 @if (isset($item[26]['adequacy']))
                 {{-- {{dd($item[26])}} --}}
-            
-
                 <div class="mt-3 mb-3">
-                    <h5>{!! $item[26]['adequacy'][0]['adequation_profile'][0]['label'] !!}</h5>
+                    <h5>
+                        {!! $item[26]['adequacy'][0]['adequation_profile'][0]['label'] !!}</h5>
                     {{-- <div>
                         {!! $adequacy['adequation_profile']['description'] !!}
                     </div> --}}
@@ -380,7 +382,9 @@
 
  {{-- 7 - POTENTIALS STARTS --}}
 @if (str_contains($item[27]['type'], 'ancre'))
-<h2 class="card-title">7 - {{$item[27]["content"]["title"]}} </h2>
+<h2 class="card-title">
+    {{ $item[25]["params"]["menuNumber"] }} - 
+    {{ __($item[27]["content"]["title"]) }} </h2>
 @endif
 
 <div class="col-md-12" id="{{$item[27]["content"]["title"]}}">
@@ -393,7 +397,6 @@
                 @if (isset($item[28]['adequacy']))
                 {{-- {{dd($item[26])}} --}}
             
-
                 <div class="mt-3 mb-3">
                     <h5>{!! $item[28]['adequacy'][0]['adequation_profile'][0]['label'] !!}</h5>
                     {{-- <div>
@@ -461,13 +464,14 @@
         </div>
     </div>
 </div>
-
  {{-- 7 - POTENTIALS ENDS --}}
 
-{{-- 8 - HOW DIFFERENT PROFESSIONS SUIT THE PROFILE STARTS --}}
+ {{-- 8 - HOW DIFFERENT PROFESSIONS SUIT THE PROFILE STARTS --}}
 
 @if (str_contains($item[29]['type'], 'ancre'))
-<h2 class="card-title">7 - {{$item[29]["content"]["title"]}} </h2>
+<h2 class="card-title">
+    {{ $item[25]["params"]["menuNumber"] }} - 
+    {{ __($item[29]["content"]["title"]) }} </h2>
 @endif
 
 <div class="col-md-12" id="{{$item[29]["content"]["title"]}}">
@@ -480,45 +484,45 @@
                 @if (isset($item[30]['adequacy']))
                 {{-- {{dd($item[26])}} --}}
         
-                @foreach ($item[30]['adequacy'] as $key => $adequacy)
-                @if(isset($adequacy))
-                 <div class="mt-3 mb-3">
-                    <h5>{!! $adequacy['adequation_profile']['label'] !!}</h5>
-                    {{-- <div>
-                        {!! $adequacy['adequation_profile']['description'] !!}
-                    </div> --}}
-                </div>
-                @foreach($adequacy['adequation_profile']['test_ref_adequation'] as $index=> $profile)
-                <div class="row">
-                    <div class="col-xs-1 col-md-1 col-sm-1">{{$index+1}}</div>
-                    <div class="col-xs-11 col-md-5 col-sm-5 word-break">
-                        {{$profile['label']}}
-                    </div>
-                    <div class="col-xs-7 col-md-3 col-sm-5 add-md-print">
-                        <div class="progress">
-                            <div class="progress-bar ec-first-bg-color ec-first-text-color" style="width: {{$profile['pourcentage_score']}}%;"></div>
+                    @foreach ($item[30]['adequacy'] as $key => $adequacy)
+                        @if(isset($adequacy))
+                        <div class="mt-3 mb-3">
+                            <h5>{!! $adequacy['adequation_profile']['label'] !!}</h5>
+                            {{-- <div>
+                                {!! $adequacy['adequation_profile']['description'] !!}
+                            </div> --}}
                         </div>
+                        @foreach($adequacy['adequation_profile']['test_ref_adequation'] as $index=> $profile)
+                        <div class="row">
+                            <div class="col-xs-1 col-md-1 col-sm-1">{{$index+1}}</div>
+                            <div class="col-xs-11 col-md-5 col-sm-5 word-break">
+                                {{$profile['label']}}
+                            </div>
+                            <div class="col-xs-7 col-md-3 col-sm-5 add-md-print">
+                                <div class="progress">
+                                    <div class="progress-bar ec-first-bg-color ec-first-text-color" style="width: {{$profile['pourcentage_score']}}%;"></div>
+                                </div>
+                            </div>
+                            <div class="col-xs-2 col-md-1 col-sm-1 remove-md-print">
+                                {{$profile['pourcentage_score']}}%
+                            </div>
+                            <div class="col-xs-2 col-md-1 col-sm-1 remove-md-print" data-toggle="collapse" data-target="#{{$index}}" class="accordion-toggle">
+                            <p class="t-right">{{ __('Details') }}</p>
+                            </div>
+                                
+                            <div class="hiddenRow">
+                            <div class="accordian-body collapse hiddenRow" id="{{$index}}">
+                            @if($profile['description_long'])
+                            {!! $profile['description_long'] !!}
+                        @endif
+
+                        </div>
+                        </div>
+
                     </div>
-                    <div class="col-xs-2 col-md-1 col-sm-1 remove-md-print">
-                        {{$profile['pourcentage_score']}}%
-                    </div>
-                    <div class="col-xs-2 col-md-1 col-sm-1 remove-md-print" data-toggle="collapse" data-target="#{{$index}}" class="accordion-toggle">
-                    <p class="t-right">{{ __('Details') }}</p>
-                    </div>
-                        
-                    <div class="hiddenRow">
-                    <div class="accordian-body collapse hiddenRow" id="{{$index}}">
-                    @if($profile['description_long'])
-                    {!! $profile['description_long'] !!}
+                    @endforeach
                     @endif
-
-                    </div>
-                    </div>
-
-                </div>
-                @endforeach
-                @endif
-                @endforeach
+                    @endforeach
                 @endif
 
             </div>
