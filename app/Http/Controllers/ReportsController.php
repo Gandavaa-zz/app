@@ -157,7 +157,7 @@ class ReportsController extends Controller
                     foreach ($xml['parties']['partie'] as $row) {
                         // dd($row, $factors);
                         if ($row['@attributes']['type'] == 'rapport_details_facteur' && ($row['contenus']['contenu']['titre'] == $factors["contenus"]["contenu"]["libelle"] || $row['contenus']['contenu']['libelle_facteur'] == $factors["contenus"]["contenu"]["libelle"])) {
-                         
+
                             $description = $row['contenus']['contenu']['description_courte'];
                             $description_courte_opposition = $row['contenus']['contenu']['description_courte_opposition'];
                         }
@@ -232,11 +232,18 @@ class ReportsController extends Controller
                                             $label = $test_factor['label'];
                                     }
                                 }
-                                $comments[]  = [
-                                    'color' => isset($item["color"]) ? $item["color"] : null,
-                                    "score" =>  isset($item["score"]) ? $item["score"] : 0,
-                                    "title" => $label,
-                                    "comment" =>  $this->getMNText(isset($item["contenus"]["contenu"]["commentaire_perso"]) ? $item["contenus"]["contenu"]["commentaire_perso"] : null),
+                            }
+                            $comments[]  = [
+                                'color' => isset($item["color"]) ? $item["color"] : null,
+                                "score" =>  isset($item["score"]) ? $item["score"] : 0,
+                                "title" => $label,
+                                "comment" =>  $this->getMNText(isset($item["contenus"]["contenu"]["commentaire_perso"]) ? $item["contenus"]["contenu"]["commentaire_perso"] : null),
+                            ];
+                            if (isset($comments)) {
+                                $domain[] = [
+                                    'id' => isset($value["domaines"]["domaine"]["@attributes"]["id"]) ? $value["domaines"]["domaine"]["@attributes"]["id"] : null,
+                                    'label' => isset($value["domaines"]["domaine"]["contenus"]["contenu"]["libelle"]) ? $this->getMNText($value["domaines"]["domaine"]["contenus"]["contenu"]["libelle"]) : null,
+                                    "contents" =>  $comments
                                 ];
                                 if (isset($comments)) {
                                     $domain[] = [
@@ -299,7 +306,7 @@ class ReportsController extends Controller
                             } else {
                                 // print_r("2, ");
                                 // dd($item['cibles_secondaires']['cibles_secondaire']);
-                                if(isset($item['cibles_secondaires']['cibles_secondaire']))
+                                if (isset($item['cibles_secondaires']['cibles_secondaire']))
                                     foreach ($item['cibles_secondaires']['cibles_secondaire'] as $row) {
                                         if (isset($row['@attributes']["target_id"])) {
                                             foreach ($data['test_factors'] as $test_factor) {
@@ -337,8 +344,7 @@ class ReportsController extends Controller
             $rapport_class = [];
             if (isset($value['rapport_adequation_classes'])) {
                 if (isset($value['rapport_adequation_classes']['rapport_adequation_classe']['@attributes'])) {
-                    if (isset($value['rapport_adequation_classes']['rapport_adequation_classe']                    
-                    ['rapport_adequation_profils']['rapport_adequation_profil']['@attributes'])) {                       
+                    if (isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['@attributes'])) {
                         // print_r("rapport_adequation_classes >  profile object");
                         if (isset($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil']['@attributes'])) {
                             $adequates   = [
@@ -428,17 +434,17 @@ class ReportsController extends Controller
                         unset($rapport_class);
                     } else {
                         // print_r(" classess object {} profile array");
-                        
-                        
+
+
                         $class_id = isset($value['rapport_adequation_classes']['rapport_adequation_classe']['@attributes']['test_ref_adequation_classe_id']) ? $value['rapport_adequation_classes']['rapport_adequation_classe']['@attributes']['test_ref_adequation_classe_id'] : 0;
-     
+
                         foreach ($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils'] as $adequate_profiles) {
-                           
+
                             foreach ($adequate_profiles as $key => $adequate_profile) {
-                                $id = isset($adequate_profile['@attributes']['test_ref_adequation_profil_id']) ? $adequate_profile['@attributes']['test_ref_adequation_profil_id'] : 0;                                
+                                $id = isset($adequate_profile['@attributes']['test_ref_adequation_profil_id']) ? $adequate_profile['@attributes']['test_ref_adequation_profil_id'] : 0;
                                 foreach ($xml['elements']['test_ref_adequation_profils']['test_ref_adequation_profil'] as $test_ref) {
-                                    
-                                    if ($id == $test_ref["@attributes"]["id"]) {                                                                               
+
+                                    if ($id == $test_ref["@attributes"]["id"]) {
                                         $test_ref_adequation =
                                             [
                                                 'id' => $test_ref["@attributes"]["id"],

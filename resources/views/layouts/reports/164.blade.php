@@ -60,7 +60,7 @@
                 </div>
                 <div class="card-body">
                     @if (isset($item[4]['content']['domain']) && is_array($item[4]['content']['domain']))
-                        {{ dd($item[4]['content']['domain']) }}
+                        {{-- {{ dd($item[4]['content']['domain']) }} --}}
                         <div class="intro">
                             {!! $item[4]["content"]["introduction"]!!}
                         </div>                    
@@ -262,7 +262,7 @@
                             <td colspan="12" class="hiddenRow">
                                 <div class="accordian-body collapse hiddenRow" id="{{$i}}">
                                     @if($item[26]["adequacy"][$i]['adequation_profile'][0]['test_ref_adequation']['description'])
-                                    {{$item[26]["adequacy"][$i]['adequation_profile'][0]['test_ref_adequation']['description']}}
+                                    {!!$item[26]["adequacy"][$i]['adequation_profile'][0]['test_ref_adequation']['description']!!}
                                     @endif
                                 </div>
                             </td>

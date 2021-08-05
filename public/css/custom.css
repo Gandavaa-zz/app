@@ -930,3 +930,57 @@ header .dropdown-toggle {
 .remove-md-print p:hover {
     cursor: pointer;
 }
+
+.synthetic-card-combination-box {
+    text-transform: uppercase;
+    width: 60px;
+    height: 60px;
+    font-size: 60px;
+    padding-top: 20px;
+    font-weight: bold;
+    display: inline-block;
+    text-align: center;
+}
+
+.synthetic-card-targets-list {
+    line-height: 2em;
+    margin-top: 20px;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-bottom: 20px;
+}
+
+.synthetic-card-part {
+    margin-top: 15px;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.synthetic-card .target-score {
+    display: inline-block;
+    width: 90px;
+}
+
+.synthetic-card-target {
+    margin-bottom: 5px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.font-large {
+    font-size: large;
+}
+
+.desc {
+    margin-top: 50px;
+}
+
+.star-rating {
+    padding-right: 20px;
+}
