@@ -3,7 +3,7 @@
 @section('nav')
 @include("layouts.reports.components.header", ['data'=> $data])
 @endsection
-
+{{-- Reasoning test --}}
 @section('content')
 <!-- logo -->
 @include("layouts.reports.components.logo", ['logo'=> $data['general']])
@@ -11,12 +11,11 @@
 
 <div class="row">
     @php $item = $data["parties"]["party"]; @endphp
-
     @php $group_factors = $data["group_factors"]; @endphp
 
     @if (str_contains($item[0]['type'], 'ancre'))
 
-    <h2 class="card-title">{{ $item[0]["params"]["menuNumber"] }} -
+    <h2 class="card-title">{{$item[0]["params"]["menuNumber"] }} -
         {{ __($item[0]["content"]["title"]) }} </h2>
     @endif
 
@@ -27,11 +26,6 @@
             </div>
 
             <div class="card-body">
-
-                <div class="group-header">
-                    <h2 class="ec-title"> </h2>
-                </div>
-
                 <div class="score-bar-wrapper row">
                     <div class="col-xs-12 col-sm-3">
                         <h3 class="box-label">
@@ -85,13 +79,13 @@
     </h2>
     @endif
 
-    <div class="col-md-12" id=" {{ __($item[2]["content"]["title"]) }}">
+    <div class="col-md-12" id="{{$item[2]["content"]["title"]}}">
         <div class="card">
             <div class="card-header .bg-secondary">
                 {{ __($item[2]["content"]["sub_title"]) }}
             </div>
             <div class="card-body">
-                <div class="group-header">
+                <div class="intro">
                     {!! $item[3]["content"]["introduction"] !!}
                 </div>
             </div>
@@ -106,7 +100,7 @@
     </h2>
     @endif
 
-    <div class="col-md-12" id=" {{ __($item[4]["content"]["title"]) }}">
+    <div class="col-md-12" id="{{$item[4]["content"]["title"]}}">
         <div class="card">
 
             <div class="card-header .bg-secondary">
@@ -130,7 +124,7 @@
         {{ __($item[6]["content"]["title"]) }} </h2>
     @endif
 
-    <div class="col-md-12" id=" {{ __($item[6]["content"]["title"]) }}">
+    <div class="col-md-12" id="{{$item[6]["content"]["title"]}}">
         <div class="card">
             <div class="card-header .bg-secondary">
                 {{ __($item[6]["content"]["sub_title"]) }}
@@ -139,12 +133,6 @@
                 <!-- loop here -->
                 @foreach ($item as $val)
                 @if($val['type']=='rapport_details_facteur')
-                <div class="group-header">
-                    <h2 class="c-title-text-color">
-                        {{ $val["content"]["title"] }}
-                    </h2>
-                </div>
-
                 <div class="score-bar-wrapper row">
                     <div class="col-xs-12 col-sm-3">
                         <div class="box-score ec-first-bg-color ec-first-text-color" style="background-color:#{{$val["params"]["couleur"]}}; color:#000">
@@ -157,11 +145,10 @@
 
                     <div class="col-xs-12 col-sm-9">
                         <div class="progress score-bar" style="width: 100%;">
-                            <div class="label-left">0</div>
-                            <div class="label-right">10</div>
+                            <label for="0" id="percent_start">0</label>
                             <div class="progress-bar" style="width:{{$val["params"]["pourcentage_score"]}}%;
-                                            color:#000000; background-color: #{!!$val[" params"]["couleur"]!!} ">
-                                        </div>
+                                            color:#000000; background-color: #{!!$val["params"]["couleur"]!!} "></div>
+                            <label for="10" id="percent_end">10</label>
                                     </div>
                                 </div>
                             </div>
@@ -185,7 +172,7 @@
 
                             <div class="box mb-5 bg-white">
                                 <div class="box-header box-header-small">
-                                    <div class="title text-left"> <i class="fa fa-arrow-alt-circle-right"></i>
+                                    <div class="title text-left"> <i class="fa fa-arrow-circle-o-right"></i>
                                         {{ __('Definition') }}</div>
                                 </div>
                                 <div class="box-content ec-first-border-color">
@@ -200,7 +187,6 @@
                     </div>
                 </div>
             </div>
-        </div>
         @endsection
 
         @section('script')
@@ -281,14 +267,14 @@
                     if (el !== null) matrix[n++] = el;
                 });
             }
-            console.log("matrix - ", matrix);
+      
             for (const [key, value] of Object.entries(data)) {
                 // first value-g avna
                 var first;
                 value.data.map((el, index) => {
                     if (index === 0) first = el;
                 });
-                console.log('key' + key);
+       
 
                 for (let i = 0; i < 10; i++) {
                     if (i == 0) {

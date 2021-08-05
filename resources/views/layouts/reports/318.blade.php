@@ -453,38 +453,9 @@
                 , "tickPositions": [0, 30, 60, 90, 120, 150, 180
                     , 210, 240, 270, 300, 330, 360, 390, 420, 450
                 ]
-            }
-            , "series": data
-            // "series": [{
-            //     "color": "#F781BE",
-            //     "name": "Client Acquisition Skills",
-            //     "type": "area",
-            //     "pointStart": -15,
-            //      "data": [2.2, 1.7, null, 1.4, null, 1.4, null, 0]   
-            //  "data":[2.24, 1.7, null, 1.4, null, 1.4, 2.1, 0]                        
-
-            // }, {
-            //     "color": "#D0A9F5",
-            //     "name": "Business Development Skills",
-            //     "type": "area",
-            //     "pointStart": 75,
-            //     "data": [6, 5, null, 5.8, null, 1.7, 2, 0]
-            // 2.42, 4.2, null, 5.8, null, 3.3, 3.98, 0]
-
-            // }, {
-            //     "color": "#A9F5A9",
-            //     "name": "Negotiation Skills",
-            //     "type": "area",
-            //     "pointStart": 165,
-            //     "data": [2, 3.3, null, 3.3, null, 4.3, 3.7, 0]
-            // }, {
-            //     "color": "#81BEF7",
-            //     "name": "Selling Skills",
-            //     "type": "area",
-            //     "pointStart": 255,
-            //     "data": [3.7, 3.3, null, 6.7, null, 3.3, 2.2, 0]
-            // }], 
-
+            }, 
+            
+            "series": data
         });
 
     </script>

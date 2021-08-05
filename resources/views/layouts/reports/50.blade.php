@@ -1,5 +1,5 @@
 @extends('layouts.report')
-
+{{-- Sales Profile --}}
 @section('nav')
 @include("layouts.reports.components.header", ['data'=> $data])
 @endsection
@@ -26,9 +26,9 @@
                 {{ $item[0]["content"]["sub_title"]}}</div>
             <div class="card-body">
 
-                <div class="group-header">
+                {{-- <div class="group-header">
                     <h2 class="ec-title"> </h2>
-                </div>
+                </div> --}}
                 @for ($i=1; $i < 3; $i++) <div class="score-bar-wrapper row">
                     <div class="col-xs-12 col-sm-3">
                         <h3 class="box-label">
@@ -52,13 +52,13 @@
                         <div class="progress score-bar">
                             @if( isset($item[$i]["params"]["pourcentage_score"]))
                             <label for="0" id="percent_start">0</label>
-                            <div class="progress-bar" style='width:{{ $item[$i]["params"]["pourcentage_score"]}}%;'>
+                            <div class="progress-bar" style='width:{{str_replace(".", "", $item[$i]["params"]["pourcentage_score"])}}%;'>
                             </div>
                             <label for="10" id="percent_end">10</label>
                             @endif
                             @if( isset($item[$i]["adequacy"]["pourcentage_score"]))
                             <label for="0" id="percent_start">0</label>
-                            <div class="progress-bar" style='width:{{ $item[$i]["adequacy"]["pourcentage_score"]}}%;'>
+                            <div class="progress-bar" style='width:{{str_replace(".", "",  $item[$i]["adequacy"]["pourcentage_score"])}}%;'>
                             </div>
                             <label for="10" id="percent_end">100</label>
                             @endif
@@ -146,7 +146,7 @@
             {{ __($item[7]["content"]["sub_title"]) }}
         </div>
         <div class="card-body">
-            <div class="group-header">
+            <div class="intro">
                 {!! $item[8]["content"]["introduction"]!!}
             </div>
             @foreach($item[8]["content"]["domain"] as $detail)
@@ -198,7 +198,7 @@
                 <div class="col-xs-12 col-sm-9">
                     <div class="progress score-bar" style="width: 100%;">
                         <label for="0" id="percent_start">0</label>
-                        <div class="progress-bar" style="width:{{$item[10]["params"]["score"]}}%;
+                        <div class="progress-bar" style="width:{{str_replace(".", "", $item[10]["params"]["score"])}}%;
                                 color:#000000; background-color: #{!!$item[10]['params']["couleur"]!!} "></div>
                             <label for=" 10" id="percent_end">10</label>
                         </div>
@@ -236,7 +236,7 @@
                     <div class="col-xs-12 col-sm-9">
                         <div class="progress score-bar" style="width: 100%;">
                             <label for="0" id="percent_start">0</label>
-                            <div class="progress-bar" style="width:{{$item[11]["params"]["score"]}}%;
+                            <div class="progress-bar" style="width:{{str_replace(".", "", $item[11]["params"]["score"])}}%;
                                 color:#000000; background-color: #{!!$item[11]['params']["couleur"]!!} "></div>
                                 <label for=" 10" id="percent_end">10</label>
                             </div>
@@ -274,7 +274,7 @@
                             <div class="col-xs-12 col-sm-9">
                                 <div class="progress score-bar" style="width: 100%;">
                                     <label for="0" id="percent_start">0</label>
-                                    <div class="progress-bar" style="width:{{$item[$i]["params"]["score"]}}%;
+                                    <div class="progress-bar" style="width:{{str_replace(".", "", $item[$i]["params"]["score"])}}%;
                                     color:#000000; background-color: #{!!$item[$i]['params']["couleur"]!!} "></div>
                                     <label for=" 10" id="percent_end">10</label>
                                     </div>
@@ -335,7 +335,7 @@
                                     <div class="progress">
                                         <div class="progress-bar" role="progressbar" aria-valuenow="70"
                                             aria-valuemin="0" aria-valuemax="100"
-                                            style="width:{{$item[27]["adequacy"][$i]['pourcentage_score']}}%">
+                                            style="width:{{ str_replace(".", "", $item[27]["adequacy"][$i]['pourcentage_score'])}}%">
                                         </div>
                                     </div>
                                     <span class="percentage">{{$item[27]["adequacy"][$i]['pourcentage_score']}}%</span>
@@ -378,7 +378,7 @@
                     name: "",
                     type: "area",
                     color: "",
-                    fillOpacity: 0.3
+                    
                 };
                 var barChart = [];
                 var obj = {};
@@ -414,12 +414,12 @@
                         name: "",
                         type: "area",
                         color: "",
-                        fillOpacity: 0.3
+                        
                     };
                     @endif
                 @endforeach
 
-                console.log("data - ", data);
+                //console.log("data - ", data);
 
                 // эхний утгийг нь 
                 var new_data = [], previous = [];
@@ -471,7 +471,7 @@
                     new_data = [];                    
                 }
 
-                console.log("data - ", data);
+                //console.log("data - ", data);
 
                 Highcharts.chart('chart', {
                     chart: {
@@ -552,7 +552,7 @@
                         "lineWidth": 0,
                         "gridLineWidth": 1,
                         "labels": {
-                            "distance": 15,
+                            "distance": 20,
                             "style": {
                                 "width": "140px",
                                 "color": "#000000",
@@ -577,34 +577,7 @@
                         ]
                     },
                     "series": data
-                    // "series": [{
-                    //     "color": "#F781BE",
-                    //     "name": "Client Acquisition Skills",
-                    //     "type": "area",
-                    //     "pointStart": -15,
-                    //      "data": [2.2, 1.7, null, 1.4, null, 1.4, null, 0]   
-                   
-                    // }, {
-                    //     "color": "#D0A9F5",
-                    //     "name": "Business Development Skills",
-                    //     "type": "area",
-                    //     "pointStart": 75,
-                    //     "data": [6, 5, null, 5.8, null, 1.7, 2, 0]
-                    // }, {
-                    //     "color": "#A9F5A9",
-                    //     "name": "Negotiation Skills",
-                    //     "type": "area",
-                    //     "pointStart": 165,
-                    //     "data": [2, 3.3, null, 3.3, null, 4.3, 3.7, 0]
-                    // }, {
-                    //     "color": "#81BEF7",
-                    //     "name": "Selling Skills",
-                    //     "type": "area",
-                    //     "pointStart": 255,
-                    //     "data": [3.7, 3.3, null, 6.7, null, 3.3, 2.2, 0]
-                    // }], 
-
-                });
+                     });
 
             </script>
 

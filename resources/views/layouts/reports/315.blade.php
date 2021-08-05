@@ -129,7 +129,7 @@
                         <h2 class="ec-title">{{$item[5]["content"]["title"]}}</h2>
                         <p>{!!$item[6]["content"]["introduction"]!!}</p>
                         <figure class="highcharts-figure">
-                            <div id="barChart" style="height: 600px; width: 1308px; margin:0 auto"></div>
+                            <div id="barChart" style="height: 600px; width: 1608px;margin:0 auto; margin-top:10px"></div>
                         </figure>
                         <h2 class="ec-title">{{$item[7]["content"]["title"]}}</h2>
                         <p>{!!$item[7]["content"]["introduction"]!!}</p>
@@ -327,7 +327,6 @@
             , name: ""
             , type: "area"
             , color: ""
-            , fillOpacity: 0.3
         };
         var barChart = [];
         var obj = {};
@@ -345,12 +344,6 @@
 
         if (@json($group['id']) === @json($factor['group_id'])) {
             items.data.push(parseFloat(@json($factor['score'])));
-            if (items.data.length < 7) {
-                console.log("length: ", categories.length);
-                for (let i = 1; i < 7; i++) {
-                    items.data.push(null);
-                }
-            }
             items.color = '#' + @json($factor['color']);
         }
         @endforeach
@@ -361,8 +354,7 @@
             data: []
             , name: ""
             , type: "area"
-            , color: ""
-            , fillOpacity: 0.3
+            , color: "",
         };
         @endforeach
 
@@ -377,9 +369,11 @@
 
         for (const [key, value] of Object.entries(data)) {
             if (key == 0) data[key].pointStart = -15;
-            else if (key == 1) data[key].pointStart = 75;
-            else if (key == 2) data[key].pointStart = 165;
-            else if (key == 3) data[key].pointStart = 255;
+            else if (key == 1) data[key].pointStart = 45;
+            else if (key == 2) data[key].pointStart = 105;
+            else if (key == 3) data[key].pointStart = 165;
+            else if (key == 4) data[key].pointStart = 225;
+            else if (key == 5) data[key].pointStart = 285;
             matrix[n] = [];
             value.data.map((el, index) => {
                 if (el !== null) {
@@ -387,44 +381,47 @@
                     m++;
                 }
             });
+                 
+
             n++;
             m = 0;
         }
 
-        for (const [key, value] of Object.entries(data)) {
-            // first value-g avna
-            var first, second, third;
-            value.data.map((el, index) => {
-                console.log("index",index);
-                if (index === 0) first = el;
-                else if (index === 6) second = el;
-                else if (index === 7) third = el
+        for (const [key, value] of Object.entries(data)) 
+        {
+                var first, second;
+                value.data.map((el, index) => {
+                if (index == 0) first = el;
+                else if (index == 1) second = el;
             });
+     //console.log("previous: ", previous)
+            for (let i = 0; i < 6; i++) {
+                   if (i == 0) {
+                       // hamgiin ehnii muriin tseguudiig tootsoh
+                       // data : {calc 4 null 6 calc 0 }
+                       // findpoint(matrix[0][0], matrix[5][1])
+                        if (key == 0) new_data[0] = findPoint(first, matrix[parseInt(5 - key)][1]);
+                        else
+                        new_data[i] = previous[4]
+                   } else if (i == 1) new_data[i] = first;
+                   else if (i == 3) new_data[i] = second;
+                   else if (i == 4) {
+                    if (key == 0) new_data[i] = findPoint(matrix[1][0], second);
+                    else if (key == 1) new_data[i] = findPoint(matrix[2][0], second);
+                    else if (key == 2) new_data[i] = findPoint(matrix[3][0], second);
+                    else if (key == 3) new_data[i] = findPoint(matrix[4][0], second);
+                    else if (key == 4) new_data[i] = findPoint(matrix[5][0], second);
+                    else if (key == 5) new_data[i] = findPoint(matrix[0][0], second);
+                   } else if (i == 5) new_data[i] = 0;
+                   else new_data.push(null);
+                   previous = new_data;
 
-            console.log(first, "| ", second, " | ", third);
-            for (let i = 0; i <= 7; i++) {
-                if (i == 0) {
-                    if (key == 0) new_data[i] = findPoint(first, matrix[parseInt(3 - key)][2]);
-                    else new_data[i] = previous[6];
-                } else if (i == 1) new_data[i] = first;
-                else if (i == 3) new_data[i] = second;
-                else if (i == 5) new_data[i] = third;
-                else if (i == 6) {
-                    if (key == 0) new_data[i] = findPoint(matrix[1][0], third);
-                    else if (key == 1) new_data[i] = findPoint(matrix[2][0], third);
-                    else if (key == 2) new_data[i] = findPoint(matrix[3][0], third);
-                    else if (key == 3) new_data[i] = findPoint(matrix[0][0], third);
-                } else if (i == 7) new_data[i] = 0;
-                else new_data.push(null);
-                previous = new_data;
             }
-            console.log("new_data - ", new_data);
             value.data = new_data;
+            console.log("new_data - ", new_data);
             new_data = [];
+            
         }
-
-        console.log("data - ", data);
- 
         Highcharts.chart('chart', {
             chart: {
                 marginTop: 30
@@ -504,7 +501,7 @@
                 , "lineWidth": 0
                 , "gridLineWidth": 1
                 , "labels": {
-                    "distance": 15
+                    "distance": 20
                     , "style": {
                         "width": "140px"
                         , "color": "#000000"
@@ -525,37 +522,8 @@
                     }
                 }
                 , "tickPositions": [0,30,60,90,120,150,180,210,240,270,300,330,360]
-            }
-            , "series": data
-            // "series": [{
-            //     "color": "#F781BE",
-            //     "name": "Client Acquisition Skills",
-            //     "type": "area",
-            //     "pointStart": -15,
-            //      "data": [2.2, 1.7, null, 1.4, null, 1.4, null, 0]   
-            //  "data":[2.24, 1.7, null, 1.4, null, 1.4, 2.1, 0]                        
-
-            // }, {
-            //     "color": "#D0A9F5",
-            //     "name": "Business Development Skills",
-            //     "type": "area",
-            //     "pointStart": 75,
-            //     "data": [6, 5, null, 5.8, null, 1.7, 2, 0]
-            // 2.42, 4.2, null, 5.8, null, 3.3, 3.98, 0]
-
-            // }, {
-            //     "color": "#A9F5A9",
-            //     "name": "Negotiation Skills",
-            //     "type": "area",
-            //     "pointStart": 165,
-            //     "data": [2, 3.3, null, 3.3, null, 4.3, 3.7, 0]
-            // }, {
-            //     "color": "#81BEF7",
-            //     "name": "Selling Skills",
-            //     "type": "area",
-            //     "pointStart": 255,
-            //     "data": [3.7, 3.3, null, 6.7, null, 3.3, 2.2, 0]
-            // }], 
+            },
+            "series": data
 
         });
 

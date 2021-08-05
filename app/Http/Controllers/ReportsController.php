@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use DateTime;
+use \PDF;
 
 class ReportsController extends Controller
 {
@@ -17,6 +18,12 @@ class ReportsController extends Controller
 
     protected $data = array();
 
+    public function generatePDF()
+    {
+        $data = [1, 2];
+        $pdf = PDF::loadView('layouts.reports.318', $data);
+        return $pdf->stream('report.pdf', array('Attachment' => 0));
+    }
     public function result($assessment_id = null)
     {
         $response = Http::withHeaders([
@@ -199,11 +206,11 @@ class ReportsController extends Controller
         // parties
         $label = "";
         foreach ($xml['parties']['partie'] as $value) {
-           
+
             if (isset($value["domaines"]["domaine"])) {
                 if (isset($value["domaines"]["domaine"]['@attributes'])) {
                     if (isset($value["domaines"]["domaine"]['cibles_secondaires']['cibles_secondaire']['@attributes'])) {
-                        
+
                         $comments[] = [
                             'color' => isset($value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]['color']) ? $value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]['color'] : null,
                             "score" =>  isset($value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["score"]) ? $value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["score"] : 0,
@@ -211,7 +218,7 @@ class ReportsController extends Controller
                                 $value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["libelle"] : null),
                             "comment" =>  $this->getMNText(isset($value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"]) ?
                                 $value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"] : null),
-                        ];                        
+                        ];
                         if (isset($comments)) {
                             $domain[] = [
                                 'id' => isset($value["domaines"]["domaine"]["@attributes"]["id"]) ? $value["domaines"]["domaine"]["@attributes"]["id"] : null,
@@ -221,10 +228,10 @@ class ReportsController extends Controller
 
                             unset($comments);
                         }
-                    } else {         
-                        
-                        if(isset($value["domaines"]["domaine"]['cibles_secondaires'])){
-                       
+                    } else {
+
+                        if (isset($value["domaines"]["domaine"]['cibles_secondaires'])) {
+
                             foreach ($value["domaines"]["domaine"]['cibles_secondaires']['cibles_secondaire'] as $item) {
                                 if (isset($item['@attributes']["target_id"])) {
                                     foreach ($data['test_factors'] as $test_factor) {
@@ -259,7 +266,7 @@ class ReportsController extends Controller
                         }
                     }
                 } else {
-                    
+
                     if (isset($value["domaines"]["domaine"]['cibles_secondaires']['cibles_secondaire']['@attributes'])) {
 
                         $comments[]  = [
@@ -281,7 +288,7 @@ class ReportsController extends Controller
                             unset($comments);
                         }
                     } else {
-                        
+
                         foreach ($value["domaines"]["domaine"] as $item) {
 
                             if (isset($item['cibles_secondaires']['cibles_secondaire']['@attributes'])) {

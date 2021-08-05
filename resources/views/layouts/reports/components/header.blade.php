@@ -1,23 +1,23 @@
   <!-- header -->
   <nav id="sidebar" class="sidebar-wrapper">
-            <div class="sidebar-content">
-                <!-- sidebar-search  -->
-                <div class="sidebar-menu">
-                    <ul>
-                        @foreach($data["parties"]["party"] as $menu)
-                        @if (str_contains($menu['type'], 'ancre'))
-                        <li>
-                            <a href="#{{$menu['content']['title']}}">
-                                <span id="menu_title"> {{ __($menu["content"]["title"]) }} </span>
-                            </a>
-                        </li>
-                        @endif
-                        @endforeach
-                    </ul>
-                </div>
-                <!-- sidebar-menu  -->
-            </div>
-        </nav>
+      <div class="sidebar-content">
+          <!-- sidebar-search  -->
+          <div class="sidebar-menu">
+              <ul>
+                  @foreach($data["parties"]["party"] as $menu)
+                  @if (str_contains($menu['type'], 'ancre'))
+                  <li>
+                      <a href="#{{$menu['content']['title']}}">
+                          <span id="menu_title"> {{ __($menu["content"]["title"]) }} </span>
+                      </a>
+                  </li>
+                  @endif
+                  @endforeach
+              </ul>
+          </div>
+          <!-- sidebar-menu  -->
+      </div>
+  </nav>
 
   <header>
       <span class="navbar-brand ">
@@ -33,12 +33,11 @@
 
       <ul class="nav" style="display: flex;margin: 0 0 0 auto;align-items: center">
           <li class="pdf-icon">
-              <i class="fa fa-file-pdf-o fa-3x" aria-hidden="true"><a id="pdfExport" href="" target=""></a></i>
+              <a id="pdfExport" href="{{ URL::to('/report/pdf') }}" target="_blank"><i class="fa fa-file-pdf-o fa-3x" aria-hidden="true"></i></a>
           </li>
           <li class="dropdown">
               <a href="#" data-toggle="dropdown" class="dropdown-toggle">
-                  <img class=" img-responsive" width="23" height="23" src="/images/assessment/avatar-woman.png"
-                      alt="{{$data['general']['participant_name']}}">
+                  <img class=" img-responsive" width="23" height="23" src="/images/assessment/avatar-woman.png" alt="{{$data['general']['participant_name']}}">
                   <span class="user-name" style="color: #14191A;">{{$data['general']['participant_name']}}</span>
               </a>
               <ul class="dropdown-menu">
