@@ -32,9 +32,9 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::resource('assessment', 'AssessmentsController');
 
     Route::get('candidate/assessment', 'CandidatesController@assessment')->name('candidate.assessment');
+    Route::get('candidate/group', 'CandidatesController@group')->name('candidate.group');
     Route::resource('candidate', 'CandidatesController');
 
-    Route::get('candidate/group', 'CandidatesController@group')->name('candidate.group');
     Route::get('candidate/deleteMultiple', 'CandidatesController@deleteMultiple')->name('candidate.deleteMultiple');
 
     // Candidate

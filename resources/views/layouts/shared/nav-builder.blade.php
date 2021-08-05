@@ -60,7 +60,7 @@
             <li class="c-sidebar-nav-item">
                 <a class="c-sidebar-nav-link" href="{{ route('candidate.group') }} ">
                     <svg class="c-sidebar-nav-icon">
-                        <use xlink:href="{{ asset('icons/sprites/free.svg#cil-list') }}"></use>
+                        <use xlink:href="{{ asset('icons/sprites/free.svg#cil-group') }}"></use>
                     </svg> Групп
                 </a>
             </li>
@@ -84,7 +84,7 @@
             <li class="c-sidebar-nav-item">
                 <a class="c-sidebar-nav-link" href="{{ route('assessment.index') }} ">
                     <svg class="c-sidebar-nav-icon">
-                        <use xlink:href="{{ asset('icons/sprites/free.svg#cil-list') }}"></use>
+                        <use xlink:href="{{ asset('icons/sprites/free.svg#cil-task') }}"></use>
                     </svg> Үнэлгээ
                 </a>
             </li>
@@ -95,7 +95,7 @@
 
     <li class="c-sidebar-nav-item c-sidebar-nav-dropdown"><a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
         <svg class="c-sidebar-nav-icon">
-                <use xlink:href="{{ asset('icons/sprites/free.svg#cil-description') }}"></use>
+                <use xlink:href="{{ asset('icons/sprites/free.svg#cil-translate') }}"></use>
             </svg> Орчуулга</a>
         <ul class="c-sidebar-nav-dropdown-items">
             <li class="c-sidebar-nav-item">
@@ -108,7 +108,7 @@
             <li class="c-sidebar-nav-item c-sidebar-nav-dropdown">
             <a class="c-sidebar-nav-link" href="{{ route('import.index')}}">
                 <svg class="c-sidebar-nav-icon">
-                  <use xlink:href="{{ asset('icons/sprites/free.svg#cil-list') }}"></use>
+                  <use xlink:href="{{ asset('icons/sprites/free.svg#cil-cloud-download') }}"></use>
                 </svg> АPI Импорт</a>
             </li>
         </ul>

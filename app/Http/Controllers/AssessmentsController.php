@@ -62,7 +62,7 @@ class AssessmentsController extends Controller
                 );
                 $newCandidate = json_decode($candidateJson, true);
 
-                Candidate::create([
+                $candidate = Candidate::create([
                     'id' => $newCandidate['id'],
                     'title_id' => $newCandidate['title_id'],
                     'country_code' => $newCandidate['country_code'],
@@ -71,6 +71,10 @@ class AssessmentsController extends Controller
                     'firstname' => $newCandidate['firstname'],
                     'last_connection_date' => $newCandidate['last_connection_date']
                 ]);
+
+                foreach($newCandidate['groups'] as $group){
+                    $candidate->groups()->attach($group['id']);
+                }                
                 $assessments['result']['data'][$key]['candidate'] = $newCandidate;
             }
 
