@@ -25,7 +25,7 @@ class CandidatesController extends Controller
     */
     public function index(Request $request)
     {
-        $users = Candidate::with('company')->get();
+        $users = Candidate::with('groups')->get();
 
         if ($request->ajax()) {
             return DataTables::of($users)
@@ -370,6 +370,30 @@ class CandidatesController extends Controller
 
         return redirect()
             ->route('participants.index');
+    }
+
+    public function group()
+    {
+        $response = Http::withHeaders([
+            'WWW-Authenticate' => $this->token
+        ])->get('https://app.centraltest.com/customer/REST/list/group/json');
+
+        $api_groups = json_decode($response, true);
+        
+        // insert groups into group
+        foreach ($api_groups as $key => $group) {
+            if (!Group::where('id', intval($group['id']))->exists()) {
+                Group::create([
+                    'id' => $group['id'],
+                    'name' => $group['name']
+                ]);
+            }
+        }
+
+        $groups = Group::paginate(15);
+
+        // return $groups;
+        return view('layouts.settings.group.index', compact('groups'));
     }
 
 }

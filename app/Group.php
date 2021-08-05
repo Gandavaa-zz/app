@@ -13,6 +13,11 @@ class Group extends Model
     public function users(){
         return $this->belongsToMany('App\User');
     }
+
+    public function candidates()
+    {
+        return $this->belongsToMany(Candidate::class, 'candidate_group');
+    }
     
     
 }

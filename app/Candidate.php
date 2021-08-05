@@ -26,4 +26,11 @@ class Candidate extends Model
         // return DB::connection('mysql2')->table('user_test')->where('user_id', $this->id)->get();
         return $this->hasMany('App\Test_User', 'user_id');
     }
+
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'candidate_group');
+    }
+
+    
 }

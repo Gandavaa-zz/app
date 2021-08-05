@@ -117,8 +117,8 @@ var table = $('.yajra-datatable').DataTable({
                         name: 'email'
                     },
                     {
-                        data: 'company.company',
-                        name: 'company'
+                        data: 'groups[0].name',
+                        name: 'groups.name'
                     },
                     {
                         data: 'created_at',
