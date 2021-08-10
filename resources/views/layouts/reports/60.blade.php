@@ -1,5 +1,5 @@
 @extends('layouts.report')
-
+{{-- CTPI test --}}
 @section('nav')
 @include("layouts.reports.components.header", ['data'=> $data])
 @endsection
@@ -93,7 +93,7 @@
                 <div class="group-header">
                     <h2 class="ec-title">{{__('THE GRAPH')}}</h2>
                     <figure class="highcharts-figure">
-                        <div id="chart"></div>
+                       <div id="chart" style="height: 600px; width: 1308px; margin:0 auto"></div>
                     </figure>
                 </div>
             </div>
@@ -512,36 +512,21 @@
         data: [],
         name: "",
         type: "area",
-        color: "",
-        fillOpacity: 0.3
+        color: ""
     };
-    var barChart = [];
-    var obj = {};
-
-    var point_start = -15;
     @foreach($group_factors as $idx => $group)
-        @if(str_contains($group['label'], "Skill"))
-        obj.name = @json($group['label']) + " (" + @json($group['score']) + ")";
-        obj.y = parseFloat(@json($group['score']));
-        obj.color = '#' + @json($group['color']);                    
-        barChart.push(obj);
-        obj = {};
+        @if(!str_contains($group['label'], "divers"))
         items.name = @json($group['label']);
 
             @foreach($group['factors'] as $idx => $factor)
-            categories.push(@json($factor['label']) + " (" + @json($factor['score']) + ")");
-            
+            @if(!str_contains($factor['label'], "(-)") && !str_contains($factor['label'], "Sensitive") && !str_contains($factor['label'], "Vigilance"))
+             categories.push(@json($factor['label']) + " (" + @json($factor['score']) + ")");
+            @endif
             if (@json($group['id']) === @json($factor['group_id'])) {
                 items.data.push(parseFloat(@json($factor['score'])));
-                if (items.data.length < 7) {
-                    console.log("length: ", categories.length);
-                    for (let i = 1; i < 7; i++) {
-                        items.data.push(null);
-                    }
-                }
                 items.color = '#' + @json($factor['color']);
             }
-            @endforeach
+            @endforeach 
         data.push(items);
 
         // console.log("data", data);
@@ -549,23 +534,22 @@
             data: [],
             name: "",
             type: "area",
-            color: "",
-            fillOpacity: 0.3
+            color: ""
         };
         @endif
     @endforeach
 
-    console.log("data - ", data);
+    console.log("categories - ", categories);
 
     // эхний утгийг нь 
     var new_data = [], previous = [];
     var matrix = [],n =0, m = 0;
 
     for (const [key, value] of Object.entries(data)) {  
-        if(key == 0) data[key].pointStart= -15;
-        else if(key == 1) data[key].pointStart= 75;
-        else if(key == 2) data[key].pointStart= 165;
-        else if(key == 3) data[key].pointStart= 255;
+        if(key == 0) data[key].pointStart= -9.5;
+        else if(key == 1) data[key].pointStart= 104.5;
+        else if(key == 2) data[key].pointStart= 161.5;
+        else if(key == 3) data[key].pointStart= 275.5;
         matrix[n] = [];
         value.data.map((el, index) => {                        
             if(el !==null ){ 
@@ -576,7 +560,8 @@
         n++;
         m = 0;                                                            
     }
-                                    
+
+    console.log("matrix: ", matrix);                               
     for (const [key, value] of Object.entries(data)) {
         // first value-g avna
         var first, second, third;                     
@@ -586,7 +571,7 @@
             else if(index === 8) third = el                                                
         });
         
-        for(let i=0; i<8; i++){                        
+        for(let i=0; i<9; i++){                        
             if( i==0){
                 if(key==0) new_data[i] = findPoint(first, matrix[parseInt(3-key)][2]);                                
                 else new_data[i] = previous[6];                                                                         
@@ -599,7 +584,7 @@
                 else if(key == 2) new_data[i] = findPoint(matrix[3][0], third);
                 else if(key ==3)  new_data[i] = findPoint(matrix[0][0], third);                            
             }
-            else if(i==7) new_data[i] = 0;                        
+            else if(i==9) new_data[i] = 0;                        
             else new_data.push(null);
             previous = new_data; 
         }                                                           
@@ -608,7 +593,6 @@
     }
 
     console.log("data - ", data);
-
     Highcharts.chart('chart', {
         chart: {
             marginTop: 30,
@@ -633,7 +617,7 @@
             "plotLines": [{
                 "color": "#AAAAAA",
                 "dashStyle": "LongDash",
-                "value": 10,
+                "value": 5,
                 "width": 1
             }, {
                 "color": "#EEEEEE",
@@ -674,7 +658,7 @@
                 },
                 "connectNulls": true,
                 "pointPlacement": "on",
-                "pointInterval": 15
+                "pointInterval": 9.5
             },
             "area": {
                 "lineWidth": 1
@@ -682,7 +666,7 @@
         },
 
         "xAxis": {
-            "max": 12,
+            "max": 19,
             "startOnTick": true,
             "endOnTick": true,
             "lineWidth": 0,
@@ -696,9 +680,9 @@
                     "fontWeight": "normal",
                     "fontFamily": "\"roboto\", \"Arial\", sans-serif"
                 },
-                "formatter": function () {
+                formatter: function () {
                     var sReturn = '',
-                        iIndex = this.value / 30,
+                        iIndex = this.value / 19,
                         oCategories = categories;
 
                     if (oCategories[iIndex] !=
@@ -708,39 +692,10 @@
                     return sReturn;
                 }
             },
-            "tickPositions": [0, 30, 60, 90, 120, 150, 180,
-                210, 240, 270, 300, 330, 360
-            ]
+               "tickPositions": [0,19,38,57,76,95,114,133,152,171,190,209,228,247,266,285,304,323,342]
         },
         
-        "series": [{
-            "color": "#F781BE",
-            "name": "Client Acquisition Skills",
-            "type": "area",
-            "pointStart": -15,
-             "data": [2.2, 1.7, null, 1.4, null, 1.4, null, 0]   
-                                
-        
-        }, {
-            "color": "#D0A9F5",
-            "name": "Business Development Skills",
-            "type": "area",
-            "pointStart": 75,
-            "data": [6, 5, null, 5.8, null, 1.7, 2, 0]            
-
-        }, {
-            "color": "#A9F5A9",
-            "name": "Negotiation Skills",
-            "type": "area",
-            "pointStart": 165,
-            "data": [2, 3.3, null, 3.3, null, 4.3, 3.7, 0]
-        }, {
-            "color": "#81BEF7",
-            "name": "Selling Skills",
-            "type": "area",
-            "pointStart": 255,
-            "data": [3.7, 3.3, null, 6.7, null, 3.3, 2.2, 0]
-        }], 
+        "series":  data
 
     });
 </script>

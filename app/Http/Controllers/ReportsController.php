@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Translation;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use DateTime;
+use VerumConsilium\Browsershot\Facades\PDF;
 
 class ReportsController extends Controller
 {
@@ -15,6 +17,16 @@ class ReportsController extends Controller
     protected $participant = '';
 
     protected $data = array();
+
+    public function generatePDF()
+    {
+
+        $data = $this->getHtml(9842513);
+        return PDF::loadView('layouts.components.generatePDF', $data)
+            ->margins(20, 0, 0, 20)
+            ->download();
+    }
+
 
     public function result($assessment_id = null)
     {
@@ -198,11 +210,11 @@ class ReportsController extends Controller
         // parties
         $label = "";
         foreach ($xml['parties']['partie'] as $value) {
-           
+
             if (isset($value["domaines"]["domaine"])) {
                 if (isset($value["domaines"]["domaine"]['@attributes'])) {
                     if (isset($value["domaines"]["domaine"]['cibles_secondaires']['cibles_secondaire']['@attributes'])) {
-                        
+
                         $comments[] = [
                             'color' => isset($value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]['color']) ? $value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]['color'] : null,
                             "score" =>  isset($value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["score"]) ? $value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["score"] : 0,
@@ -210,7 +222,7 @@ class ReportsController extends Controller
                                 $value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["libelle"] : null),
                             "comment" =>  $this->getMNText(isset($value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"]) ?
                                 $value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"] : null),
-                        ];                        
+                        ];
                         if (isset($comments)) {
                             $domain[] = [
                                 'id' => isset($value["domaines"]["domaine"]["@attributes"]["id"]) ? $value["domaines"]["domaine"]["@attributes"]["id"] : null,
@@ -220,10 +232,10 @@ class ReportsController extends Controller
 
                             unset($comments);
                         }
-                    } else {         
-                        
-                        if(isset($value["domaines"]["domaine"]['cibles_secondaires'])){
-                       
+                    } else {
+
+                        if (isset($value["domaines"]["domaine"]['cibles_secondaires'])) {
+
                             foreach ($value["domaines"]["domaine"]['cibles_secondaires']['cibles_secondaire'] as $item) {
                                 if (isset($item['@attributes']["target_id"])) {
                                     foreach ($data['test_factors'] as $test_factor) {
@@ -258,7 +270,7 @@ class ReportsController extends Controller
                         }
                     }
                 } else {
-                    
+
                     if (isset($value["domaines"]["domaine"]['cibles_secondaires']['cibles_secondaire']['@attributes'])) {
 
                         $comments[]  = [
@@ -280,7 +292,7 @@ class ReportsController extends Controller
                             unset($comments);
                         }
                     } else {
-                        
+
                         foreach ($value["domaines"]["domaine"] as $item) {
 
                             if (isset($item['cibles_secondaires']['cibles_secondaire']['@attributes'])) {
@@ -542,7 +554,10 @@ class ReportsController extends Controller
                     }
                 }
             }
-
+            //  if ($value["contenus"]["contenu"]["libelle"] == "Summary Card")
+            //  {
+            //      dd($value);
+            //  }
             $party["party"][] =
                 [
                     'id' => $value["@attributes"]["id"],
@@ -552,9 +567,13 @@ class ReportsController extends Controller
                     'content' => array(
                         'label' => $this->getMNText($value["contenus"]["contenu"]["libelle"]),
                         'title' => $this->getMNText(isset($value["contenus"]["contenu"]["titre"]) ? $value["contenus"]["contenu"]["titre"] : null),
+                        'title_1' => $this->getMNText(isset($value["contenus"]["contenu"]["title"]) ? $value["contenus"]["contenu"]["title"] : null),
+                        'targets' =>isset($value["contenus"]["contenu"]["targets"]) ? $value["contenus"]["contenu"]["targets"] : null,
                         'sub_title' => $this->getMNText(isset($value["contenus"]["contenu"]["sous_titre"]) ? $value["contenus"]["contenu"]["sous_titre"] : null),
                         'description_long' => $this->getMNText(isset($value["contenus"]["contenu"]["description_longue"]) ? $value["contenus"]["contenu"]["description_longue"] : null),
                         'description' => $this->getMNText(isset($value["contenus"]["contenu"]["description"]) ? $value["contenus"]["contenu"]["description"] : null),
+                        'description_1' => $this->getMNText(isset($value["contenus"]["contenu"]["description_1"]) ? $value["contenus"]["contenu"]["description_1"] : null),
+                        'description_2' => $this->getMNText(isset($value["contenus"]["contenu"]["description_2"]) ? $value["contenus"]["contenu"]["description_2"] : null),
                         'introduction' => $this->getMNText(isset($value["contenus"]["contenu"]["introduction"]) ? $value["contenus"]["contenu"]["introduction"] : null),
                         'description_courte' => $this->getMNText(isset($value["contenus"]["contenu"]["description_courte"]) ? $value["contenus"]["contenu"]["description_courte"] : null),
                         'description_courte_opposition' => $this->getMNText(isset($value["contenus"]["contenu"]["description_courte_opposition"]) ? $value["contenus"]["contenu"]["description_courte_opposition"] : null),
@@ -569,7 +588,7 @@ class ReportsController extends Controller
                     ),
                     'adequacy' => $adequates,
                 ];
-
+                        
             unset($domain);
             //setting all values to variable $data
             $data["parties"] = $this->replaceChar($candidate_name, $party);

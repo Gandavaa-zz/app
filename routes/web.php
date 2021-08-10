@@ -1,12 +1,13 @@
 <?php
 
+use App\Http\Controllers\ReportsController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('dashboard')->middleware('auth');
-
+Route::get('/report/pdf', [ReportsController::class, 'generatePDF']);
 Route::group(['middleware' => ['role:super-admin']], function () {
     Route::get('settings/users/import', 'Settings\UsersController@import')->name('user.import');    
     Route::get('settings/users/{user}/roles', 'Settings\UsersController@roles')->name('user.roles')->middleware('auth');
