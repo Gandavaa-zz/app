@@ -44,6 +44,14 @@ class ImportsController extends Controller
             'WWW-Authenticate' => $this->token
         ])->get('https://app.centraltest.com/customer/REST/assessment/paginate/completed/json',  $filter);
 
+        return $response;
+
+        // if assessment_id in imported test then get next index of id
+        for ($i=0; $i<10; $i++){
+            // тухайн id-р assessment_id-н утга байхгүй бол insert хийнэ!
+            // ImportedTestAssessment
+            
+        }
         $assessment_id = $response['result']['data'][0]['id'];
 
         if (!Storage::exists("/assets/assessments/{$assessment_id}.xml")) {
@@ -64,12 +72,15 @@ class ImportsController extends Controller
         $contents = Storage::get("assets/assessments/{$assessment_id}.xml");
         $xml = xml_decode($contents);
 
-        $this->candidate_name = $xml["noyau_utilisateur_info"]["prenom"] . " " . $xml["noyau_utilisateur_info"]["nom"];
+        // return $xml;
 
+        $this->candidate_name = $xml["noyau_utilisateur_info"]["prenom"] . " " . $xml["noyau_utilisateur_info"]["nom"];
+        
         foreach ($xml['elements']['test_groupe_facteurs']['test_groupe_facteur'] as $value) {            
             foreach ($xml['elements']['test_facteurs']['test_facteur'] as $factors) {
                 // insert this content 
-                $insert = $factors["contenus"]["contenu"]["libelle"];               
+                
+                $this->save($insert = $factors["contenus"]["contenu"]["libelle"]);
 
                 if ($factors["@attributes"]["test_groupe_facteur_id"] == $value["@attributes"]["id"]) {
                     foreach ($xml['parties']['partie'] as $row) {
@@ -141,6 +152,7 @@ class ImportsController extends Controller
                             $this->save(isset($test_ref["contenus"]["contenu"]["description_longue"]) ? $test_ref["contenus"]["contenu"]["description_longue"] : null);                
                         }
                     } else {
+
                         foreach ($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils'] as $adequate_profiles) {
                             foreach ($adequate_profiles as $key => $adequate_profile) {
                                 foreach ($xml['elements']['test_ref_adequation_profils']['test_ref_adequation_profil'] as $test_ref) {
@@ -203,14 +215,15 @@ class ImportsController extends Controller
      */
     public function save($str)
     {        
+        // {{ dd($this->candidate_name); }}
         // if test_id already inserted in the db. what should we de?
         if($str !==null){
-            $replaced = str_replace("$", $this->candidate_name, $str);        
+            $replaced = str_replace($this->candidate_name, "$", $str);        
             Translation::firstOrCreate([
                 'test_id' => $this->test_id,
                 'EN' => $replaced]);
         }
-        return true;
+        // return true;
     }
 
     /**

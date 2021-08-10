@@ -192,12 +192,14 @@ class TranslationsController extends Controller
                 $newArray = array_map(function ($v) {
                     return trim(strip_tags($v));
                 }, $texts);
+
                 $xml = preg_replace("/\r|\n/", "", $newArray);
                 $xml = array_filter($xml);
                 $xml = array_unique($xml);
                 $xml = $this->replaceName($candidate_name, $xml);
                 //pushing candidate name into array
                 array_push($xml, $candidate_name);
+
                 // dd($xml);
                 foreach ($xml as $row) {
                     $isExist = Translation::where('EN', '=', $row)->first();
@@ -208,6 +210,7 @@ class TranslationsController extends Controller
                         $translation->save();
                     }
                 };
+
                 // moving inserted tests to the folder ->inserted_tests
                 if (Storage::exists("/assets/inserted_tests/$test_id")) {
                     Storage::put("assets/inserted_tests/{$test_id}/" . $files[$i] . ".xml", $contents);
@@ -232,13 +235,14 @@ class TranslationsController extends Controller
 
     public function create()
     {
-
         $testIDs = array_map('basename', Storage::directories("/assets/tests/"));
         $files = array();
 
         $assessments = Test::select("*")
             ->whereIn('id', $testIDs)
             ->get();
+
+        $tests = Test::where('priority', 1)->get();
 
         return view('layouts.translation.create', compact('assessments'));
     }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Translation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -434,8 +433,6 @@ class ReportsController extends Controller
                         unset($rapport_class);
                     } else {
                         // print_r(" classess object {} profile array");
-
-
                         $class_id = isset($value['rapport_adequation_classes']['rapport_adequation_classe']['@attributes']['test_ref_adequation_classe_id']) ? $value['rapport_adequation_classes']['rapport_adequation_classe']['@attributes']['test_ref_adequation_classe_id'] : 0;
 
                         foreach ($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils'] as $adequate_profiles) {
@@ -537,8 +534,6 @@ class ReportsController extends Controller
                                     'adequation_profile' => isset($rapport_class) ? $rapport_class : null
 
                                 ];
-
-
                                 // dd($adequates);
                                 unset($test_ref_adequation);
                                 unset($rapport_class);

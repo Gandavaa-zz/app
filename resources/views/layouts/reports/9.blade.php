@@ -138,6 +138,7 @@
             <div class="card-body">
                 <!-- loop here -->
                 @foreach ($item as $val)
+
                 @if($val['type']=='rapport_details_facteur')
                 <div class="group-header">
                     <h2 class="c-title-text-color">
@@ -150,7 +151,9 @@
                         <div class="box-score ec-first-bg-color ec-first-text-color" style="background-color:#{{$val["params"]["couleur"]}}; color:#000">
                             <div class="header">
                                 Score<br>
+                                @if(isset($val["params"]))
                                 {{ $val["params"]["score_calculated"]}}
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -159,16 +162,18 @@
                         <div class="progress score-bar" style="width: 100%;">
                             <div class="label-left">0</div>
                             <div class="label-right">10</div>
-                            <div class="progress-bar" style="width:{{$val["params"]["pourcentage_score"]}}%;
-                                            color:#000000; background-color: #{!!$val[" params"]["couleur"]!!} ">
-                                        </div>
+                                <div class="progress-bar" style="width:{{$val["params"]["pourcentage_score"]}}%;
+                                    color:#000000; background-color: #{!!$val["params"]["couleur"]!!} ">
+                                </div>
                                     </div>
                                 </div>
                             </div>
 
                             <div class=" img-calibration">
                                 <div class="gausse ec-first-bg-color" style="background-color:#DDA0DD;position: relative">
-                                    <div class="pointer-gausse hidden-xs " style="left:{{4.83*$val["params"]["pourcentage_score"]}}px; z-index: 3"></div>
+                                    @if(isset($val["params"]))
+                                    <div class="pointer-gausse hidden-xs " style="left:{{4.83*$val["params"]["pourcentage_score"]}}px; z-index:3"></div>
+                                    @endif
                                 </div>
 
                                 <div class="content text-center">
