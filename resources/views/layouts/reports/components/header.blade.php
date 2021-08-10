@@ -1,5 +1,5 @@
   <!-- header -->
-  <nav id="sidebar" class="sidebar-wrapper">
+  <nav id="sidebar" class="sidebar-wrapper printable">
       <div class="sidebar-content">
           <!-- sidebar-search  -->
           <div class="sidebar-menu">

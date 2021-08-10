@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 
 use App\Translation;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use DateTime;
-use \PDF;
+use VerumConsilium\Browsershot\Facades\PDF;
 
 class ReportsController extends Controller
 {
@@ -20,10 +21,14 @@ class ReportsController extends Controller
 
     public function generatePDF()
     {
-        $data = [1, 2];
-        $pdf = PDF::loadView('layouts.reports.318', $data);
-        return $pdf->stream('report.pdf', array('Attachment' => 0));
+
+        $data = $this->getHtml(9842513);
+        return PDF::loadView('layouts.components.generatePDF', $data)
+            ->margins(20, 0, 0, 20)
+            ->download();
     }
+
+
     public function result($assessment_id = null)
     {
         $response = Http::withHeaders([
@@ -554,7 +559,10 @@ class ReportsController extends Controller
                     }
                 }
             }
-
+            //  if ($value["contenus"]["contenu"]["libelle"] == "Summary Card")
+            //  {
+            //      dd($value);
+            //  }
             $party["party"][] =
                 [
                     'id' => $value["@attributes"]["id"],
@@ -564,9 +572,13 @@ class ReportsController extends Controller
                     'content' => array(
                         'label' => $this->getMNText($value["contenus"]["contenu"]["libelle"]),
                         'title' => $this->getMNText(isset($value["contenus"]["contenu"]["titre"]) ? $value["contenus"]["contenu"]["titre"] : null),
+                        'title_1' => $this->getMNText(isset($value["contenus"]["contenu"]["title"]) ? $value["contenus"]["contenu"]["title"] : null),
+                        'targets' =>isset($value["contenus"]["contenu"]["targets"]) ? $value["contenus"]["contenu"]["targets"] : null,
                         'sub_title' => $this->getMNText(isset($value["contenus"]["contenu"]["sous_titre"]) ? $value["contenus"]["contenu"]["sous_titre"] : null),
                         'description_long' => $this->getMNText(isset($value["contenus"]["contenu"]["description_longue"]) ? $value["contenus"]["contenu"]["description_longue"] : null),
                         'description' => $this->getMNText(isset($value["contenus"]["contenu"]["description"]) ? $value["contenus"]["contenu"]["description"] : null),
+                        'description_1' => $this->getMNText(isset($value["contenus"]["contenu"]["description_1"]) ? $value["contenus"]["contenu"]["description_1"] : null),
+                        'description_2' => $this->getMNText(isset($value["contenus"]["contenu"]["description_2"]) ? $value["contenus"]["contenu"]["description_2"] : null),
                         'introduction' => $this->getMNText(isset($value["contenus"]["contenu"]["introduction"]) ? $value["contenus"]["contenu"]["introduction"] : null),
                         'description_courte' => $this->getMNText(isset($value["contenus"]["contenu"]["description_courte"]) ? $value["contenus"]["contenu"]["description_courte"] : null),
                         'description_courte_opposition' => $this->getMNText(isset($value["contenus"]["contenu"]["description_courte_opposition"]) ? $value["contenus"]["contenu"]["description_courte_opposition"] : null),
@@ -581,7 +593,7 @@ class ReportsController extends Controller
                     ),
                     'adequacy' => $adequates,
                 ];
-
+                        
             unset($domain);
             //setting all values to variable $data
             $data["parties"] = $this->replaceChar($candidate_name, $party);
