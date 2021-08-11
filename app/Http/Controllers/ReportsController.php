@@ -373,7 +373,7 @@ class ReportsController extends Controller
                         } else {
                             $class_id = isset($value['rapport_adequation_classes']['rapport_adequation_classe']['@attributes']['test_ref_adequation_classe_id']) ? $value['rapport_adequation_classes']['rapport_adequation_classe']['@attributes']['test_ref_adequation_classe_id'] : 0;
                             // print_r("rapport_adequation_classes object and profile array");
-                            dd($value['rapport_adequation_classes']['rapport_adequation_classe']);
+                            // dd($value['rapport_adequation_classes']['rapport_adequation_classe']);
                             foreach ($value['rapport_adequation_classes']['rapport_adequation_classe']['rapport_adequation_profils']['rapport_adequation_profil'] as $adequate) {
                                 foreach ($xml['elements']['test_ref_adequation_profils']['test_ref_adequation_profil'] as $test_ref) {
                                     $id = isset($adequate['@attributes']['test_ref_adequation_profil_id']) ? $adequate['@attributes']['test_ref_adequation_profil_id'] : 0;
@@ -593,7 +593,7 @@ class ReportsController extends Controller
             //setting all values to variable $data
             $data["parties"] = $this->replaceChar($candidate_name, $party);
         }
-        // dd($data);
+        // dd($data["parties"]);
         return view('layouts.reports.' . $data['general']['test_id'], compact('data'));
     }
 
@@ -609,7 +609,7 @@ class ReportsController extends Controller
     {
         // print_r($str);
         $text = Translation::select('MN')->where('EN', '=', $str)->value("MN");
-        if (!$text) {   
+        if (!$text) {
             // print_r($str);   
             return $str;
         }
@@ -619,8 +619,8 @@ class ReportsController extends Controller
 
     public function replaceChar($candidate_name, $content)
     {
-        $replaced = str_replace("$", $candidate_name, $content);
-        return $replaced;
+        $replaced = str_replace("$", $candidate_name, json_encode($content));
+        return json_decode($replaced, true);
     }
 
 
