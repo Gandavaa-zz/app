@@ -198,8 +198,11 @@ class AssessmentsController extends Controller
         $content = $domain = $party = $comments = array();
         $xml = xml_decode($contents);
         $candidate_name = $xml["noyau_utilisateur_info"]["prenom"] . " " . $xml["noyau_utilisateur_info"]["nom"];
-        // return $xml;
+        $xml = $this->replaceName($candidate_name, json_encode($xml));
         // general
+        $xml = json_decode($xml, true);
+
+        
         $started_at = new DateTime($xml['params']['date_passation_debut']);
         $completed_at = new DateTime($xml['params']['date_passation_fin']);
         $passed_dt = $started_at->diff($completed_at);
@@ -228,6 +231,7 @@ class AssessmentsController extends Controller
         foreach ($xml['elements']['test_groupe_facteurs']['test_groupe_facteur'] as $value) {
             // test_facteur
             foreach ($xml['elements']['test_facteurs']['test_facteur'] as $factors) {
+                
                 $data['test_factors'][] =
                     [
                         'id' => $factors["@attributes"]["id"],
@@ -240,12 +244,13 @@ class AssessmentsController extends Controller
                     ];
 
                 if ($factors["@attributes"]["test_groupe_facteur_id"] == $value["@attributes"]["id"]) {
+
                     $description = "";
                     $description_courte_opposition = "";
                     foreach ($xml['parties']['partie'] as $row) {
                         // dd($row, $factors);
-                        if ($row['@attributes']['type'] == 'rapport_details_facteur' && ($row['contenus']['contenu']['titre'] == $factors["contenus"]["contenu"]["libelle"] || $row['contenus']['contenu']['libelle_facteur'] == $factors["contenus"]["contenu"]["libelle"])) 
-                        {
+                        if ($row['@attributes']['type'] == 'rapport_details_facteur' && ($row['contenus']['contenu']['titre'] == $factors["contenus"]["contenu"]["libelle"] || $row['contenus']['contenu']['libelle_facteur'] == $factors["contenus"]["contenu"]["libelle"])) {
+
                             $description = $row['contenus']['contenu']['description_courte'];
                             $description_courte_opposition = $row['contenus']['contenu']['description_courte_opposition'];
                         }
@@ -275,6 +280,7 @@ class AssessmentsController extends Controller
                     'label' => $this->getMNText($value["contenus"]["contenu"]["libelle"]),
                     'factors' => $factor
                 ];
+
             unset($factor);
         }
         // dd($data);
@@ -287,11 +293,11 @@ class AssessmentsController extends Controller
         // parties
         $label = "";
         foreach ($xml['parties']['partie'] as $value) {
-           
+
             if (isset($value["domaines"]["domaine"])) {
                 if (isset($value["domaines"]["domaine"]['@attributes'])) {
                     if (isset($value["domaines"]["domaine"]['cibles_secondaires']['cibles_secondaire']['@attributes'])) {
-                        
+
                         $comments[] = [
                             'color' => isset($value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]['color']) ? $value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]['color'] : null,
                             "score" =>  isset($value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["score"]) ? $value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["score"] : 0,
@@ -299,7 +305,7 @@ class AssessmentsController extends Controller
                                 $value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["libelle"] : null),
                             "comment" =>  $this->getMNText(isset($value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"]) ?
                                 $value["domaines"]["domaine"]["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"] : null),
-                        ];                        
+                        ];
                         if (isset($comments)) {
                             $domain[] = [
                                 'id' => isset($value["domaines"]["domaine"]["@attributes"]["id"]) ? $value["domaines"]["domaine"]["@attributes"]["id"] : null,
@@ -309,10 +315,10 @@ class AssessmentsController extends Controller
 
                             unset($comments);
                         }
-                    } else {         
-                        
-                        if(isset($value["domaines"]["domaine"]['cibles_secondaires'])){
-                       
+                    } else {
+
+                        if (isset($value["domaines"]["domaine"]['cibles_secondaires'])) {
+
                             foreach ($value["domaines"]["domaine"]['cibles_secondaires']['cibles_secondaire'] as $item) {
                                 if (isset($item['@attributes']["target_id"])) {
                                     foreach ($data['test_factors'] as $test_factor) {
@@ -347,7 +353,7 @@ class AssessmentsController extends Controller
                         }
                     }
                 } else {
-                    
+
                     if (isset($value["domaines"]["domaine"]['cibles_secondaires']['cibles_secondaire']['@attributes'])) {
 
                         $comments[]  = [
@@ -369,7 +375,7 @@ class AssessmentsController extends Controller
                             unset($comments);
                         }
                     } else {
-                        
+
                         foreach ($value["domaines"]["domaine"] as $item) {
 
                             if (isset($item['cibles_secondaires']['cibles_secondaire']['@attributes'])) {
@@ -553,7 +559,6 @@ class AssessmentsController extends Controller
                                         ];
                                     }
                                 }
-
                                 $adequates[] = [
                                     'id' => isset($adequate_profile['@attributes']) ? $adequate_profile['@attributes']['test_ref_adequation_profil_id'] : "null",
                                     'pourcentage_score' => isset($adequate_profile['pourcentage_score']) ? $adequate_profile['pourcentage_score'] : "null",
@@ -589,6 +594,7 @@ class AssessmentsController extends Controller
                                     foreach ($xml['elements']['test_ref_adequation_profils']['test_ref_adequation_profil'] as $test_ref) {
                                         $id = isset($adequate_profiles['@attributes']['test_ref_adequation_profil_id']) ? $adequate_profiles['@attributes']['test_ref_adequation_profil_id'] : 0;
                                         if ($id == $test_ref["@attributes"]["id"]) {
+                                            //profiles
                                             // dd($test_ref);
                                             $test_ref_adequation[] =
                                                 [
@@ -628,7 +634,6 @@ class AssessmentsController extends Controller
                     }
                 }
             }
-
             $party["party"][] =
                 [
                     'id' => $value["@attributes"]["id"],
@@ -638,15 +643,19 @@ class AssessmentsController extends Controller
                     'content' => array(
                         'label' => $this->getMNText($value["contenus"]["contenu"]["libelle"]),
                         'title' => $this->getMNText(isset($value["contenus"]["contenu"]["titre"]) ? $value["contenus"]["contenu"]["titre"] : null),
+                        'title_1' => $this->getMNText(isset($value["contenus"]["contenu"]["title"]) ? $value["contenus"]["contenu"]["title"] : null),
+                        'targets' => isset($value["contenus"]["contenu"]["targets"]) ? $value["contenus"]["contenu"]["targets"] : null,
                         'sub_title' => $this->getMNText(isset($value["contenus"]["contenu"]["sous_titre"]) ? $value["contenus"]["contenu"]["sous_titre"] : null),
                         'description_long' => $this->getMNText(isset($value["contenus"]["contenu"]["description_longue"]) ? $value["contenus"]["contenu"]["description_longue"] : null),
                         'description' => $this->getMNText(isset($value["contenus"]["contenu"]["description"]) ? $value["contenus"]["contenu"]["description"] : null),
+                        'description_1' => $this->getMNText(isset($value["contenus"]["contenu"]["description_1"]) ? $value["contenus"]["contenu"]["description_1"] : null),
+                        'description_2' => $this->getMNText(isset($value["contenus"]["contenu"]["description_2"]) ? $value["contenus"]["contenu"]["description_2"] : null),
                         'introduction' => $this->getMNText(isset($value["contenus"]["contenu"]["introduction"]) ? $value["contenus"]["contenu"]["introduction"] : null),
                         'description_courte' => $this->getMNText(isset($value["contenus"]["contenu"]["description_courte"]) ? $value["contenus"]["contenu"]["description_courte"] : null),
                         'description_courte_opposition' => $this->getMNText(isset($value["contenus"]["contenu"]["description_courte_opposition"]) ? $value["contenus"]["contenu"]["description_courte_opposition"] : null),
                         'libelle_facteur' => $this->getMNText(isset($value["contenus"]["contenu"]["libelle_facteur"]) ? $value["contenus"]["contenu"]["libelle_facteur"] : null),
                         'libelle_facteur_opposition' => $this->getMNText(isset($value["contenus"]["contenu"]["libelle_facteur_opposition"]) ? $value["contenus"]["contenu"]["libelle_facteur_opposition"] : null),
-                        'domain'  => $this->getMNText(isset($domain) ? $domain : []),
+                        'domain'  => isset($domain) ? $domain : [],
                         'label_group'  => array_key_exists(
                             'libelle_groupe_opposition',
                             $value["contenus"]["contenu"]
@@ -677,6 +686,19 @@ class AssessmentsController extends Controller
         }
 
         return $text;
+    }
+
+    /***
+     *  @param  string  $candidate_name, content
+     *  @return string $replaced strings 
+     */
+
+    public function replaceName($candidate_name, $content)
+    {
+        // dd($candidate_name);
+        // dd($content);
+        $replaced = str_replace($candidate_name, "$", $content);
+        return $replaced;
     }
 
     /***

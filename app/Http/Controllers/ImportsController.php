@@ -44,14 +44,14 @@ class ImportsController extends Controller
             'WWW-Authenticate' => $this->token
         ])->get('https://app.centraltest.com/customer/REST/assessment/paginate/completed/json',  $filter);
 
-        return $response;
+        // return $response;
 
         // if assessment_id in imported test then get next index of id
-        for ($i=0; $i<10; $i++){
+        // for ($i=0; $i<10; $i++){
             // тухайн id-р assessment_id-н утга байхгүй бол insert хийнэ!
-            // ImportedTestAssessment
-            
-        }
+            // ImportedTestAssessment            
+        // }
+
         $assessment_id = $response['result']['data'][0]['id'];
 
         if (!Storage::exists("/assets/assessments/{$assessment_id}.xml")) {
@@ -184,8 +184,8 @@ class ImportsController extends Controller
                 }
             }
             
-            $this->save($value["contenus"]["contenu"]["libelle"]);
-            $this->save($value["contenus"]["contenu"]["titre"]);
+            $this->save(isset($value["contenus"]["contenu"]["libelle"]) ? $value["contenus"]["contenu"]["libelle"] : null );
+            $this->save(isset($value["contenus"]["contenu"]["titre"]) ? $value["contenus"]["contenu"]["titre"] : null);
             $this->save( isset($value["contenus"]["contenu"]["sous_titre"]) ? $value["contenus"]["contenu"]["sous_titre"] : null );
             $this->save( isset($value["contenus"]["contenu"]["description_longue"]) ? $value["contenus"]["contenu"]["description_longue"] : null);
             $this->save( isset($value["contenus"]["contenu"]["description"]) ? $value["contenus"]["contenu"]["description"] : null);

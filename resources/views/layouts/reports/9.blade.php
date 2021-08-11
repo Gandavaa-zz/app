@@ -279,7 +279,6 @@
                 value.data.map((el, index) => {
                     if (index === 0) first = el;
                 });
-       
 
                 for (let i = 0; i < 10; i++) {
                     if (i == 0) {
@@ -298,6 +297,7 @@
                 value.data = new_data;
                 new_data = [];
             }
+            
             Highcharts.chart('chart', {
                 chart: {
                     marginTop: 30
