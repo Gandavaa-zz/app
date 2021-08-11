@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use DateTime;
-use VerumConsilium\Browsershot\Facades\PDF;
+use Illuminate\Support\Facades\DB;
+use \PDF;
 
 class ReportsController extends Controller
 {
@@ -23,9 +24,10 @@ class ReportsController extends Controller
     {
 
         $data = $this->getHtml(9842513);
-        return PDF::loadView('layouts.components.generatePDF', $data)
-            ->margins(20, 0, 0, 20)
-            ->download();
+        // $data = $data;
+        // dd($data);
+        $pdf = PDF::loadView('layouts.reports.318', array('data' => $data->data))->setOptions(['defaultFont' => 'sans-serif']);
+        return $pdf->stream('report.pdf');
     }
 
 
@@ -121,8 +123,10 @@ class ReportsController extends Controller
         $content = $domain = $party = $comments = array();
         $xml = xml_decode($contents);
         $candidate_name = $xml["noyau_utilisateur_info"]["prenom"] . " " . $xml["noyau_utilisateur_info"]["nom"];
-        // return $xml;
+        $xml = $this->replaceName($candidate_name, json_encode($xml));
         // general
+        $xml = json_decode($xml, true);
+        // dd($xml);
         $started_at = new DateTime($xml['params']['date_passation_debut']);
         $completed_at = new DateTime($xml['params']['date_passation_fin']);
         $passed_dt = $started_at->diff($completed_at);
@@ -559,10 +563,6 @@ class ReportsController extends Controller
                     }
                 }
             }
-            //  if ($value["contenus"]["contenu"]["libelle"] == "Summary Card")
-            //  {
-            //      dd($value);
-            //  }
             $party["party"][] =
                 [
                     'id' => $value["@attributes"]["id"],
@@ -573,7 +573,7 @@ class ReportsController extends Controller
                         'label' => $this->getMNText($value["contenus"]["contenu"]["libelle"]),
                         'title' => $this->getMNText(isset($value["contenus"]["contenu"]["titre"]) ? $value["contenus"]["contenu"]["titre"] : null),
                         'title_1' => $this->getMNText(isset($value["contenus"]["contenu"]["title"]) ? $value["contenus"]["contenu"]["title"] : null),
-                        'targets' =>isset($value["contenus"]["contenu"]["targets"]) ? $value["contenus"]["contenu"]["targets"] : null,
+                        'targets' => isset($value["contenus"]["contenu"]["targets"]) ? $value["contenus"]["contenu"]["targets"] : null,
                         'sub_title' => $this->getMNText(isset($value["contenus"]["contenu"]["sous_titre"]) ? $value["contenus"]["contenu"]["sous_titre"] : null),
                         'description_long' => $this->getMNText(isset($value["contenus"]["contenu"]["description_longue"]) ? $value["contenus"]["contenu"]["description_longue"] : null),
                         'description' => $this->getMNText(isset($value["contenus"]["contenu"]["description"]) ? $value["contenus"]["contenu"]["description"] : null),
@@ -584,7 +584,7 @@ class ReportsController extends Controller
                         'description_courte_opposition' => $this->getMNText(isset($value["contenus"]["contenu"]["description_courte_opposition"]) ? $value["contenus"]["contenu"]["description_courte_opposition"] : null),
                         'libelle_facteur' => $this->getMNText(isset($value["contenus"]["contenu"]["libelle_facteur"]) ? $value["contenus"]["contenu"]["libelle_facteur"] : null),
                         'libelle_facteur_opposition' => $this->getMNText(isset($value["contenus"]["contenu"]["libelle_facteur_opposition"]) ? $value["contenus"]["contenu"]["libelle_facteur_opposition"] : null),
-                        'domain'  => $this->getMNText(isset($domain) ? $domain : []),
+                        'domain'  => isset($domain) ? $domain : [],
                         'label_group'  => array_key_exists(
                             'libelle_groupe_opposition',
                             $value["contenus"]["contenu"]
@@ -593,7 +593,7 @@ class ReportsController extends Controller
                     ),
                     'adequacy' => $adequates,
                 ];
-                        
+
             unset($domain);
             //setting all values to variable $data
             $data["parties"] = $this->replaceChar($candidate_name, $party);
@@ -602,11 +602,20 @@ class ReportsController extends Controller
         return view('layouts.reports.' . $data['general']['test_id'], compact('data'));
     }
 
+    public function replaceName($candidate_name, $content)
+    {
+        // dd($candidate_name);
+        // dd($content);
+        $replaced = str_replace($candidate_name, "$", $content);
+        return $replaced;
+    }
+
     public function getMNText($str)
     {
+        // print_r($str);
         $text = Translation::select('MN')->where('EN', '=', $str)->value("MN");
-        // dd($text);
-        if (!$text) {
+        if (!$text) {   
+            // print_r($str);   
             return $str;
         }
 
@@ -615,8 +624,6 @@ class ReportsController extends Controller
 
     public function replaceChar($candidate_name, $content)
     {
-        // dd($candidate_name);
-        // dd($content);
         $replaced = str_replace("$", $candidate_name, $content);
         return $replaced;
     }
@@ -731,7 +738,7 @@ class ReportsController extends Controller
                         'description' => $this->getMNText(isset($value["contenus"]["contenu"]["description"]) ? $value["contenus"]["contenu"]["description"] : null),
                         'introduction' => $this->getMNText(isset($value["contenus"]["contenu"]["introduction"]) ? $value["contenus"]["contenu"]["introduction"] : null),
                         'description_courte' => $this->getMNText(isset($value["contenus"]["contenu"]["description_courte"]) ? $value["contenus"]["contenu"]["description_courte"] : null),
-                        'domain'  => $this->getMNText(isset($domain) ? $domain : []),
+                        'domain'  => isset($domain) ? $domain : [],
                         'label_group'  => array_key_exists('libelle_groupe_opposition', $value["contenus"]["contenu"]),
                         'commentaire_perso' => $this->getMNText(isset($value["contenus"]["contenu"]["commentaire_perso"]) ? $value["contenus"]["contenu"]["commentaire_perso"] : null)
                     ),

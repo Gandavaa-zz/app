@@ -20,16 +20,16 @@ class TranslationsController extends Controller
         $translations = Translation::get();
 
         $tests = Test::where('priority', 1)->get();
-        
+
         if ($request->ajax()) {
             // $data = Translation::all();
-            if($request->test_id)
+            if ($request->test_id)
                 $data = Translation::join('tests', 'translations.test_id', '=', 'tests.id')
-                ->where('translations.test_id', $request->test_id)
-                ->get(['translations.*', 'tests.label']);
-            else 
-                $data = Translation::join('tests', 'translations.test_id', '=', 'tests.id')                
-                ->get(['translations.*', 'tests.label']);
+                    ->where('translations.test_id', $request->test_id)
+                    ->get(['translations.*', 'tests.label']);
+            else
+                $data = Translation::join('tests', 'translations.test_id', '=', 'tests.id')
+                    ->get(['translations.*', 'tests.label']);
 
             return DataTables::of($data)
                 ->addIndexColumn()->editColumn('status', function ($data) {
@@ -172,16 +172,22 @@ class TranslationsController extends Controller
                         isset($value["domaines"]["domaine"]["contenus"]["contenu"]["libelle"]) ? $value["domaines"]["domaine"]["contenus"]["contenu"]["libelle"] : null
                     );
 
-                    if (isset($value["domaines"]["domaine"])) {
+                    if (isset($value["domaines"])) {
+
                         foreach ($value["domaines"]["domaine"] as $domains) {
-                            if (isset($domains["cibles_secondaires"]) && is_array($domains["cibles_secondaires"]["cibles_secondaire"])) {
-                                foreach ($domains["cibles_secondaires"]["cibles_secondaire"] as $comments) {
-                                    array_push($texts, isset($comments["contenus"]["contenu"]["commentaire_perso"]) ?
-                                        $comments["contenus"]["contenu"]["commentaire_perso"] : null);
-                                }
-                            } else {
+
+                            if (isset($domains['cibles_secondaires']['cibles_secondaire']['@attributes'])) {
+                                // dd($domains);
                                 array_push($texts, isset($value["domaines"]["domaine"]["cibles_secondaires"]['cibles_secondaire']["contenus"]["contenu"]["commentaire_perso"]) ?
                                     $value["domaines"]["domaine"]["cibles_secondaires"]['cibles_secondaire']["contenus"]["contenu"]["commentaire_perso"] : null);
+                            } else {
+                                if (isset($domains['cibles_secondaires']['cibles_secondaire'])) {
+                                    foreach ($domains["cibles_secondaires"]['cibles_secondaire'] as $comments) {
+
+                                        array_push($texts, isset($comments["contenus"]["contenu"]["commentaire_perso"]) ?
+                                            $comments["contenus"]["contenu"]["commentaire_perso"] : null);
+                                    }
+                                }
                             }
                         }
                     }
@@ -214,7 +220,7 @@ class TranslationsController extends Controller
                     Storage::delete("assets/tests/{$test_id}/" . $files[$i] . ".xml");
                 } else {
                     // dd("im called");
-                    Storage::move("assets/tests/{$test_id}", "assets/inserted_tests/{$test_id}");
+                    // Storage::move("assets/tests/{$test_id}", "assets/inserted_tests/{$test_id}");
                 }
             }
             return true;
