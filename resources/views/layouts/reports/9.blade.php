@@ -132,13 +132,16 @@
             <div class="card-body">
                 <!-- loop here -->
                 @foreach ($item as $val)
+
                 @if($val['type']=='rapport_details_facteur')
                 <div class="score-bar-wrapper row">
                     <div class="col-xs-12 col-sm-3">
                         <div class="box-score ec-first-bg-color ec-first-text-color" style="background-color:#{{$val["params"]["couleur"]}}; color:#000">
                             <div class="header">
                                 Score<br>
+                                @if(isset($val["params"]))
                                 {{ $val["params"]["score_calculated"]}}
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -155,7 +158,9 @@
 
                             <div class=" img-calibration">
                                 <div class="gausse ec-first-bg-color" style="background-color:#DDA0DD;position: relative">
-                                    <div class="pointer-gausse hidden-xs " style="left:{{4.83*$val["params"]["pourcentage_score"]}}px; z-index: 3"></div>
+                                    @if(isset($val["params"]))
+                                    <div class="pointer-gausse hidden-xs " style="left:{{4.83*$val["params"]["pourcentage_score"]}}px; z-index:3"></div>
+                                    @endif
                                 </div>
 
                                 <div class="content text-center">
@@ -274,7 +279,6 @@
                 value.data.map((el, index) => {
                     if (index === 0) first = el;
                 });
-       
 
                 for (let i = 0; i < 10; i++) {
                     if (i == 0) {
@@ -293,6 +297,7 @@
                 value.data = new_data;
                 new_data = [];
             }
+            
             Highcharts.chart('chart', {
                 chart: {
                     marginTop: 30

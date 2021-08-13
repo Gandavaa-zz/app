@@ -14,6 +14,8 @@
     @php $item = $data["parties"]["party"]; @endphp
     
     @php $group_factors = $data["group_factors"]; @endphp
+    
+    {{ dd($group_factors) }}
 
     @if (str_contains($item[0]['type'], 'ancre'))
     <h2 class="card-title">{{ $item[0]["params"]["menuNumber"] }} - 

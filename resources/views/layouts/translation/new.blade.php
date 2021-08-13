@@ -14,8 +14,7 @@
                                 <div class="col-md-10 mx-auto">
                                     <form>
                                         <div class="form-group row">
-                                            <div class="form-group col-sm-12">
-                                                {!! Form::Label('test_id', 'Тест') !!}
+                                            <div class="form-group col-sm-12">                                           
                                                 <select class="form-control" name="test_id">
                                                     <option value="0">Нэг тестийг сонго...</option>
                                                     @foreach($assessments as $item)

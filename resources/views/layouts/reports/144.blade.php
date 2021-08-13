@@ -14,6 +14,9 @@
 
     @php $item = $data["parties"]["party"]; @endphp
     @php $group_factors = $data["group_factors"]; @endphp
+
+    
+
     {{-- 1 - THE GRAPH --}}
     @if (str_contains($item[0]['type'], 'ancre'))
     <h2 class="card-title">{{ $item[0]["params"]["menuNumber"] }} -
@@ -47,7 +50,7 @@
                 <div class="group-header">
                     {{-- <h2 class="ec-title">THE GRAPH</h2> --}}
                     <figure class="highcharts-figure">
-                        <div style="height: 600px; width: 1308px; margin:0 auto" id="inverted_chart"></div>
+                        <div style="height: 600px; width: 1308px; margin:0 auto" id="inverted_chart"></div>                        
                     </figure>
                 </div>
             </div>
@@ -514,79 +517,246 @@
     </div>
     {{-- 8 - HOW DIFFERENT PROFESSIONS SUIT THE PROFILE ENDS --}}
 </div>
+
+{{-- dd($group_factors) --}}
 @section('script')
+
 <script>
-    var barChart = [];
-    var obj = {};
-    @foreach($item as $idx => $row)
-    @if($row['type'] == 'rapport_details_facteur') {
-        obj.name = @json($row['content']['libelle_facteur']) + " (" + @json($row['params']['score']) + ")";
-        obj.y = parseFloat(@json($row['params']['score']));
-        obj.color = '#' + @json($row['params']['couleur']);
-        barChart.push(obj);
-        obj = {};
-    }
-    @endif
-    @endforeach
-
-    // Create the bar chart
-    Highcharts.chart('barChart', {
-        chart: {
-            renderTo: 'container'
-            , type: 'column'
-        },
-
-        accessibility: {
-            announceNewData: {
-                enabled: true
-            }
+        function calcPoint(a, b) {
+            let d = Math.abs((a * b) * 0.58) / Math.abs((a + b) * -0.3);
+            c = d.toFixed(2) / 1.4
+            return parseFloat(c.toFixed(2));
         }
-        , yAxis: {
-            title: {
-                text: ''
-            }
-            , labels: {
-                style: {
-                    fontSize: '15px'
+
+        console.log('number', 2%2);
+
+        var categories = [];
+        var data = [];
+        var items = {
+            data: []
+            , name: ""
+            , type: "area"
+            , color: ""            
+        };
+        var barChart = [];
+
+        var obj = {};
+        var point_start = 0;
+
+        @foreach($group_factors as $idx => $group)
+           
+        @if(isset($group['label']))
+          items.name = @json($group['label']);
+
+        @foreach($group['factors'] as $idx => $factor)
+
+            var index = parseInt(@json($idx));
+
+            if(index%2 ==0 ){               
+
+                categories.push(@json($factor['label']) + " (" + @json($factor['score']) + ")");
+
+                if (@json($group['id']) === @json($factor['group_id'])) {
+
+                    items.data.push(parseFloat(@json($factor['score'])));
+
+                    if (items.data.length < 17) {
+                        console.log("length: ", categories.length);
+                        for (let i = 1; i < 17; i++) {
+                            items.data.push(null);
+                        }
+                    }
+                    items.color = '#' + @json($factor['color']);
                 }
-            }
-        }
-        , xAxis: {
-            type: 'category'
-            , labels: {
-                style: {
-                    fontSize: '15px'
-                }
-            }
-        },
 
-        title: {
-            text: ''
+            }
+        
+        @endforeach
+        data.push(items);
+
+        console.log("data", data);
+        items = {
+            data: []
+            , name: ""
+            , type: "area"
+            , color: ""            
+        };
+        @endif
+        @endforeach
+
+        console.log("data1 - ", data);
+        console.log("categories - ", categories);
+
+        // // эхний утгийг нь 
+        var new_data = []
+            , previous, matrix = []
+            , n = 0
+            , m = 0;
+
+        for (const [key, value] of Object.entries(data)) {
+            if (key == 0) data[key].pointStart = 0;            
+            else if (key == 1) data[key].pointStart = 180;
+
+            value.data.map((el, index) => {
+                if (el !== null) matrix[n++] = el;
+            });
         }
-        , legend: {
-            enabled: false
-        , }
-        , plotOptions: {
-            series: {
-                borderWidth: 0
+    
+        for (const [key, value] of Object.entries(data)) {
+            // first value-g avna
+            var first;
+            value.data.map((el, index) => {
+                if (index === 0) first = el;
+            });
+
+            for (let i = 0; i < 14; i++) {
+                if (i == 0) {
+                    if (key == 0) new_data[i] = calcPoint(first, matrix[2]);
+                    else if (key == 2) new_data[i] = calcPoint(first, matrix[1]);
+                    else if (key == 1) new_data[i] = calcPoint(first, matrix[0]);
+                } else if (i == 4) new_data[i] = first;
+                else if (i == 8) {
+                    if (key == 0) new_data[i] = calcPoint(first, matrix[1]);
+                    else if (key == 1) new_data[i] = calcPoint(first, matrix[2]);
+                    else if (key == 2) new_data[i] = calcPoint(first, matrix[0]);
+                } else if (i == 9) new_data[i] = 0;
+                else new_data.push(null);
+                previous = new_data[i];
+            }
+            value.data = new_data;
+            new_data = [];
+        }
+        
+        Highcharts.chart('chart', {
+            chart: {
+                marginTop: 30
+                , polar: true
+                , type: ''
             , }
-            , stacking: 'normal'
-            , dataLabels: {
-                enabled: true
+            , "title": {
+                "text": ""
             }
-        },
+            , "credits": {
+                "enabled": false
+            }
+            , "tooltip": {
+                "enabled": false
+            }
+            , "yAxis": {
+                "max": 10
+                , "lineColor": "#FFFFFF"
+                , "tickInterval": 2
+                , "gridLineWidth": 1
+                , "gridLineColor": "#EEEEEE"
+                , "plotLines": [{
+                    "color": "#AAAAAA"
+                    , "dashStyle": "LongDash"
+                    , "value": 10
+                    , "width": 1
+                }, {
+                    "color": "#EEEEEE"
+                    , "dashStyle": "Dash"
+                    , "value": 1
+                    , "width": 1
+                }, {
+                    "color": "#EEEEEE"
+                    , "dashStyle": "Dash"
+                    , "value": 3
+                    , "width": 1
+                }, {
+                    "color": "#EEEEEE"
+                    , "dashStyle": "Dash"
+                    , "value": 7
+                    , "width": 1
+                }, {
+                    "color": "#EEEEEE"
+                    , "dashStyle": "Dash"
+                    , "value": 9
+                    , "width": 1
+                }]
+                , "labels": {
+                    "enabled": false
+                }
+            }
+            , "plotOptions": {
+                "series": {
+                    "animation": false
+                    , "showInLegend": true
+                    , "marker": {
+                        "enabled": false
+                        , "states": {
+                            "hover": {
+                                "enabled": false
+                            }
+                        }
+                    }
+                    , "connectNulls": true
+                    , "pointPlacement": "on"
+                    , "pointInterval": 12.5
+                }
+                , "area": {
+                    "lineWidth": 1
+                }
+            },
 
-        tooltip: {
-            headerFormat: '<span style="font-size:14px">{series.name}: {point.y}</span><br>'
-            , pointFormat: '<span style="font-size:16px;color:{point.color}">{point.name}</span>'
-        },
+            "xAxis": {
+                "max": 10
+                , "startOnTick": true
+                , "endOnTick": true
+                , "lineWidth": 0
+                , "gridLineWidth": 1
+                , "labels": {
+                    "distance": 30
+                    , "style": {
+                        "width": "140px"
+                        , "color": "#000000"
+                        , "fontSize": "14px"
+                        , "fontWeight": "normal"
+                        , "fontFamily": "\"roboto\", \"Arial\", sans-serif"
+                    }
+                    , "formatter": function() {
+                        console.log('this value');
+                        var sReturn = ''
+                            , iIndex = this.value / 25
+                            , oCategories = categories;
 
-        series: [{
-            colorByPoint: true
-            , data: barChart
-        }]
-    , });
+                        if (oCategories[iIndex] !=
+                            undefined) {
+                            sReturn += oCategories[iIndex];
+                        }
+                        return sReturn;
+                    }
+                }
+                , "tickPositions": [0, 25, 50, 75, 100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350]
+            },
+            // "series": data
+            // [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 360
+            // [-45 -30 -15  0, 15, 30, 45]
+            // [calc -75 -60 -45 -30 -15 [set 0], 15, 30, 45 60 [c75] 0 ]
+            // 4.73, null, null, null, null, null, 4, null, null, null, null, null, 4.73
+            // [4, null, null, null, null, null, 5.8, null, null, null, null, null, 5.54]
+            // [5.8, null, null, null, null, null, 5.3, null, null, null, null, null, 5.54
 
-</script>
+            "series": 
+            [{
+                "color": "#F781BE",
+                "name": "fdsfdsfd",
+                "type": "area",
+                "pointStart": -12.5,            
+                 "data": [5, 4.73, null, 6.9, null, 3.1, null, 6.3, null, 1.9, null, 8.1, null, 6.3, 5.3, 0]               
+            }, {
+                "color": "#D0A9F5",
+                "name": "Business Development Skills",
+                "type": "area",
+                "pointStart": 162.5,                
+                "data": [5.3, 5, null, 0.6, 2, 3.1, null, 6.9, null, 4.4, null, 5, null, 5, 5, 0]                  
+
+            }], 
+
+        });
+
+        console.log(calcPoint(5.8, 5, 3));
+
+    </script>
 @endsection
 @endsection

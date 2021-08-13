@@ -17,53 +17,32 @@ Route::group(['middleware' => ['role:super-admin']], function () {
 
 Route::group(['middleware' => ['role:super-admin|admin']], function () {    
     // get test API controller
-    Route::resource('testapi', 'TestApiController');
-    Route::get('translation/getJSON/{test_id}', 'TranslationsController@getJSON');
-    Route::get('reports/getXml/{assessment_id}/{test_id}', 'ReportsController@getXml');
-    Route::get('reports/getHtml/{id}', 'ReportsController@getHtml');
-    Route::get('reports/result/{assessment_id}', 'ReportsController@result');
-    Route::get('reports/global/{assessment_id}', 'ReportsController@global');
-    Route::get('reports/factory/{assessment_id}', 'ReportsController@factory');
-    Route::get('reports/groups/{assessment_id}', 'ReportsController@groups');
-    Route::get('reports/referential/{assessment_id}', 'ReportsController@referential');
+    Route::resource('test', 'TestsController');
 
-    Route::get('reports/data/{assessment_id}', 'ReportsController@getData');
+    Route::get('translation/getJSON/{test_id}', 'TranslationsController@getJSON');
+    Route::get('assessment/report/{assessment_id}', 'AssessmentsController@report');
     Route::get('assessment/salesProfile/{assessment_id}', 'AssessmentsController@salesProfile');
     Route::resource('assessment', 'AssessmentsController');
 
     Route::get('candidate/assessment', 'CandidatesController@assessment')->name('candidate.assessment');
     Route::get('candidate/group', 'CandidatesController@group')->name('candidate.group');
     Route::resource('candidate', 'CandidatesController');
-
     Route::get('candidate/deleteMultiple', 'CandidatesController@deleteMultiple')->name('candidate.deleteMultiple');
-
-    // Candidate
-    Route::get('api/assessments/{candidate_id}', 'ApiController@assessments');
-    Route::get('api/import', 'ApiController@import')->name('Api.import');
-    Route::get('api/retrieve', 'ApiController@retrieve');
-    Route::get('api/token', 'ApiController@getToken');
-    Route::get('api/group', 'ApiController@group');
-    Route::get('api/contract', 'ApiController@contract');
-    Route::get('api/company', 'ApiController@getCompany');
-    Route::get('api/tests', 'ApiController@getTest');
-    Route::get('api/import', 'ApiController@import');
-    Route::get('api/getList', 'ApiController@testList');
 
     // SETTINGS Controller
     Route::resource('role', 'Settings\RolesController')->middleware('auth');
-
     Route::get('role/{role}/permission', 'Settings\RolesController@permission')->middleware('auth');
     Route::post('role/{role}/permission', 'Settings\RolesController@givePermission')->name('give.permission')->middleware('auth');
+    
     Route::get('settings/getRoles', 'Settings\RolesController@getRoles');
-    Route::get('roles/permission', 'Settings\RolesController@rolePermission');
+    Route::get('roles/permission', 'Settings\RolesController@rolePermission');    
     Route::resource('settings/permission', 'Settings\PermissionsController')->middleware('auth');
     Route::get('settings/getPermissions', 'Settings\PermissionsController@getPermissions');
-    Route::resource('settings/group', 'Settings\GroupsController');   
-    
+    Route::resource('settings/group', 'Settings\GroupsController');       
     Route::resource('settings/users', 'Settings\UsersController');
 });
 
-Route::resource('import', 'ImportsController');
+Route::resource('import', 'ImportsController')->middleware('auth');
 
 Route::get('translations/new', 'TranslationsController@new')->name('translations.new')->middleware('auth');
 Route::get('translations/add', 'TranslationsController@add')->name('translations.add')->middleware('auth');
