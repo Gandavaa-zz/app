@@ -527,9 +527,7 @@
             c = d.toFixed(2) / 1.4
             return parseFloat(c.toFixed(2));
         }
-
-        console.log('number', 2%2);
-
+        
         var categories = [];
         var data = [];
         var items = {
@@ -584,48 +582,53 @@
         @endif
         @endforeach
 
-        console.log("data1 - ", data);
-        console.log("categories - ", categories);
-
-        // // эхний утгийг нь 
-        var new_data = []
-            , previous, matrix = []
-            , n = 0
-            , m = 0;
+        // эхний утгийг нь 
+        var new_data = Array(15).fill(null), matrix = [], n = 0, m = 0;
 
         for (const [key, value] of Object.entries(data)) {
-            if (key == 0) data[key].pointStart = 0;            
-            else if (key == 1) data[key].pointStart = 180;
-
+            if (key == 0) data[key].pointStart = -12.5;                 
+            else if (key == 1) data[key].pointStart = 162.5;
+            matrix[n] = [];
             value.data.map((el, index) => {
-                if (el !== null) matrix[n++] = el;
+                if (el !== null){
+                    matrix[n][m] = el;
+                    m++;
+                }                
             });
+            n++; m = 0;  
         }
-    
+        console.log("matrix", matrix);
+
+        var j = 1;
         for (const [key, value] of Object.entries(data)) {
             // first value-g avna
-            var first;
-            value.data.map((el, index) => {
-                if (index === 0) first = el;
-            });
-
-            for (let i = 0; i < 14; i++) {
-                if (i == 0) {
-                    if (key == 0) new_data[i] = calcPoint(first, matrix[2]);
-                    else if (key == 2) new_data[i] = calcPoint(first, matrix[1]);
-                    else if (key == 1) new_data[i] = calcPoint(first, matrix[0]);
-                } else if (i == 4) new_data[i] = first;
-                else if (i == 8) {
-                    if (key == 0) new_data[i] = calcPoint(first, matrix[1]);
-                    else if (key == 1) new_data[i] = calcPoint(first, matrix[2]);
-                    else if (key == 2) new_data[i] = calcPoint(first, matrix[0]);
-                } else if (i == 9) new_data[i] = 0;
-                else new_data.push(null);
-                previous = new_data[i];
-            }
-            value.data = new_data;
-            new_data = [];
+            var val, index = 0;
+                for (let i = 0; i < 16; i++) {                    
+                    if (key == 0 && i == 0) new_data[i] = calcPoint(matrix[key][0], matrix[1][6]);
+                    if (key == 1 && i == 14) new_data[i] = calcPoint(matrix[key][0], matrix[1][6]);
+                    if (key == 0 && i== 14) new_data[i] = calcPoint(matrix[key][6], matrix[1][key]);
+                    if (key == 1 && i == 0){
+                        new_data[i] = calcPoint(matrix[key][0], matrix[0][6]);
+                        console.log('key10', matrix[key][0]);
+                    } 
+                    else{
+                        switch (i) {
+                            case 1: new_data[i] = matrix[key][0]; break;
+                            case 3: new_data[i] = matrix[key][1]; break;
+                            case 5: new_data[i] = matrix[key][2]; break;
+                            case 7: new_data[i] = matrix[key][3]; break;
+                            case 9: new_data[i] = matrix[key][4]; break;
+                            case 11: new_data[i] = matrix[key][5]; break;                        
+                            case 13: new_data[i] = matrix[key][6]; break;                                            
+                            case 15: new_data[i] = 0; break;                                
+                        }
+                    }
+                }                
+            value.data = new_data;   
+            console.log('new', new_data);                     
+            new_data = Array(15).fill(null);
         }
+        console.log("data2", data);
         
         Highcharts.chart('chart', {
             chart: {
@@ -729,33 +732,25 @@
                 }
                 , "tickPositions": [0, 25, 50, 75, 100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350]
             },
-            // "series": data
-            // [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 360
-            // [-45 -30 -15  0, 15, 30, 45]
-            // [calc -75 -60 -45 -30 -15 [set 0], 15, 30, 45 60 [c75] 0 ]
-            // 4.73, null, null, null, null, null, 4, null, null, null, null, null, 4.73
-            // [4, null, null, null, null, null, 5.8, null, null, null, null, null, 5.54]
-            // [5.8, null, null, null, null, null, 5.3, null, null, null, null, null, 5.54
-
-            "series": 
-            [{
-                "color": "#F781BE",
-                "name": "fdsfdsfd",
-                "type": "area",
-                "pointStart": -12.5,            
-                 "data": [5, 4.73, null, 6.9, null, 3.1, null, 6.3, null, 1.9, null, 8.1, null, 6.3, 5.3, 0]               
-            }, {
-                "color": "#D0A9F5",
-                "name": "Business Development Skills",
-                "type": "area",
-                "pointStart": 162.5,                
-                "data": [5.3, 5, null, 0.6, 2, 3.1, null, 6.9, null, 4.4, null, 5, null, 5, 5, 0]                  
-
-            }], 
+         
+            "series": data
+            // [{
+            //     "color": "#F781BE",
+            //     "name": "fdsfdsfd",
+            //     "type": "area",
+            //     "pointStart": -12.5,            
+            //      "data": [5, 4.73, null, 6.9, null, 3.1, null, 6.3, null, 1.9, null, 8.1, null, 6.3, 5.3, 0]               
+            // }, {
+            //     "color": "#D0A9F5",
+            //     "name": "Business Development Skills",
+            //     "type": "area",
+            //     "pointStart": 162.5,                
+            //     "data": [5.3, 5, null, 0.6, 2, 3.1, null, 6.9, null, 4.4, null, 5, null, 5, 5, 0]                  
+            // }], 
 
         });
 
-        console.log(calcPoint(5.8, 5, 3));
+        console.log(calcPoint(6.3, 5.6));
 
     </script>
 @endsection
