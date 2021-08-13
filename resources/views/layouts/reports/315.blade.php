@@ -51,37 +51,7 @@
             <div class="card-header .bg-secondary">{{ $item[3]["content"]["sub_title"]}}</div>
             <div class="card-body">
                 <div class="row synthetic-card-part">
-                    {{dd($item[4])}}
-                    <div class="col-md-12 align-center">
-                        @foreach($item[4]["content"]["targets"]['target'] as $target)
-                        <div class="synthetic-card-combination-box" style="background-color: #6BDCFB">{{$target['libelle'][0]}}</div>
-                        @endforeach
-                        <div class="synthetic-card-targets-list col-md-12 align-left text-xs-left">
-                            @foreach($item[4]["content"]["targets"]['target'] as $target)
-                            {{-- {{dd($target['score'])}} --}}
-                            <!-- Cibles secondaires et scores -->
-                            <div class="col-xs-12 font-large synthetic-card-target">
-                                <div class="target-score align-right ">
-                                    <span class="star-rating" data-number="{{$target['score']}}" style="color: #6BDCFB">
-                                        @for ($i = 0; $i < 5; $i++) @if (floor($target['score']) - $i>= 1)
-                                            {{--Full --}}
-                                            <i class="fa fa-star"> </i>
-                                            @elseif ($target['score'] - $i > 0)
-                                            {{--Half --}}
-                                            <i class="fa fa-star-half-full"> </i>
-                                            @else
-                                            {{--Empty --}}
-                                            <i class="fa fa-star-o"> </i>
-                                            @endif
-                                            @endfor
-                                    </span>
-
-                                    {{$target['libelle']}} </div>
-                            </div>
-                            @endforeach
-                        </div>
-
-                    </div>
+            
 
                     <!-- Description 1 -->
                     <div class="col-xs-12 col-sm-6 desc">

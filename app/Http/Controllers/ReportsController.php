@@ -552,6 +552,7 @@ class ReportsController extends Controller
                     }
                 }
             }
+
             $party["party"][] =
                 [
                     'id' => $value["@attributes"]["id"],
@@ -561,7 +562,6 @@ class ReportsController extends Controller
                     'content' => array(
                         'label' => $this->getMNText($value["contenus"]["contenu"]["libelle"]),
                         'title' => $this->getMNText(isset($value["contenus"]["contenu"]["titre"]) ? $value["contenus"]["contenu"]["titre"] : null),
-                        'title_1' => $this->getMNText(isset($value["contenus"]["contenu"]["title"]) ? $value["contenus"]["contenu"]["title"] : null),
                         'targets' => isset($value["contenus"]["contenu"]["targets"]) ? $value["contenus"]["contenu"]["targets"] : null,
                         'sub_title' => $this->getMNText(isset($value["contenus"]["contenu"]["sous_titre"]) ? $value["contenus"]["contenu"]["sous_titre"] : null),
                         'description_long' => $this->getMNText(isset($value["contenus"]["contenu"]["description_longue"]) ? $value["contenus"]["contenu"]["description_longue"] : null),
@@ -587,7 +587,7 @@ class ReportsController extends Controller
             //setting all values to variable $data
             $data["parties"] = $this->replaceChar($this->getMNText($candidate_name), $party);
         }
-        // dd($data["parties"]);
+        dd($data["parties"]);
         return view('layouts.reports.' . $data['general']['test_id'], compact('data'));
     }
 
@@ -619,6 +619,7 @@ class ReportsController extends Controller
     public function replaceChar($candidate_name, $content)
     {
         $replaced = str_replace("$", $candidate_name, json_encode($content));
+        dd($replaced);
         return json_decode($replaced, true);
     }
 
