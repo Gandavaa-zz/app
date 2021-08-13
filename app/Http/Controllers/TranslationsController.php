@@ -193,13 +193,9 @@ class TranslationsController extends Controller
                     }
                 }
 
-                // dd($texts);
-                array_map('strip_tags', $texts);
-                $newArray = array_map(function ($v) {
-                    return trim(strip_tags($v));
-                }, $texts);
-                $xml = preg_replace("/\r|\n/", "", $newArray);
-                $xml = array_filter($xml);
+
+                $xml = preg_replace("/\s\s+/", "", $texts);
+                $xml = array_filter($texts);
                 $xml = array_unique($xml);
                 $xml = $this->replaceName($candidate_name, $xml);
                 //pushing candidate name into array
@@ -311,7 +307,7 @@ class TranslationsController extends Controller
     {
         return request()->validate([
             'test_id' => ['required'],
-            'en' => ['required', ['string']],
+            // 'en' => ['required', ['string']],
             'mn' => ['required', ['string']],
         ]);
     }

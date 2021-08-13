@@ -36,7 +36,7 @@
                         </div>
 
                         @include('layouts.shared.alert')
-                        <table class="table table-bordered yajra-datatable translation_table " id="translation_table" style="width: 100%; font-size:13.5px;">
+                        <table class="table table-bordered yajra-datatable translation_table" id="translation_table" style="verflow-x: auto; width: 100%; font-size:13.5px;">
                             <thead>
                                 <tr>
                                     <!-- <th width="3px"><input type="checkbox" id="selectAll"/></th> -->
@@ -98,13 +98,13 @@
                     },
                     {
                         data: 'EN',
-                        name: 'en',
+                        name: 'EN',
                         orderable: true,
                         searchable: true
                     },
                     {
                         data: "MN",
-                        name: "mn",
+                        name: "MN",
                         orderable: true,
                         searchable: true
                     },

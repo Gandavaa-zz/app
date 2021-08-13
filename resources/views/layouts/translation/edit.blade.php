@@ -19,12 +19,8 @@
                                             <input type="hidden" class="form-control" name="test_id" value="{{ $translation->test_id }}" autocomplete="en">
                                             <input type="hidden" class="form-control" name="id" value="{{ $translation->id }}" autocomplete="en">
                                             <label for="en">Англи: <img src="{{url('/icons/en.png')}}" class="flag" alt="Image" /></label>
-                                            <textarea placeholder="Текст оруулна уу..." type="text" id="en" rows="15" class="form-control @error('en') is-invalid @enderror" name="en" value="{{ $translation->EN }}" autocomplete="en" autofocus>{{ $translation->EN }}</textarea>
-                                            @error('en')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
+                                            <textarea disabled placeholder="Текст оруулна уу..." type="text" id="en" rows="15" class="form-control" name="en" value="{{ $translation->EN }}" autocomplete="en" autofocus>{{ $translation->EN }}</textarea>
+
                                         </div>
                                         <div class="col-sm-6">
                                             <label for="mn">Монгол: <img src="{{url('/icons/mn.png')}}" class="flag" alt="Image" /></label>

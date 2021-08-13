@@ -251,25 +251,25 @@
     <!-- 5- Comment" -->
     @if (str_contains($item[9]['type'], 'ancre'))
     <h2 class="card-title">{{ $item[9]["params"]["menuNumber"] }} -
-        {{ __($item[9]["content"]["title"]) }}
+        {!! __($item[9]["content"]["title"]) !!}
     </h2>
     @endif 
 
     <div class="col-md-12" id="{{$item[9]["content"]["title"]}}">
         <div class="card">
             <div class="card-header .bg-secondary">
-                {{ __($item[9]["content"]["sub_title"]) }}
+                {!! __($item[9]["content"]["sub_title"]) !!}
             </div>
             <div class="card-body">
 
                 @for($i = 10; $i < 33; $i++) @if(str_contains($item[$i]['type'], 'rapport_details_groupe' )) <div class="group-header">
-                    <h3>{{ $item[$i]["content"]["title"] }}</h3>
+                    <h3>{!! $item[$i]["content"]["title"] !!}</h3>
             </div>
             @endif
             @if(str_contains($item[$i]['type'], 'rapport_details_facteur'))
             <div class="group-header clearfix">
                 <h5>
-                    {{ $item[$i]["content"]["title"] }}
+                    {!! $item[$i]["content"]["title"] !!}
                     <h5>
             </div>
             <div class="score-bar-wrapper row">
@@ -340,7 +340,7 @@
     <!-- 6 - GENERAL PROFILE -->
     @if (str_contains($item[33]['type'], 'ancre'))
     <h2 class="card-title">{{ $item[33]["params"]["menuNumber"] }} -
-        {{ __($item[33]["content"]["title"]) }}
+        {!! __($item[33]["content"]["title"]) !!}
     </h2>
     @endif 
     
@@ -368,7 +368,7 @@
                     <div class="row">
                         <div class="col-xs-1 col-md-1 col-sm-1">{{$index+1}}</div>
                         <div class="col-xs-11 col-md-6 col-sm-5 word-break">
-                            {{$profile['label']}}
+                            {!!$profile['label']!!}
                         </div>
                         <div class="col-xs-7 col-md-3 col-sm-5 add-md-print">
                             <div class="progress">
@@ -376,7 +376,7 @@
                             </div>
                         </div>
                         <div class="col-xs-2 col-md-1 col-sm-1 remove-md-print">
-                            {{$profile['pourcentage_score']}}%
+                            {!!$profile['pourcentage_score']!!}%
                         </div>
                     </div>
                     @endforeach
@@ -414,7 +414,7 @@
     
     @if (str_contains($item[35]['type'], 'ancre'))
     <h2 class="card-title">{{ $item[35]["params"]["menuNumber"] }} -
-        {{ __($item[35]["content"]["title"]) }}
+        {!! __($item[35]["content"]["title"]) !!}
     </h2>
     @endif 
     <div class="col-md-12" id="{{ $item[35]["content"]["title"]}}">

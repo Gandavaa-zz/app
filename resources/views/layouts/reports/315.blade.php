@@ -51,7 +51,7 @@
             <div class="card-header .bg-secondary">{{ $item[3]["content"]["sub_title"]}}</div>
             <div class="card-body">
                 <div class="row synthetic-card-part">
-                    {{-- {{dd($item[4]["content"]["targets"])}} --}}
+                    {{dd($item[4])}}
                     <div class="col-md-12 align-center">
                         @foreach($item[4]["content"]["targets"]['target'] as $target)
                         <div class="synthetic-card-combination-box" style="background-color: #6BDCFB">{{$target['libelle'][0]}}</div>
