@@ -7,8 +7,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link href="{{ asset('css/custom.css') }}" media="all" rel="stylesheet">
-    {{-- <link rel="stylesheet" href="{{ ltrim(base_path('css/custom.css'), '/') }}" /> --}}
-    {{-- <link rel="stylesheet" href="{{ URL::asset('css/custom.css') }}" type="text/css" /> --}}
+    <link rel="stylesheet" href="{{ ltrim(base_path('css/custom.css'), '/') }}" />
 <style>
 .page-break {
     page-break-after: always;
@@ -38,9 +37,9 @@
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
 @yield('script')
-
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/esm/popper.js"></script>
+{{-- <script src="https://getbootstrap.com/docs/4.1/assets/js/vendor/popper.min.js"></script> --}}
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.js">
 </script>
 <script type="text/javascript" src="{{ asset('js/custom.js') }}"></script>

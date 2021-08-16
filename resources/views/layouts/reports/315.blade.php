@@ -51,7 +51,41 @@
             <div class="card-header .bg-secondary">{{ $item[3]["content"]["sub_title"]}}</div>
             <div class="card-body">
                 <div class="row synthetic-card-part">
-            
+                    {{-- {{dd($item[4])}} --}}
+                    <div class="col-md-12 align-center">
+                        @foreach($item[4]["content"]["cibles"]['cible'] as $target)
+                        <div class="synthetic-card-combination-box" style="background-color: {{$target['couleur']}}">{{$target['libelle'][0]}}</div>
+                        @endforeach
+                        <div class="synthetic-card-targets-list col-md-12 align-left text-xs-left">
+                            @foreach($item[4]["content"]["cibles"]['cible'] as $target)
+                            {{-- {{dd($target['score'])}} --}}
+                            <!-- Cibles secondaires et scores -->
+                            <div class="col-xs-12 font-large synthetic-card-target">
+                                <div class="target-score align-right ">
+                                    <span class="star-rating" style="color: {{$target['couleur']}}">
+                                        <?php $score = $target['score'] / 2;?>
+                                        {{-- {{print_r(round($score, 2))}} --}}
+                                        @foreach(range(0,4) as $i)
+                                        <span class="fa-stack" style="width:1em">
+                                            <i class="far fa-star fa-stack-1x"></i>
+                                            @if($score >0)
+                                            @if($score >0.5)
+                                            <i class="fas fa-star fa-stack-1x"></i>
+                                            @else
+                                            <i class="fas fa-star-half fa-stack-1x"></i>
+                                            @endif
+                                            @endif
+                                            @php $score--; @endphp
+                                        </span>
+                                        @endforeach
+                                    </span>
+
+                                    {{$target['libelle']}} </div>
+                            </div>
+                            @endforeach
+                        </div>
+
+                    </div>
 
                     <!-- Description 1 -->
                     <div class="col-xs-12 col-sm-6 desc">
@@ -111,9 +145,9 @@
                     <div class="intro">
                         {!! $item[9]["content"]["introduction"]!!}
                     </div>
-
+                      {{-- {{dd($item[9])}} --}}
                     @foreach($item[9]["content"]["domain"] as $detail)
-
+ 
                     <div class="group-header mt-4">
                         <h4>{{ $detail['label']}}</h4>
                     </div>
@@ -169,7 +203,12 @@
                             <div class="col-xs-12 col-sm-9">
                                 <div class="progress score-bar" style="width: 100%;">
                                     <label for="0" id="percent_start">0</label>
-                                    <div class="progress-bar" style="width:{{$item[$i]["params"]["score"]}}%;
+                                    <?php $score = str_replace(".", "", $item[$i]["params"]["score"]) ?>
+                                    @if(strlen($score) == 1)
+                                    <?php $score .= 0;?>
+                                    @endif
+
+                                    <div class="progress-bar" style="width:{{$score}}%;
                                     color:#000000; background-color: #{!!$item[$i]['params']['couleur']!!} "></div>
                                     <label for=" 10" id="percent_end">10</label>
                                 </div>
