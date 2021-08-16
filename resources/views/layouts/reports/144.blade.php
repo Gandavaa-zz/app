@@ -50,7 +50,7 @@
                 <div class="group-header">
                     {{-- <h2 class="ec-title">THE GRAPH</h2> --}}
                     <figure class="highcharts-figure">
-                        <div style="height: 600px; width: 1308px; margin:0 auto" id="inverted_chart"></div>                        
+                        <div style="height: 600px; width: 1308px; margin:0 auto" id="chart_second"></div>                        
                     </figure>
                 </div>
             </div>
@@ -519,15 +519,16 @@
 </div>
 
 {{-- dd($group_factors) --}}
+@endsection
+
 @section('script')
 
 <script>
         function calcPoint(a, b) {
-            let d = Math.abs((a * b) * 0.58) / Math.abs((a + b) * -0.3);
-            c = d.toFixed(2) / 1.4
-            return parseFloat(c.toFixed(2));
+            let d = Math.abs((a * b) * 0.58) / Math.abs((a + b) * -0.3);            
+            return parseFloat(d.toFixed(2));
         }
-        
+       
         var categories = [];
         var data = [];
         var items = {
@@ -536,49 +537,43 @@
             , type: "area"
             , color: ""            
         };
-        var barChart = [];
 
+        var barChart = [];
         var obj = {};
         var point_start = 0;
 
         @foreach($group_factors as $idx => $group)
            
         @if(isset($group['label']))
+          
           items.name = @json($group['label']);
 
-        @foreach($group['factors'] as $idx => $factor)
+            @foreach($group['factors'] as $idx => $factor)
 
-            var index = parseInt(@json($idx));
+                var index = parseInt(@json($idx));
 
-            if(index%2 ==0 ){               
-
-                categories.push(@json($factor['label']) + " (" + @json($factor['score']) + ")");
-
-                if (@json($group['id']) === @json($factor['group_id'])) {
-
-                    items.data.push(parseFloat(@json($factor['score'])));
-
-                    if (items.data.length < 17) {
-                        console.log("length: ", categories.length);
-                        for (let i = 1; i < 17; i++) {
-                            items.data.push(null);
+                if(index%2 ==0 ){               
+                    categories.push(@json($factor['label']) + " (" + @json($factor['score']) + ")");
+                    if (@json($group['id']) === @json($factor['group_id'])) {
+                        items.data.push(parseFloat(@json($factor['score'])));
+                        if (items.data.length < 17) {
+                            console.log("length: ", categories.length);
+                            for (let i = 1; i < 17; i++) {
+                                items.data.push(null);
+                            }
                         }
+                        items.color = '#' + @json($factor['color']);
                     }
-                    items.color = '#' + @json($factor['color']);
-                }
-
-            }
-        
-        @endforeach
-        data.push(items);
-
-        console.log("data", data);
-        items = {
-            data: []
-            , name: ""
-            , type: "area"
-            , color: ""            
-        };
+                }         
+            
+            @endforeach
+                data.push(items);
+                items = {
+                    data: []
+                    , name: ""
+                    , type: "area"
+                    , color: ""            
+                };
         @endif
         @endforeach
 
@@ -605,11 +600,13 @@
             var val, index = 0;
                 for (let i = 0; i < 16; i++) {                    
                     if (key == 0 && i == 0) new_data[i] = calcPoint(matrix[key][0], matrix[1][6]);
-                    if (key == 1 && i == 14) new_data[i] = calcPoint(matrix[key][0], matrix[1][6]);
+                    if (key == 1 && i == 14) {
+                        new_data[i] = calcPoint(matrix[0][0], matrix[1][6]);                        
+                    }
                     if (key == 0 && i== 14) new_data[i] = calcPoint(matrix[key][6], matrix[1][key]);
                     if (key == 1 && i == 0){
                         new_data[i] = calcPoint(matrix[key][0], matrix[0][6]);
-                        console.log('key10', matrix[key][0]);
+                        // console.log('key10', matrix[key][0]);                        
                     } 
                     else{
                         switch (i) {
@@ -734,6 +731,216 @@
             },
          
             "series": data
+        });
+</script>
+
+
+<script>
+        function calcPoint(a, b) {
+            let d = Math.abs((a * b) * 0.58) / Math.abs((a + b) * -0.3);            
+            return parseFloat(d.toFixed(2));
+        }
+       
+        var categories = [];
+        var data2 = [];
+        var items2 = {
+            data: []
+            , name: ""
+            , type: "area"
+            , color: ""            
+        };
+
+        var barChart = [];
+        var obj = {};
+        var point_start = 0;
+
+        @foreach($group_factors as $idx => $group)
+           
+        @if(isset($group['label']))
+          
+          items2.name = @json($group['label']);
+
+            @foreach($group['factors'] as $idx => $factor)
+
+                var index = parseInt(@json($idx));
+
+                if(index%2 ==1 ){               
+                    categories.push(@json($factor['label']) + " (" + @json($factor['score']) + ")");
+                    if (@json($group['id']) === @json($factor['group_id'])) {
+                        items2.data.push(parseFloat(@json($factor['score'])));
+                        if (items2.data.length < 17) {
+                            console.log("length: ", categories.length);
+                            for (let i = 1; i < 17; i++) {
+                                items2.data.push(null);
+                            }
+                        }
+                        items2.color = '#' + @json($factor['color']);
+                    }
+                }         
+            
+            @endforeach
+                data2.push(items2);
+                items2 = {
+                    data: []
+                    , name: ""
+                    , type: "area"
+                    , color: ""            
+                };
+        @endif
+        @endforeach
+
+        // эхний утгийг нь 
+        var new_data = Array(15).fill(null), matrix = [], n = 0, m = 0;
+
+        for (const [key, value] of Object.entries(data2)) {
+            if (key == 0) data2[key].pointStart = -12.5;                 
+            else if (key == 1) data2[key].pointStart = 162.5;
+            matrix[n] = [];
+            value.data.map((el, index) => {
+                if (el !== null){
+                    matrix[n][m] = el;
+                    m++;
+                }                
+            });
+            n++; m = 0;  
+        }
+        console.log("matrix2", matrix);
+
+        var j = 1;
+        for (const [key, value] of Object.entries(data2)) {
+            // first value-g avna
+            var val, index = 0;
+                for (let i = 0; i < 16; i++) {                    
+                    if (key == 0 && i == 0) new_data[i] = calcPoint(matrix[key][0], matrix[1][6]);
+                    if (key == 1 && i == 14) {
+                        new_data[i] = calcPoint(matrix[0][0], matrix[1][6]);                        
+                    }
+                    if (key == 0 && i== 14) new_data[i] = calcPoint(matrix[key][6], matrix[1][key]);
+                    if (key == 1 && i == 0){
+                        new_data[i] = calcPoint(matrix[key][0], matrix[0][6]);
+                        // console.log('key10', matrix[key][0]);                        
+                    } 
+                    else{
+                        switch (i) {
+                            case 1: new_data[i] = matrix[key][0]; break;
+                            case 3: new_data[i] = matrix[key][1]; break;
+                            case 5: new_data[i] = matrix[key][2]; break;
+                            case 7: new_data[i] = matrix[key][3]; break;
+                            case 9: new_data[i] = matrix[key][4]; break;
+                            case 11: new_data[i] = matrix[key][5]; break;                        
+                            case 13: new_data[i] = matrix[key][6]; break;                                            
+                            case 15: new_data[i] = 0; break;                                
+                        }
+                    }
+                }                
+            value.data = new_data;            
+            new_data = Array(15).fill(null);
+        }
+        
+        Highcharts.chart('chart_second', {
+            chart: {
+                marginTop: 30
+                , polar: true
+                , type: ''
+            , }
+            , "title": {
+                "text": ""
+            }
+            , "credits": {
+                "enabled": false
+            }
+            , "tooltip": {
+                "enabled": false
+            }
+            , "yAxis": {
+                "max": 10
+                , "lineColor": "#FFFFFF"
+                , "tickInterval": 2
+                , "gridLineWidth": 1
+                , "gridLineColor": "#EEEEEE"
+                , "plotLines": [{
+                    "color": "#AAAAAA"
+                    , "dashStyle": "LongDash"
+                    , "value": 10
+                    , "width": 1
+                }, {
+                    "color": "#EEEEEE"
+                    , "dashStyle": "Dash"
+                    , "value": 1
+                    , "width": 1
+                }, {
+                    "color": "#EEEEEE"
+                    , "dashStyle": "Dash"
+                    , "value": 3
+                    , "width": 1
+                }, {
+                    "color": "#EEEEEE"
+                    , "dashStyle": "Dash"
+                    , "value": 7
+                    , "width": 1
+                }, {
+                    "color": "#EEEEEE"
+                    , "dashStyle": "Dash"
+                    , "value": 9
+                    , "width": 1
+                }]
+                , "labels": {
+                    "enabled": false
+                }
+            }
+            , "plotOptions": {
+                "series": {
+                    "animation": false
+                    , "showInLegend": true
+                    , "marker": {
+                        "enabled": false
+                        , "states": {
+                            "hover": {
+                                "enabled": false
+                            }
+                        }
+                    }
+                    , "connectNulls": true
+                    , "pointPlacement": "on"
+                    , "pointInterval": 12.5
+                }
+                , "area": {
+                    "lineWidth": 1
+                }
+            },
+
+            "xAxis": {
+                "max": 10
+                , "startOnTick": true
+                , "endOnTick": true
+                , "lineWidth": 0
+                , "gridLineWidth": 1
+                , "labels": {
+                    "distance": 30
+                    , "style": {
+                        "width": "140px"
+                        , "color": "#000000"
+                        , "fontSize": "14px"
+                        , "fontWeight": "normal"
+                        , "fontFamily": "\"roboto\", \"Arial\", sans-serif"
+                    }
+                    , "formatter": function() {
+                        console.log('this value');
+                        var sReturn = ''
+                            , iIndex = this.value / 25
+                            , oCategories = categories;
+
+                        if (oCategories[iIndex] !=
+                            undefined) {
+                            sReturn += oCategories[iIndex];
+                        }
+                        return sReturn;
+                    }
+                }
+                , "tickPositions": [0, 25, 50, 75, 100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350]
+            },
+         
+            "series": data2
             // [{
             //     "color": "#F781BE",
             //     "name": "fdsfdsfd",
@@ -750,8 +957,8 @@
 
         });
 
-        console.log(calcPoint(6.3, 5.6));
 
     </script>
-@endsection
+
+
 @endsection
