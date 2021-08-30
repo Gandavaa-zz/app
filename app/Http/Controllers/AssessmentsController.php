@@ -6,13 +6,15 @@ use App\Candidate;
 use App\Group;
 use App\Test;
 use App\Translation;
+use Barryvdh\DomPDF\PDF as DomPDFPDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use DateTime;
-use \PDF;
+use Illuminate\Support\Facades\App;
+use Spatie\Browsershot\Browsershot;
 
 class AssessmentsController extends Controller
 {
@@ -96,10 +98,16 @@ class AssessmentsController extends Controller
     // print assessment as pdf
     public function generatePDF()
     {
-        $data = [];
-        $view = PDF::loadView('layouts.reports.components.generatePDF');
-        // $view = View('layouts.components.generatePDF', []);
-        return $view->download('hello.pdf');
+        // $save_to_file = '/D:/file.pdf';
+        $organization = [];
+        // $html = \View::make('layouts.reports.components.generatePDF', compact('organization'))->render();
+        // $data = $this->report(9864681, "pdf");
+        Browsershot::html('<h1>xaxa</h2>')
+            ->dismissDialogs()
+            ->setNodeBinary('PATH %~dp0;%PATH%;')
+            ->bodyHtml();
+        // dd($file);
+
     }
 
 
@@ -191,7 +199,7 @@ class AssessmentsController extends Controller
      * @return string $xml of results
      */
 
-    public function report($assessment_id)
+    public function report($assessment_id, $type = null)
     {
         if (!Storage::exists("/assets/assessments/{$assessment_id}.xml")) {
             $response = Http::withHeaders([
@@ -688,6 +696,9 @@ class AssessmentsController extends Controller
             $data["parties"] = $this->replaceChar($this->getMNText($candidate_name), $party);
         }
         // dd($data);
+        if ($type) {
+            return $data;
+        }
         return view('layouts.reports.' . $data['general']['test_id'], compact('data'));
     }
 

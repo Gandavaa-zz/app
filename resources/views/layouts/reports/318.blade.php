@@ -251,11 +251,30 @@
             </div>
         </div>
     </div>
+
     {{-- 4 - General Profile ends --}}
     <!-- /endsection -->
     @endsection
     @section('script')
+
     <script>
+        var doc = new jsPDF();
+        var elementHandler = {
+            '#ignorePDF': function(element, renderer) {
+                return true;
+            }
+        };
+        var source = window.document.getElementsByTagName("body")[0];
+        doc.fromHTML(
+            source
+            , 15
+            , 15, {
+                'width': 180
+                , 'elementHandlers': elementHandler
+            });
+
+        doc.output("dataurlnewwindow");
+
         function findPoint(a, b) {
             let d = ((a * b) * 1 / 2) / ((a + b) * 0.25);
             return parseFloat(d.toFixed(2));

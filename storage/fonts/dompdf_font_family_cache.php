@@ -87,6 +87,9 @@
   'fontawesome' => array(
     'normal' => $fontDir . '/fontawesome_normal_b9be68b0c5f28a446c6cb0ef95254567',
   ),
+  'glyphicons halflings' => array(
+    'normal' => $fontDir . '/glyphicons_halflings_normal_4ced20531a4f462a8c5c535d4debd2eb',
+  ),
   'font awesome\\ 5 brands' => array(
     'normal' => $fontDir . '/font_awesome__5_brands_normal_22bb24d7e40a22981e74ebbfe5eb1618',
   ),
