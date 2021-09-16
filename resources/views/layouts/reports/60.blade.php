@@ -494,6 +494,7 @@
     </div>
     {{-- END WORKPLACE COMPETENCIES --}}
 
+    {{-- dd($group_factors) --}}
 <!-- end row-->
 </div>
 @endsection
@@ -514,36 +515,37 @@
         type: "area",
         color: ""
     };
+
+    // console.log("data:", items.data);
+
     @foreach($group_factors as $idx => $group)
         @if(!str_contains($group['label'], "divers"))
-        items.name = @json($group['label']);
+            items.name = @json($group['label']);
 
             @foreach($group['factors'] as $idx => $factor)
             @if(!str_contains($factor['label'], "(-)") && !str_contains($factor['label'], "Sensitive") && !str_contains($factor['label'], "Vigilance"))
-             categories.push(@json($factor['label']) + " (" + @json($factor['score']) + ")");
+                categories.push(@json($factor['label']) + " (" + @json($factor['score']) + ")");                             
+                if (@json($group['id']) === @json($factor['group_id'])) {                    
+                    items.data.push(parseFloat(@json($factor['score'])));
+                    items.color = '#' + @json($factor['color']);
+                }
             @endif
-            if (@json($group['id']) === @json($factor['group_id'])) {
-                items.data.push(parseFloat(@json($factor['score'])));
-                items.color = '#' + @json($factor['color']);
-            }
+            
             @endforeach 
-        data.push(items);
 
-        // console.log("data", data);
-        items = {
-            data: [],
-            name: "",
-            type: "area",
-            color: ""
-        };
-        @endif
+            data.push(items);
+            items = {
+                data: [],
+                name: "",
+                type: "area",
+                color: ""
+            };
+           
+        @endif       
     @endforeach
 
-    console.log("categories - ", categories);
-
     // эхний утгийг нь 
-    var new_data = [], previous = [];
-    var matrix = [],n =0, m = 0;
+    var new_data =Array(12).fill(null), odd =Array(8).fill(null), even=Array(6).fill(null), matrix = [],n =0, m = 0;
 
     for (const [key, value] of Object.entries(data)) {  
         if(key == 0) data[key].pointStart= -9.5;
@@ -551,48 +553,74 @@
         else if(key == 2) data[key].pointStart= 161.5;
         else if(key == 3) data[key].pointStart= 275.5;
         matrix[n] = [];
-        value.data.map((el, index) => {                        
+        value.data.forEach(el => {                                    
             if(el !==null ){ 
                 matrix[n][m] = el;
                 m ++;
             }                         
         });
-        n++;
-        m = 0;                                                            
+        n++; m = 0;                                                            
     }
-
-    console.log("matrix: ", matrix);                               
+                                     
     for (const [key, value] of Object.entries(data)) {
         // first value-g avna
-        var first, second, third;                     
-        value.data.map((el, index) => {                                                
-            if(index===0) first = el;                            
-            else if(index === 7) second = el;
-            else if(index === 8) third = el                                                
-        });
-        
-        for(let i=0; i<9; i++){                        
-            if( i==0){
-                if(key==0) new_data[i] = findPoint(first, matrix[parseInt(3-key)][2]);                                
-                else new_data[i] = previous[6];                                                                         
-            }else if(i==1) new_data[i] = first;
-            else if(i==3) new_data[i] = second;
-            else if(i==5) new_data[i] = third;
-            else if(i==6){                            
-                if(key == 0) new_data[i] = findPoint(matrix[1][0], third);
-                else if(key == 1) new_data[i] = findPoint(matrix[2][0], third);
-                else if(key == 2) new_data[i] = findPoint(matrix[3][0], third);
-                else if(key ==3)  new_data[i] = findPoint(matrix[0][0], third);                            
-            }
-            else if(i==9) new_data[i] = 0;                        
-            else new_data.push(null);
-            previous = new_data; 
-        }                                                           
-        value.data = new_data;
-        new_data = [];                    
+        if( key == 0 || key == 2){
+            for (let i = 0; i < 14; i++) {                    
+                if (key == 0 && i == 0) new_data[i] = findPoint(matrix[key][0], matrix[3][3]);                            
+                else if (key == 0 && i == 12) new_data[i] = findPoint(matrix[key][5], matrix[1][0]);                                          
+                else if (key == 2  && i==0) new_data[i] = findPoint(matrix[key][i], matrix[1][2]);                        
+                else if (key == 2 && i==12) new_data[i] = findPoint(matrix[key][5], matrix[3][0]);                        
+                else{
+                    switch (i) {                    
+                        case 1: new_data[i] = matrix[key][0]; break;
+                        case 3: new_data[i] = matrix[key][1]; break;
+                        case 5: new_data[i] = matrix[key][2]; break;
+                        case 7: new_data[i] = matrix[key][3]; break;
+                        case 9: new_data[i] = matrix[key][4]; break;
+                        case 11: new_data[i] = matrix[key][5]; break;
+                        case 13: new_data[i] = 0; break;                                
+                    }
+                }
+            }    
+            value.data = new_data; 
+        }else if( key == 1){
+            for (let i = 0; i < 8; i++) {                      
+                switch (i) {                    
+                    case 1: even[i] = matrix[key][0];                         
+                    break;
+                    case 3: even[i] = matrix[key][1];                                 
+                    break;
+                    case 5: even[i] = matrix[key][2]; break;
+                    case 7: even[i] = 0; break;                                
+                }
+                if (i == 0) even[i] = findPoint(matrix[key][i], matrix[0][5]);                            
+                else if (i == 6) even[i] = findPoint(matrix[key][2], matrix[2][0]);                                                 
+            }    
+            value.data = even;            
+        }
+        else if( key == 3){
+            for (let i = 0; i < 10; i++) {                                    
+                if (i==0) odd[i] = findPoint(matrix[key][i], matrix[2][5]);                                        
+                else if (i==8){
+                    odd[i] = findPoint(matrix[key][3], matrix[0][0]);                                                           
+                } 
+                else{
+                    switch (i) {                    
+                        case 1: odd[i] = matrix[key][0]; break;
+                        case 3: odd[i] = matrix[key][1]; break;
+                        case 5: odd[i] = matrix[key][2]; break;                                            
+                        case 7: odd[i] = matrix[key][3]; break;                                            
+                        case 9: odd[i] = 0; break;                                
+                    }
+                }
+            }             
+            value.data = odd;   
+        }
+        new_data = Array(12).fill(null);                
+        odd = Array(8).fill(null);                        
+        even = Array(6).fill(null);                        
     }
-
-    console.log("data - ", data);
+    
     Highcharts.chart('chart', {
         chart: {
             marginTop: 30,
@@ -672,7 +700,7 @@
             "lineWidth": 0,
             "gridLineWidth": 1,
             "labels": {
-                "distance": 15,
+                "distance": 20,
                 "style": {
                     "width": "140px",
                     "color": "#000000",
@@ -682,7 +710,7 @@
                 },
                 formatter: function () {
                     var sReturn = '',
-                        iIndex = this.value / 19,
+                        iIndex = this.value /19,
                         oCategories = categories;
 
                     if (oCategories[iIndex] !=
@@ -692,10 +720,12 @@
                     return sReturn;
                 }
             },
-               "tickPositions": [0,19,38,57,76,95,114,133,152,171,190,209,228,247,266,285,304,323,342]
+               "tickPositions": [0,19,38,57,76,95,114,133,152,171,190,209,228,247,266,285,304,323,342, 361]
         },
         
         "series":  data
+  
+
 
     });
 </script>

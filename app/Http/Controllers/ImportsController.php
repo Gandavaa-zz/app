@@ -26,7 +26,6 @@ class ImportsController extends Controller
         return view('layouts.import.index', compact('tests'));
     }
 
-
     /**
      * Store a newly created resource in test_translation.
      *
@@ -44,15 +43,9 @@ class ImportsController extends Controller
             'WWW-Authenticate' => $this->token
         ])->get('https://app.centraltest.com/customer/REST/assessment/paginate/completed/json',  $filter);
 
-        // return $response;
-
-        // if assessment_id in imported test then get next index of id
-        // for ($i=0; $i<10; $i++){
-            // тухайн id-р assessment_id-н утга байхгүй бол insert хийнэ!
-            // ImportedTestAssessment            
-        // }
-
-        $assessment_id = $response['result']['data'][0]['id'];
+        // if assessment_id in imported test then get next index of id        
+        $id = rand(0, 50);
+        $assessment_id = $response['result']['data'][$id]['id'];
 
         if (!Storage::exists("/assets/assessments/{$assessment_id}.xml")) {
             $response = Http::withHeaders([
@@ -71,15 +64,12 @@ class ImportsController extends Controller
         // test-n xml avchlaa
         $contents = Storage::get("assets/assessments/{$assessment_id}.xml");
         $xml = xml_decode($contents);
-
         // return $xml;
-
         $this->candidate_name = $xml["noyau_utilisateur_info"]["prenom"] . " " . $xml["noyau_utilisateur_info"]["nom"];
         
         foreach ($xml['elements']['test_groupe_facteurs']['test_groupe_facteur'] as $value) {            
             foreach ($xml['elements']['test_facteurs']['test_facteur'] as $factors) {
                 // insert this content 
-                
                 $this->save($insert = $factors["contenus"]["contenu"]["libelle"]);
 
                 if ($factors["@attributes"]["test_groupe_facteur_id"] == $value["@attributes"]["id"]) {

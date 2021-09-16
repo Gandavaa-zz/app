@@ -105,38 +105,19 @@
                     </svg> Жагсаалт
                 </a>
             </li>
+            @hasanyrole('admin|super-admin')
             <li class="c-sidebar-nav-item c-sidebar-nav-dropdown">
             <a class="c-sidebar-nav-link" href="{{ route('import.index')}}">
                 <svg class="c-sidebar-nav-icon">
                   <use xlink:href="{{ asset('icons/sprites/free.svg#cil-cloud-download') }}"></use>
                 </svg> АPI Импорт</a>
             </li>
+            @endhasrole
         </ul>
     </li>
 
-    @hasanyrole('writer|admin')
-    <li class="c-sidebar-nav-item c-sidebar-nav-dropdown"><a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
-            <svg class="c-sidebar-nav-icon">
-                <use xlink:href="{{ asset('icons/sprites/free.svg#cil-description') }}"></use>
-            </svg> Тест</a>
-        <ul class="c-sidebar-nav-dropdown-items">
-            <li class="c-sidebar-nav-item">
-                <a class="c-sidebar-nav-link" href="{{ route('test.index') }} ">
-                    <svg class="c-sidebar-nav-icon">
-                        <use xlink:href="{{ asset('icons/sprites/free.svg#cil-list') }}"></use>
-                    </svg> Жагсаалт
-                </a>
-            </li>
-            <li class="c-sidebar-nav-item">
-                <a class="c-sidebar-nav-link" href="{{ route('test.index') }} ">
-                    <svg class="c-sidebar-nav-icon">
-                        <use xlink:href="{{ asset('icons/sprites/free.svg#cil-spreadsheet') }}"></use>
-                    </svg> Үр дүн
-                </a>
-            </li>
-        </ul>
-    </li>
-
+    @hasanyrole('manager')
+    
     <li class="c-sidebar-nav-item c-sidebar-nav-dropdown">
         <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
             <svg class="c-sidebar-nav-icon">
@@ -159,30 +140,9 @@
             </li>
         </ul>
     </li>
-
-    <!-- <li class="c-sidebar-nav-item c-sidebar-nav-dropdown">
-        <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
-            <svg class="c-sidebar-nav-icon">
-                <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-grain"></use>
-            </svg> Үр дүн нийцүүлэх</a>
-        <ul class="c-sidebar-nav-dropdown-items">
-            <li class="c-sidebar-nav-item">
-                <a class="c-sidebar-nav-link" href="{{ route('participants') }} ">
-                    <svg class="c-sidebar-nav-icon">
-                        <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-list"></use>
-                    </svg> Үр дүн менежмент
-                </a>
-            </li>
-            <li class="c-sidebar-nav-item">
-                <a class="c-sidebar-nav-link" href="{{ route('test') }} ">
-                    <svg class="c-sidebar-nav-icon">
-                        <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-archive"></use>
-                    </svg> Архив
-                </a>
-            </li>
-        </ul>
-    </li> -->
+   
     @endhasanyrole
+
     <li class="c-sidebar-nav-title">Нэмэлт</li>
     <li class="c-sidebar-nav-item c-sidebar-nav-dropdown"><a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
             <svg class="c-sidebar-nav-icon">

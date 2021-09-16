@@ -84,12 +84,11 @@
                         <svg class="c-icon mr-2">
                             <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-settings"></use>
                         </svg> Settings</a>
-                    <div class="dropdown-divider"></div><a class="dropdown-item" href="#">                       
+                    <div class="dropdown-divider"></div><a class="dropdown-item" href="/logout">                       
                         <svg class="c-icon mr-2">
                             <use xlink:href="{{ env('APP_URL', '') }}/icons/sprites/free.svg#cil-account-logout"></use>
                         </svg>
-                        <form action="{{ env('APP_URL', '') }}/logout" method="POST"> @csrf <button type="submit"
-                                class="btn btn-ghost-dark btn-block">Logout</button></form>
+                        Гарах
                     </a>
                 </div>
             </li>

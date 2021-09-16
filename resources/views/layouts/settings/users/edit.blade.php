@@ -85,6 +85,22 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <label for="password" class="col-md-4 col-form-label text-md-right">Current Password</label>
+  
+                            <div class="col-md-6">
+                                <input id="password" type="password" class="form-control" name="current_password" autocomplete="current-password">
+                            </div>
+                        </div>
+  
+                        <div class="form-group row">
+                            <label for="password" class="col-md-4 col-form-label text-md-right">New Password</label>
+  
+                            <div class="col-md-6">
+                                <input id="new_password" type="password" class="form-control" name="new_password" autocomplete="current-password">
+                            </div>
+                        </div>
+
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
@@ -96,6 +112,8 @@
                                 </a>
                             </div>
                         </div>
+
+                        update(['password'=> Hash::make($request->new_password)]);
                     </form>
                 </div>
             </div>

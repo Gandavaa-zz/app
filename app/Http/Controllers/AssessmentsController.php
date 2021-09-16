@@ -201,7 +201,7 @@ class AssessmentsController extends Controller
         $xml = $this->replaceName($candidate_name, json_encode($xml));
         // general
         $xml = json_decode($xml, true);
-        // dd($xml);
+        // return $xml;
         $started_at = new DateTime($xml['params']['date_passation_debut']);
         $completed_at = new DateTime($xml['params']['date_passation_fin']);
         $passed_dt = $started_at->diff($completed_at);
@@ -636,7 +636,7 @@ class AssessmentsController extends Controller
                     'type' =>  $value["@attributes"]["type"],
                     'params' =>  $value['params'],
                     'content' => array(
-                        'label' => $this->getMNText($value["contenus"]["contenu"]["libelle"]),
+                        'label' => $this->getMNText(isset($value["contenus"]["contenu"]["libelle"]) ? $value["contenus"]["contenu"]["libelle"]: null),
                         'title' => $this->getMNText(isset($value["contenus"]["contenu"]["titre"]) ? $value["contenus"]["contenu"]["titre"] : null),
                         'targets' => isset($value["contenus"]["contenu"]["targets"]) ? $value["contenus"]["contenu"]["targets"] : null,
                         'sub_title' => $this->getMNText(isset($value["contenus"]["contenu"]["sous_titre"]) ? $value["contenus"]["contenu"]["sous_titre"] : null),

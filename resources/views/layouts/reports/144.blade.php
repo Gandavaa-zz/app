@@ -15,12 +15,14 @@
     @php $item = $data["parties"]["party"]; @endphp
     @php $group_factors = $data["group_factors"]; @endphp
 
-    
-
+   
     {{-- 1 - THE GRAPH --}}
     @if (str_contains($item[0]['type'], 'ancre'))
-    <h2 class="card-title">{{ $item[0]["params"]["menuNumber"] }} -
-        {{$item[0]["content"]["title"]}} </h2>
+        <h2 class="card-title">{{ $item[0]["params"]["menuNumber"] }} -
+            @php 
+            echo isset($item[0]["content"]["title"])? $item[0]["content"]["title"] : 'График';
+            @endphp
+        </h2>
     @endif
     <div class="col-md-12" id="{{ $item[0]["content"]["title"]}}">
         <div class="card">
@@ -318,7 +320,8 @@
                 {!! $item[26]["content"]["introduction"] !!}
                 <div class="adoquetion">
 
-                    @if (isset($item[26]['adequacy']))
+                    @if (!empty($item[26]['adequacy']))
+                    {{ dd($item[26]['adequacy']) }}       
                     {{-- {{dd($item[26])}} --}}
                     <div class="mt-3 mb-3">
                         <h5>
@@ -328,24 +331,25 @@
                     </div> --}}
                     </div>
                     @foreach ($item[26]['adequacy'] as $key => $adequacy)
-                    @if(isset($adequacy))
-
-                    @foreach($adequacy['adequation_profile'] as $index=> $profile)
-                    <div class="row">
-                        <div class="col-xs-1 col-md-1 col-sm-1">{{$key+1}}</div>
-                        <div class="col-xs-11 col-md-6 col-sm-5 word-break">
-                            {{$profile['test_ref_adequation']['label']}}
-                        </div>
-                        <div class="col-xs-7 col-md-3 col-sm-5 add-md-print">
-                            <div class="progress">
-                                <div class="progress-bar ec-first-bg-color ec-first-text-color" style="width: {{$adequacy['pourcentage_score']}}%;"></div>
+                   
+                    @if(isset($adequacy))                                        
+             
+                        @foreach($adequacy['adequation_profile'] as $index=> $profile)
+                        <div class="row">
+                            <div class="col-xs-1 col-md-1 col-sm-1">{{$key+1}}</div>
+                            <div class="col-xs-11 col-md-6 col-sm-5 word-break">
+                                {{$profile['test_ref_adequation']['label']}}
+                            </div>
+                            <div class="col-xs-7 col-md-3 col-sm-5 add-md-print">
+                                <div class="progress">
+                                    <div class="progress-bar ec-first-bg-color ec-first-text-color" style="width:{{$adequacy['pourcentage_score']}}%;"></div>
+                                </div>
+                            </div>
+                            <div class="col-xs-2 col-md-1 col-sm-1 remove-md-print">
+                                {{$adequacy['pourcentage_score']}}%
                             </div>
                         </div>
-                        <div class="col-xs-2 col-md-1 col-sm-1 remove-md-print">
-                            {{$adequacy['pourcentage_score']}}%
-                        </div>
-                    </div>
-                    @endforeach
+                        @endforeach
                     @endif
                     @endforeach
                     {{-- {{dd($adequacy)}} --}}
@@ -388,7 +392,7 @@
     {{-- 7 - POTENTIALS --}}
     @if (str_contains($item[27]['type'], 'ancre'))
     <h2 class="card-title">
-        {{ $item[25]["params"]["menuNumber"] }} -
+        {{ $item[27]["params"]["menuNumber"] }} -
         {{ __($item[27]["content"]["title"]) }} </h2>
     @endif
 
@@ -462,7 +466,7 @@
     {{-- 8 - HOW DIFFERENT PROFESSIONS SUIT THE PROFILE STARTS --}}
     @if (str_contains($item[29]['type'], 'ancre'))
     <h2 class="card-title">
-        {{ $item[25]["params"]["menuNumber"] }} -
+        {{ $item[29]["params"]["menuNumber"] }} -
         {{ __($item[29]["content"]["title"]) }} </h2>
     @endif
 
@@ -477,37 +481,43 @@
                     @foreach ($item[30]['adequacy'] as $key => $adequacy)
                     @if(isset($adequacy))
                     <div class="mt-3 mb-3">
-                        <h5>{!! $adequacy['adequation_profile']['label'] !!}</h5>
+                        @if(!empty($adequacy['adequation_profile']['label']))
+                            <h5>{!! $adequacy['adequation_profile']['label'] !!}</h5>
+                        @endif
                     </div>
-                    @foreach($adequacy['adequation_profile']['test_ref_adequation'] as $index=> $profile)
-                    <div class="row">
-                        <div class="col-xs-1 col-md-1 col-sm-1">{{$index+1}}</div>
-                        <div class="col-xs-11 col-md-5 col-sm-5 word-break">
-                            {{$profile['label']}}
-                        </div>
-                        <div class="col-xs-7 col-md-3 col-sm-5 add-md-print">
-                            <div class="progress">
-                                <div class="progress-bar ec-first-bg-color ec-first-text-color" style="width: {{$profile['pourcentage_score']}}%;"></div>
+                        @if(!empty($adequacy['adequation_profile']['test_ref_adequation']))
+                            @foreach($adequacy['adequation_profile']['test_ref_adequation'] as $index=> $profile)
+                            <div class="row">
+                                <div class="col-xs-1 col-md-1 col-sm-1">{{$index+1}}</div>
+                                <div class="col-xs-11 col-md-5 col-sm-5 word-break">
+                                    @if(!empty($profile['label']) && isset($profile['label']))
+                                        {{$profile['label']}}
+                                    @endif
+                                </div>
+                                <div class="col-xs-7 col-md-3 col-sm-5 add-md-print">
+                                    <div class="progress">
+                                        <div class="progress-bar ec-first-bg-color ec-first-text-color" style="width: {{$profile['pourcentage_score']}}%;"></div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-2 col-md-1 col-sm-1 remove-md-print">
+                                    {{$profile['pourcentage_score']}}%
+                                </div>
+                                {{-- <div class="col-xs-2 col-md-1 col-sm-1 remove-md-print" data-toggle="collapse" data-target="#{{$index}}" class="accordion-toggle">
+                                    <p class="t-right">{{ __('Details') }}</p>
+                                </div>
+
+                                <div class="hiddenRow">
+                                    <div class="accordian-body collapse hiddenRow" id="{{$index}}">
+                                        @if($profile['description_long'])
+                                        {!! $profile['description_long'] !!}
+                                        @endif
+
+                                    </div>
+                                </div> --}}
+
                             </div>
-                        </div>
-                        <div class="col-xs-2 col-md-1 col-sm-1 remove-md-print">
-                            {{$profile['pourcentage_score']}}%
-                        </div>
-                        {{-- <div class="col-xs-2 col-md-1 col-sm-1 remove-md-print" data-toggle="collapse" data-target="#{{$index}}" class="accordion-toggle">
-                            <p class="t-right">{{ __('Details') }}</p>
-                        </div>
-
-                        <div class="hiddenRow">
-                            <div class="accordian-body collapse hiddenRow" id="{{$index}}">
-                                @if($profile['description_long'])
-                                {!! $profile['description_long'] !!}
-                                @endif
-
-                            </div>
-                        </div> --}}
-
-                    </div>
-                    @endforeach
+                            @endforeach
+                        @endif
                     @endif
                     @endforeach
                     @endif
@@ -598,29 +608,29 @@
         for (const [key, value] of Object.entries(data)) {
             // first value-g avna
             var val, index = 0;
-                for (let i = 0; i < 16; i++) {                    
-                    if (key == 0 && i == 0) new_data[i] = calcPoint(matrix[key][0], matrix[1][6]);
-                    if (key == 1 && i == 14) {
-                        new_data[i] = calcPoint(matrix[0][0], matrix[1][6]);                        
+            for (let i = 0; i < 16; i++) {                    
+                if (key == 0 && i == 0) new_data[i] = calcPoint(matrix[key][0], matrix[1][6]);
+                if (key == 1 && i == 14) {
+                    new_data[i] = calcPoint(matrix[0][0], matrix[1][6]);                        
+                }
+                if (key == 0 && i== 14) new_data[i] = calcPoint(matrix[key][6], matrix[1][key]);
+                if (key == 1 && i == 0){
+                    new_data[i] = calcPoint(matrix[key][0], matrix[0][6]);
+                    // console.log('key10', matrix[key][0]);                        
+                } 
+                else{
+                    switch (i) {
+                        case 1: new_data[i] = matrix[key][0]; break;
+                        case 3: new_data[i] = matrix[key][1]; break;
+                        case 5: new_data[i] = matrix[key][2]; break;
+                        case 7: new_data[i] = matrix[key][3]; break;
+                        case 9: new_data[i] = matrix[key][4]; break;
+                        case 11: new_data[i] = matrix[key][5]; break;                        
+                        case 13: new_data[i] = matrix[key][6]; break;                                            
+                        case 15: new_data[i] = 0; break;                                
                     }
-                    if (key == 0 && i== 14) new_data[i] = calcPoint(matrix[key][6], matrix[1][key]);
-                    if (key == 1 && i == 0){
-                        new_data[i] = calcPoint(matrix[key][0], matrix[0][6]);
-                        // console.log('key10', matrix[key][0]);                        
-                    } 
-                    else{
-                        switch (i) {
-                            case 1: new_data[i] = matrix[key][0]; break;
-                            case 3: new_data[i] = matrix[key][1]; break;
-                            case 5: new_data[i] = matrix[key][2]; break;
-                            case 7: new_data[i] = matrix[key][3]; break;
-                            case 9: new_data[i] = matrix[key][4]; break;
-                            case 11: new_data[i] = matrix[key][5]; break;                        
-                            case 13: new_data[i] = matrix[key][6]; break;                                            
-                            case 15: new_data[i] = 0; break;                                
-                        }
-                    }
-                }                
+                }
+            }                
             value.data = new_data;   
             console.log('new', new_data);                     
             new_data = Array(15).fill(null);

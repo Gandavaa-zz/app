@@ -78,7 +78,7 @@
             <li class="c-header-nav-item dropdown"><a class="c-header-nav-link" data-toggle="dropdown" href="#"
                     role="button" aria-haspopup="true" aria-expanded="false">
                     <div class="c-avatar">
-                    @if ( null !== auth()->user()->avatar())
+                    @if (auth()->user()->avatar())
                         <img class="c-avatar-img"
                         src="{{ auth()->user()->avatar() }}" alt="user@email.com">
                     @endif

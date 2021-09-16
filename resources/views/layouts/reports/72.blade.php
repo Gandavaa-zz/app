@@ -315,7 +315,6 @@
     }
     @endforeach
     data.push(items);
-
     // console.log("data", data);
     items = {
         data: []
@@ -329,12 +328,7 @@
     console.log("categories - ", categories);
 
     // эхний утгийг нь 
-    var new_data = []
-        , previous = [];
-    var matrix = []
-        , n = 0
-        , m = 0;
-
+    var matrix = [], n = 0, m = 0, new_data = Array(15).fill(null);
 
     for (const [key, value] of Object.entries(data)) {
         if (key == 0) data[key].pointStart = -13;
@@ -345,48 +339,30 @@
                 matrix[n][m] = el;
                 m++;
             }
-        });
-
-
-        n++;
-        m = 0;
+        });        n++;        m = 0;
     }
   console.log("matrix: ", matrix);
     for (const [key, value] of Object.entries(data)) {
-        var first, second;
-        value.data.map((el, index) => {
-            if (index == 0) first = el;
-            else if (index == 1) second = el;
-        });
-        console.log("previous: ", findPoint(first, matrix[parseInt(1 - key)][6]))
-        for (let i = 0; i < 14; i++) {
-            if (i == 0) {
-                // hamgiin ehnii muriin tseguudiig tootsoh
-                // data : {calc 4 null 6 calc 0 }
-                // findpoint(matrix[0][0], matrix[5][1])
-                if (key == 0) new_data[0] = findPoint(first, matrix[parseInt(13 - key)][0]);
-                else
-                    new_data[i] = previous[4]
-            } else if (i == 1) new_data[i] = first;
-            else if (i == 3) new_data[i] = second;
-            else if (i == 4) {
-                if (key == 0) new_data[i] = findPoint(matrix[1][0], second);
-                else if (key == 1) new_data[i] = findPoint(matrix[2][0], second);
-                else if (key == 2) new_data[i] = findPoint(matrix[3][0], second);
-                else if (key == 3) new_data[i] = findPoint(matrix[4][0], second);
-                else if (key == 4) new_data[i] = findPoint(matrix[5][0], second);
-                else if (key == 5) new_data[i] = findPoint(matrix[0][0], second);
-            } else if (i == 5) new_data[i] = 0;
-            else new_data.push(null);
-            previous = new_data;
 
+        for (let i = 0; i < 16; i++) {
+            switch (i) {
+                case 1: new_data[i] = matrix[key][0]; break;
+                case 3: new_data[i] = matrix[key][1]; break;
+                case 5: new_data[i] = matrix[key][2]; break;
+                case 7: new_data[i] = matrix[key][3]; break;
+                case 9: new_data[i] = matrix[key][4]; break;
+                case 11: new_data[i] = matrix[key][5]; break;                        
+                case 13: new_data[i] = matrix[key][6]; break;                                            
+                case 15: new_data[i] = 0; break;                                
+            }
+            if (key == 0 && i==0) new_data[i] = findPoint(matrix[key][i],matrix[1][6]);
+            else if (key == 0 && i==14) new_data[i] = findPoint(matrix[key][6], matrix[1][0]);
+            if (key==1 && i==0) new_data[i] = findPoint(matrix[key][i],matrix[0][6]);
+            else if (key==1 && i==14) new_data[i] = findPoint(matrix[key][6], matrix[0][0]);            
         }
-        value.data = new_data;
-        console.log("new_data - ", new_data);
-        new_data = [];
-
+        value.data = new_data;                
+        new_data = Array(15).fill(null);
     }
-
     console.log("data - ", data);
     Highcharts.chart('chart', {
         chart: {
@@ -453,7 +429,7 @@
                 }
                 , "connectNulls": true
                 , "pointPlacement": "on"
-                , "pointInterval": 9.5
+                , "pointInterval": 13
             }
             , "area": {
                 "lineWidth": 1

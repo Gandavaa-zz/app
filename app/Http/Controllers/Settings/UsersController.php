@@ -70,8 +70,6 @@ class UsersController extends Controller
      */
     public function edit(User $user)
     {
-        return $user;
-
         return view('layouts.settings.users.edit' ,
                     [
                         'user' =>$user

@@ -69,22 +69,19 @@ class TranslationsController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-    /**
      * Store a newly created resource in storage.
-     *
+     * 
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     * todo Хүний нэрийг $-р хадгалах хэрэгтэй ба.
      */
+
     public function store(Request $request)
     {
-        $data = $this->validateInputs();
-        // dd($data);
+        $data = $this->validateInputs('create');   
+       
         $data = Translation::create($data);
+
         return redirect()->route('translations.index')->with('success', 'Асуултыг амжилттай бүртгэлээ!');
     }
 
@@ -289,8 +286,12 @@ class TranslationsController extends Controller
      */
     public function update(Translation $translation)
     {
-        $translation->update($this->validateInputs());
-        return redirect()->route('translations.index')->with('success', 'Орчуулгыг амжилттай шинэчлэлээ!');
+        $translation->update($this->validateInputs());    
+
+        return redirect()->back()->with('success', 'Орчуулгыг амжилттай шинэчлэлээ!');
+        
+        // return view('layouts.translation.edit', ['translation' => $translation])
+        // return redirect('translations/?test_id='.request('test_id'))->with('success', 'Орчуулгыг амжилттай шинэчлэлээ!');
     }
 
     /**
@@ -306,9 +307,16 @@ class TranslationsController extends Controller
         return back()->with('success', "Aмжилттай устгалаа!");
     }
 
-    public function validateInputs()
-    {
-        return request()->validate([
+    public function validateInputs($method = null)
+    {        
+        if( $method =='create')
+            return request()->validate([
+                'test_id' => ['required', 'gt:0'],
+                'en' => ['required', ['string']],
+                'mn' => ['required', ['string']],
+            ]);
+        else 
+            return request()->validate([
             'test_id' => ['required'],
             // 'en' => ['required', ['string']],
             'mn' => ['required', ['string']],

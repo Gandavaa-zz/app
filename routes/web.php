@@ -42,17 +42,20 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
     Route::resource('settings/users', 'Settings\UsersController');
 });
 
-Route::resource('import', 'ImportsController')->middleware('auth');
+Route::group(['middleware' => 'auth'], function () { 
+   
+    Route::resource('import', 'ImportsController');
+    Route::get('translations/new', 'TranslationsController@new')->name('translations.new');
+    Route::get('translations/add', 'TranslationsController@add')->name('translations.add');
+    Route::post('translations/save', 'TranslationsController@saveTranslations')->name('translations.save');
+    Route::resource('translations', 'TranslationsController');
+    
+    Route::get('settings/profile/{user}', 'Settings\ProfilesController@show')->name('user.profile');
+    Route::get('settings/profile/{user}/edit', 'Settings\ProfilesController@edit')->name('edit.profile');
+    Route::post('settings/profile/{user}', 'Settings\ProfilesController@update')->name('update.profile');
 
-Route::get('translations/new', 'TranslationsController@new')->name('translations.new')->middleware('auth');
-Route::get('translations/add', 'TranslationsController@add')->name('translations.add')->middleware('auth');
-Route::post('translations/save', 'TranslationsController@saveTranslations')->name('translations.save')->middleware('auth');
-Route::resource('translations', 'TranslationsController');
+});
 
 Route::get('skills', function () {
     return ['label' => ['laravel', 'vue', 'php']];
 });
-
-Route::get('settings/profile/{user}', 'Settings\ProfilesController@show')->name('user.profile')->middleware('auth');
-Route::get('settings/profile/{user}/edit', 'Settings\ProfilesController@edit')->name('edit.profile')->middleware('auth');
-Route::post('settings/profile/{user}', 'Settings\ProfilesController@update')->name('update.profile')->middleware('auth');

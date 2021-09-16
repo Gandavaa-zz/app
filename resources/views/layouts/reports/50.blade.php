@@ -15,8 +15,6 @@
     
     @php $group_factors = $data["group_factors"]; @endphp
     
-    {{ dd($group_factors) }}
-
     @if (str_contains($item[0]['type'], 'ancre'))
     <h2 class="card-title">{{ $item[0]["params"]["menuNumber"] }} - 
         {{ __($item[0]["content"]["title"]) }} </h2>
@@ -472,30 +470,13 @@
                     value.data = new_data;
                     new_data = [];                    
                 }
-
                 //console.log("data - ", data);
-
                 Highcharts.chart('chart', {
-                    chart: {
-                        marginTop: 30,
-                        polar: true,
-                        type: '',
-                    },
-                    "title": {
-                        "text": ""
-                    },
-                    "credits": {
-                        "enabled": false
-                    },
-                    "tooltip": {
-                        "enabled": false
-                    },
-                    "yAxis": {
-                        "max": 10,
-                        "lineColor": "#FFFFFF",
-                        "tickInterval": 2,
-                        "gridLineWidth": 1,
-                        "gridLineColor": "#EEEEEE",
+                    chart: { marginTop: 30,polar: true,type: '',},
+                    "title": { "text": ""},
+                    "credits": { "enabled": false},
+                    "tooltip": { "enabled": false},
+                    "yAxis": { "max": 10, "lineColor": "#FFFFFF", "tickInterval": 2, "gridLineWidth": 1,"gridLineColor":"#EEEEEE",
                         "plotLines": [{
                             "color": "#AAAAAA",
                             "dashStyle": "LongDash",
@@ -580,10 +561,8 @@
                     },
                     "series": data
                      });
-
             </script>
-
-            
+           
             <script>
                 // Create the bar chart
                 Highcharts.chart('barChart', {

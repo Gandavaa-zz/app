@@ -11,8 +11,7 @@
 @include("layouts.reports.components.logo", ['logo'=> $data['general']])
 <!-- /logo -->
 
-<div class="row" id="printable">
-    <input type="button" onclick="printDiv('printable')" value="print a div!" />
+<div class="row" id="printable">    
     @php $item = $data["parties"]["party"]; @endphp
     @php $group_factors = $data["group_factors"]; @endphp
     @if (str_contains($item[0]['type'], 'ancre'))
@@ -284,7 +283,6 @@
             , name: ""
             , type: "area"
             , color: ""
-            , fillOpacity: 0.3
         };
 
         @foreach($group_factors as $idx => $group)
@@ -307,74 +305,74 @@
         data.push(items);
 
         // console.log("data", data);
-        items = {
-            data: []
-            , name: ""
-            , type: "area"
-            , color: ""
-            , fillOpacity: 0.3
-        };
+        items = { data: [], name: "", type: "area", color: "" };
         @endif
         @endforeach
-        console.log("data - ", data);
+
         // эхний утгийг нь 
-        var new_data = []
-            , previous = [];
-        var matrix = []
-            , n = 0
-            , m = 0;
+        console.log("data - ", data);        
+        var even = Array(15).fill(null), odd = Array(18).fill(null), matrix = [], n = 0, m = 0;
 
         for (const [key, value] of Object.entries(data)) {
-            if (key == 0) data[key].pointStart = -15;
-            else if (key == 1) data[key].pointStart = 75;
-            else if (key == 2) data[key].pointStart = 165;
-            else if (key == 3) data[key].pointStart = 255;
+            if (key == 0) data[key].pointStart = -12;
+            else if (key == 1) data[key].pointStart = 156;         
             matrix[n] = [];
             value.data.map((el, index) => {
                 if (el !== null) {
-                    matrix[n][m] = el;
-                    m++;
+                    matrix[n][m] = el; m++;
                 }
-            });
-            n++;
-            m = 0;
+            }); 
+            n++; m = 0;
         }
 
-        for (const [key, value] of Object.entries(data)) {
-            // first value-g avna
-            var first, second, third;
-            value.data.map((el, index) => {
-                if (index === 0) first = el;
-                else if (index === 7) second = el;
-                else if (index === 8) third = el
-            });
+        console.log('matrix', matrix);
 
-            for (let i = 0; i < 8; i++) {
-                if (i == 0) {
-                    console.log(key);
-                    console.log(matrix[parseInt(3 - key)]);
-                    if (key == 0) new_data[i] = findPoint(first, matrix[parseInt(3 - key)][2]);
-                    else new_data[i] = previous[6];
-                } else if (i == 1) new_data[i] = first;
-                else if (i == 3) new_data[i] = second;
-                else if (i == 5) new_data[i] = third;
-                else if (i == 6) {
-                    if (key == 0) new_data[i] = findPoint(matrix[1][0], third);
-                    else if (key == 1) new_data[i] = findPoint(matrix[2][0], third);
-                    else if (key == 2) new_data[i] = findPoint(matrix[3][0], third);
-                    else if (key == 3) new_data[i] = findPoint(matrix[0][0], third);
-                } else if (i == 7) new_data[i] = 0;
-                else new_data.push(null);
-                previous = new_data;
+        for (const [key, value] of Object.entries(data)) {   
+            console.log('key', key);
+            if(key==0){
+                for (let i = 0; i < 16; i++) {
+                    switch (i) {
+                        case 1: even[i] = matrix[key][0]; break;
+                        case 3: even[i] = matrix[key][1]; break;
+                        case 5: even[i] = matrix[key][2]; break;
+                        case 7: even[i] = matrix[key][3]; break;
+                        case 9: even[i] = matrix[key][4]; break;
+                        case 11: even[i] = matrix[key][5]; break;                        
+                        case 13: even[i] = matrix[key][6]; break;                                            
+                        case 15: even[i] = 0; break;                                
+                    }
+                    if (i == 0) even[i] = findPoint(matrix[0][0], matrix[1][7]);
+                    if (i == 14){
+                        even[i] = findPoint(matrix[0][6], matrix[1][0]);
+                        console.log('none'+matrix[0][6]);
+                    } 
+                }
+                value.data = even; even = Array(15).fill(null);     
+            }else if (key==1){
+                for (let i = 0; i < 18; i++) {
+                    switch (i) {
+                        case 1: odd[i] = matrix[key][0]; break;
+                        case 3: odd[i] = matrix[key][1]; break;
+                        case 5: odd[i] = matrix[key][2]; break;
+                        case 7: odd[i] = matrix[key][3]; break;
+                        case 9: odd[i] = matrix[key][4]; break;
+                        case 11: odd[i] = matrix[key][5]; break;                        
+                        case 13: odd[i] = matrix[key][6]; break;                                            
+                        case 15: odd[i] = matrix[key][7]; break;                                            
+                        case 17: odd[i] = 0; break;                                
+                    }
+                    if (i == 0) odd[i] = findPoint(matrix[key][0], matrix[0][6]);
+                    if (i == 16) odd[i] = findPoint(matrix[key][7], matrix[1][0]);                 
+                }
+                value.data = odd;            
+                odd = Array(18).fill(null);                
             }
-            value.data = new_data;
-            new_data = [];
         }
+        console.log('data', data);
+        
         Highcharts.chart('chart', {
             chart: {
-                marginTop: 30
-                , polar: true
-                , type: ''
+                marginTop: 30, polar: true, type: ''
             , }
             , "title": {
                 "text": ""
@@ -386,60 +384,28 @@
                 "enabled": false
             }
             , "yAxis": {
-                "max": 10
-                , "lineColor": "#FFFFFF"
-                , "tickInterval": 2
-                , "gridLineWidth": 1
-                , "gridLineColor": "#EEEEEE"
-                , "plotLines": [{
-                    "color": "#AAAAAA"
-                    , "dashStyle": "LongDash"
-                    , "value": 10
-                    , "width": 1
+                "max": 10, "lineColor": "#FFFFFF", "tickInterval": 2, "gridLineWidth": 1, "gridLineColor": "#EEEEEE", "plotLines": [{
+                    "color": "#AAAAAA", "dashStyle": "LongDash", "value": 10, "width": 1
                 }, {
-                    "color": "#EEEEEE"
-                    , "dashStyle": "Dash"
-                    , "value": 1
-                    , "width": 1
+                    "color": "#EEEEEE" , "dashStyle": "Dash", "value": 1, "width": 1
                 }, {
-                    "color": "#EEEEEE"
-                    , "dashStyle": "Dash"
-                    , "value": 3
-                    , "width": 1
+                    "color": "#EEEEEE", "dashStyle": "Dash", "value": 3, "width": 1
                 }, {
-                    "color": "#EEEEEE"
-                    , "dashStyle": "Dash"
-                    , "value": 7
-                    , "width": 1
+                    "color": "#EEEEEE", "dashStyle": "Dash", "value": 7, "width": 1
                 }, {
-                    "color": "#EEEEEE"
-                    , "dashStyle": "Dash"
-                    , "value": 9
-                    , "width": 1
-                }]
-                , "labels": {
-                    "enabled": false
-                }
+                    "color": "#EEEEEE", "dashStyle": "Dash", "value": 9, "width": 1
+                }], "labels": { "enabled": false}
             }
             , "plotOptions": {
-                "series": {
-                    "animation": false
-                    , "showInLegend": true
-                    , "marker": {
-                        "enabled": false
-                        , "states": {
-                            "hover": {
-                                "enabled": false
-                            }
-                        }
-                    }
-                    , "connectNulls": true
-                    , "pointPlacement": "on"
-                    , "pointInterval": 15
+                "series": { 
+                    "animation": false, 
+                    "showInLegend": true, 
+                    "marker": { "enabled": false, 
+                        "states": {  "hover": { "enabled": false } }
+                    }, 
+                    "connectNulls": true, "pointPlacement": "on", "pointInterval": 12
                 }
-                , "area": {
-                    "lineWidth": 1
-                }
+                , "area": { "lineWidth": 1 }
             },
 
             xAxis: {
@@ -449,7 +415,7 @@
                 , "lineWidth": 0
                 , "gridLineWidth": 1
                 , "labels": {
-                    "distance": 15
+                    "distance": 20
                     , "style": {
                         "width": "140px"
                         , "color": "#000000"
@@ -459,19 +425,16 @@
                     }
                     , "formatter": function() {
                         var sReturn = ''
-                            , iIndex = this.value / 30
+                            , iIndex = this.value / 24
                             , oCategories = categories;
 
-                        if (oCategories[iIndex] !=
-                            undefined) {
+                        if (oCategories[iIndex] !=undefined) {
                             sReturn += oCategories[iIndex];
                         }
                         return sReturn;
                     }
                 }
-                , "tickPositions": [0, 30, 60, 90, 120, 150, 180
-                    , 210, 240, 270, 300, 330, 360, 390, 420, 450
-                ]
+                , "tickPositions": [0, 24, 48, 72, 96, 120, 144, 168, 192, 216, 240, 264, 288, 312, 336, 360]
             }
             , "series": data
         });

@@ -12,8 +12,12 @@
                             <h5><i class="fa fa-align-justify"></i>{{ __('Орчуулгын жагсаалт') }}</h5>
                         </span> <span class="float-right">
                             <!-- <button type="button" id="deleteMultiple" class="btn btn-danger deleteMultiple"  href="javascript:void(0)" data-original-title="Delete">Олноор устгах</button> -->
+                            @role('admin|super-admin')
                             <a class="btn btn-primary" href="{{ route('translations.create') }}"><i class="cil-pencil"></i>Орчуулга оруулах</a>
+                            @endrole
+                            @role('admin|super-admin|writer')
                             <a class="btn btn-success" href="{{ route('translations.new') }}"><i class="cil-plus"></i>Орчуулга нэмэх</a>
+                            @endrole
                         </span>
                     </div>
 
@@ -36,6 +40,7 @@
                         </div>
 
                         @include('layouts.shared.alert')
+                        
                         <table class="table table-bordered yajra-datatable translation_table" id="translation_table" style="verflow-x: auto; width: 100%; font-size:13.5px;">
                             <thead>
                                 <tr>
