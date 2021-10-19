@@ -4,7 +4,7 @@
 
 <div class="container">
 
-    <div class="row justify-content-center">
+    <div class="row justify-content-left">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">{{ __('Шинэ хэрэглэгч') }}</div>
@@ -18,7 +18,13 @@
                             <label for="firstname" class="col-md-4 col-form-label text-md-right">{{ __('Нэр') }}</label>
 
                             <div class="col-md-6">
-                                <input id="firstname" type="text" class="form-control @error('firstname') is-invalid @enderror" name="firstname" value="{{ old('firstname') }}" autocomplete="firstname" autofocus>
+                                <input id="firstname" 
+                                    type="text" 
+                                    class="form-control @error('firstname') is-invalid @enderror" 
+                                    name="firstname" 
+                                    value="{{ old('firstname') }}" 
+                                    placeholder="Системийн хэрэглэгчийн нэр"
+                                    autocomplete="firstname" autofocus>
 
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
@@ -33,7 +39,13 @@
                             <label for="last" class="col-md-4 col-form-label text-md-right">{{ __('Овог') }}</label>
 
                             <div class="col-md-6">
-                                <input id="lastname" type="text" class="form-control @error('lastname') is-invalid @enderror" name="lastname" value="{{ old('lastname') }}" required autocomplete="lastname" autofocus>
+                                <input 
+                                    id="lastname" 
+                                    type="text" 
+                                    class="form-control @error('lastname') is-invalid @enderror" 
+                                    name="lastname" value="{{ old('lastname') }}" 
+                                    placeholder="Системийн хэрэглэгчийн овог"
+                                    required autocomplete="lastname" autofocus>
 
                                 @error('lastname')
                                     <span class="invalid-feedback" role="alert">
@@ -47,7 +59,12 @@
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Имэйл') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" autocomplete="email">
+                                <input 
+                                    id="email" 
+                                    type="email" 
+                                    class="form-control @error('email') is-invalid @enderror" 
+                                    placeholder="Системийн хэрэглэгчийн имэйл хаяг"
+                                    name="email" value="{{ old('email') }}" autocomplete="email">
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -58,10 +75,11 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="tests" class="col-md-4 col-form-label text-md-right">{{ __('Роль') }}</label>
+                            <label for="tests" class="col-md-4 col-form-label text-md-right">{{ __('Эрх') }}</label>
 
                             <div class="col-md-6">
-                                <my-select class="@error('roles') is-invalid @enderror"></my-select>
+                                <my-select class="@error('roles') is-invalid @enderror" ></my-select>
+                                <span class="help-block">Хэрэглэгчийн эрхийг эндээс сонго</span>
 
                                 @error('roles')
                                     <span class="invalid-feedback" role="alert">
@@ -99,9 +117,10 @@
                         </div> -->
 
                         <div class="form-group row">
-                            <label for="tests" class="col-md-4 col-form-label text-md-right">{{ __('Групп') }}</label>
+                            <label for="tests" class="col-md-4 col-form-label text-md-right">{{ __('Бүлэг') }}</label>
                             <div class="col-md-6">
-                                <group  class="@error('groups') is-invalid @enderror"></group>
+                                <group class="@error('groups') is-invalid @enderror"></group>
+                                <span class="help-block">Хэрэглэгчийн групыг эндээс сонго</span>
                                 @error('groups')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>

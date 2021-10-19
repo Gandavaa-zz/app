@@ -31,32 +31,30 @@
 
                         </div>
 
-                        <div class="form-group row">
+                        <!-- <div class="form-group row">
                             <label for="guard_name" class="col-md-4 col-form-label text-md-right">{{ __('Хамгааллат') }}</label>
-
                             <div class="col-md-6">
                                 <input id="guard_name" type="text" class="form-control @error('guard_name') is-invalid @enderror" name="guard_name" value="{{ $role->guard_name }}" required autocomplete="guard_name" autofocus>
-
                                 @error('guard_name')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
                             </div>
-
-                        </div>
+                        </div> -->
 
                         <div class="form-group row">
                             <label for="tests" class="col-md-4 col-form-label text-md-right">{{ __('Зөвшөөрөл') }}</label>
 
                             <div class="col-md-6">
 
-                                @foreach($role->permissions as $perm)
+                                <select-permision :selected="{{$role->permissions->pluck('name')}}" class="@error('permissions') is-invalid @enderror"></select-permision>
+                                <!-- @foreach($role->permissions as $perm)
                                     <input type="hidden" name="permission[]" value="{{ $perm->id }}" :value="selected">
-                                @endforeach
+                                @endforeach -->
 
                                 @if(isset($permission_names))
-                                    <select name="permission[]" multiple id="permission" class="form-control @error('permission') is-invalid @enderror">
+                                    <!-- <select name="permission[]" multiple id="permission" class="form-control @error('permission') is-invalid @enderror">
                                         <option value="0">Нэг зөвшөөрлийг сонгоно уу!</option>
                                         @foreach($permissions as $permission)
                                         <option value="{{ $permission->id }}"
@@ -64,7 +62,7 @@
                                             selected @endif
                                             >{{ $permission->name }}</option>
                                         @endforeach
-                                    </select>
+                                    </select> -->
 
                                     @error('permissions')
                                         <span class="invalid-feedback" role="alert">

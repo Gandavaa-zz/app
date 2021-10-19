@@ -9,7 +9,11 @@
 @include("layouts.reports.components.logo", ['logo'=> $data['general']])
 <!-- /logo -->
 
+
+
 <div class="row">
+
+    
 
     @php $item = $data["parties"]["party"]; @endphp
     @php $group_factors = $data["group_factors"]; @endphp
@@ -74,7 +78,7 @@
 
     <!-- Table -->
     @if (str_contains($item[4]['type'], 'ancre'))
-    <h2 class="card-title">{{ $item[4]["params"]["menuNumber"] }} -
+    <h2 class="card-title mt-100">{{ $item[4]["params"]["menuNumber"] }} -
         {{ __($item[4]["content"]["title"]) }}
     </h2>
     @endif
@@ -192,7 +196,7 @@
 
     <!-- Comments -->
     @if (str_contains($item[6]['type'], 'ancre'))
-    <h2 class="card-title">{{ $item[6]["params"]["menuNumber"] }} - {{ __($item[6]["content"]["title"]) }} </h2>
+    <h2 class="card-title mt-650">{{ $item[6]["params"]["menuNumber"] }} - {{ __($item[6]["content"]["title"]) }} </h2>
     @endif
 
     <div class="col-md-12" id="{{$item[6]["content"]["title"]}}">
@@ -201,84 +205,86 @@
                 {{ __($item[6]["content"]["sub_title"]) }}
             </div>
             <div class="card-body">
-                @foreach ($item as $val)
 
-                @if($val['type']=='rapport_details_facteur')
-                    {{-- {{Dd($val)}} --}}
-                    <div class="group-header">
+            @php $i =0; @endphp
+                @foreach ($item as $val)
+                
+                @if($val['type']=='rapport_details_facteur')                    
+                @php $i++; @endphp
+                    
+                    <div class="group-header @if($i==5) mt-300 @endif">
                         <h4 class="c-title-text-color">
                             {{ $val["content"]["title"] }}
                         </h4>
                     </div>
-                <div class="score-bar-wrapper row">
-                    <div class="col-xs-12 col-sm-3">
+                    <div class="score-bar-wrapper row">
+                        <div class="col-xs-12 col-sm-3">
+                            <div class="factor-header">
+                            <h5 class="c-title-text-color">
+                            {{ $val["content"]["libelle_facteur"] }}
+                            </h5>
+                            </div>
+                            <div class="box-score ec-first-bg-color ec-first-text-color" style="background-color:#{{$val["params"]["couleur"]}}; color:#000">
+                                <div class="header">
+                                    Score<br>
+                                    {{ $val["params"]["score_calculated"]}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="progress score-bar" style="width: 100%;">
+                                <div class="progress-bar" style="width:{{$val["params"]["pourcentage_score"]}}%;
+                                                color:#000000; background-color: #{!!$val['params']['couleur']!!} ">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-3">
                         <div class="factor-header">
-                        <h5 class="c-title-text-color">
-                        {{ $val["content"]["libelle_facteur"] }}
-                        </h5>
+                            <h5 class="c-title-text-color">
+                                {{ $val["content"]["libelle_facteur_opposition"] }}
+                            </h5>
                         </div>
-                        <div class="box-score ec-first-bg-color ec-first-text-color" style="background-color:#{{$val["params"]["couleur"]}}; color:#000">
-                            <div class="header">
-                                Score<br>
-                                {{ $val["params"]["score_calculated"]}}
+                            <div class="box-score" style="background-color:#{{$val["params"]["couleur"]}}; color:#000">
+
+                                <div class="header">
+                                    Оноо<br>
+                                    {{ $val["params"]["score_opposition"]}}
+                                </div>
                             </div>
                         </div>
+
                     </div>
 
-                    <div class="col-xs-12 col-sm-6">
-                        <div class="progress score-bar" style="width: 100%;">
-                            <div class="progress-bar" style="width:{{$val["params"]["pourcentage_score"]}}%;
-                                            color:#000000; background-color: #{!!$val['params']['couleur']!!} ">
+
+                    <div class=" img-calibration">
+                        <div class="gausse ec-first-bg-color" style="background-color:#DDA0DD;position: relative">
+                            <div class="pointer-gausse hidden-xs " style="left:{{4.83*$val["params"]["pourcentage_score"]}}px; z-index: 3"></div>
+                        </div>
+
+                        <div class="content text-center">
+                        
+                            <em> About 33% of the population has a score lower than or equal to yours. </em>
+                        </div>
+                    </div>
+
+                    <div class="box mb-4">
+                        <div class="box-content ec-first-border-color" style="background-color: #EEEEEE">
+                            {!!$val["content"]["commentaire_perso"]!!}
+                        </div>
+                    </div>
+
+                    <div class="box mb-5 bg-white">
+                        <div class="box-header box-header-small">
+                            <div class="title text-left"> <i class="fa fa-arrow-circle-o-right"></i>
+                                {{ __('Definition') }}
                             </div>
                         </div>
-                    </div>
-
-                    <div class="col-xs-12 col-sm-3">
-                    <div class="factor-header">
-                        <h5 class="c-title-text-color">
-                            {{ $val["content"]["libelle_facteur_opposition"] }}
-                        </h5>
-                    </div>
-                        <div class="box-score" style="background-color:#{{$val["params"]["couleur"]}}; color:#000">
-
-                            <div class="header">
-                                Score<br>
-                                {{ $val["params"]["score_opposition"]}}
-                            </div>
+                        <div class="box-content ec-first-border-color">
+                            {!! $val["content"]["description_long"] !!}
                         </div>
                     </div>
-
-                </div>
-
-
-                <div class=" img-calibration">
-                    <div class="gausse ec-first-bg-color" style="background-color:#DDA0DD;position: relative">
-                        <div class="pointer-gausse hidden-xs " style="left:{{4.83*$val["params"]["pourcentage_score"]}}px; z-index: 3"></div>
-                    </div>
-
-                    <div class="content text-center">
-                    
-                        <em> About 33% of the population has a score lower than or equal to yours. </em>
-                    </div>
-                </div>
-
-                <div class="box mb-4">
-                    <div class="box-content ec-first-border-color" style="background-color: #EEEEEE">
-                        {!!$val["content"]["commentaire_perso"]!!}
-                    </div>
-                </div>
-
-                <div class="box mb-5 bg-white">
-                    <div class="box-header box-header-small">
-                        <div class="title text-left"> <i class="fa fa-arrow-circle-o-right"></i>
-                            {{ __('Definition') }}
-                        </div>
-                    </div>
-                    <div class="box-content ec-first-border-color">
-                        {!! $val["content"]["description_long"] !!}
-                    </div>
-                </div>
-
                 @endif
                 @endforeach
 
@@ -287,80 +293,90 @@
     </div>
     <!-- /end Graphic -->
 
-</div>
-@section('script')
-<script>
-  var barChart = [];
-  var obj = {};
-  @foreach($item as $idx => $row)
-    @if($row['type'] == 'rapport_details_facteur')
-    {
-        obj.name = @json($row['content']['libelle_facteur']) + " (" + @json($row['params']['score']) + ")";
-        obj.y = parseFloat(@json($row['params']['score']));
-        obj.color = '#' + @json($row['params']['couleur']);
-        barChart.push(obj);
-        obj = {};
-    }
-@endif
-@endforeach
+    </div>
+    @section('script')
+    <script>
+    var barChart = [];
+    var obj = {};
+    @foreach($item as $idx => $row)
+        @if($row['type'] == 'rapport_details_facteur')
+        {
+            obj.name = @json($row['content']['libelle_facteur']) + " (" + @json($row['params']['score']) + ")";
+            obj.y = parseFloat(@json($row['params']['score']));
+            obj.color = '#' + @json($row['params']['couleur']);
+            barChart.push(obj);
+            obj = {};
+        }
+    @endif
+    @endforeach
 
 // Create the bar chart
-Highcharts.chart('barChart', {
-	chart: {
-		renderTo: 'container',
-		type: 'column'
-	},
+    Highcharts.chart('barChart', {
+        chart: {
+            renderTo: 'container',
+            type: 'column'
+        },
 
-	accessibility: {
-		announceNewData: {
-			enabled: true
-		}
-	},
-	yAxis: {
-		title: {
-			text: ''
-		},
-		labels: {
-			style: {
-				fontSize: '15px'
-			}
-		}
-	},
-	xAxis: {
-		type: 'category',
-		labels: {
-			style: {
-				fontSize: '15px'
-			}
-		}
-	},
+        accessibility: {
+            announceNewData: {
+                enabled: true
+            }
+        },
+        yAxis: {
+            title: {
+                text: ''
+            },
+            labels: {
+                style: {
+                    fontSize: '15px'
+                }
+            }
+        },
+        xAxis: {
+            type: 'category',
+            labels: {
+                style: {
+                    fontSize: '15px'
+                }
+            }
+        },
 
-	title: {
-		text: ''
-	},
-	legend: {
-		enabled: false,
-	},
-	plotOptions: {
-		series: {
-			borderWidth: 0,
-		},
-		stacking: 'normal',
-		dataLabels: {
-			enabled: true
-		}
-	},
+        title: {
+            text: ''
+        },
+        legend: {
+            enabled: false,
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+            },
+            stacking: 'normal',
+            dataLabels: {
+                enabled: true
+            }
+        },
 
-	tooltip: {
-		headerFormat: '<span style="font-size:14px">{series.name}: {point.y}</span><br>',
-		pointFormat: '<span style="font-size:16px;color:{point.color}">{point.name}</span>'
-	},
+        tooltip: {
+            headerFormat: '<span style="font-size:14px">{series.name}: {point.y}</span><br>',
+            pointFormat: '<span style="font-size:16px;color:{point.color}">{point.name}</span>'
+        },
 
-	series: [{
-		colorByPoint: true,
-		data: barChart
-	}],
-});
+        series: [{
+            colorByPoint: true,
+            data: barChart
+        }],
+    });
+
+    $(document).ready(function(){
+        $('#pdfExport').on('click', function(){
+            $('.page-wrapper').removeClass("toggled");            
+            $('figure').css("margin-left", "-200px");                       
+            window.print();
+        });
+    });
+
 </script>
 @endsection
+
 @endsection

@@ -7,7 +7,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header"><strong>{{ __('Шинэ роль') }}</strong></div>
+                <div class="card-header"><strong>{{ __('Шинэ эрх нэмэх') }}</strong></div>
 
                 <div class="card-body">
                     
@@ -17,7 +17,7 @@
                         @csrf
 
                         <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Нэр') }}</label>
+                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Эрх') }}</label>
 
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
@@ -31,7 +31,7 @@
 
                         </div>
                         
-                        <div class="form-group row">
+                        <!-- <div class="form-group row">
                             <label for="guard_name" class="col-md-4 col-form-label text-md-right">{{ __('Хамгаалалт') }}</label>
 
                             <div class="col-md-6">
@@ -51,7 +51,7 @@
                                 @enderror
                             </div>
 
-                        </div>
+                        </div> -->
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">

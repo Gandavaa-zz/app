@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role as Role;
 
@@ -45,21 +46,23 @@ class RolesController extends Controller
     {
         $role->update($this->validateRole());
 
-        return redirect()->route('role.index') - with('success', 'Роль амжилттай засагдлаа!');
+        return redirect()->route('role.index')->with('success', 'Роль амжилттай засагдлаа!');
     }
 
     public function validateRole()
     {
         return request()->validate([
             'name' => ['required', ['string']],
-            'guard_name' => ['required', ['string']],
+            // 'guard_name' => ['required', ['string']],
         ]);
     }
 
     public function destroy(Role $role)
     {
-
-        $role->delete();
+        if($role=='super-admin')
+            return back()->with('success', 'Super admin эрхийг устгах боломжгүй!');        
+        else 
+            $role->delete();
 
         return redirect()->route('role.index')->with('success', 'Роль амжилттай устгагдлаа!');
     }
@@ -84,9 +87,17 @@ class RolesController extends Controller
 
     public function givePermission(Role $role)
     {
-        $permissions = request()->input('permission');
 
-        $role->syncPermissions($permissions);
+        // return request();
+
+        request()->validate([
+            'name' => ['required'],
+            'permissions' => ['required', ['string']],           
+        ]);
+
+        $permIds = $this->getPermissionId(request()->input('permissions'));
+
+        $role->syncPermissions($permIds);
 
         return redirect()->route('role.index')->with('success', 'Зөвшөөрлийг амжилттай хадгаллаа!');
     }
@@ -100,6 +111,7 @@ class RolesController extends Controller
 
     public function rolePermission(Request $request)
     {
+
         $permission = $request->data;
 
         if ($permission == '') {
@@ -120,6 +132,26 @@ class RolesController extends Controller
         }
         echo json_encode($response);
         exit;
+    }
+
+    protected function getPermissionId($permissions){
+
+        if(Str::contains($permissions, ',')){
+
+            foreach(explode(",", $permissions) as $name)
+            {
+                $permission = Permission::where('name', $name)->first();
+
+                $ids[] = $permission->id;
+            }
+        }else{
+            $permission = Permission::where('name', $permissions)->first();
+
+            $ids[] = $permission->id;
+
+        }
+
+        return $ids;
     }
 
 }

@@ -92,7 +92,7 @@
 
 <!-- section 3 here -->
 @if (str_contains($item[3]['type'], 'ancre'))
-<h2 class="card-title">{{ $item[3]["params"]["menuNumber"] }} -
+<h2 class="card-title mt-700">{{ $item[3]["params"]["menuNumber"] }} -
     {{ __($item[3]["content"]["title"]) }} 
 </h2>
 @endif
@@ -115,7 +115,7 @@
 
 <!-- section 5 Graph -->
 @if (str_contains($item[5]['type'], 'ancre'))
-<h2 class="card-title">{{ $item[5]["params"]["menuNumber"] }} -
+<h2 class="card-title ">{{ $item[5]["params"]["menuNumber"] }} -
     {{ __($item[5]["content"]["title"]) }} </h2>
 @endif
 <div class="col-md-12" id="{{ $item[5]["content"]["title"]}}">
@@ -621,7 +621,14 @@
                         data: barChart
                     }],
                 });
-                
+
+            $(document).ready(function(){
+                $('#pdfExport').on('click', function(){
+                    $('.page-wrapper').removeClass("toggled");            
+                    $('figure').css("margin-left", "-200px");                       
+                    window.print();
+                });
+            });                
 
             </script>
-            @endsection
+        @endsection

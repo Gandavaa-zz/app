@@ -78,12 +78,13 @@
             <li class="c-header-nav-item dropdown"><a class="c-header-nav-link" data-toggle="dropdown" href="#"
                     role="button" aria-haspopup="true" aria-expanded="false">
                     <div class="c-avatar">
-                    @if (auth()->user()->avatar())
+                    @if (auth()->check() && auth()->user()->avatar())
                         <img class="c-avatar-img"
                         src="{{ auth()->user()->avatar() }}" alt="user@email.com">
                     @endif
                     </div>
                 </a>
+                @if (auth()->check())
                 <div class="dropdown-menu dropdown-menu-right pt-0">
                     <div class="dropdown-header bg-light py-2"><strong>Settings</strong>
                     </div>
@@ -105,6 +106,7 @@
                         </form>
                     </a>
                 </div>
+                @endif
             </li>
         </ul>
 

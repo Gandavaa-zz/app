@@ -60,7 +60,7 @@
 
     <!-- 2 Graph -->
     @if (str_contains($item[4]['type'], 'ancre'))
-    <h2 class="card-title">{{ $item[4]["params"]["menuNumber"] }} -
+    <h2 class="card-title graph">{{ $item[4]["params"]["menuNumber"] }} -
         {{$item[4]["content"]["title"]}}
     </h2>
     @endif
@@ -180,7 +180,8 @@
 
     {{-- 4 - General Profile --}}
 
-    @if (str_contains($item[25]["type"], "ancre" )) <h2 class="card-title">{{ $item[25]["params"]["menuNumber"] }} - {{$item[25]["content"]["title"]}} </h2>
+    @if (str_contains($item[25]["type"], "ancre" )) 
+        <h2 class="card-title mt-700">{{ $item[25]["params"]["menuNumber"] }} - {{$item[25]["content"]["title"]}} </h2>
     @endif
 
     <div class="col-md-12" id="{{$item[25]["content"]["title"]}}">
@@ -437,6 +438,14 @@
                 , "tickPositions": [0, 24, 48, 72, 96, 120, 144, 168, 192, 216, 240, 264, 288, 312, 336, 360]
             }
             , "series": data
+        });
+
+        $(document).ready(function(){
+            $('#pdfExport').on('click', function(){                
+                $('.page-wrapper').removeClass("toggled");            
+                $('figure').css("margin-left", "-200px");                       
+                window.print();
+            });
         });
 
     </script>

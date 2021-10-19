@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers\Settings;
-
 use App\Company;
 use App\Group;
 use App\Http\Controllers\Controller;
@@ -11,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 /*
      Users has roles with admin | super-admin | writer | its system users
@@ -70,10 +70,8 @@ class UsersController extends Controller
      */
     public function edit(User $user)
     {
-        return view('layouts.settings.users.edit' ,
-                    [
-                        'user' =>$user
-                    ]);
+        // return $user;
+        return view('layouts.settings.users.edit', ['user' =>$user]);
     }
 
     /**
@@ -82,13 +80,12 @@ class UsersController extends Controller
 
     public function update(User $user, Request $request)
     {
-        
+
         $user->update(request()->validate([
             'firstname' => ['required', ['string']],
             'lastname' => ['required', ['string']],
             'email' => ['required', 'string', 'email', 'max:255'],
-            'roles' => ['required', ['string']],
-            'groups' => ['required', ['string']]            
+            'roles' => ['required', ['string']]           
         ]));
 
         if($request->hasfile('filename')){            
@@ -102,6 +99,21 @@ class UsersController extends Controller
         $user->groups()->attach($this->groupToArray(request('groups')));
 
         // $user->tests()->attach(request('tests'));
+        // password update
+        if($request->changePassword && $request->changePassword ==1){
+            $request->validate([
+                'current_password' => ['required', function ($attribute, $value, $fail) use ($user) {
+                    if (!Hash::check($value, $user->password)) {
+                        $fail('Оруулсан нууц үг Одоогийн нууц үгтэй тохирохгүй байна.');
+                    }
+                }],
+                'new_password' => ['required'],
+                'new_confirm_password' => ['required', ['same:new_password']],
+            ]);
+
+            $user->update(['password'=> Hash::make($request->new_password)]);
+        }
+        
         return redirect()->route('users.index')->with('success', 'Хэрэглэгчийг амжилттай засварлалаа!');
     }
 
@@ -111,9 +123,13 @@ class UsersController extends Controller
 
     public function destroy(User $user)
     {
-        $user->delete();
-
+        
+        if($user->hasRole('super-admin'))
+            return back()->with('success', 'Super admin эрхтэй хэрэглэгчийг устгах боломжгүй!');
+        else 
+            $user->delete();
         return back()->with('success', 'Хэрэглэгчийг амжилттай устгалаа!');
+
     }
 
     /*
@@ -134,6 +150,8 @@ class UsersController extends Controller
     {
         return Str::upper(Str::random(1)). Str::random(4) . rand(5, 10000);
     }
+
+    /* Return User roles */
 
     public function roles(User $user)
     {

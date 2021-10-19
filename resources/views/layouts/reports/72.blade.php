@@ -15,6 +15,8 @@
     @php $item = $data["parties"]["party"]; @endphp
     @php $group_factors = $data["group_factors"]; @endphp
 
+    
+
     {{-- 1 - THE SCORE --}}
     @if (str_contains($item[0]['type'], 'ancre'))
     <h2 class="card-title">{{$item[0]["params"]["menuNumber"] }} -
@@ -87,11 +89,11 @@
 
     {{--3 - THE GRAPH  --}}
     @if (str_contains($item[4]['type'], 'ancre'))
-    <h2 class="card-title">{{$item[4]["params"]["menuNumber"] }} -
+    <h2 class="card-title mt-400">{{$item[4]["params"]["menuNumber"] }} -
         {{$item[4]["content"]["title"]}}
     </h2>
     @endif
-
+ 
     <div class="col-md-12" id="{{$item[4]["content"]["title"]}}"> 
         <div class="card">
             <div class="card-header .bg-secondary">
@@ -107,13 +109,15 @@
         </div>
     </div>
 
+    <div class="pagebreak"></div>
+
     {{--4 - The Comment --}}
     @if (str_contains($item[6]['type'], 'ancre'))
-    <h2 class="card-title">{{ $item[6]["params"]["menuNumber"] }} -
-        {{$item[6]["content"]["title"]}}
+    <h2 class="card-title mt-700">{{ $item[6]["params"]["menuNumber"] }} -
+        {{$item[6]["content"]["title"]}} 
     </h2>
     @endif
-
+  
     <!-- 5- the Comments  -->
     <div class="col-md-12" id="{{$item[6]["content"]["title"]}}">
         <div class="card">
@@ -123,7 +127,7 @@
 
             <div class="card-body">
                 @foreach ($item as $comment)
-
+                    
                 @if($comment['type']=='rapport_details_groupe')
                 <div class="group-header">
                     <h2>{!! $comment["content"]["title"]!!}</h2>
@@ -139,8 +143,9 @@
 
                         <div class="box-score" style="
                                         color:#000000; background-color:{!!$comment['params']['couleur']!!}">
-                            <div class="header">
-                                {{ __('Score') }} <br>
+                            <div class="header">                                
+                                {{ __('Score') }} 
+                                <br>                                
                                 {{ $comment["params"]["score"]}}
                             </div>
                         </div>
@@ -185,15 +190,12 @@
     {{-- end The Comment --}}
 
 
-
     <!-- GENERAL PROFILE -->
     @if (str_contains($item[23]['type'], 'ancre'))
-    <h2 class="card-title">{{ $item[23]["params"]["menuNumber"] }} -
+    <h2 class="card-title mt-600">{{ $item[23]["params"]["menuNumber"] }} -
         {{$item[23]["content"]["title"]}}
     </h2>
     @endif
-
-
 
     <div class="col-md-12" id="{{$item[23]["content"]["title"]}}">
         <div class="card">
@@ -281,8 +283,6 @@
         </div>
     </div>
     <!-- /GENERAL PROFILE -->
-
-
 </div>
 
 
@@ -468,6 +468,14 @@
 
         "series": data
 
+    });
+
+    $(document).ready(function(){
+        $('#pdfExport').on('click', function(){
+            $('.page-wrapper').removeClass("toggled");            
+            $('figure').css("margin-left", "-200px");                       
+            window.print();
+        });
     });
 
 </script>

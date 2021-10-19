@@ -273,7 +273,8 @@ class TranslationsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Translation $translation)
-    {
+    {   
+        // return $translation;
         return view('layouts.translation.edit', ['translation' => $translation]);
     }
 

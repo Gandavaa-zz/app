@@ -67,9 +67,10 @@
         </div>
         {{-- 2-RIASEC PROFILE ends --}}
 
+
         <!-- Graph -->
         @if (str_contains($item[5]['type'], 'ancre'))
-        <h2 class="card-title">{{ $item[5]["params"]["menuNumber"] }} -
+        <h2 class="card-title mt-150">{{ $item[5]["params"]["menuNumber"] }} -
             {{$item[5]["content"]["title"]}}
         </h2>
         @endif
@@ -85,7 +86,8 @@
                         <figure class="highcharts-figure">
                             <div id="barChart" style="height: 600px; width: 1608px;margin:0 auto; margin-top:10px"></div>
                         </figure>
-                        <h2 class="ec-title">{{$item[7]["content"]["title"]}}</h2>
+
+                        <h2 class="ec-title mt-750">{{$item[7]["content"]["title"]}}</h2>
                         <p>{!!$item[7]["content"]["introduction"]!!}</p>
                         <figure class="highcharts-figure">
                             <div id="chart" style="height: 600px; width: 1308px; margin:0 auto"></div>
@@ -96,11 +98,9 @@
         </div>
         <!-- /end Graph -->
 
-
-
         <!--  4 - PERSONALISED ANALYSIS -->
         @if (str_contains($item[8]['type'], 'ancre'))
-        <h2 class="card-title">{{ $item[8]["params"]["menuNumber"] }} - {{$item[8]["content"]["title"]}} </h2>
+        <h2 class="card-title mt-700">{{ $item[8]["params"]["menuNumber"] }} - {{$item[8]["content"]["title"]}} </h2>
         @endif
 
         <div class="col-md-12" id="{{ $item[8]["content"]["title"]}}">
@@ -137,7 +137,7 @@
 
         <!-- 5 - the Comments  -->
         @if (str_contains($item[10]['type'], 'ancre'))
-        <h2 class="card-title">{{ $item[10]["params"]["menuNumber"] }} -
+        <h2 class="card-title mt-400">{{ $item[10]["params"]["menuNumber"] }} -
             {{ __($item[10]["content"]["title"]) }} </h2>
         @endif
 
@@ -375,6 +375,7 @@
         new_data = [];
 
     }
+
     Highcharts.chart('chart', {
         chart: {
             marginTop: 30
@@ -478,6 +479,14 @@
         }
         , "series": data
 
+    });
+
+    $(document).ready(function(){
+        $('#pdfExport').on('click', function(){                
+            $('.page-wrapper').removeClass("toggled");            
+            $('figure').css("margin-left", "-200px");                       
+            window.print();
+        });
     });
 
 </script>

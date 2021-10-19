@@ -26,23 +26,12 @@
 
                         </div>
                         
-                        <div class="form-group row">
-                            <label for="guard_name" class="col-md-4 col-form-label text-md-right">{{ __('Хамгааллат') }}</label>
+                        <div class="form-group row">                            
+                            <label for="tests" class="col-md-4 col-form-label text-md-right">{{ __('Зөвшөөрөл') }}</label>
                             
                             <div class="col-md-6">   
                                 
-                                <label id="guard_name" class="form-control">{{ $role->guard }}</label>
-                                
-                                @if(array_keys(config('auth.guards')))
-                                <select name="guard_name" id="permission" class="form-control @error('guard_name') is-invalid @enderror">
-                                            @foreach(array_keys(config('auth.guards')) as $guard)
-                                            <option value="{{ $guard }}">{{ $guard }}</option>
-                                        @endforeach
-                                </select>     
-                            
-                                @endif
-                                    
-                                <!-- <input id="guard_name" type="text" class="form-control @error('guard_name') is-invalid @enderror" name="guard_name" value="{{ $role->guard_name }}" required autocomplete="guard_name" autofocus> -->
+                                <textarea id="guard_name" rows="5" class="form-control @error('guard_name') is-invalid @enderror" name="guard_name" >{{$role->permissions->pluck('name')}} </textarea>
                                 
                                 @error('guard_name')
                                     <span class="invalid-feedback" role="alert">
@@ -54,12 +43,9 @@
                         </div>
 
                         <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Хадгалах') }}                                    
-                                </button>
+                            <div class="col-md-6 offset-md-4">     
                                 <a href="{{ route('role.index') }}" class="btn btn-danger">
-                                    {{ __('Цуцлах') }}                                    
+                                    {{ __('Буцах') }}                                    
                                 </a>
                             </div>
                         </div>

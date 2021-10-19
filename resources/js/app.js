@@ -44,6 +44,8 @@ Vue.component(
     require("./components/AnswerPicture.vue").default
 );
 
+Vue.component("select-permision", require("./components/SelectPermission.vue").default);
+
 // Vue.component('avatar-form', require('./components/AvatarForm.vue').default);
 
 /**

@@ -7,12 +7,16 @@
             <div class="row">
               <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                 <div class="card">
-                    <div class="card-header">
-                      
-                    <span class="float-left"><h5><i class="fa fa-align-justify"></i>{{ __('Роль') }}</h5></span> <span class="float-right">
-
-                    <a class="btn btn-primary" href="{{ route('role.create') }}">Шинэ</a></span>
-                    </div>
+                    <div class="card-header">                      
+                      <div class="float-left"><h5 class="pt-2">{{ __('Эрх') }}</h5></div> 
+                      <div class="float-right">
+                          <a class="btn btn-primary" href="{{ route('role.create') }}">Шинэ
+                            <svg class="c-icon">
+                              <use xlink:href="{{ asset('icons/sprites/free.svg#cil-plus') }}"></use>                              
+                            </svg>
+                          </a>
+                        </div>
+                      </div>
 
                     <div class="card-body">
 
@@ -83,4 +87,3 @@
 @section('javascript')
 
 @endsection
-

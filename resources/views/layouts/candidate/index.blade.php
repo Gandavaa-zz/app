@@ -9,7 +9,7 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="float-left">
-                            <h5><i class="fa fa-align-justify"></i>{{ __('Харилцагчид') }}</h5>
+                            <h5><i class="fa fa-align-justify"></i>{{ __('Оролцогчид') }}</h5>
                         </span>
                         <span class="float-right">
                             <!-- <button type="button" id="deleteMultiple" class="btn btn-danger deleteMultiple"  href="javascript:void(0)" data-original-title="Delete">Олноор устгах</button> -->

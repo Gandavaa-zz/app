@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Settings;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Permission;
 use App\Test;
+use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 
 class PermissionsController extends Controller
@@ -50,8 +51,8 @@ class PermissionsController extends Controller
     public function validatePermission()
     {
         return request()->validate([
-            'name' => ['required', ['string']],
-            'guard_name' => ['required', ['string']]
+            'name' => ['required', ['string']]
+            // 'guard_name' => ['required', ['string']]
         ]);     
     }
 
@@ -86,7 +87,18 @@ class PermissionsController extends Controller
      */
     public function destroy(Permission $permission)
     {
-        $permission->delete();
+        // check some user has permission with their role
+        $found = array();
+        $roles = Role::all();
+        
+        foreach ($roles as $role) {
+            if($role->hasPermissionTo($permission->name))
+                array_push($found,$role->name);
+        }
+        if(count($found)>0){
+            $roleNames = (count($found)>1) ? implode(", ", $found): $found[0];            
+            return redirect()->back()->with('success', "Энэ зөвшөөрөл дээр \"$roleNames\" эрх холбоотой байгаа тул устгах боломжгүй!");
+        }else $permission->delete();
         
         return redirect()->route('permission.index')->with('success', 'Зөвшөөрөл амжилттай устгагдлаа!');
     }

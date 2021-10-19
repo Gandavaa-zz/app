@@ -5,6 +5,44 @@
 @endsection
 
 @section('content')
+<style>
+
+    @media print{
+        header {
+            display:none;
+        }
+        
+        .menu-toggle{
+            display:none
+        }
+
+        footer{
+            display:none
+        }
+
+        #show-sidebar{
+            display:none
+        }
+
+        .page-content{
+            top: 0;
+            margin-top: -50px;
+        }
+       
+        * {
+            color-adjust: exact!important;  
+            -webkit-print-color-adjust: exact!important; 
+            print-color-adjust: exact!important;
+        }
+
+        /* table.table tr > td {
+            background-color: rgb(238,238,238) !important;
+        } */
+    }
+
+
+</style>
+
 <!-- logo -->
 @include("layouts.reports.components.logo", ['logo'=> $data['general']])
 <!-- /logo -->
@@ -79,7 +117,7 @@
 
     <!-- Graph -->
     @if (str_contains($item[3]['type'], 'ancre'))
-    <h2 class="card-title">{{ $item[3]["params"]["menuNumber"] }} -
+    <h2 class="card-title mt-800">{{ $item[3]["params"]["menuNumber"] }} -
         {{ __($item[3]["content"]["title"]) }}
     </h2>
     @endif
@@ -103,7 +141,7 @@
 
     <!-- 3- PERSONALISED ANALYSIS" -->
     @if (str_contains($item[5]['type'], 'ancre'))
-    <h2 class="card-title">{{ $item[5]["params"]["menuNumber"] }} -
+    <h2 class="card-title mt-750">{{ $item[5]["params"]["menuNumber"] }} -
         {{ __($item[5]["content"]["title"]) }}
     </h2>
     @endif
@@ -140,7 +178,7 @@
 
     <!-- 4- Detailed table starts" -->
     @if (str_contains($item[7]['type'], 'ancre'))
-    <h2 class="card-title">{{ $item[7]["params"]["menuNumber"] }} -
+    <h2 class="card-title mt-900">{{ $item[7]["params"]["menuNumber"] }} -
         {{ __($item[7]["content"]["title"]) }}
     </h2>
     @endif    
@@ -199,7 +237,7 @@
                             {{-- {{dd($group_factor)}} --}}
                             <tbody class="">
                                 <tr class="group">
-                                    <td colspan="13" class="text-center left-label" style="background: #{{$group_factor['color']}};padding: 5px;">
+                                    <td colspan="13" class="text-center left-label" style="background-color:#{{$group_factor['color']}};padding: 5px; -webkit-print-color-adjust: exact !important;">
                                         <h3 class="f-title">
                                             {{$group_factor['label']}}<br>
                                             <span style="font-size: 0.7em; font-weight: 100"></span>
@@ -221,7 +259,10 @@
                                             <span class="behaviour">{{ $previous['description_opposite'] }}</span>
                                         </h3>
                                     </td>
-                                    @for($n=0; $n<11; $n++) <td class="text-center" style="@if($n>3 && $n<7) background-color:#D3D3D3;  @else background-color:#EEEEEE; @endif; vertical-align: middle;width:3%">
+                                    @for($n=0; $n<11; $n++) <td class="text-center" style="@if($n>3 && $n<7) 
+                                    background-color:#D3D3D3;  @else background-color:#EEEEEE; @endif; 
+                                    -webkit-print-color-adjust: exact !important;
+                                    vertical-align: middle;width:3%">
                                         @if ($n<5 && (float)$n+0.1 <=(float)$previous["score"] && (float)$previous["score"]<=(float)$n+0.9) <img class="check-img img-responsive" src="/assets/img/checkbox.png" alt="OK">
                                             @elseif ($n>5 && (float)$n+0.1 <=(float)$previous["score"]+1 && (float)$previous["score"]+1 <=(float)$n+1) <img class="check-img img-responsive" src="/assets/img/checkbox.png" alt="OK">
                                                 @endif
@@ -248,9 +289,10 @@
         </div>
     </div>
      <!-- 4- Detailed table ends" -->
-    <!-- 5- Comment" -->
+
+    <!-- 5- Comment here -->
     @if (str_contains($item[9]['type'], 'ancre'))
-    <h2 class="card-title">{{ $item[9]["params"]["menuNumber"] }} -
+    <h2 class="card-title mt-1050">{{ $item[9]["params"]["menuNumber"] }} -
         {!! __($item[9]["content"]["title"]) !!}
     </h2>
     @endif 
@@ -275,8 +317,7 @@
             <div class="score-bar-wrapper row">
 
                 <div class="col-xs-12 col-sm-3">
-                    <div class="box-score" style="
-                                        color:#000000; background-color: #{{$item[$i]['params']['couleur']}}">
+                    <div class="box-score" style="color:#000000; background-color: #{{$item[$i]['params']['couleur']}}">
                         <div class="header" style="color:#000;">
                             {{ __('Score') }} <br>
                             @if (isset($item[$i]["params"]["moyenne_generale"]))
@@ -339,7 +380,7 @@
 
     <!-- 6 - GENERAL PROFILE -->
     @if (str_contains($item[33]['type'], 'ancre'))
-    <h2 class="card-title">{{ $item[33]["params"]["menuNumber"] }} -
+    <h2 class="card-title mt-400">{{ $item[33]["params"]["menuNumber"] }} -
         {!! __($item[33]["content"]["title"]) !!}
     </h2>
     @endif 
@@ -728,5 +769,17 @@
 
 
     });
+
+
+    $(document).ready(function(){
+        $('#pdfExport').on('click', function(){
+            $('.page-wrapper').removeClass("toggled");            
+            $('figure').css("margin-left", "-200px"); 
+                      
+            window.print();
+        });
+    });
+
+    
 </script>
 @endsection

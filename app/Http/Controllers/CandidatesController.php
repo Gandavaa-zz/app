@@ -344,8 +344,7 @@ class CandidatesController extends Controller
     public function list()
     {
         // show view_data and values here
-        return User::with('groups')->get();
-
+        // return User::with('groups')->get();
         return view('layouts.app');
 
     }
@@ -393,7 +392,7 @@ class CandidatesController extends Controller
         $groups = Group::paginate(15);
 
         // return $groups;
-        return view('layouts.settings.group.index', compact('groups'));
+        return view('layouts.candidate.group.index', compact('groups'));
     }
 
 }

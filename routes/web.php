@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('dashboard')->middleware('auth');
+Route::get('/logout', 'Auth\LoginController@logout');
+
 Route::get('/report/pdf', [ReportsController::class, 'generatePDF']);
 Route::group(['middleware' => ['role:super-admin']], function () {
     Route::get('settings/users/import', 'Settings\UsersController@import')->name('user.import');    
@@ -18,8 +20,9 @@ Route::group(['middleware' => ['role:super-admin']], function () {
 Route::group(['middleware' => ['role:super-admin|admin']], function () {    
     // get test API controller
     Route::resource('test', 'TestsController');
-
     Route::get('translation/getJSON/{test_id}', 'TranslationsController@getJSON');
+    Route::get('assessment/pdf', 'AssessmentsController@pdf');
+
     Route::get('assessment/report/{assessment_id}', 'AssessmentsController@report');
     Route::get('assessment/salesProfile/{assessment_id}', 'AssessmentsController@salesProfile');
     Route::resource('assessment', 'AssessmentsController');
@@ -53,6 +56,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('settings/profile/{user}', 'Settings\ProfilesController@show')->name('user.profile');
     Route::get('settings/profile/{user}/edit', 'Settings\ProfilesController@edit')->name('edit.profile');
     Route::post('settings/profile/{user}', 'Settings\ProfilesController@update')->name('update.profile');
+
+    // Helping Routes
+    Route::get('help/users', 'HelpsController@users')->name('help.users');
+    Route::get('help/settings', 'HelpsController@settings')->name('help.settings');
+    Route::get('help/participants', 'HelpsController@participants')->name('help.participants');    
+    Route::get('help/tests', 'HelpsController@tests')->name('help.tests');
+    Route::get('help/translation', 'HelpsController@translation')->name('help.translation');
+    //  /Help Routes
 
 });
 

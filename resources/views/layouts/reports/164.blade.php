@@ -45,7 +45,7 @@
 
     <!--  2 - PERSONALISED ANALYSIS -->
     @if (str_contains($item[3]['type'], 'ancre'))
-    <h2 class="card-title">
+    <h2 class="card-title mt-100">
         {{ $item[3]["params"]["menuNumber"] }} - {{ __($item[3]["content"]["title"]) }} </h2>
     @endif
 
@@ -697,6 +697,14 @@
             , data: barChart
         }]
     , });
+
+    $(document).ready(function(){
+        $('#pdfExport').on('click', function(){                
+            $('.page-wrapper').removeClass("toggled");            
+            $('figure').css("margin-left", "-200px");                       
+            window.print();
+        });
+    });
 
 </script>
 @endsection

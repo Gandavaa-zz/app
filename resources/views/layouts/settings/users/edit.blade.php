@@ -15,6 +15,8 @@
                         @csrf
                         @method('PUT')
 
+            
+
                         <div class="form-group row">
                             <label for="firstname" class="col-md-4 col-form-label text-md-right">{{ __('Нэр') }}</label>
 
@@ -84,20 +86,58 @@
                                 @enderror
                             </div>
                         </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">Current Password</label>
-  
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="current_password" autocomplete="current-password">
+                        <div class="form-group row">                            
+                            <label class="col-md-4 col-form-label text-md-right">Нууц Үг солих уу?</label>
+                            <div class="col-md-6 col-form-label">
+                                <div class="form-check checkbox">
+                                    <input class="form-check-input " id="showPassword" name="changePassword" type="checkbox" value="1" {{ old("changePassword") == 1 ? 'checked' : ''}} />                                    
+                                    <label class="form-check-label" for="showPassword">Тийм</label>
+                                </div>
                             </div>
                         </div>
-  
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">New Password</label>
-  
-                            <div class="col-md-6">
-                                <input id="new_password" type="password" class="form-control" name="new_password" autocomplete="current-password">
+
+                        <div id="PasswordWrapper">                            
+                            <div class="form-group row">
+                                <label for="password" class="col-md-4 col-form-label text-md-right">Одоогийн Нууц Үг</label>
+    
+                                <div class="col-md-6">
+                                    <input id="password" type="password" class="form-control @error('current_password') is-invalid @enderror" name="current_password" autocomplete="current-password">
+
+                                    @error('current_password')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+    
+                            <div class="form-group row">
+                                <label for="new_password" class="col-md-4 col-form-label text-md-right">Шинэ Нууц Үг</label>
+    
+                                <div class="col-md-6">
+                                    <input id="new_password" type="password" class="form-control @error('new_password') is-invalid @enderror" name="new_password" autocomplete="new_password">
+                                    @error('new_password')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                  
+                            </div>
+    
+                            <div class="form-group row">
+                                <label for="new_confirm_password" class="col-md-4 col-form-label text-md-right">Нууц Үг Давтах</label>
+    
+                                <div class="col-md-6">
+                                    <input id="new_confirm_password" type="password" class="form-control @error('new_confirm_password') is-invalid @enderror" name="new_confirm_password" autocomplete="current-password">
+                                    
+                                    @error('new_confirm_password')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                    
+                                </div>
                             </div>
                         </div>
 
@@ -112,12 +152,34 @@
                                 </a>
                             </div>
                         </div>
-
-                        update(['password'=> Hash::make($request->new_password)]);
+                        
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+@section('javascript')
+    <script>          
+        
+        $(function() {
+            $('#PasswordWrapper').hide();     
+            if($('#showPassword').is(":checked"))
+                $('#PasswordWrapper').show();
+
+            $('#showPassword').click(function() {
+                if ($(this).is(":checked")) {                    
+                    $('#PasswordWrapper').show();
+                    // $('#showPassword').val($(this).is(':checked'));    
+                }else {                                      
+                    $('#PasswordWrapper').hide();
+                }
+
+            });
+             
+            
+        });
+    </script>
+@endsection
 @endsection

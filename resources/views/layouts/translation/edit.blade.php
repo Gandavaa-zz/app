@@ -46,9 +46,11 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-3 float-left">
+                                @if(isset($translation->previous()->id))
                                 <a href="{{ route('translations.edit', $translation->previous()->id )  }}" class="ml-1 btn btn-info">
                                 < {{ __('Өмнөх') }}
                                 </a>
+                                @endif
                                 <a href="{{ route('translations.edit', $translation->next()->id ) }}" class="ml-1 btn btn-info">                                    
                                     {{ __('Дараах') }}
                                  >

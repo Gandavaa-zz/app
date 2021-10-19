@@ -22,7 +22,7 @@
     <div class="col-md-12" id="{{($item[0]["content"]["title"]) }}">
         <div class="card">
             <div class="card-header .bg-secondary">
-                {{ __($item[0]["content"]["sub_title"]) }}
+                {!! $item[0]["content"]["sub_title"] !!}
             </div>
 
             <div class="card-body">
@@ -82,7 +82,7 @@
     <div class="col-md-12" id="{{$item[2]["content"]["title"]}}">
         <div class="card">
             <div class="card-header .bg-secondary">
-                {{ __($item[2]["content"]["sub_title"]) }}
+                {!! $item[2]["content"]["sub_title"] !!}
             </div>
             <div class="card-body">
                 <div class="intro">
@@ -95,7 +95,7 @@
 
     <!-- Graph  -->
     @if (str_contains($item[4]['type'], 'ancre'))
-    <h2 class="card-title">{{ $item[4]["params"]["menuNumber"] }} -
+    <h2 class="card-title graph-2">{{ $item[4]["params"]["menuNumber"] }} -
         {{ __($item[4]["content"]["title"]) }}
     </h2>
     @endif
@@ -104,7 +104,7 @@
         <div class="card">
 
             <div class="card-header .bg-secondary">
-                {{ __($item[4]["content"]["sub_title"]) }}
+                {!! $item[4]["content"]["sub_title"]!!}
             </div>
             <div class="card-body">
                 <div class="group-header">
@@ -120,25 +120,27 @@
 
     <!-- Detailed  -->
     @if (str_contains($item[6]['type'], 'ancre'))
-    <h2 class="card-title">{{ $item[6]["params"]["menuNumber"] }} -
+    <h2 class="card-title mt-640">{{ $item[6]["params"]["menuNumber"] }} -
         {{ __($item[6]["content"]["title"]) }} </h2>
     @endif
 
     <div class="col-md-12" id="{{$item[6]["content"]["title"]}}">
         <div class="card">
             <div class="card-header .bg-secondary">
-                {{ __($item[6]["content"]["sub_title"]) }}
+                {!!$item[6]["content"]["sub_title"]!!}
             </div>
             <div class="card-body">
                 <!-- loop here -->
+                @php $i = 1; @endphp
+
                 @foreach ($item as $val)
 
                 @if($val['type']=='rapport_details_facteur')
-                <div class="score-bar-wrapper row">
-                    <div class="col-xs-12 col-sm-3">
-                        <div class="box-score ec-first-bg-color ec-first-text-color" style="background-color:#{{$val["params"]["couleur"]}}; color:#000">
+                <div class="score-bar-wrapper row @if($i!==1) mt-800 @endif">
+                    <div class="col-xs-12 col-sm-3 ">
+                        <div class="box-score ec-first-bg-color ec-first-text-color " style="background-color:#{{$val["params"]["couleur"]}}; color:#000">
                             <div class="header">
-                                Score<br>
+                                Оноо<br>
                                 @if(isset($val["params"]))
                                 {{ $val["params"]["score_calculated"]}}
                                 @endif
@@ -184,8 +186,9 @@
                                     {!! $val["content"]["description_long"] !!}
                                 </div>
                             </div>
-
-                            @endif
+                            @php if($i==1) $i=0; @endphp
+                            @endif 
+                               
                             @endforeach
                             <!-- /end loop here -->
                         </div>
@@ -193,6 +196,8 @@
                 </div>
             </div>
         @endsection
+
+        
 
         @section('script')
 
@@ -218,7 +223,7 @@
             var point_start = -15;
             @foreach($group_factors as $idx => $group)
 
-            @if(str_contains($group['label'], "Intelligence"))
+            @if(isset($group['label']))
             obj.name = @json($group['label']) + " (" + @json($group['score']) + ")";
             obj.y = parseFloat(@json($group['score']));
             obj.color = '#' + @json($group['color']);
@@ -431,7 +436,13 @@
 
             });
 
-            console.log(calcPoint(5.8, 5, 3));
+            $(document).ready(function(){
+                $('#pdfExport').on('click', function(){
+                    $('.page-wrapper').removeClass("toggled");            
+                    $('figure').css("margin-left", "-200px");                       
+                    window.print();
+                });
+            });
 
         </script>
 
