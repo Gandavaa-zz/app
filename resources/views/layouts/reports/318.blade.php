@@ -11,7 +11,11 @@
 @include("layouts.reports.components.logo", ['logo'=> $data['general']])
 <!-- /logo -->
 
+<<<<<<< HEAD
 <div class="row" id="printable">    
+=======
+<div class="row" id="printable">
+>>>>>>> 554e7cafa57a0e2a5ec78ae9438abd2b452534b6
     @php $item = $data["parties"]["party"]; @endphp
     @php $group_factors = $data["group_factors"]; @endphp
     @if (str_contains($item[0]['type'], 'ancre'))
@@ -145,9 +149,13 @@
                     <div class="col-xs-12 col-sm-9">
                         <div class="progress score-bar" style="width: 100%;">
                             <label for="0" id="percent_start">0</label>
-                            <div class="progress-bar" style='width:{{str_replace(".", "", $comment["params"]["score"])}}%;color:#000000; background-color: #{!!$comment["params"]["couleur"]!!} '>
+                            <?php $score = str_replace(".", "", $comment["params"]["score"]) ?>
+                            @if(strlen($score) == 1)
+                            <?php $score .= 0;?>
+                            @endif
+                            <div class="progress-bar" style='width:{{$score}}%;color:#000000; background-color: #{!!$comment["params"]["couleur"]!!} '>
                             </div>
-                            <label for=" 10" id="percent_end">10</label>
+                            <label for="10" id="percent_end">10</label>
                         </div>
                     </div>
 
@@ -248,29 +256,29 @@
             </div>
         </div>
     </div>
+
     {{-- 4 - General Profile ends --}}
     <!-- /endsection -->
     @endsection
     @section('script')
+
     <script>
-        function printDiv(divName) {
+        var doc = new jsPDF();
+        var elementHandler = {
+            '#ignorePDF': function(element, renderer) {
+                return true;
+            }
+        };
+        var source = window.document.getElementsByTagName("body")[0];
+        doc.fromHTML(
+            source
+            , 15
+            , 15, {
+                'width': 180
+                , 'elementHandlers': elementHandler
+            });
 
-            const doc = new jsPDF();
-            var elementHandler = {
-                '#ignorePDF': function(element, renderer) {
-                    return true;
-                }
-            };
-            var source = document.querySelector("#printable");
-            doc.fromHTML(
-                source
-                , 15
-                , 15, {
-                    'width': 180
-                });
-
-            doc.output('dataurlnewwindow');
-        }
+        doc.output("dataurlnewwindow");
 
         function findPoint(a, b) {
             let d = ((a * b) * 1 / 2) / ((a + b) * 0.25);

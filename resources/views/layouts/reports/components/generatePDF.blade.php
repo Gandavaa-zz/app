@@ -1,3 +1,5 @@
+@extends('layouts.report')
+<!-- logo -->
 <div class="row">
 
     @php $item = "test"; @endphp
@@ -32,7 +34,7 @@
                     </div>
                 </div>
                 <br>
-                <img src="/assets/img/emotion/us.clocheQE01.jpg" alt="" height="425" width="519" />
+                <img src="./assets/img/emotion/us.clocheQE01.jpg" alt="" height="425" width="519" />
                 {{-- {!!$item[3]['content']['introduction']!!} --}}
             </div>
         </div>

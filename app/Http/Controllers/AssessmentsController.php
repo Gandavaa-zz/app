@@ -6,12 +6,15 @@ use App\Candidate;
 use App\Group;
 use App\Test;
 use App\Translation;
+use Barryvdh\DomPDF\PDF as DomPDFPDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use DateTime;
+use Illuminate\Support\Facades\App;
+use Spatie\Browsershot\Browsershot;
 
 use PDF; 
 
@@ -91,6 +94,24 @@ class AssessmentsController extends Controller
         // return $assessments;
         return view('layouts.assessments.index', compact('assessments', 'tests', 'groups', 'pagination'));
     }
+
+
+
+    // print assessment as pdf
+    public function generatePDF()
+    {
+        // $save_to_file = '/D:/file.pdf';
+        $organization = [];
+        // $html = \View::make('layouts.reports.components.generatePDF', compact('organization'))->render();
+        // $data = $this->report(9864681, "pdf");
+        Browsershot::html('<h1>xaxa</h2>')
+            ->dismissDialogs()
+            ->setNodeBinary('PATH %~dp0;%PATH%;')
+            ->bodyHtml();
+        // dd($file);
+
+    }
+
 
     /**
      * Sales Profile fix
@@ -180,7 +201,7 @@ class AssessmentsController extends Controller
      * @return string $xml of results
      */
 
-    public function report($assessment_id)
+    public function report($assessment_id, $type = null)
     {
         // if (!Storage::exists("/assets/assessments/{$assessment_id}.xml")) {
         $response = Http::withHeaders([
@@ -293,7 +314,10 @@ class AssessmentsController extends Controller
                 ];
             unset($factor);
         }
-        // dd($data);
+        // dd($data["test_factors"]);
+        $test_factors = array_unique($data["test_factors"], SORT_REGULAR);
+        $data["test_factors"] = $test_factors;
+        // dd($data["test_factors"]);
         // test_mini_tests
         $data['test_mini_tests'] = [
             'id' => $xml["elements"]["test_mini_tests"]["test_mini_test"]["@attributes"]["id"],
@@ -340,7 +364,7 @@ class AssessmentsController extends Controller
                             $comments[]  = [
                                 'color' => isset($item["color"]) ? $item["color"] : null,
                                 "score" =>  isset($item["score"]) ? $item["score"] : 0,
-                                "title" => $label,
+                                "title" => $this->getMNText($label),
                                 "comment" =>  $this->getMNText(isset($item["contenus"]["contenu"]["commentaire_perso"]) ? $item["contenus"]["contenu"]["commentaire_perso"] : null),
                             ];
                             if (isset($comments)) {
@@ -383,15 +407,21 @@ class AssessmentsController extends Controller
                         foreach ($value["domaines"]["domaine"] as $item) {
 
                             if (isset($item['cibles_secondaires']['cibles_secondaire']['@attributes'])) {
+                                if (isset($item['cibles_secondaires']['cibles_secondaire']))
+                                    foreach ($data['test_factors'] as $test_factor) {
+                                        if ($item['cibles_secondaires']['cibles_secondaire']['@attributes']["target_id"] == $test_factor['id'])
+                                            $label = $test_factor['label'];
+                                    }
 
                                 $comments[] = [
                                     'color' => isset($item["cibles_secondaires"]["cibles_secondaire"]['color']) ? $item["cibles_secondaires"]["cibles_secondaire"]['color'] : null,
                                     "score" =>  isset($item["cibles_secondaires"]["cibles_secondaire"]["score"]) ? $item["cibles_secondaires"]["cibles_secondaire"]["score"] : 0,
-                                    "title" =>  $this->getMNText(isset($item["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["libelle"]) ?
-                                        $item["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["libelle"] : null),
+                                    "title" =>  $label,
                                     "comment" =>  $this->getMNText(isset($item["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"]) ?
                                         $item["cibles_secondaires"]["cibles_secondaire"]["contenus"]["contenu"]["commentaire_perso"] : null),
                                 ];
+
+
                                 if (isset($comments)) {
                                     $domain[] = [
                                         'id' => isset($item["@attributes"]["id"]) ? $item["@attributes"]["id"] : null,
@@ -410,13 +440,15 @@ class AssessmentsController extends Controller
                                             foreach ($data['test_factors'] as $test_factor) {
                                                 if ($row['@attributes']["target_id"] == $test_factor['id'])
                                                     $label = $test_factor['label'];
+                                                // if (str_contains($test_factor['label'], "Creative"))
+                                                // print_r($test_factor);
                                             }
                                         }
 
                                         $comments[]  = [
                                             'color' => isset($row["color"]) ? $row["color"] : null,
                                             "score" =>  isset($row["score"]) ? $row["score"] : 0,
-                                            "title" => $label,
+                                            "title" => $this->getMNText($label),
                                             "comment" =>  $this->getMNText(isset($row["contenus"]["contenu"]["commentaire_perso"]) ? $row["contenus"]["contenu"]["commentaire_perso"] : null),
                                         ];
                                     }
@@ -651,7 +683,7 @@ class AssessmentsController extends Controller
                     'content' => array(
                         'label' => $this->getMNText(isset($value["contenus"]["contenu"]["libelle"]) ? $value["contenus"]["contenu"]["libelle"]: null),
                         'title' => $this->getMNText(isset($value["contenus"]["contenu"]["titre"]) ? $value["contenus"]["contenu"]["titre"] : null),
-                        'targets' => isset($value["contenus"]["contenu"]["targets"]) ? $value["contenus"]["contenu"]["targets"] : null,
+                        'cibles' => isset($value["contenus"]["contenu"]["cibles"]) ? $value["contenus"]["contenu"]["cibles"] : null,
                         'sub_title' => $this->getMNText(isset($value["contenus"]["contenu"]["sous_titre"]) ? $value["contenus"]["contenu"]["sous_titre"] : null),
                         'description_long' => $this->getMNText(isset($value["contenus"]["contenu"]["description_longue"]) ? $value["contenus"]["contenu"]["description_longue"] : null),
                         'description' => $this->getMNText(isset($value["contenus"]["contenu"]["description"]) ? $value["contenus"]["contenu"]["description"] : null),
@@ -676,8 +708,15 @@ class AssessmentsController extends Controller
             //setting all values to variable $data
             $data["parties"] = $this->replaceChar($this->getMNText($candidate_name), $party);
         }
+<<<<<<< HEAD
 
         // dd($data["parties"]);
+=======
+        // dd($data);
+        if ($type) {
+            return $data;
+        }
+>>>>>>> 554e7cafa57a0e2a5ec78ae9438abd2b452534b6
         return view('layouts.reports.' . $data['general']['test_id'], compact('data'));
     }
 

@@ -7,16 +7,14 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link href="{{ asset('css/custom.css') }}" media="all" rel="stylesheet">
-    {{-- <link rel="stylesheet" href="{{ ltrim(base_path('css/custom.css'), '/') }}" /> --}}
-    {{-- <link rel="stylesheet" href="{{ URL::asset('css/custom.css') }}" type="text/css" /> --}}
-<style>
-.page-break {
-    page-break-after: always;
-}
-</style>
 </head>
+<<<<<<< HEAD
 <body style="-webkit-print-color-adjust: exact;">
     <div class="page-wrapper chiller-theme toggled">
+=======
+<body>
+    <div class="page-wrapper chiller-theme toggled" id="main">
+>>>>>>> 554e7cafa57a0e2a5ec78ae9438abd2b452534b6
         <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
             <i class="fas fa-bars"></i>
         </a>
@@ -39,12 +37,10 @@
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
 @yield('script')
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/esm/popper.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.js">
-</script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
 <script type="text/javascript" src="{{ asset('js/custom.js') }}"></script>
-
 
 </html>
