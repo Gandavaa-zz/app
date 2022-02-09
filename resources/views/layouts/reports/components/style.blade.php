@@ -2022,5 +2022,4 @@
     .my-2 {
         margin-bottom: 0.5rem !important;
     }
-
 </style>
