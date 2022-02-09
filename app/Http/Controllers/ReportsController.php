@@ -619,7 +619,7 @@ class ReportsController extends Controller
     public function replaceChar($candidate_name, $content)
     {
         $replaced = str_replace("$", $candidate_name, json_encode($content));
-   
+        dd($replaced);
         return json_decode($replaced, true);
     }
 

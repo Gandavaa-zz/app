@@ -210,7 +210,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,             
-        Barryvdh\Snappy\ServiceProvider::class,
+        // Barryvdh\Snappy\ServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         
     ],
@@ -232,11 +232,7 @@ return [
         'Arr' => Illuminate\Support\Arr::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,
-<<<<<<< HEAD
         'Blade' => Illuminate\Support\Facades\Blade::class,        
-=======
-        'Blade' => Illuminate\Support\Facades\Blade::class,
->>>>>>> 554e7cafa57a0e2a5ec78ae9438abd2b452534b6
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Broadcast' => Illuminate\Support\Facades\Broadcast::class,
         'Bus' => Illuminate\Support\Facades\Bus::class,
