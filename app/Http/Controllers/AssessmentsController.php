@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use DateTime;
 
-use PDF; 
+use PDF;
 
 class AssessmentsController extends Controller
 {
@@ -22,6 +22,8 @@ class AssessmentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public $test_id;
+
     public function index(Request $request)
     {
         // return $request->test_id;
@@ -200,19 +202,20 @@ class AssessmentsController extends Controller
         $content = $domain = $party = $comments = array();
         $xml = xml_decode($contents);
 
-        $canidate_id = $xml["@attributes"]["noyau_utilisateur_id"]; 
+        $canidate_id = $xml["@attributes"]["noyau_utilisateur_id"];
         // Тухайн canidate-н утгийг шүүж авах
-        $Candidate = Http::withHeaders(['WWW-Authenticate'=> $this->token])
-            ->get('https://app.centraltest.com/customer/REST/retrieve/candidate/json',[
+        $Candidate = Http::withHeaders(['WWW-Authenticate' => $this->token])
+            ->get('https://app.centraltest.com/customer/REST/retrieve/candidate/json', [
                 'id' => 5543906
             ]);
 
-            // get title
-        
+        // get title
+
         $candidate_name = $xml["noyau_utilisateur_info"]["prenom"] . " " . $xml["noyau_utilisateur_info"]["nom"];
         $xml = $this->replaceName($candidate_name, json_encode($xml));
         // general
         $xml = json_decode($xml, true);
+        $this->test_id = $xml["elements"]["test_tests"]["test_test"]["@attributes"]["id"];
         // return $xml;
         $started_at = new DateTime($xml['params']['date_passation_debut']);
         $completed_at = new DateTime($xml['params']['date_passation_fin']);
@@ -232,10 +235,11 @@ class AssessmentsController extends Controller
             'score_brut' => $xml["elements"]["test_tests"]["test_test"]["@attributes"]["score_brut"],
             'logo' => $xml["elements"]["test_tests"]["test_test"]["contenus"]["contenu"]["logo3"],
             'label' => $xml["elements"]["test_tests"]["test_test"]["contenus"]["contenu"]["libelle"],
-            'participant_name' => $this->getMNText($candidate_name),
+            'participant_name' => $this->getMNText($candidate_name, $xml["elements"]["test_tests"]["test_test"]["@attributes"]["id"]),
             'completed_at' => $test_date,
             'title_id' => isset($Candidate['title_id']) ? $Candidate['title_id'] : 1
         ];
+
 
         $this->participant = $data['general']['participant_name'];
         // test_groupe_facteur
@@ -302,6 +306,7 @@ class AssessmentsController extends Controller
 
         // parties
         $label = "";
+        //   dd($xml['parties']['partie']);
         foreach ($xml['parties']['partie'] as $value) {
 
             if (isset($value["domaines"]["domaine"])) {
@@ -649,7 +654,7 @@ class AssessmentsController extends Controller
                     'type' =>  $value["@attributes"]["type"],
                     'params' =>  $value['params'],
                     'content' => array(
-                        'label' => $this->getMNText(isset($value["contenus"]["contenu"]["libelle"]) ? $value["contenus"]["contenu"]["libelle"]: null),
+                        'label' => $this->getMNText(isset($value["contenus"]["contenu"]["libelle"]) ? $value["contenus"]["contenu"]["libelle"] : null),
                         'title' => $this->getMNText(isset($value["contenus"]["contenu"]["titre"]) ? $value["contenus"]["contenu"]["titre"] : null),
                         'targets' => isset($value["contenus"]["contenu"]["targets"]) ? $value["contenus"]["contenu"]["targets"] : null,
                         'sub_title' => $this->getMNText(isset($value["contenus"]["contenu"]["sous_titre"]) ? $value["contenus"]["contenu"]["sous_titre"] : null),
@@ -695,9 +700,10 @@ class AssessmentsController extends Controller
 
     public function getMNText($str)
     {
-        $text = Translation::select('MN')->where('EN', '=', $str)->value("MN");
+        $text = Translation::select('MN')->where('EN', '=', $str)->where('test_id', '=', $this->test_id)->value("MN");
 
         if (!$text) {
+
             return $str;
         }
 
@@ -711,7 +717,8 @@ class AssessmentsController extends Controller
         return json_decode($replaced, true);
     }
 
-    function parse($assessment_id){
+    function parse($assessment_id)
+    {
         if (!Storage::exists("/assets/assessments/{$assessment_id}.xml")) {
             $response = Http::withHeaders([
                 'WWW-Authenticate' => $this->token,
@@ -1168,7 +1175,7 @@ class AssessmentsController extends Controller
                     'type' =>  $value["@attributes"]["type"],
                     'params' =>  $value['params'],
                     'content' => array(
-                        'label' => $this->getMNText(isset($value["contenus"]["contenu"]["libelle"]) ? $value["contenus"]["contenu"]["libelle"]: null),
+                        'label' => $this->getMNText(isset($value["contenus"]["contenu"]["libelle"]) ? $value["contenus"]["contenu"]["libelle"] : null),
                         'title' => $this->getMNText(isset($value["contenus"]["contenu"]["titre"]) ? $value["contenus"]["contenu"]["titre"] : null),
                         'targets' => isset($value["contenus"]["contenu"]["targets"]) ? $value["contenus"]["contenu"]["targets"] : null,
                         'sub_title' => $this->getMNText(isset($value["contenus"]["contenu"]["sous_titre"]) ? $value["contenus"]["contenu"]["sous_titre"] : null),
@@ -1197,15 +1204,15 @@ class AssessmentsController extends Controller
         }
 
         return $data;
-
     }
 
-    public function pdf(){
-        
+    public function pdf()
+    {
+
         // $html= view('layouts.assessments.invoice')->render();
         //  $data = $this->parse(9981110);
         //  $html = view('layouts.reports.' . $data['general']['test_id'], compact('data'))->render();
-        
+
         // return PDF::loadView($html)->stream('sample.pdf');
         // $pdf = PDF::loadView('layouts.reports.' . $data['general']['test_id'], compact('data'));
         // $pdf = PDF::loadView('layouts.assessments.invoice');                       

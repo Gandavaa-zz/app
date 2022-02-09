@@ -1,4 +1,5 @@
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -8,13 +9,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link href="{{ asset('css/custom.css') }}" media="all" rel="stylesheet">
 </head>
-<<<<<<< HEAD
+
 <body style="-webkit-print-color-adjust: exact;">
     <div class="page-wrapper chiller-theme toggled">
-=======
-<body>
-    <div class="page-wrapper chiller-theme toggled" id="main">
->>>>>>> 554e7cafa57a0e2a5ec78ae9438abd2b452534b6
         <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
             <i class="fas fa-bars"></i>
         </a>
