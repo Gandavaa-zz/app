@@ -11,11 +11,7 @@
 @include("layouts.reports.components.logo", ['logo'=> $data['general']])
 <!-- /logo -->
 
-<<<<<<< HEAD
-<div class="row" id="printable">    
-=======
 <div class="row" id="printable">
->>>>>>> 554e7cafa57a0e2a5ec78ae9438abd2b452534b6
     @php $item = $data["parties"]["party"]; @endphp
     @php $group_factors = $data["group_factors"]; @endphp
     @if (str_contains($item[0]['type'], 'ancre'))
@@ -151,7 +147,7 @@
                             <label for="0" id="percent_start">0</label>
                             <?php $score = str_replace(".", "", $comment["params"]["score"]) ?>
                             @if(strlen($score) == 1)
-                            <?php $score .= 0;?>
+                            <?php $score .= 0; ?>
                             @endif
                             <div class="progress-bar" style='width:{{$score}}%;color:#000000; background-color: #{!!$comment["params"]["couleur"]!!} '>
                             </div>
@@ -188,8 +184,8 @@
 
     {{-- 4 - General Profile --}}
 
-    @if (str_contains($item[25]["type"], "ancre" )) 
-        <h2 class="card-title mt-700">{{ $item[25]["params"]["menuNumber"] }} - {{$item[25]["content"]["title"]}} </h2>
+    @if (str_contains($item[25]["type"], "ancre" ))
+    <h2 class="card-title mt-700">{{ $item[25]["params"]["menuNumber"] }} - {{$item[25]["content"]["title"]}} </h2>
     @endif
 
     <div class="col-md-12" id="{{$item[25]["content"]["title"]}}">
@@ -271,11 +267,9 @@
         };
         var source = window.document.getElementsByTagName("body")[0];
         doc.fromHTML(
-            source
-            , 15
-            , 15, {
-                'width': 180
-                , 'elementHandlers': elementHandler
+            source, 15, 15, {
+                'width': 180,
+                'elementHandlers': elementHandler
             });
 
         doc.output("dataurlnewwindow");
@@ -288,10 +282,10 @@
         var categories = [];
         var data = [];
         var items = {
-            data: []
-            , name: ""
-            , type: "area"
-            , color: ""
+            data: [],
+            name: "",
+            type: "area",
+            color: ""
         };
 
         @foreach($group_factors as $idx => $group)
@@ -314,147 +308,226 @@
         data.push(items);
 
         // console.log("data", data);
-        items = { data: [], name: "", type: "area", color: "" };
+        items = {
+            data: [],
+            name: "",
+            type: "area",
+            color: ""
+        };
         @endif
         @endforeach
 
         // эхний утгийг нь 
-        console.log("data - ", data);        
-        var even = Array(15).fill(null), odd = Array(18).fill(null), matrix = [], n = 0, m = 0;
+        console.log("data - ", data);
+        var even = Array(15).fill(null),
+            odd = Array(18).fill(null),
+            matrix = [],
+            n = 0,
+            m = 0;
 
         for (const [key, value] of Object.entries(data)) {
             if (key == 0) data[key].pointStart = -12;
-            else if (key == 1) data[key].pointStart = 156;         
+            else if (key == 1) data[key].pointStart = 156;
             matrix[n] = [];
             value.data.map((el, index) => {
                 if (el !== null) {
-                    matrix[n][m] = el; m++;
+                    matrix[n][m] = el;
+                    m++;
                 }
-            }); 
-            n++; m = 0;
+            });
+            n++;
+            m = 0;
         }
 
         console.log('matrix', matrix);
 
-        for (const [key, value] of Object.entries(data)) {   
+        for (const [key, value] of Object.entries(data)) {
             console.log('key', key);
-            if(key==0){
+            if (key == 0) {
                 for (let i = 0; i < 16; i++) {
                     switch (i) {
-                        case 1: even[i] = matrix[key][0]; break;
-                        case 3: even[i] = matrix[key][1]; break;
-                        case 5: even[i] = matrix[key][2]; break;
-                        case 7: even[i] = matrix[key][3]; break;
-                        case 9: even[i] = matrix[key][4]; break;
-                        case 11: even[i] = matrix[key][5]; break;                        
-                        case 13: even[i] = matrix[key][6]; break;                                            
-                        case 15: even[i] = 0; break;                                
+                        case 1:
+                            even[i] = matrix[key][0];
+                            break;
+                        case 3:
+                            even[i] = matrix[key][1];
+                            break;
+                        case 5:
+                            even[i] = matrix[key][2];
+                            break;
+                        case 7:
+                            even[i] = matrix[key][3];
+                            break;
+                        case 9:
+                            even[i] = matrix[key][4];
+                            break;
+                        case 11:
+                            even[i] = matrix[key][5];
+                            break;
+                        case 13:
+                            even[i] = matrix[key][6];
+                            break;
+                        case 15:
+                            even[i] = 0;
+                            break;
                     }
                     if (i == 0) even[i] = findPoint(matrix[0][0], matrix[1][7]);
-                    if (i == 14){
+                    if (i == 14) {
                         even[i] = findPoint(matrix[0][6], matrix[1][0]);
-                        console.log('none'+matrix[0][6]);
-                    } 
+                        console.log('none' + matrix[0][6]);
+                    }
                 }
-                value.data = even; even = Array(15).fill(null);     
-            }else if (key==1){
+                value.data = even;
+                even = Array(15).fill(null);
+            } else if (key == 1) {
                 for (let i = 0; i < 18; i++) {
                     switch (i) {
-                        case 1: odd[i] = matrix[key][0]; break;
-                        case 3: odd[i] = matrix[key][1]; break;
-                        case 5: odd[i] = matrix[key][2]; break;
-                        case 7: odd[i] = matrix[key][3]; break;
-                        case 9: odd[i] = matrix[key][4]; break;
-                        case 11: odd[i] = matrix[key][5]; break;                        
-                        case 13: odd[i] = matrix[key][6]; break;                                            
-                        case 15: odd[i] = matrix[key][7]; break;                                            
-                        case 17: odd[i] = 0; break;                                
+                        case 1:
+                            odd[i] = matrix[key][0];
+                            break;
+                        case 3:
+                            odd[i] = matrix[key][1];
+                            break;
+                        case 5:
+                            odd[i] = matrix[key][2];
+                            break;
+                        case 7:
+                            odd[i] = matrix[key][3];
+                            break;
+                        case 9:
+                            odd[i] = matrix[key][4];
+                            break;
+                        case 11:
+                            odd[i] = matrix[key][5];
+                            break;
+                        case 13:
+                            odd[i] = matrix[key][6];
+                            break;
+                        case 15:
+                            odd[i] = matrix[key][7];
+                            break;
+                        case 17:
+                            odd[i] = 0;
+                            break;
                     }
                     if (i == 0) odd[i] = findPoint(matrix[key][0], matrix[0][6]);
-                    if (i == 16) odd[i] = findPoint(matrix[key][7], matrix[1][0]);                 
+                    if (i == 16) odd[i] = findPoint(matrix[key][7], matrix[1][0]);
                 }
-                value.data = odd;            
-                odd = Array(18).fill(null);                
+                value.data = odd;
+                odd = Array(18).fill(null);
             }
         }
         console.log('data', data);
-        
+
         Highcharts.chart('chart', {
             chart: {
-                marginTop: 30, polar: true, type: ''
-            , }
-            , "title": {
+                marginTop: 30,
+                polar: true,
+                type: '',
+            },
+            "title": {
                 "text": ""
-            }
-            , "credits": {
+            },
+            "credits": {
                 "enabled": false
-            }
-            , "tooltip": {
+            },
+            "tooltip": {
                 "enabled": false
-            }
-            , "yAxis": {
-                "max": 10, "lineColor": "#FFFFFF", "tickInterval": 2, "gridLineWidth": 1, "gridLineColor": "#EEEEEE", "plotLines": [{
-                    "color": "#AAAAAA", "dashStyle": "LongDash", "value": 10, "width": 1
+            },
+            "yAxis": {
+                "max": 10,
+                "lineColor": "#FFFFFF",
+                "tickInterval": 2,
+                "gridLineWidth": 1,
+                "gridLineColor": "#EEEEEE",
+                "plotLines": [{
+                    "color": "#AAAAAA",
+                    "dashStyle": "LongDash",
+                    "value": 10,
+                    "width": 1
                 }, {
-                    "color": "#EEEEEE" , "dashStyle": "Dash", "value": 1, "width": 1
+                    "color": "#EEEEEE",
+                    "dashStyle": "Dash",
+                    "value": 1,
+                    "width": 1
                 }, {
-                    "color": "#EEEEEE", "dashStyle": "Dash", "value": 3, "width": 1
+                    "color": "#EEEEEE",
+                    "dashStyle": "Dash",
+                    "value": 3,
+                    "width": 1
                 }, {
-                    "color": "#EEEEEE", "dashStyle": "Dash", "value": 7, "width": 1
+                    "color": "#EEEEEE",
+                    "dashStyle": "Dash",
+                    "value": 7,
+                    "width": 1
                 }, {
-                    "color": "#EEEEEE", "dashStyle": "Dash", "value": 9, "width": 1
-                }], "labels": { "enabled": false}
-            }
-            , "plotOptions": {
-                "series": { 
-                    "animation": false, 
-                    "showInLegend": true, 
-                    "marker": { "enabled": false, 
-                        "states": {  "hover": { "enabled": false } }
-                    }, 
-                    "connectNulls": true, "pointPlacement": "on", "pointInterval": 12
+                    "color": "#EEEEEE",
+                    "dashStyle": "Dash",
+                    "value": 9,
+                    "width": 1
+                }],
+                "labels": {
+                    "enabled": false
                 }
-                , "area": { "lineWidth": 1 }
+            },
+            "plotOptions": {
+                "series": {
+                    "animation": false,
+                    "showInLegend": true,
+                    "marker": {
+                        "enabled": false,
+                        "states": {
+                            "hover": {
+                                "enabled": false
+                            }
+                        }
+                    },
+                    "connectNulls": true,
+                    "pointPlacement": "on",
+                    "pointInterval": 12
+                },
+                "area": {
+                    "lineWidth": 1
+                }
             },
 
             xAxis: {
-                "max": 12
-                , "startOnTick": true
-                , "endOnTick": true
-                , "lineWidth": 0
-                , "gridLineWidth": 1
-                , "labels": {
-                    "distance": 20
-                    , "style": {
-                        "width": "140px"
-                        , "color": "#000000"
-                        , "fontSize": "14px"
-                        , "fontWeight": "normal"
-                        , "fontFamily": "\"roboto\", \"Arial\", sans-serif"
-                    }
-                    , "formatter": function() {
-                        var sReturn = ''
-                            , iIndex = this.value / 24
-                            , oCategories = categories;
+                "max": 12,
+                "startOnTick": true,
+                "endOnTick": true,
+                "lineWidth": 0,
+                "gridLineWidth": 1,
+                "labels": {
+                    "distance": 20,
+                    "style": {
+                        "width": "140px",
+                        "color": "#000000",
+                        "fontSize": "14px",
+                        "fontWeight": "normal",
+                        "fontFamily": "\"roboto\", \"Arial\", sans-serif"
+                    },
+                    "formatter": function() {
+                        var sReturn = '',
+                            iIndex = this.value / 24,
+                            oCategories = categories;
 
-                        if (oCategories[iIndex] !=undefined) {
+                        if (oCategories[iIndex] != undefined) {
                             sReturn += oCategories[iIndex];
                         }
                         return sReturn;
                     }
-                }
-                , "tickPositions": [0, 24, 48, 72, 96, 120, 144, 168, 192, 216, 240, 264, 288, 312, 336, 360]
-            }
-            , "series": data
+                },
+                "tickPositions": [0, 24, 48, 72, 96, 120, 144, 168, 192, 216, 240, 264, 288, 312, 336, 360]
+            },
+            "series": data
         });
 
-        $(document).ready(function(){
-            $('#pdfExport').on('click', function(){                
-                $('.page-wrapper').removeClass("toggled");            
-                $('figure').css("margin-left", "-200px");                       
+        $(document).ready(function() {
+            $('#pdfExport').on('click', function() {
+                $('.page-wrapper').removeClass("toggled");
+                $('figure').css("margin-left", "-200px");
                 window.print();
             });
         });
-
     </script>
     @endsection
