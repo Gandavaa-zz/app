@@ -708,15 +708,10 @@ class AssessmentsController extends Controller
             //setting all values to variable $data
             $data["parties"] = $this->replaceChar($this->getMNText($candidate_name), $party);
         }
-<<<<<<< HEAD
-
-        // dd($data["parties"]);
-=======
         // dd($data);
-        if ($type) {
-            return $data;
-        }
->>>>>>> 554e7cafa57a0e2a5ec78ae9438abd2b452534b6
+        // if ($type) {
+        //     return $data;
+        // }
         return view('layouts.reports.' . $data['general']['test_id'], compact('data'));
     }
 

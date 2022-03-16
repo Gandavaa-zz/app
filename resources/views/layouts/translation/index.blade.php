@@ -14,10 +14,10 @@
                             <!-- <button type="button" id="deleteMultiple" class="btn btn-danger deleteMultiple"  href="javascript:void(0)" data-original-title="Delete">Олноор устгах</button> -->
                             <!-- @role('admin|super-admin')
                             <a class="btn btn-primary" href="{{ route('translations.create') }}"><i class="cil-pencil"></i>Орчуулга оруулах</a>
-                            @endrole
-                            @role('admin|super-admin|writer')
-                            <a class="btn btn-success" href="{{ route('translations.new') }}"><i class="cil-plus"></i>Орчуулга нэмэх</a>
                             @endrole -->
+                            @role('admin|super-admin|writer')
+                            <a class="btn btn-success" href="{{ route('translations.new') }}">Орчуулга нэмэх</a>
+                            @endrole 
                         </span>
                     </div>
 

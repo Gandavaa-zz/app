@@ -22,7 +22,6 @@ class ImportsController extends Controller
     public function index()
     {
         $tests = Test::where('priority', 1)->get();
-
         return view('layouts.import.index', compact('tests'));
     }
 
@@ -36,17 +35,13 @@ class ImportsController extends Controller
         // test_id-р тухайн assessment-г дуудаж харуулах
         // assessment-дээр байгаа утгуудаас тестийг оруулах
         $filter['test_id'] = $request->test_id;
-
         $this->test_id = $request->test_id;
-
         $response = Http::withHeaders([
             'WWW-Authenticate' => $this->token
         ])->get('https://app.centraltest.com/customer/REST/assessment/paginate/completed/json',  $filter);
-
         // if assessment_id in imported test then get next index of id        
         $id = rand(0, 50);
         $assessment_id = $response['result']['data'][$id]['id'];
-
         if (!Storage::exists("/assets/assessments/{$assessment_id}.xml")) {
             $response = Http::withHeaders([
                 'WWW-Authenticate' => $this->token,
@@ -57,10 +52,8 @@ class ImportsController extends Controller
                     'language_id' => "1"
                 ]
             );
-            // $encrypted = Crypt::encryptString($response);
             Storage::put("/assets/assessments/{$assessment_id}.xml", $response);
         }
-
         // test-n xml avchlaa
         $contents = Storage::get("assets/assessments/{$assessment_id}.xml");
         $xml = xml_decode($contents);
