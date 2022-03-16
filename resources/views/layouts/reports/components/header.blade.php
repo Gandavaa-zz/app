@@ -37,14 +37,7 @@
           </li>
           <li class="dropdown">
               <a href="#" data-toggle="dropdown" class="dropdown-toggle">
-<<<<<<< HEAD
-                  <img class="bg-dark img-responsive mr-2" width="23" height="23" 
-                    @if($data['general']['title_id'] == 1) src="{{ asset('/assets/img/avatar-man.png') }}"  
-                    @else src="{{ asset('/assets/img/avatar-woman.png') }}"  
-                    @endif alt="{{$data['general']['participant_name']}}">
-=======
                   <img class=" img-responsive" width="23" height="23" src="" alt="{{$data['general']['participant_name']}}">
->>>>>>> 554e7cafa57a0e2a5ec78ae9438abd2b452534b6
                   <span class="user-name" style="color: #14191A;">{!!$data['general']['participant_name']!!}</span>
               </a>              
           </li>

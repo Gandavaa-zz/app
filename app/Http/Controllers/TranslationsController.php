@@ -117,7 +117,7 @@ class TranslationsController extends Controller
         $test_id = $request->test_id;
         // dd($test_id);
         $inserted = $this->getJSON($test_id);
-        $data = Translation::where('MN', null)->where('test_id', $test_id)->limit(12)->get();
+        $data = Translation::where('MN', null)->limit(10)->get();
         $test = Test::where('id', $test_id)->get();
         return view('layouts.translation.addTranslations', compact('data'))->with(['test' => $test]);
     }
@@ -273,8 +273,7 @@ class TranslationsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Translation $translation)
-    {   
-        // return $translation;
+    {
         return view('layouts.translation.edit', ['translation' => $translation]);
     }
 

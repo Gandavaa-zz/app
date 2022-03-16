@@ -391,25 +391,6 @@
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 <script>
-<<<<<<< HEAD
-
-var categories = [];
-var data = [];
-var scores = [{}];
-var cats;
-var obj = {};
-var t = [];
-var index = 0;
-
-@foreach($data["parties"]["party"] as $key => $graph)
-    @if (str_contains($graph['type'], 'rapport_details_facteur'))
-            console.log("Scores 0" , scores);   
-        
-        @if (str_contains($graph["content"]["label"], 'Anchor'))
-            cats= @json($graph["content"]["title"]);i   
-            cats = cats + ' (' +  @json($graph["params "]["score"]) + ')';
-            categories.push(cats);
-=======
     var categories = [];
     var data = [];
     var scores = [{}];
@@ -435,7 +416,6 @@ var index = 0;
                 cats = @json($graph["content"]["title"]);
                 cats = cats + ' (' + @json($graph["params"]["score"]) + ')';
                 categories.push(cats);
->>>>>>> c2e3c64c172c895cb350af8ddf3e5f3457f55cda
             // console.log(cats);
             @endif
      @endif
@@ -446,17 +426,10 @@ var index = 0;
             obj["type"] = 'column';
             data.push(obj);
             obj = {};
-<<<<<<< HEAD
-            // console.log("data - " , data);
-        @endif
-    @endif;
-@endforeach
-=======
             console.log("data - " , data);
             @endif
         @endif;
     @endforeach
->>>>>>> c2e3c64c172c895cb350af8ddf3e5f3457f55cda
 
     Highcharts.chart('chart', {
         chart: {

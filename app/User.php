@@ -76,8 +76,10 @@ class User extends Authenticatable
 
     public function groups()
     {
-        return $this->belongsToMany(Group::class, 'group_user');
+        return $this->belongsToMany('App\Group');
     }
+
+
 
     public function getCreatedByNameAttribute()
     {

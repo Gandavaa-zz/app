@@ -8,8 +8,11 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('dashboard')->middleware('auth');
+<<<<<<< HEAD
 Route::get('/logout', 'Auth\LoginController@logout');
 
+=======
+>>>>>>> 51ad1cb28fe4e14af30cea46c74d02387fe76b8d
 Route::get('/report/pdf', [AssessmentsController::class, 'generatePDF']);
 Route::group(['middleware' => ['role:super-admin']], function () {
     Route::get('settings/users/import', 'Settings\UsersController@import')->name('user.import');    
