@@ -78,8 +78,8 @@ class TranslationsController extends Controller
 
     public function store(Request $request)
     {
-        $data = $this->validateInputs('create');   
-       
+        $data = $this->validateInputs('create');
+
         $data = Translation::create($data);
 
         return redirect()->route('translations.index')->with('success', 'Асуултыг амжилттай бүртгэлээ!');
@@ -198,7 +198,7 @@ class TranslationsController extends Controller
                 //pushing candidate name into array
                 array_push($xml, $candidate_name);
 
-                // dd($xml);
+                dd($xml);
                 foreach ($xml as $row) {
                     $isExist = Translation::where('EN', '=', $row)->first();
                     if (!$isExist) {
@@ -218,9 +218,11 @@ class TranslationsController extends Controller
                     // Storage::move("assets/tests/{$test_id}", "assets/inserted_tests/{$test_id}");
                 }
             }
+            dd("im called");
             return true;
         }
         return false;
+      
     }
 
     public function replaceName($candidate_name, $content)
@@ -286,10 +288,10 @@ class TranslationsController extends Controller
      */
     public function update(Translation $translation)
     {
-        $translation->update($this->validateInputs());    
+        $translation->update($this->validateInputs());
 
         return redirect()->back()->with('success', 'Орчуулгыг амжилттай шинэчлэлээ!');
-        
+
         // return view('layouts.translation.edit', ['translation' => $translation])
         // return redirect('translations/?test_id='.request('test_id'))->with('success', 'Орчуулгыг амжилттай шинэчлэлээ!');
     }
@@ -308,18 +310,39 @@ class TranslationsController extends Controller
     }
 
     public function validateInputs($method = null)
-    {        
-        if( $method =='create')
+    {
+        if ($method == 'create')
             return request()->validate([
                 'test_id' => ['required', 'gt:0'],
                 'en' => ['required', ['string']],
                 'mn' => ['required', ['string']],
             ]);
-        else 
+        else
             return request()->validate([
-            'test_id' => ['required'],
-            // 'en' => ['required', ['string']],
-            'mn' => ['required', ['string']],
-        ]);
+                'test_id' => ['required'],
+                // 'en' => ['required', ['string']],
+                'mn' => ['required', ['string']],
+            ]);
+    }
+    function getBetween($content, $start, $end)
+    {
+        $r = explode($start, $content);
+        if (isset($r[1])) {
+            $r = explode($end, $r[1]);
+            return $r[0];
+        }
+        return '';
+    }
+
+    function extract()
+    {
+        $contents[] = Storage::get("assets/test.txt");
+        $start = ">";
+        $end = ">";
+        var_dump($contents);
+        foreach ($contents as $line) {
+
+            dd($this->getBetween($line,$start,$end));
+        }
     }
 }

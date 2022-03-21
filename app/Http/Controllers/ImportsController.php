@@ -64,9 +64,11 @@ class ImportsController extends Controller
         // test-n xml avchlaa
         $contents = Storage::get("assets/assessments/{$assessment_id}.xml");
         $xml = xml_decode($contents);
+
         // return $xml;
         $this->candidate_name = $xml["noyau_utilisateur_info"]["prenom"] . " " . $xml["noyau_utilisateur_info"]["nom"];
-        
+        dd($this->candidate_name);
+        $this->save($this->candidate_name);
         foreach ($xml['elements']['test_groupe_facteurs']['test_groupe_facteur'] as $value) {            
             foreach ($xml['elements']['test_facteurs']['test_facteur'] as $factors) {
                 // insert this content 
