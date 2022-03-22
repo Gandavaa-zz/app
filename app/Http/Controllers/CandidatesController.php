@@ -26,7 +26,6 @@ class CandidatesController extends Controller
     public function index(Request $request)
     {
         $users = Candidate::with('groups')->get();
-
         if ($request->ajax()) {
             return DataTables::of($users)
                 ->addIndexColumn()
@@ -34,6 +33,8 @@ class CandidatesController extends Controller
                     $btn = '
                     <a class="btn btn-warning btn-light btn-sm">
                         <i class="cil-chart"></i> Тайлан</a>
+                    <a class="btn btn-warning btn-light btn-sm" >
+                        <i class="cil-chart"></i>'.$user->id.'</a>
                     <div class="btn-group">
                         <a href="" type="button" title="Илүү" class="btn btn-light dropdown-toggle btn-sm" data-toggle="dropdown">
                             <i class="cil-cog"> Бусад...</i>
@@ -184,10 +185,6 @@ class CandidatesController extends Controller
         return redirect()->route('candidate.index')->with('success', 'Харилцагч амжилттай бүртгэлээ!');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     */
     public function edit(Candidate $candidate)
     {
         $company = Company::all();
@@ -195,9 +192,6 @@ class CandidatesController extends Controller
         return view('layouts.candidate.edit', ['candidate' => $candidate])->with("company", $company);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Candidate $candidate)
     {
         request()->validate([
@@ -222,11 +216,7 @@ class CandidatesController extends Controller
         return redirect()->route('candidate.index')->with('success', 'Харилцагчын мэдээллийг амжилттай бүртгэлээ');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-
-    public function destroy(Candidate $candidate)
+     public function destroy(Candidate $candidate)
     {
         // хэрэглэгч тухайн test-тэй холбоотой байна уу?
         if(sizeof($candidate->tests)>0)
@@ -245,17 +235,12 @@ class CandidatesController extends Controller
     public function deleteMultiple(Request $request)
     {
         $participant_id_array = $request->input('id');
-
         $data = User::whereIn('id', $participant_id_array);
-
         if ($data->delete()){
             return response()->json(['msg' => 'Selected Participants deleted successfully.']);
         }
     }
 
-    /*
-     * Validation user function
-    */
     public function validateUser($id=null)
     {
         return request()->validate(
@@ -379,7 +364,6 @@ class CandidatesController extends Controller
 
         $api_groups = json_decode($response, true);
         
-        // insert groups into group
         foreach ($api_groups as $key => $group) {
             if (!Group::where('id', intval($group['id']))->exists()) {
                 Group::create([
@@ -390,9 +374,12 @@ class CandidatesController extends Controller
         }
 
         $groups = Group::paginate(15);
-
-        // return $groups;
         return view('layouts.candidate.group.index', compact('groups'));
+    }
+
+    public function generateLogin($candidateId){
+        
+        
     }
 
 }

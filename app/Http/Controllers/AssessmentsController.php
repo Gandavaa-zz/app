@@ -54,7 +54,6 @@ class AssessmentsController extends Controller
         foreach ($assessments['result']['data'] as $key => $value) {
             // return $value['test_id'];
             $candidate = Candidate::find($value['candidate_id']);
-
             if ($candidate && isset($candidate)) {
                 $assessments['result']['data'][$key]['candidate'] = $candidate;
             } else {
