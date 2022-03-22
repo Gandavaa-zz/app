@@ -12,7 +12,7 @@
 <div class="row">
     @php $item = $data["parties"]["party"]; @endphp
     @php $group_factors = $data["group_factors"]; @endphp
-
+       
     @if (str_contains($item[0]['type'], 'ancre'))
 
     <h2 class="card-title">{{$item[0]["params"]["menuNumber"] }} -
@@ -29,7 +29,7 @@
                 <div class="score-bar-wrapper row">
                     <div class="col-xs-12 col-sm-3">
                         <h3 class="box-label">
-                            {{ $item[1]["content"]["title"]}}
+                            {!! $item[1]["content"]["title"]!!}
                         </h3>
                         <div class="box-score" style="
                             color:#000000; background-color: #1C3664">
@@ -43,24 +43,28 @@
                     </div>
 
                     <div class="col-xs-12 col-sm-9">
-                        <div class="progress score-bar">
+                        
+                  
+
+                    <div class="progress score-bar" style="width: 100%;">
                             @if( isset($item[1]["params"]["quotient"]))
+                            <label for="0" id="percent_start">0</label>
                             <div class="progress-bar" style='width:{{ $item[1]["params"]["quotient"]}}%; color:#000000; background-color: #1C3664'>
                             </div>
                             @endif
+                            <label for="100" id="percent_end">100</label>
                         </div>
                     </div>
 
                     <div class="col-xs-12 col-md-12 clearfix">
                         <strong>
-                            {{ $item[1]["params"]["nb_br"] }} right answers out of
-                            {{ $item[1]["params"]["nb_question"] }} questions
-                            Average score is {{ $item[1]["params"]["score"] }}/10
+                            {{ $item[1]["params"]["nb_question"] }} асуултаас {{ $item[1]["params"]["nb_br"] }} зөв хариулсан, 
+                            Дундаж оноо {{ $item[1]["params"]["score"] }}/10
                         </strong>
                     </div>
-
+                    <hr>
                     <div class="box mb-4">
-                        <div class="box-desc bg-light">
+                        <div class="box-desc bg-grey">
                             <div>
                                 {!! $item[1]["content"]["commentaire_perso"] !!}
                             </div>
@@ -104,7 +108,8 @@
         <div class="card">
 
             <div class="card-header .bg-secondary">
-                {!! $item[4]["content"]["sub_title"]!!}
+                <!-- end graph iig subtitle iig haruulahgui -->
+                <!-- {!! $item[4]["content"]["sub_title"]!!} -->
             </div>
             <div class="card-body">
                 <div class="group-header">
@@ -138,6 +143,11 @@
                 @if($val['type']=='rapport_details_facteur')
                 <div class="score-bar-wrapper row @if($i!==1) mt-800 @endif">
                     <div class="col-xs-12 col-sm-3 ">
+                    <div class="factor-header">
+                            <h5 class="c-title-text-color" style="margin-left: -200px;margin-top: 10px;padding: 5px;font-size: 22px;word-wrap: break-word; color:#1C3664">
+                            {!! $val["content"]["title"]!!}
+                            </h5>
+                            </div>
                         <div class="box-score ec-first-bg-color ec-first-text-color " style="background-color:#{{$val["params"]["couleur"]}}; color:#000">
                             <div class="header">
                                 Оноо<br>
@@ -147,7 +157,7 @@
                             </div>
                         </div>
                     </div>
-
+                 
                     <div class="col-xs-12 col-sm-9">
                         <div class="progress score-bar" style="width: 100%;">
                             <label for="0" id="percent_start">0</label>

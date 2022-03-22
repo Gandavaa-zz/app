@@ -51,6 +51,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('import', 'ImportsController');
     Route::get('translations/new', 'TranslationsController@new')->name('translations.new');
     Route::get('translations/add', 'TranslationsController@add')->name('translations.add');
+    Route::get('translations/extract', 'TranslationsController@extract')->name('translations.extract');
     Route::post('translations/save', 'TranslationsController@saveTranslations')->name('translations.save');
     Route::resource('translations', 'TranslationsController');
     

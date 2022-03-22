@@ -305,7 +305,7 @@ class AssessmentsController extends Controller
 
         // parties
         $label = "";
-        //   dd($xml['parties']['partie']);
+        //   dd($xml);
         foreach ($xml['parties']['partie'] as $value) {
 
             if (isset($value["domaines"]["domaine"])) {

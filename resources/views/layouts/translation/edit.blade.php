@@ -48,12 +48,13 @@
                             <div class="col-sm-3 float-left">
                                 @if(isset($translation->previous()->id))
                                 <a href="{{ route('translations.edit', $translation->previous()->id )  }}" class="ml-1 btn btn-info">
-                                < {{ __('Өмнөх') }}
+                                    {{ __('Өмнөх') }}
                                 </a>
                                 @endif
+                                @if(isset($translation->next()->id))
                                 <a href="{{ route('translations.edit', $translation->next()->id ) }}" class="ml-1 btn btn-info">                                    
                                     {{ __('Дараах') }}
-                                 >
+                                @endif
                                 </a>
                             </div>
                             <div class="col-sm-3 float-right">
