@@ -17,7 +17,7 @@ class HomeController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Show the application dashboard.route
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -25,9 +25,9 @@ class HomeController extends Controller
     {        
         $user = auth()->user();
 
-        if($user->hasRole(['admin', 'super-admin']))
-            return redirect('/assessment');
-        else
+        // if($user->hasRole(['admin', 'super-admin']))
+        //     return redirect('/assessment');
+        // else
             return view('layouts.home');
     }
 }

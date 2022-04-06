@@ -21519,9 +21519,6 @@ body {
   color: #333;
   /* Overrides most CSS frameworks */
   white-space: nowrap;
-}
-
-.vs__dropdown-option:hover {
   cursor: pointer;
 }
 
@@ -21530,12 +21527,14 @@ body {
   color: #fff;
 }
 
+.vs__dropdown-option--deselect {
+  background: #fb5858;
+  color: #fff;
+}
+
 .vs__dropdown-option--disabled {
   background: inherit;
   color: rgba(60, 60, 60, 0.5);
-}
-
-.vs__dropdown-option--disabled:hover {
   cursor: inherit;
 }
 
@@ -21575,7 +21574,8 @@ body {
   border-color: transparent;
 }
 
-.vs--single.vs--open .vs__selected {
+.vs--single.vs--open .vs__selected,
+.vs--single.vs--loading .vs__selected {
   position: absolute;
   opacity: 0.4;
 }
@@ -21643,7 +21643,7 @@ body {
   opacity: 1;
 }
 
-.vs--unsearchable:not(.vs--disabled) .vs__search:hover {
+.vs--unsearchable:not(.vs--disabled) .vs__search {
   cursor: pointer;
 }
 
@@ -22649,3 +22649,4 @@ body {
 .timeline .panel {
   box-shadow: none;
 }
+

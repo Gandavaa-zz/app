@@ -1,3 +1,4 @@
+<!-- Reasoning Test -->
 @extends('layouts.report')
 
 @section('nav')
@@ -144,7 +145,7 @@
                 <div class="score-bar-wrapper row @if($i!==1) mt-800 @endif">
                     <div class="col-xs-12 col-sm-3 ">
                     <div class="factor-header">
-                            <h5 class="c-title-text-color" style="margin-left: -200px;margin-top: 10px;padding: 5px;font-size: 22px;word-wrap: break-word; color:#1C3664">
+                            <h5 class="c-title-text-color" style="margin-left:0px;margin-top: 10px;padding: 5px;font-size: 22px;word-wrap: break-word; color:#1C3664">
                             {!! $val["content"]["title"]!!}
                             </h5>
                             </div>

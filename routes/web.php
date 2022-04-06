@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/', 'HomeController@index')->name('dashboard')->middleware('auth');
+Route::get('/', 'AssessmentsController@index')->name('dashboard')->middleware('auth');
 Route::get('/logout', 'Auth\LoginController@logout');
 
 Route::get('/report/pdf', [AssessmentsController::class, 'generatePDF']);

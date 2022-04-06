@@ -205,7 +205,7 @@ class AssessmentsController extends Controller
         // Тухайн canidate-н утгийг шүүж авах
         $Candidate = Http::withHeaders(['WWW-Authenticate' => $this->token])
             ->get('https://app.centraltest.com/customer/REST/retrieve/candidate/json', [
-                'id' => 5543906
+                'id' => $canidate_id
             ]);
 
         // get title
@@ -680,6 +680,7 @@ class AssessmentsController extends Controller
             //setting all values to variable $data
             $data["parties"] = $this->replaceChar($this->getMNText($candidate_name), $party);
         }
+        
         // dd($data);
         // if ($type) {
         //     return $data;
