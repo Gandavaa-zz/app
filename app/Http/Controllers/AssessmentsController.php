@@ -183,19 +183,11 @@ class AssessmentsController extends Controller
 
     public function report($assessment_id)
     {
-        // if (!Storage::exists("/assets/assessments/{$assessment_id}.xml")) {
-        $response = Http::withHeaders([
-            'WWW-Authenticate' => $this->token,
-        ])->get(
-            'https://app.centraltest.com/customer/REST/assessment/result/xml',
-            [
-                'id' => $assessment_id,
-                'language_id' => "1",
-            ]
+        $response = Http::withHeaders(['WWW-Authenticate' => $this->token])
+            ->get('https://app.centraltest.com/customer/REST/assessment/result/xml',
+            ['id' => $assessment_id, 'language_id' => "1" ]
         );
-
         Storage::put("/assets/assessments/{$assessment_id}.xml", $response);
-        // }
 
         $contents = Storage::get("assets/assessments/{$assessment_id}.xml");
         $content = $domain = $party = $comments = array();
@@ -207,13 +199,9 @@ class AssessmentsController extends Controller
             ->get('https://app.centraltest.com/customer/REST/retrieve/candidate/json', [
                 'id' => $canidate_id
             ]);
-
-        // get title
-
         $candidate_name = $xml["noyau_utilisateur_info"]["prenom"] . " " . $xml["noyau_utilisateur_info"]["nom"];
         $xml = $this->replaceName($candidate_name, json_encode($xml));
-        // general
-        $xml = json_decode($xml, true);
+          $xml = json_decode($xml, true);
         $this->test_id = $xml["elements"]["test_tests"]["test_test"]["@attributes"]["id"];
         // return $xml;
         $started_at = new DateTime($xml['params']['date_passation_debut']);
@@ -238,8 +226,6 @@ class AssessmentsController extends Controller
             'completed_at' => $test_date,
             'title_id' => isset($Candidate['title_id']) ? $Candidate['title_id'] : 1
         ];
-
-
         $this->participant = $data['general']['participant_name'];
         // test_groupe_facteur
         $factor = [];
@@ -683,7 +669,7 @@ class AssessmentsController extends Controller
         
         // dd($data);
         // if ($type) {
-        //     return $data;
+            //  return $data;
         // }
         return view('layouts.reports.' . $data['general']['test_id'], compact('data'));
     }
